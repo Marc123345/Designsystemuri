@@ -35,18 +35,22 @@ export const ArrowButton = ({
 
   const inner = (
     <>
-      <span className="py-3.75 ps-6">
-        <span className="relative block overflow-hidden">
-          <span className="block group-hover:-translate-y-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
-            {label}
-          </span>
-          <span className="absolute top-7 start-0 group-hover:top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
-            {label}
-          </span>
+      {/* The label slides up on hover and a duplicate rides in behind it. The
+          wrapper must stay exactly one line tall with no padding — any vertical
+          padding grows the box past the duplicate's top-7 offset and it stops
+          being clipped, showing both copies at rest. Pad the shell instead. */}
+      <span className="relative block overflow-hidden">
+        <span className="block group-hover:-translate-y-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
+          {label}
+        </span>
+        <span className="absolute top-7 start-0 group-hover:top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
+          {label}
         </span>
       </span>
 
-      <span className={`m-1.25 flex size-10 items-center justify-center rounded rounded-ee-xl ${badge}`}>
+      <span
+        className={`flex size-10 shrink-0 items-center justify-center rounded ${badge}`}
+      >
         <span className="relative block overflow-hidden">
           <span className="block group-hover:translate-x-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
             <Icon icon="tabler:arrow-narrow-right" className="flex size-6" />
@@ -59,7 +63,10 @@ export const ArrowButton = ({
     </>
   )
 
-  const className = `group inline-flex items-center gap-5 rounded rounded-ee-2xl text-base font-medium transition-all ${shell}`
+  // One uniform radius on the shell and a matching inset on the badge. The
+  // previous mismatched corner radii (rounded-ee-2xl shell, rounded-ee-xl
+  // badge) made the badge appear to break out of the button's corner.
+  const className = `group inline-flex items-center gap-4 rounded-md ps-6 pe-1.5 py-1.5 text-base font-medium leading-none transition-all ${shell}`
 
   if (external) {
     return (

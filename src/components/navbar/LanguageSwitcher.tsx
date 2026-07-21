@@ -39,7 +39,7 @@ const LanguageSwitcher = () => {
       </button>
 
       <div
-        className="hs-dropdown-menu hs-dropdown-open:opacity-100 end-0 mt-2 hidden w-24 rounded-lg border border-default-200 bg-white p-2 opacity-0 transition-[opacity,margin] duration-300 before:absolute before:start-0 before:-top-4 before:h-4 before:w-full"
+        className="hs-dropdown-menu hs-dropdown-open:opacity-100 absolute top-full end-0 z-130 mt-2 hidden w-24 rounded-lg border border-default-200 bg-white p-2 opacity-0 shadow-xl transition-[opacity,margin] duration-300 before:absolute before:start-0 before:-top-4 before:h-4 before:w-full"
         role="menu"
       >
         <div className="flex flex-col gap-0.5">

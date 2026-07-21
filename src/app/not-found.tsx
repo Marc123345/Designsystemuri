@@ -26,13 +26,13 @@ const NotFound = () => (
           <div className="mt-9 flex flex-wrap justify-center gap-4">
             <Link
               href="/"
-              className="rounded rounded-ee-2xl bg-primary px-6 py-3.75 font-medium text-white"
+              className="rounded-md bg-primary px-6 py-3.75 font-medium text-white"
             >
               Back to home
             </Link>
             <Link
               href="/products"
-              className="rounded rounded-ee-2xl border border-default-200 px-6 py-3.75 font-medium"
+              className="rounded-md border border-default-200 px-6 py-3.75 font-medium"
             >
               Browse products
             </Link>

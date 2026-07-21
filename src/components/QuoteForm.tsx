@@ -131,7 +131,7 @@ const QuoteForm = ({ formTitle, formDesc, productOptions }: { formTitle: string;
         </div>
 
         <div className="md:col-span-2">
-          <button type="submit" className="bg-primary hover:bg-default-900 rounded rounded-ee-2xl px-6 py-3.75 text-base font-medium text-white transition-all">
+          <button type="submit" className="bg-primary hover:bg-default-900 rounded-md px-6 py-3.75 text-base font-medium text-white transition-all">
             Send request
           </button>
           <p className="text-default-500 mt-4 text-sm" role="status">

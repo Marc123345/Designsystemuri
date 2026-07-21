@@ -62,8 +62,13 @@ const Navbar = () => {
   const menuPanel = (menu: 'products' | 'applications' | 'resources') => {
     if (menu === 'products') {
       return (
+        // Positioned explicitly rather than left to Preline's JS placement,
+        // which left the panel in normal flow across the top of the hero.
+        // It anchors to the header container (its trigger is `static`), not to
+        // the trigger itself — centring a four-column panel on a ~90px menu
+        // item pushes it off the left edge of the viewport.
         <div
-          className="hs-dropdown-menu hs-dropdown-open:opacity-100 mt-2 hidden w-max rounded-lg border border-default-200 bg-white p-5 opacity-0 transition-[opacity,margin] duration-300 before:absolute before:start-0 before:-top-4 before:h-4 before:w-full"
+          className="hs-dropdown-menu hs-dropdown-open:opacity-100 absolute top-full inset-x-0 z-130 mx-auto mt-2 hidden w-max max-w-full rounded-lg border border-default-200 bg-white p-6 opacity-0 shadow-xl transition-[opacity,margin] duration-300 before:absolute before:start-0 before:-top-4 before:h-4 before:w-full"
           role="menu"
         >
           <div className="grid grid-cols-4 gap-x-8 gap-y-1">
@@ -96,7 +101,7 @@ const Navbar = () => {
     const entries = menu === 'applications' ? applicationMenu : resourceMenu
     return (
       <div
-        className="hs-dropdown-menu hs-dropdown-open:opacity-100 mt-2 hidden w-56 rounded-lg border border-default-200 bg-white p-2 opacity-0 transition-[opacity,margin] duration-300 before:absolute before:start-0 before:-top-4 before:h-4 before:w-full"
+        className="hs-dropdown-menu hs-dropdown-open:opacity-100 absolute top-full start-0 z-130 mt-2 hidden w-60 rounded-lg border border-default-200 bg-white p-2 opacity-0 shadow-xl transition-[opacity,margin] duration-300 before:absolute before:start-0 before:-top-4 before:h-4 before:w-full"
         role="menu"
       >
         <div className="flex flex-col gap-1">
@@ -121,7 +126,8 @@ const Navbar = () => {
   return (
     <header>
       <div className="nav-sticky navbar fixed inset-x-0 top-0 z-120 w-full border-b lg:border-transparent lg:bg-transparent border-default-200 bg-body-bg transition-all duration-300 lg:[.nav-sticky-on]:border-default-200 [.nav-sticky-on]:bg-body-bg">
-        <div className="container-full py-4.5">
+        {/* relative: the products mega-panel positions against this container. */}
+        <div className="container-full relative py-4.5">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center" aria-label="EID Ltd — home">
               {/* The only supplied logo artwork is white-on-transparent, which is
@@ -143,7 +149,15 @@ const Navbar = () => {
                 const menu = 'menu' in item ? item.menu : undefined
                 if (menu) {
                   return (
-                    <div key={item.href} className="hs-dropdown relative inline-flex [--trigger:hover]">
+                    // The products mega-panel is `static` so it positions
+                    // against the header container; the narrow menus anchor to
+                    // their own trigger.
+                    <div
+                      key={item.href}
+                      className={`hs-dropdown inline-flex [--trigger:hover] ${
+                        menu === 'products' ? 'static' : 'relative'
+                      }`}
+                    >
                       <button
                         type="button"
                         className={`hs-dropdown-toggle ${linkClass(active)}`}
@@ -170,22 +184,22 @@ const Navbar = () => {
             <div className="flex items-center justify-end gap-4">
               <LanguageSwitcher />
 
+              {/* Same geometry as ArrowButton — uniform radius, badge inset by
+                  the shell's own padding so it cannot break the corner. */}
               <Link
                 href="/contact"
-                className="group md:inline-flex hidden items-center gap-5 rounded rounded-ee-2xl bg-primary text-base font-medium text-white transition-all"
+                className="group md:inline-flex hidden items-center gap-4 rounded-md bg-primary ps-6 pe-1.5 py-1.5 text-base font-medium leading-none text-white transition-all"
               >
-                <span className="py-3.75 ps-6">
-                  <span className="relative block overflow-hidden">
-                    <span className="block group-hover:-translate-y-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
-                      {t(locale, 'Request A Quote')}
-                    </span>
-                    <span className="absolute top-7 start-0 group-hover:top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
-                      {t(locale, 'Request A Quote')}
-                    </span>
+                <span className="relative block overflow-hidden">
+                  <span className="block group-hover:-translate-y-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
+                    {t(locale, 'Request A Quote')}
+                  </span>
+                  <span className="absolute top-7 start-0 group-hover:top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
+                    {t(locale, 'Request A Quote')}
                   </span>
                 </span>
 
-                <span className="m-1.25 flex size-10 items-center justify-center rounded rounded-ee-xl bg-default-900 text-white">
+                <span className="flex size-10 shrink-0 items-center justify-center rounded bg-default-900 text-white">
                   <span className="relative block overflow-hidden">
                     <span className="block group-hover:translate-x-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
                       <Icon icon="tabler:arrow-narrow-right" className="flex size-6" />
