@@ -1,7 +1,7 @@
 import Marquee from '@/components/Marquee'
 import QuoteForm from '@/components/QuoteForm'
-import Wireframe from '@/components/Wireframe'
 import Hero from '@/components/home/Hero'
+import TheProblem from '@/components/home/TheProblem'
 import WhyEid from '@/components/home/WhyEid'
 import { CardGrid, DarkFeatureList, Faq, TrustBar } from '@/components/sections'
 import { ChapterMarker, SectionHeading } from '@/components/ui'
@@ -157,34 +157,15 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       <div className="container pt-20">
         <ChapterMarker index="01" label="The Problem" />
       </div>
-      <section className="lg:py-24 py-16">
-        <div className="container">
-          <div className="grid lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-7">
-              <SectionHeading
-                eyebrow="Why suppliers get replaced"
-                title="The cost of inconsistent diamond"
-              />
-              <div className="mt-7 space-y-4 text-base text-default-600">
-                <p>
-                  When diamond varies between lots, tools vary with it, and the customer notices.
-                  Sourcing across several suppliers multiplies that risk: several specifications,
-                  several lead times, several definitions of acceptable, each mismatch paid for in
-                  rejects and re-set machines.
-                </p>
-                <p>
-                  EID removes the variable. One manufacturer covers the full diamond and CBN range,
-                  every grade verified in the same QC laboratory before it ships. The grade you
-                  qualify is the grade you reorder.
-                </p>
-              </div>
-            </div>
-            <div className="lg:col-span-5">
-              <Wireframe label="Factory / production floor — London" />
-            </div>
-          </div>
-        </div>
-      </section>
+      <TheProblem
+        eyebrow="Why suppliers get replaced"
+        title="The cost of inconsistent diamond"
+        lede="When diamond varies between lots, tools vary with it, and the customer notices. Sourcing across several suppliers multiplies that risk: several specifications, several lead times, several definitions of acceptable, each mismatch paid for in rejects and re-set machines."
+        closing="EID removes the variable. One manufacturer covers the full diamond and CBN range, every grade verified in the same QC laboratory before it ships. The grade you qualify is the grade you reorder."
+        imageLabel="Factory / production floor — London"
+        primaryCta={{ label: 'See how our QC works', href: '/quality' }}
+        secondaryCta={{ label: 'Browse the Full Range', href: '/#products' }}
+      />
 
       {/* THE RANGE — anchor target for the hero's "Browse the Full Range". */}
       <div className="container">
