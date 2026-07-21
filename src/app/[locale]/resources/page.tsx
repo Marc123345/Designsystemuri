@@ -24,7 +24,9 @@ export async function generateMetadata({
 
 const guides: { title: string; desc: string; links: { label: string; href: string }[] }[] = [
   {
-    title: 'Diamond vs CBN: which superabrasive for your application?',
+    // Uri suggested "CBN vs Diamond for Machining Applications" as an alternative
+    // title for interest and search; deck title kept until he confirms.
+    title: 'Diamond vs CBN: which superabrasive for your application.',
     desc: 'Diamond is the hardest material, but it cannot grind hardened steel and CBN can. When to use each, with a material-compatibility chart and application examples.',
     links: [
       { label: 'CBN', href: '/products/cbn' },
@@ -32,44 +34,44 @@ const guides: { title: string; desc: string; links: { label: string; href: strin
     ],
   },
   {
-    title: 'Diamond grit & micron size chart (mesh-to-micron)',
-    desc: 'A reference chart mapping FEPA, US mesh, and micron sizes, so you can convert between the sizing systems your specs and your suppliers use.',
+    title: 'Diamond grit and micron size chart (mesh to micron).',
+    desc: 'A reference chart mapping FEPA, US mesh, and micron sizes, so you can convert between sizing systems.',
     links: [
-      { label: 'Natural Grit', href: '/products/natural-grit-powder#grit' },
-      { label: 'Natural Micron', href: '/products/natural-grit-powder#micron' },
+      { label: 'Natural Diamond Grit & Powder', href: '/products/natural-grit-powder' },
     ],
   },
   {
-    title: 'Metal bond, resin bond, and vitrified: choosing a bond system',
-    desc: 'The bond holds the diamond, and the bond you choose sets how the tool cuts, how long it lasts, and what it can work. A comparison of the three major systems.',
+    title: 'Metal bond, resin bond, and vitrified: choosing a diamond bond system.',
+    desc: 'The bond holds the diamond, and it sets how the tool cuts, how long it lasts, and what it can work. Compares the three major systems.',
     links: [
       { label: 'Metal Bond', href: '/products/metal-bond' },
       { label: 'Resin Bond', href: '/products/resin-bond' },
     ],
   },
   {
-    title: 'How diamond size distribution affects tool performance',
-    desc: 'What D50, D10, D90, and span actually mean, and why a tight distribution changes the way your tool cuts and finishes.',
+    title: 'How diamond size distribution affects tool performance.',
+    desc: 'What D50, D10, D90, and span mean, and why a tight distribution changes how your tool cuts and finishes.',
     links: [
       { label: 'Micron QC', href: '/micron-qc' },
       { label: 'Quality & QC', href: '/quality' },
     ],
   },
   {
-    title: 'CVD, HPHT (MCD), and natural diamond compared',
-    desc: 'Three ways to get a single crystal, and when each is the right choice for single-point and precision tooling.',
+    title: 'CVD, HPHT (MCD), and natural diamond compared.',
+    desc: 'Three ways to get a single crystal, and when each is right for single-point and precision tooling.',
     links: [
-      { label: 'CVD Single Crystal', href: '/products/single-crystal#cvd' },
-      { label: 'MCD', href: '/products/single-crystal#mcd' },
+      { label: 'Single Crystal Diamond', href: '/products/single-crystal' },
       { label: 'Natural Tool Stones', href: '/products/tool-stones' },
     ],
   },
   {
-    title: 'Diamond and CBN by application',
-    desc: 'Which grades serve dental, semiconductor, automotive and aerospace, and tool and die, and why, with links through to the application hubs.',
-    links: [{ label: 'Applications', href: '/applications' }],
+    title:
+      'Diamond and CBN by application: dental, semiconductor, automotive and aerospace, tool and die.',
+    desc: 'Which grades serve which sector, and why, with links through to the application hubs.',
+    links: [{ label: 'Application hubs', href: '/applications' }],
   },
 ]
+
 
 const ResourcesPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
   const { locale } = await params
@@ -94,7 +96,7 @@ const ResourcesPage = async ({ params }: { params: Promise<{ locale: Locale }> }
           />
           <p className="mt-5 max-w-3xl text-base text-default-600">
             <RichText>
-              {'Reference charts, comparisons, and application notes to help you match the diamond or CBN grade to your process, written by the people who grade and test the material. If you are still deciding between options, start here. If you already know the grade, the [product pages](/products) carry the specs.'}
+              {'Reference charts, comparisons, and application notes to match the diamond or CBN grade to your process, written by the people who grade and test the material. Still deciding? Start here. Already know the grade? The [product pages](/products) carry the specs.'}
             </RichText>
           </p>
         </div>
@@ -134,8 +136,11 @@ const ResourcesPage = async ({ params }: { params: Promise<{ locale: Locale }> }
                 <div className="mt-auto pt-2">
                   <ArrowLink href="/contact" label="Read" />
                 </div>
-                {/* The six guides are still unwritten; the note is deliberate, so
-                    nobody ships a card that promises a document that does not exist. */}
+                {/* The six guides are listed but not yet written. Each is a separate
+                    page under /resources/ and a real deliverable, drafted as a
+                    separate batch once the core pages are signed off. The note is
+                    deliberate, so nobody ships a card that promises a document that
+                    does not exist. */}
                 <p className="text-sm text-default-500">
                   Guide not yet written; deck defers the six guides to a later batch.
                 </p>

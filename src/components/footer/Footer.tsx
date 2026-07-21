@@ -5,6 +5,7 @@ import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
 import { footerColumns, legalLinks, site, trustPoints } from '@/lib/site'
 import { Icon } from '@iconify/react'
+import Image from 'next/image'
 import { useLocale } from 'next-intl'
 
 /**
@@ -34,7 +35,16 @@ const Footer = () => {
           {/* Identity + contact */}
           <div className="xl:col-span-2">
             <div className="lg:w-105">
-              <h4 className="text-[32px] text-white mb-6.5">{site.name}</h4>
+              {/* The supplied artwork is white-on-transparent, which is exactly
+                  what this dark panel wants — used here without correction. */}
+              <Image
+                src="/eid/logo-white.png"
+                alt={site.name}
+                width={650}
+                height={221}
+                className="mb-6.5 w-44"
+              />
+              <p className="sr-only">{site.name}</p>
 
               <p className="text-default-400 mb-7">{t(locale, 'footerAbout')}</p>
 

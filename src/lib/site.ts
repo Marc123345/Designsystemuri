@@ -9,7 +9,9 @@ export const site = {
   phone: "+44 (0) 207 405 6594",
   phoneHref: "tel:+442074056594",
   fax: "+44 (0) 207 831 0372",
-  address: "EID House, 12 St. Cross Street, London EC1N 8UB, England",
+  // Punctuated exactly as the Vol 03 deck writes it, so the address reads
+  // identically wherever it appears (footer, About, Contact).
+  address: "EID House, 12 St. Cross Street, London, EC1N 8UB, England",
   // Persistent WhatsApp Business channel: one tap opens a chat to the London
   // landline, shared across three to five team members so replies are not
   // blocked on one person. Sits alongside Contact on every page.

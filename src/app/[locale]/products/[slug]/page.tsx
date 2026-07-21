@@ -1,4 +1,5 @@
 import { RichParagraphs, RichText } from '@/components/RichText'
+import Wireframe from '@/components/Wireframe'
 import {
   BannerCTA,
   CrossLinks,
@@ -99,8 +100,10 @@ const ProductPage = async ({
               </div>
             </div>
 
-            {leadSpecs.length > 0 && (
-              <div className="lg:col-span-5">
+            <div className="lg:col-span-5 space-y-8">
+              <Wireframe label={`Product image — ${p.name}`} />
+
+              {leadSpecs.length > 0 && (
                 <div className="divide-y divide-default-200 border-t border-default-200">
                   {leadSpecs.slice(0, 3).map((s) => (
                     <div key={s.label} className="py-5">
@@ -109,8 +112,8 @@ const ProductPage = async ({
                     </div>
                   ))}
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </section>
@@ -167,7 +170,10 @@ const ProductPage = async ({
 
       <CrossLinks
         groups={[
-          ...(isSplit
+          // Vol 03 writes an explicit "On this page" group into crossLinks for
+          // some products. Only synthesise one where the deck did not, or the
+          // split pages would render the group twice.
+          ...(isSplit && !(p.crossLinks ?? []).some((g) => g.title === 'On this page')
             ? [
                 {
                   title: 'On this page',
@@ -242,13 +248,18 @@ const ProductSectionBlock = ({
                 )}
               </div>
 
-              {section.callouts?.length ? (
-                <div className="lg:col-span-5 space-y-6">
-                  {section.callouts.map((c) => (
+              <div className="lg:col-span-5 space-y-6">
+                <Wireframe label={`${section.label} — material / tooling shot`} ratio="landscape" />
+
+                {section.callouts?.map((c) => (
                     <div key={c.title} className="border-t-2 border-primary pt-5">
                       <div className="text-sm uppercase tracking-[0.2em] text-default-500">
                         {c.title}
                       </div>
+                      {/* Callout bodies carry the deck's in-prose links (the
+                          CBN-vs-diamond guide, the PCD ↔ PCBN counterparts), so
+                          they have to go through RichText like every other
+                          copy field rather than render as literal markdown. */}
                       {Array.isArray(c.body) ? (
                         <ul className="mt-3 space-y-2">
                           {c.body.map((b, i) => (
@@ -257,17 +268,20 @@ const ProductSectionBlock = ({
                                 icon="tabler:check"
                                 className="mt-1 size-4 shrink-0 text-primary"
                               />
-                              {b}
+                              <span>
+                                <RichText>{b}</RichText>
+                              </span>
                             </li>
                           ))}
                         </ul>
                       ) : (
-                        <p className="mt-3 text-base text-default-600">{c.body}</p>
+                        <p className="mt-3 text-base text-default-600">
+                          <RichText>{c.body}</RichText>
+                        </p>
                       )}
                     </div>
                   ))}
-                </div>
-              ) : null}
+              </div>
             </div>
 
             {hasDetail && (

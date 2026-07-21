@@ -148,6 +148,26 @@ export const StatsBar = ({ items }: { items: { value: string; label: string }[] 
   </section>
 )
 
+/**
+ * Trust bar: proof points as icon plus label, evenly spaced, no sentences.
+ * Deliberately terse — it sits directly under the hero, where a buyer is
+ * scanning for credentials rather than reading.
+ */
+export const TrustBar = ({ items }: { items: string[] }) => (
+  <section className="border-y border-default-200 bg-default-50">
+    <div className="container-full">
+      <ul className="flex flex-wrap items-center justify-between gap-x-10 gap-y-4 py-6">
+        {items.map((item) => (
+          <li key={item} className="flex items-center gap-2.5">
+            <Icon icon="tabler:circle-check" className="size-5 shrink-0 text-primary" />
+            <span className="text-base font-medium text-default-900">{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+)
+
 /** Four verified proof points, directly under the hero. */
 export const FeaturesRow = ({
   items,

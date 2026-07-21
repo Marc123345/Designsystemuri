@@ -1,4 +1,5 @@
 import { RichParagraphs } from '@/components/RichText'
+import Wireframe from '@/components/Wireframe'
 import { BannerCTA, CardGrid, CrossLinks, DarkFeatureList, PageHero } from '@/components/sections'
 import { ArrowButton, ChapterMarker, SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
@@ -105,7 +106,9 @@ const ApplicationPage = async ({
               </div>
             </div>
 
-            <div className="lg:col-span-5">
+            <div className="lg:col-span-5 space-y-8">
+              <Wireframe label={`Application image — ${app.name}`} />
+
               <div className="border-t-2 border-primary pt-5">
                 <div className="text-sm uppercase tracking-[0.2em] text-default-500">
                   {app.outcome.title}

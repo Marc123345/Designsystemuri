@@ -1,6 +1,5 @@
 'use client'
 
-import logo from '@/assets/images/logo.svg'
 import { Link, usePathname } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
@@ -125,7 +124,17 @@ const Navbar = () => {
         <div className="container-full py-4.5">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center" aria-label="EID Ltd — home">
-              <Image src={logo} alt="EID Ltd" className="w-40.75" />
+              {/* The only supplied logo artwork is white-on-transparent, which is
+                  invisible on this light header. brightness-0 renders the same
+                  mark solid dark; swap for a dark-variant file when EID sends one. */}
+              <Image
+                src="/eid/logo-white.png"
+                alt="EID Ltd"
+                width={650}
+                height={221}
+                priority
+                className="w-40.75 brightness-0"
+              />
             </Link>
 
             <div id="navbar" className="mx-auto hidden lg:flex items-center justify-center">

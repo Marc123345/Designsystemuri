@@ -1,10 +1,11 @@
+import Wireframe from '@/components/Wireframe'
 import Hero from '@/components/home/Hero'
-import { BannerCTA, CardGrid, DarkFeatureList, Faq, FeaturesRow, Pillars } from '@/components/sections'
-import { ChapterMarker } from '@/components/ui'
+import { BannerCTA, CardGrid, DarkFeatureList, Faq, Pillars, TrustBar } from '@/components/sections'
+import { ChapterMarker, SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { getApplications, getProducts } from '@/lib/i18n-content'
-import { site } from '@/lib/site'
+import { site, trustPoints } from '@/lib/site'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
@@ -17,23 +18,13 @@ export async function generateMetadata({
   return { alternates: localeAlternates(locale, '/') }
 }
 
-const heroSlides = [
-  {
-    eyebrow: 'Industrial Diamond & CBN · Manufacturer and Supplier',
-    title: 'The full industrial diamond and CBN range, made and graded in-house.',
-    desc: 'EID manufactures industrial diamond and CBN for tool makers worldwide. Every grade is processed and tested in our own laboratory to ensure batch-to-batch consistency.',
-  },
-  {
-    eyebrow: 'We control production, not just supply',
-    title: 'The quality decision sits with us.',
-    desc: 'Natural grit and powder made and graded in our own factory. Bonded and CBN grades produced to order, then re-processed and QC-upgraded to your spec.',
-  },
-  {
-    eyebrow: 'Every batch, every re-order',
-    title: 'When you order the same grade twice, you get the same grade twice.',
-    desc: 'Our QC laboratory tests size distribution, crystal strength, morphology, and coating coverage on every production run, so your tools stay consistent.',
-  },
-]
+// Vol 03 replaced the rotating three-slide hero with a single block.
+const hero = {
+  eyebrow: 'Industrial Diamond & CBN Solutions · Precision Manufactured & QC-Controlled',
+  title:
+    'The full industrial diamond and CBN range, manufactured, processed, and graded in-house to EID standards.',
+  desc: 'EID manufactures industrial diamond and CBN for tool makers worldwide, plus CBN for the hardened and ferrous work diamond cannot do. Every grade is processed and tested in our own laboratory, so the material you reorder matches the run before it. One manufacturer, one specification, the whole range.',
+}
 
 /**
  * FAQ — written for AI search and FAQPage rich results. Every answer is grounded
@@ -48,7 +39,7 @@ const faqs = [
   },
   {
     q: 'Does EID manufacture the material, or resell it?',
-    a: 'It depends on the product, and we are specific about which is which. Natural grit and powder are manufactured entirely in-house at our own factory, from raw material through crushing, grading, and final QC. Metal bond, resin bond, and CBN grades are produced to order, then re-processed, graded, coated, and QC-upgraded through our facility to your specification. CVD single crystal is grown to EID’s specification and orientation through a dedicated growth partner, then finished and inspected by us. Across all three, the specification and the QC pass are ours.',
+    a: 'It depends on the product, and we are specific about which is which. Natural grit and powder are manufactured entirely in-house at our own factory, from raw material through crushing, grading, and final QC. Metal bond, resin bond, and CBN grades are produced to order, then processed, graded, and coated through our facility to your specification. CVD single crystal is grown to EID’s specification and orientation through a dedicated growth partner, then finished and inspected by us. Across all three, the specification and the QC pass are ours.',
   },
   {
     q: 'When should I use CBN instead of diamond?',
@@ -64,7 +55,7 @@ const faqs = [
   },
   {
     q: 'How do you keep grades consistent between orders?',
-    a: 'Every production run is tested in our own QC laboratory before it ships. We measure particle size distribution (D10, D50, D90, and span, with outliers controlled), crystal strength and friability, crystal morphology and shape, and coating weight and coverage on every coated batch. The point is that the grade you qualify is the grade you receive, because your own production is tuned to it.',
+    a: 'Every production run is tested in our own QC laboratory before it ships. We measure particle size distribution (D10, D50, D90, and span, with outliers controlled) and crystal morphology on every lot, with shape factor on mesh grades, coating weight and coverage on every coated batch, and crystal strength where the grade or the application requires it. The point is that the grade you qualify is the grade you receive, because your own production is tuned to it.',
   },
   {
     q: 'Can I order a sample before committing to a production quantity?',
@@ -153,7 +144,9 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
   return (
     <>
       <Hero
-        slides={heroSlides}
+        eyebrow={hero.eyebrow}
+        title={hero.title}
+        desc={hero.desc}
         metaStats={[
           { value: '50+', label: "Years' experience" },
           { value: '8', label: 'Product groups' },
@@ -161,47 +154,64 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
         ]}
       />
 
-      <FeaturesRow
-        items={[
-          {
-            title: 'ISO 9001 Certified',
-            desc: 'Full traceability from raw material to shipped lot.',
-            href: '/quality',
-          },
-          {
-            title: 'In-House QC Laboratory',
-            desc: 'Every production run tested for size, strength, morphology, and coating.',
-            href: '/quality',
-          },
-          {
-            title: 'Complete Superabrasive Range',
-            desc: 'Diamond and CBN, grit to crystal, from one supplier and one standard.',
-            href: '/products',
-          },
-          {
-            title: "50+ Years' Experience",
-            desc: "Making the material inside the world's diamond tools, from London.",
-            href: '/about',
-          },
-        ]}
-      />
+      {/* Proof points as icon plus label. No sentences — a buyer is scanning
+          here, not reading. */}
+      <TrustBar items={trustPoints} />
 
+      {/* THE PROBLEM — names the buyer's real cost before any product copy. */}
       <div className="container pt-20">
-        <ChapterMarker index="01" label="The Range" />
+        <ChapterMarker index="01" label="The Problem" />
       </div>
-      <CardGrid
-        eyebrow="The range · eight product groups"
-        title="Every industrial diamond and CBN product, from one source."
-        desc="We manufacture natural grit and powder in-house, QC-upgrade bonded and CBN grades to your spec, and offer single crystal grown to your orientation."
-        items={groupCards}
-        ctaHref="/products"
-        ctaLabel="Browse the Full Range"
-      />
+      <section className="lg:py-24 py-16">
+        <div className="container">
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
+            <div className="lg:col-span-7">
+              <SectionHeading
+                eyebrow="Why suppliers get replaced"
+                title="The cost of inconsistent diamond"
+              />
+              <div className="mt-7 space-y-4 text-base text-default-600">
+                <p>
+                  When diamond varies between lots, tools vary with it, and the customer notices.
+                  Sourcing across several suppliers multiplies that risk: several specifications,
+                  several lead times, several definitions of acceptable, each mismatch paid for in
+                  rejects and re-set machines.
+                </p>
+                <p>
+                  EID removes the variable. One manufacturer covers the full diamond and CBN range,
+                  every grade verified in the same QC laboratory before it ships. The grade you
+                  qualify is the grade you reorder.
+                </p>
+              </div>
+            </div>
+            <div className="lg:col-span-5">
+              <Wireframe label="Factory / production floor — London" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* THE RANGE — anchor target for the hero's "Browse the Full Range". */}
+      <div className="container">
+        <ChapterMarker index="02" label="The Range" />
+      </div>
+      <div id="products" className="scroll-mt-28">
+        <CardGrid
+          eyebrow="The range · eight product groups"
+          title="Every industrial diamond and CBN product, from one source."
+          desc="Natural grit and powder made in our own factory, bonded and CBN grades processed and graded to your spec, and single crystal grown to your exact orientation."
+          items={groupCards}
+          ctaHref="/products"
+          ctaLabel="Browse the Full Range"
+        />
+      </div>
 
       {/* Pillar one carries the graduated production claim, which is the honesty
           a technical buyer checks for before anything else on this page. */}
+      {/* Pillar one carries the graduated production claim, which is the honesty
+          a technical buyer checks for before anything else on this page. */}
       <div className="container">
-        <ChapterMarker index="02" label="Why EID" />
+        <ChapterMarker index="03" label="Why EID" />
       </div>
       <div className="pt-12">
         <Pillars
@@ -209,21 +219,21 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
             {
               meta: 'Accountability',
               title: 'We control production, not just supply.',
-              body: 'Natural grit and powder made in our own factory. Bonded and CBN grades QC-upgraded to your spec. CVD grown to order through a dedicated partner. The quality decision is always ours: one accountable manufacturer, spec to delivery.',
+              body: 'Natural grit and powder made in our own factory. Bonded and CBN grades processed and graded to your spec. CVD grown to order through a dedicated partner. The quality decision is always ours: one accountable manufacturer, spec to delivery.',
               href: '/about',
               cta: 'How we make it',
             },
             {
               meta: 'Consistency',
-              title: 'Consistent material, every re-order.',
-              body: 'Every run tested for size distribution, strength, morphology, and coating. ISO 9001, certificate of analysis per lot. Order the same grade twice, get the same grade twice.',
+              title: 'The same material, every reorder.',
+              body: 'Every run is measured for particle size distribution and morphology, with crystal strength and coating coverage checked where the grade calls for it. ISO 9001, certificate of analysis per lot. Order the same grade twice, get the same grade twice.',
               href: '/quality',
               cta: 'See how our QC works',
             },
             {
               meta: 'Breadth',
               title: 'The full range, one relationship.',
-              body: 'Every diamond and CBN product from one supplier: one contact, one quality standard. Standard grades from stock; specials to your lead time.',
+              body: 'Every diamond and CBN product from one supplier: one contact, one quality standard. Standard grades from stock, specials to your lead time.',
               href: '/products',
               cta: 'Browse the range',
             },
@@ -232,12 +242,12 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       </div>
 
       <div className="container">
-        <ChapterMarker index="03" label="Applications" />
+        <ChapterMarker index="04" label="Applications" />
       </div>
       <CardGrid
         eyebrow="Applications · six hubs"
         title="Diamond and CBN for the work your tools do."
-        desc="We supply the material. You build the tools that serve these applications. Start from your application to reach the exact grades that serve it."
+        desc="We supply the material. You build the tools that serve these applications."
         items={hubCards}
         ctaHref="/applications"
         ctaLabel="View All Applications"
@@ -246,17 +256,17 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       <DarkFeatureList
         eyebrow="Quality"
         title="Every production run is tested before it leaves."
-        desc="We test diamond and CBN for particle size, strength, morphology, and coating coverage. ISO 9001 certified, with full traceability from raw material to delivery."
+        desc="Consistency is a process, and ours runs on measurement. Each lot is tested in our QC laboratory for particle size distribution and morphology, with crystal strength and coating coverage checked where the grade requires it. We test the run and record the result rather than sampling and assuming. ISO 9001 certified, with full traceability from incoming raw material to shipped lot."
         ctaLabel="See how our QC works"
         ctaHref="/quality"
         features={[
           {
             title: 'Particle size distribution',
-            desc: 'Graded and verified for tight D50 and span, with outliers controlled.',
+            desc: 'Graded and verified for tight D50 and span, with outliers controlled, on every lot.',
           },
           {
-            title: 'Crystal strength & morphology',
-            desc: 'Confirmed to perform as expected in your bond system.',
+            title: 'Crystal morphology',
+            desc: 'Inspected on every lot, with shape factor on mesh grades.',
           },
           {
             title: 'Coating weight & coverage',
@@ -269,23 +279,9 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
         ]}
       />
 
-      <div className="container pt-20">
-        <ChapterMarker index="04" label="Questions" />
-      </div>
-      <Faq
-        eyebrow="Frequently asked"
-        title="Straight answers about the material."
-        desc="The questions technical buyers ask before they qualify a superabrasive supplier. If yours is not here, ask us and someone who works with the material will answer."
-        items={faqs}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-
       <BannerCTA
         eyebrow="Tell us what you need"
-        title="A real person replies within one business day."
+        title="Tell us the grade you need. A real person replies within one business day."
         desc="Request a quote, order a sample, or ask a technical question. One form, routed to someone who works with the material."
         ctaLabel="Request a Quote"
         ctaHref="/contact"
@@ -301,6 +297,22 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
             </a>
           </>
         }
+      />
+
+      {/* FAQ sits below the conversion CTA, per the deck: it is written for AI
+          search and rich results rather than to be read on the way down. */}
+      <div className="container">
+        <ChapterMarker index="05" label="Questions" />
+      </div>
+      <Faq
+        eyebrow="Frequently asked"
+        title="Straight answers about the material."
+        desc="The questions technical buyers ask before they qualify a superabrasive supplier. If yours is not here, ask us and someone who works with the material will answer."
+        items={faqs}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
     </>
   )

@@ -1,6 +1,7 @@
 import { RichText } from '@/components/RichText'
 import { BannerCTA, CrossLinks, DarkFeatureList, PageHero } from '@/components/sections'
 import { ChapterMarker, SectionHeading } from '@/components/ui'
+import Wireframe from '@/components/Wireframe'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import type { Metadata } from 'next'
@@ -21,7 +22,7 @@ export async function generateMetadata({
   return {
     title: { absolute: 'Mesh QC | Grit Sizing & Crystal Shape Control | EID' },
     description:
-      'How EID grades and verifies mesh grit: sieve sizing against calibrated references, crystal shape inspection, and strength testing on every production run.',
+      'How EID grades and verifies mesh grit: sieve sizing against calibrated references, shape factor inspection, and strength testing where the grade requires it.',
     alternates: localeAlternates(locale, '/mesh-qc'),
   }
 }
@@ -36,12 +37,12 @@ const steps = [
     desc: 'Graded fractions are re-measured to confirm the distribution sits inside the grade specification, with the coarse and fine tails checked rather than only the mid-point.',
   },
   {
-    title: 'Crystal shape',
-    desc: 'Optical and stereo microscopy confirms the blocky, semi-blocky, or irregular form matches the grade. Shape drives how the crystal anchors in a bond, so it is a specification, not a by-product.',
+    title: 'Crystal morphology and shape factor',
+    desc: 'Optical and stereo microscopy confirms the blocky, semi-blocky, or irregular form matches the grade specification. Shape factor is a mesh criterion: it drives how the crystal anchors in a bond, so it is a specification, not a by-product.',
   },
   {
-    title: 'Strength and friability',
-    desc: 'Tested so the grit breaks down the way your bond system expects: saw grades hold up under impact, wheel grades break down in a governed way.',
+    title: 'Crystal strength (friability)',
+    desc: 'Tested where the grade or the application requires it, rather than as a routine every-batch test, so the grit breaks down the way your bond system expects: saw grades hold up under impact, wheel grades break down in a governed way.',
   },
   {
     title: 'Documentation',
@@ -58,7 +59,7 @@ const MeshQcPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =
       <PageHero
         eyebrow="Quality · Mesh QC in detail"
         title="Mesh QC"
-        desc="How we grade and verify grit sizing and crystal shape, batch after batch."
+        desc="How we grade and verify grit sizing and shape factor, lot after lot."
         crumbs={[
           { label: 'Home', href: '/' },
           { label: 'Quality', href: '/quality' },
@@ -83,7 +84,7 @@ const MeshQcPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =
             <p className="mt-7 text-base text-default-600">
               <RichText>
                 {
-                  'Grading and testing differ between mesh grit and micron powder, so each has its own method. Mesh grit is sized mechanically against a calibrated sieve stack, and the buying criteria are the size fraction, the crystal shape, and how the grit breaks down under load. Micron powder is a different problem entirely, measured by particle counting and controlled on D-values, which [Micron QC](/micron-qc) covers.'
+                  'Grading and testing differ between mesh grit and micron powder, so each has its own method. Mesh grit is sized mechanically against a calibrated sieve stack, and the buying criteria are the size fraction, the shape factor, and how the grit breaks down under load. Micron powder is a different problem entirely, measured by particle counting and controlled on D-values, which [Micron QC](/micron-qc) covers.'
                 }
               </RichText>
             </p>
@@ -91,6 +92,12 @@ const MeshQcPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =
               Instrument makes, models, and calibration intervals to be confirmed with Uri before
               launch, together with photographs of the laboratory.
             </p>
+
+            {/* Photography of the actual grading equipment is still outstanding. */}
+            <div className="mt-12 grid md:grid-cols-2 grid-cols-1 gap-8">
+              <Wireframe label="Calibrated sieve stack & shaker — lab photo pending from Uri" />
+              <Wireframe label="Optical & stereo microscopy — lab photo pending from Uri" />
+            </div>
           </div>
         </div>
       </section>
@@ -100,8 +107,8 @@ const MeshQcPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =
       </div>
       <DarkFeatureList
         eyebrow="Mesh QC, step by step"
-        title="What we check on every mesh lot."
-        desc="Grading is how the consistency is built. QC is how it is proven, and the record is what you can put in a qualification file."
+        title="What we check on a mesh lot."
+        desc="Sizing and shape factor are verified on every lot, with strength tested where the grade or the application requires it. The record is what you can put in a qualification file."
         features={steps}
         ctaLabel="See the full QC process"
         ctaHref="/quality"
@@ -131,7 +138,7 @@ const MeshQcPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =
             links: [
               { label: 'Natural Diamond Grit (Mesh)', href: '/products/natural-grit-powder#grit' },
               { label: 'Metal Bond Diamond', href: '/products/metal-bond' },
-              { label: 'CBN Powder', href: '/products/cbn#cbn' },
+              { label: 'CBN Powder', href: '/products/cbn#mesh' },
             ],
           },
           {

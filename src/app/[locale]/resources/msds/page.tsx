@@ -21,9 +21,16 @@ export async function generateMetadata({
   }
 }
 
-// Grouped by material family, not by the eight-page catalogue: safety documents
-// genuinely group by material, and coated abrasives carry different handling
-// information even though coatings are no longer a standalone product line.
+// BUILD CAUTION (highest priority in the set, internal — not page copy):
+// MSDS documents must be current, accurate, and in the correct regional format.
+// The EU uses SDS under REACH/CLP rather than "MSDS", so confirm with Uri whether
+// these should be titled SDS for the DE, IT, and other EU-facing versions. Do not
+// publish placeholder or out-of-date safety sheets. If Uri cannot supply a current
+// document for a material, leave that entry off rather than shipping a stale one.
+//
+// Grouped one entry per material family, not by the eight-page catalogue: safety
+// documents genuinely group by material, and coated abrasives carry different
+// handling information even though coatings are no longer a standalone product line.
 const msds: [string, string][] = [
   [
     'Natural Diamond (Grit & Powder)',
@@ -52,7 +59,7 @@ const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
       <PageHero
         eyebrow="Handling, storage & regulatory information"
         title="Material Safety Data Sheets (MSDS)"
-        desc="Download material safety data sheets (MSDS) for EID's industrial diamond and CBN products: handling, storage, and safety information."
+        desc="Download safety data sheets for EID's industrial diamond and CBN products. Handling, storage, disposal, and regulatory information. Free, no login."
         crumbs={[
           { label: 'Home', href: '/' },
           { label: 'Resources', href: '/resources' },
@@ -68,19 +75,12 @@ const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
         <div className="container">
           {/* Deliberately ungated: a safety document behind a form is a liability,
               not a lead magnet. */}
-          <SectionHeading eyebrow="Free to download" title="Safety data for all EID products." />
+          <SectionHeading eyebrow="No form, no login" title="Safety data sheets, free to download." />
           <p className="mt-5 max-w-3xl text-base text-default-600">
             <RichText>
-              {'Handling, storage, disposal, and regulatory information. No form, no login. If you need a document that is not listed, or a specific regional format, [ask us](/contact) and we will send it.'}
+              {"Safety data sheets for EID's diamond and CBN products, covering handling, storage, disposal, and regulatory information. No form, no login. If you need a document that isn't listed, or a specific regional format, [ask us](/contact)."}
             </RichText>
           </p>
-          <p className="mt-5 max-w-3xl text-sm text-default-500">
-            Documents must be current, accurate, and correctly labelled before publishing. The EU
-            uses SDS under REACH/CLP rather than the older &quot;MSDS&quot; label. Confirm with Uri
-            whether the DE, IT, and other EU-facing versions should be titled SDS. Do not publish
-            placeholder or out-of-date safety sheets.
-          </p>
-
           <div className="mt-14 divide-y divide-default-200 border-t border-default-200">
             {msds.map(([name, desc]) => (
               <div key={name} className="flex flex-wrap items-center justify-between gap-4 py-5">
@@ -103,9 +103,9 @@ const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
 
       <BannerCTA
         eyebrow="Need a safety document not listed?"
-        title="We'll send the current SDS for your material."
-        desc="Tell us the product and the regional format you need, and we will send the current document. Replies within one business day."
-        ctaLabel="Contact Us"
+        title="Need a safety document that isn't listed?"
+        desc="Tell us the product and the regional format you need, and we will send the current MSDS. Replies within one business day."
+        ctaLabel="Contact us"
         ctaHref="/contact"
       />
     </>

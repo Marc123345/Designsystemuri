@@ -1,61 +1,50 @@
-'use client'
-
+import Wireframe from '@/components/Wireframe'
 import { ArrowButton } from '@/components/ui'
 import { site } from '@/lib/site'
-import { Autoplay, EffectFade } from 'swiper/modules'
-import { Swiper, SwiperSlide } from 'swiper/react'
-
-export type HeroSlide = { eyebrow: string; title: string; desc: string }
 
 /**
- * Three slides, because the positioning takes three beats to land: what we
- * make, that we control production, and that re-orders match. Fade rather than
- * slide so the static furniture around it (stats, coordinates) stays put.
+ * One hero, one message. The Vol 03 deck replaced the rotating three-slide
+ * version with a single block: the positioning has to land in one read, and a
+ * technical buyer scanning for credentials should not have to wait for a slide.
  */
 const Hero = ({
-  slides,
+  eyebrow,
+  title,
+  desc,
   metaStats,
 }: {
-  slides: HeroSlide[]
+  eyebrow: string
+  title: string
+  desc: string
   metaStats: { value: string; label: string }[]
 }) => {
   return (
     <section className="relative size-full overflow-hidden lg:pt-50 pt-35">
       <div className="container-full relative z-10">
-        <Swiper
-          modules={[EffectFade, Autoplay]}
-          effect="fade"
-          fadeEffect={{ crossFade: true }}
-          loop
-          autoplay={{ delay: 6500, disableOnInteraction: false }}
-          allowTouchMove={false}
-          className="mb-16"
-        >
-          {slides.map((slide) => (
-            <SwiperSlide key={slide.title}>
-              <div className="grid xl:grid-cols-4 items-end xl:gap-20 gap-12.5">
-                <div className="xl:col-span-3">
-                  <div className="inline-flex items-center gap-1.5 rounded-2xl border border-default-300 bg-white px-3.5 py-1.25">
-                    <span className="size-2 bg-primary"></span>
-                    <span className="text-sm text-default-900">{slide.eyebrow}</span>
-                  </div>
+        <div className="grid xl:grid-cols-4 items-end xl:gap-20 gap-12.5">
+          <div className="xl:col-span-3">
+            <div className="inline-flex items-center gap-1.5 rounded-2xl border border-default-300 bg-white px-3.5 py-1.25">
+              <span className="size-2 bg-primary"></span>
+              <span className="text-sm text-default-900">{eyebrow}</span>
+            </div>
 
-                  <h1 className="mt-4 font-bold lg:text-6xl md:text-[48px] text-[34px]">
-                    {slide.title}
-                  </h1>
-                </div>
+            <h1 className="mt-4 font-bold lg:text-6xl md:text-[48px] text-[34px]">{title}</h1>
+          </div>
 
-                <div>
-                  <p className="mb-7.5 text-base">{slide.desc}</p>
-                  <ArrowButton href="/products" label="Browse the Full Range" variant="dark" />
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+          <div>
+            <p className="mb-7.5 text-base">{desc}</p>
+            <div className="flex flex-wrap gap-4">
+              <ArrowButton href="/contact" label="Request a Quote" />
+              <ArrowButton href="#products" label="Browse the Full Range" variant="dark" external />
+            </div>
+          </div>
+        </div>
 
-        {/* Static furniture: stats stay put while the message rotates. */}
-        <div className="grid md:grid-cols-3 grid-cols-1 border-t border-default-200">
+        <div className="mt-16">
+          <Wireframe label="Hero image — diamond grit / production floor, London" ratio="wide" />
+        </div>
+
+        <div className="mt-16 grid md:grid-cols-3 grid-cols-1 border-t border-default-200">
           {metaStats.map((stat) => (
             <div key={stat.label} className="border-b border-default-200 py-7 md:border-b-0">
               <div className="text-3xl font-bold text-default-900">{stat.value}</div>

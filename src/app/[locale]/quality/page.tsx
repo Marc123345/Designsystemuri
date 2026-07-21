@@ -8,6 +8,7 @@ import {
   StatsBar,
 } from '@/components/sections'
 import { ChapterMarker, SectionHeading } from '@/components/ui'
+import Wireframe from '@/components/Wireframe'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
@@ -24,7 +25,7 @@ export async function generateMetadata({
   return {
     title: { absolute: 'Quality Control & ISO 9001 | Industrial Diamond QC | EID' },
     description:
-      "EID's in-house QC laboratory tests every batch of diamond and CBN for size distribution, crystal strength, morphology, and coating. ISO 9001 certified.",
+      "EID's in-house QC laboratory tests every batch of diamond and CBN for size distribution and morphology, with strength and coating coverage where required. ISO 9001.",
     alternates: localeAlternates(locale, '/quality'),
   }
 }
@@ -32,32 +33,32 @@ export async function generateMetadata({
 const tests = [
   {
     icon: 'tabler:gauge',
-    title: 'Particle Size Distribution',
-    desc: 'Graded and verified for tight D50, D10 and D90, and span, with outliers controlled. This keeps a grade cutting and finishing the same way order to order.',
-    href: '/contact',
-  },
-  {
-    icon: 'tabler:shield',
-    title: 'Crystal Strength (Friability)',
-    desc: 'Tested so the diamond or CBN performs as expected in your bond system rather than breaking down too fast or not enough.',
+    title: 'Particle size distribution',
+    desc: 'Graded and verified for tight D50, D10 and D90, and span, with outliers controlled, on every lot. This is what keeps a grade cutting and finishing the same way order to order.',
     href: '/contact',
   },
   {
     icon: 'tabler:diamond',
-    title: 'Morphology & Shape',
+    title: 'Crystal morphology, and shape factor on mesh grades',
     desc: 'Inspected to confirm the blocky, semi-blocky, or irregular form matches the grade specification.',
     href: '/contact',
   },
   {
+    icon: 'tabler:shield',
+    title: 'Crystal strength (friability)',
+    desc: 'Tested where the grade or the application requires it, so the diamond or CBN performs as expected in your bond system rather than breaking down too fast or too slow. Not a routine every-batch test.',
+    href: '/contact',
+  },
+  {
     icon: 'tabler:stack-2',
-    title: 'Coating Weight & Coverage',
-    desc: 'Every coated batch checked for target weight percentage and uniform surface coverage.',
+    title: 'Coating weight and coverage',
+    desc: 'Every coated batch checked for target weight percentage and uniform coverage.',
     href: '/contact',
   },
   {
     icon: 'tabler:grid-dots',
     title: 'Traceability',
-    desc: 'Every lot documented from raw material through production, QC, and shipping, with full traceability available on request.',
+    desc: 'Every lot documented from raw material through production, QC, and shipping, with full traceability on request.',
     href: '/contact',
   },
 ]
@@ -96,7 +97,7 @@ const machinery = [
   {
     meta: 'Strength',
     title: 'Friability / toughness test rig',
-    desc: 'Measures how the crystal breaks down under load, which determines how the grade will behave in your bond system.',
+    desc: 'Measures how the crystal breaks down under load, run where the grade or the application calls for a friability figure rather than as a routine every-batch test.',
   },
   {
     meta: 'Coating',
@@ -114,7 +115,7 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
       <PageHero
         eyebrow="In-house QC · ISO 9001 · full traceability"
         title="Quality Control & ISO 9001"
-        desc="Our in-house QC laboratory tests every batch of diamond and CBN for size distribution, crystal strength, morphology, and coating integrity. ISO 9001 certified."
+        desc="EID's in-house QC laboratory tests every batch of diamond and CBN for size distribution and morphology, with strength and coating coverage where required. ISO 9001."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Quality' }]}
         secondaryCta={{ label: 'View Products', href: '/products' }}
       />
@@ -148,10 +149,10 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
                   QC laboratory is the backbone of everything we ship.
                 </p>
                 <p>
-                  The reason matters more than the badge. When a tool maker re-orders a grade, they
-                  are trusting that this batch behaves like the last one, because their own
-                  production is tuned to it. Our job is to make that true every time, and to be able
-                  to prove it with data rather than a promise.
+                  The reason matters more than the badge. When a tool maker reorders a grade, they
+                  are trusting that this lot behaves like the last one, because their own production
+                  is tuned to it. Our job is to make that true every time, and to prove it with data
+                  rather than a promise.
                 </p>
               </div>
             </div>
@@ -175,8 +176,8 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
       </div>
       <CardGrid
         eyebrow="What we test on every batch"
-        title="What we test, every production run."
-        desc="Tool performance depends on predictable crystal strength and size distribution. Every lot is documented and traceable from raw material through QC to delivery."
+        title="What we test on every batch."
+        desc="Particle size distribution and morphology are verified on every lot, with crystal strength and coating coverage tested where the grade or the application requires it. Every lot is documented and traceable from raw material through QC to delivery."
         items={tests}
         ctaHref="/contact"
         ctaLabel="Request a Quote with QC Spec"
@@ -186,27 +187,27 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
         <ChapterMarker index="03" label="QC Process" />
       </div>
       <DarkFeatureList
-        eyebrow="Our QC process, step by step"
+        eyebrow="How our QC works"
         title="How a batch moves through our laboratory."
-        desc="A structured process from incoming inspection to shipped product, with documentation at every step. This is the demonstrate-don't-badge detail no direct competitor offers."
+        desc="Five steps from incoming inspection to shipped product, with documentation at every stage and a retention sample kept from every batch."
         ctaLabel="Request a Quote"
         ctaHref="/contact"
         features={[
           {
             title: '01 · Incoming inspection',
-            desc: 'Raw materials tested on arrival against their incoming specification before anything enters production.',
+            desc: 'Raw materials are tested on arrival against their incoming specification before anything enters production.',
           },
           {
             title: '02 · In-process control',
-            desc: 'Production parameters monitored and recorded throughout grading, coating, and finishing.',
+            desc: 'Production parameters are monitored and recorded through grading, coating, and finishing.',
           },
           {
             title: '03 · Final QC',
-            desc: 'Every finished batch sampled and tested, then compared against your specification and our internal standards.',
+            desc: 'Every finished batch is sampled and tested in our laboratory, and results are compared against your specification and our internal standards.',
           },
           {
             title: '04 · Certificate of analysis',
-            desc: 'Issued with any shipment on request, documenting the test results for that specific lot.',
+            desc: 'Issued with any shipment on request, documenting the results for that specific lot.',
           },
           {
             title: '05 · Retention samples',
@@ -214,6 +215,21 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
           },
         ]}
       />
+
+      {/* The deck asks for each QC step to be supported by a photo of the actual
+          machinery or lab. EID has not supplied those assets, so every slot is a
+          labelled wireframe rather than a stock image. */}
+      <section className="lg:pt-24 pt-16">
+        <div className="container">
+          <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8">
+            <Wireframe label="Incoming inspection — lab photo pending from Uri" />
+            <Wireframe label="In-process control — production floor photo pending from Uri" />
+            <Wireframe label="Final QC — laboratory photo pending from Uri" />
+            <Wireframe label="Certificate of analysis — document photo pending from Uri" />
+            <Wireframe label="Retention samples — sample store photo pending from Uri" />
+          </div>
+        </div>
+      </section>
 
       {/* MESH & MICRON QC + ISO 9001 */}
       <div className="bg-default-50">
@@ -227,18 +243,18 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
                 <div className="text-sm uppercase tracking-[0.2em] text-default-500">
                   Mesh &amp; micron QC in detail
                 </div>
-                <h3 className="mt-3 text-2xl">Grading and testing differ by form.</h3>
+                <h3 className="mt-3 text-2xl">Mesh and micron QC in detail.</h3>
                 <p className="mt-3 text-base text-default-600">
                   Grading and testing differ between mesh grit and micron powder, so each has its own
                   detail.{' '}
                   <Link href="/mesh-qc" className="text-primary underline underline-offset-2">
                     Mesh QC
                   </Link>{' '}
-                  covers how we grade and verify grit sizing and crystal shape.{' '}
+                  covers how we grade and verify grit sizing and shape factor.{' '}
                   <Link href="/micron-qc" className="text-primary underline underline-offset-2">
                     Micron QC
                   </Link>{' '}
-                  covers particle-size-distribution measurement and the D-value control that fine
+                  covers particle-size-distribution measurement and the D-value control fine
                   polishing depends on.
                 </p>
               </div>
@@ -306,7 +322,11 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
               </div>
 
               <div className="lg:col-span-5">
-                <div className="border-t-2 border-primary pt-5">
+                {/* The deck is explicit that the ISO 9001 certificate is shown,
+                    not just claimed. The scan is outstanding. */}
+                <Wireframe label="ISO 9001 certificate — scan pending from Uri" ratio="portrait" />
+
+                <div className="mt-10 border-t-2 border-primary pt-5">
                   <div className="text-sm uppercase tracking-[0.2em] text-default-500">Downloads</div>
                   <ul className="mt-4 space-y-3">
                     {[

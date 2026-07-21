@@ -80,7 +80,7 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
       <PageHero
         eyebrow="Ungated · specifications, grades & sizing"
         title="Product Datasheets"
-        desc="Download technical datasheets for EID's full diamond and CBN range: available grades, sizes, crystal types, coating options, and packaging. No form, no login."
+        desc="Download technical datasheets for EID's full diamond and CBN range: grades, sizes, crystal types, coatings, and packaging. Ungated, free to download."
         crumbs={[
           { label: 'Home', href: '/' },
           { label: 'Resources', href: '/resources' },
@@ -96,12 +96,12 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
         <div className="container">
           {/* Deliberately ungated: no form, no login, no gate on a spec sheet. */}
           <SectionHeading
-            eyebrow="Free to download"
-            title="Technical specifications for every product."
+            eyebrow="No form, no login"
+            title="Product datasheets, free to download."
           />
           <p className="mt-5 max-w-3xl text-base text-default-600">
             <RichText>
-              {'Grades, sizes, crystal types, coating options, and packaging. No form, no login. Download what you need, and if the exact spec you are after is not here, [ask us](/contact) and we will send it.'}
+              {'Technical specifications for every EID product: grades, sizes, crystal types, coating options, and packaging. No form, no login. Download what you need, and if the exact spec you are after is not here, [ask us](/contact).'}
             </RichText>
           </p>
           <p className="mt-5 text-sm text-default-500">
@@ -142,9 +142,9 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
 
       <BannerCTA
         eyebrow="Need a spec not listed?"
-        title="Ask us for the exact datasheet you need."
+        title="Need a spec that isn't listed here?"
         desc="Tell us the product and the parameters you need, and we will send the datasheet or confirm a custom specification. Replies within one business day."
-        ctaLabel="Contact Us"
+        ctaLabel="Contact us"
         ctaHref="/contact"
       />
     </>

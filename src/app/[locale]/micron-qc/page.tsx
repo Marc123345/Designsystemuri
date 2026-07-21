@@ -1,6 +1,7 @@
 import { RichText } from '@/components/RichText'
 import { BannerCTA, CrossLinks, DarkFeatureList, PageHero } from '@/components/sections'
 import { ChapterMarker, SectionHeading } from '@/components/ui'
+import Wireframe from '@/components/Wireframe'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import type { Metadata } from 'next'
@@ -20,7 +21,7 @@ export async function generateMetadata({
   return {
     title: { absolute: 'Micron QC | Particle Size Distribution & D-Values | EID' },
     description:
-      'How EID measures and controls particle size distribution on micron powder: D10, D50, D90 and span, with outlier control on every batch. ISO 9001 certified.',
+      'How EID measures and controls particle size distribution on micron powder: D10, D50, D90 and span, with outliers controlled on every lot. ISO 9001 certified.',
     alternates: localeAlternates(locale, '/micron-qc'),
   }
 }
@@ -98,6 +99,12 @@ const MicronQcPage = async ({ params }: { params: Promise<{ locale: Locale }> })
               Instrument makes, models, calibration intervals, and the real D-value tolerances to be
               confirmed with Uri before launch.
             </p>
+
+            {/* Photography of the actual measurement equipment is still outstanding. */}
+            <div className="mt-12 grid md:grid-cols-2 grid-cols-1 gap-8">
+              <Wireframe label="Laser diffraction analyser — lab photo pending from Uri" />
+              <Wireframe label="Particle counter — lab photo pending from Uri" />
+            </div>
           </div>
         </div>
       </section>
