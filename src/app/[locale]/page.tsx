@@ -164,22 +164,25 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           {
             variable: 'Particle size distribution',
             effect: 'Wheel wear rate and dressing interval shift, so a line tuned to the last lot stops running to the same cycle.',
+            evidence: 'Particle size distribution — D50 and span curve',
           },
           {
             variable: 'Crystal shape and friability',
             effect: 'Cutting action changes. Grades that break down too slowly glaze; too quickly and tool life drops.',
+            evidence: 'Crystal morphology — microscopy against the grade spec',
           },
           {
             variable: 'Coating weight and coverage',
             effect: 'Retention in the bond changes. In a sintered tool that shows up as pull-out and shortened instrument life.',
+            evidence: 'Coating weight assay — target percentage per batch',
           },
           {
             variable: 'Lot-to-lot variance',
             effect: 'Every delivery has to be re-qualified before it goes near production, which is hours you had not planned.',
+            evidence: 'Certificate of analysis — sample lot',
           },
         ]}
         driversNote="Cause and effect pairings to be confirmed with Uri, together with the tolerance figures that belong beside them."
-        imageLabel="Certificate of analysis — sample lot"
         resolutionTitle="EID removes the variable, and is specific about how."
         production={[
           {

@@ -90,3 +90,27 @@ textarea {
     animation: infinite-scroll-inverse 100s linear infinite;
     will-change: transform;
 }
+/* Step transition for scroll-driven sections (see home/TheProblem).
+   Deliberately small: the design system's motion is short and eased, not
+   theatrical. Anything relying on this must still read with motion disabled. */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
