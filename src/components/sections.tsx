@@ -86,6 +86,7 @@ export const CardGrid = ({
   items,
   ctaHref,
   ctaLabel,
+  columns = 4,
 }: {
   eyebrow?: string
   title: string
@@ -93,21 +94,40 @@ export const CardGrid = ({
   items: Card[]
   ctaHref?: string
   ctaLabel?: string
+  /**
+   * Only 4 or 3. Eight product groups sit 4-across (two clean rows of four);
+   * six application hubs sit 3-across (two rows of three) and get a larger
+   * card, since three across leaves room for it and the hubs carry more weight.
+   */
+  columns?: 4 | 3
 }) => (
   <section className="lg:py-30 py-20">
     <div className="container">
       <SectionHeading eyebrow={eyebrow} title={title} desc={desc} />
 
-      <div className="mt-14 grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 border-t border-s border-default-200">
+      <div
+        className={`mt-14 grid md:grid-cols-2 grid-cols-1 border-t border-s border-default-200 ${
+          columns === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-4'
+        }`}
+      >
         {items.map((item) => (
           <Link
             key={item.href}
             href={item.href}
-            className="group flex flex-col gap-4 border-b border-e border-default-200 p-8 transition-colors hover:bg-default-50"
+            className={`group flex flex-col border-b border-e border-default-200 transition-colors hover:bg-default-50 ${
+              columns === 3 ? 'gap-5 p-10' : 'gap-4 p-8'
+            }`}
           >
-            <Icon icon={item.icon} className="size-9 text-primary" />
-            <h3 className="text-xl group-hover:text-primary">{item.title}</h3>
-            <p className="text-base text-default-600">{item.desc}</p>
+            <Icon
+              icon={item.icon}
+              className={`text-primary ${columns === 3 ? 'size-11' : 'size-9'}`}
+            />
+            <h3 className={`group-hover:text-primary ${columns === 3 ? 'text-2xl' : 'text-xl'}`}>
+              {item.title}
+            </h3>
+            <p className={`text-default-600 ${columns === 3 ? 'text-lg' : 'text-base'}`}>
+              {item.desc}
+            </p>
             <span className="mt-auto pt-2 inline-flex items-center gap-2 text-sm font-semibold text-primary">
               Learn more
               <Icon
@@ -125,6 +145,94 @@ export const CardGrid = ({
         </div>
       )}
     </div>
+  </section>
+)
+
+/**
+ * The template's signature medallion row — full-bleed circles that butt against
+ * each other, alternating light, dark and image. Used once per page at most:
+ * it is the loudest thing in the system and stops reading as special if repeated.
+ *
+ * Any medallion with `image: true` renders a wireframe circle, since EID has
+ * supplied no photography yet.
+ */
+export const StatMedallions = ({
+  items,
+}: {
+  items: { value?: string; label?: string; body?: string; tone?: 'light' | 'dark'; image?: boolean }[]
+}) => (
+  <section className="relative size-full overflow-hidden bg-default-100 lg:py-30 py-20">
+    <div className="container-full relative z-10">
+      <div className="flex flex-wrap justify-center">
+        {items.map((item, i) => {
+          if (item.image) {
+            return (
+              <div
+                key={i}
+                role="img"
+                aria-label="Placeholder image: production floor"
+                className="relative flex lg:size-112 size-72 items-center justify-center overflow-hidden rounded-full border border-dashed border-default-300 bg-default-50"
+              >
+                <svg
+                  className="absolute inset-0 size-full text-default-200"
+                  preserveAspectRatio="none"
+                  viewBox="0 0 100 100"
+                  aria-hidden="true"
+                >
+                  <line x1="0" y1="0" x2="100" y2="100" stroke="currentColor" strokeWidth="0.4" vectorEffect="non-scaling-stroke" />
+                  <line x1="100" y1="0" x2="0" y2="100" stroke="currentColor" strokeWidth="0.4" vectorEffect="non-scaling-stroke" />
+                </svg>
+                <span className="relative rounded bg-white/90 px-3 py-2 text-center text-xs uppercase tracking-[0.15em] text-default-500">
+                  Production floor — London
+                </span>
+              </div>
+            )
+          }
+
+          const dark = item.tone === 'dark'
+          return (
+            <div
+              key={i}
+              className={`flex lg:size-112 size-72 flex-col items-center justify-center overflow-hidden rounded-full p-10 text-center ${
+                dark ? 'bg-default-950' : 'border border-default-300 bg-white'
+              }`}
+            >
+              {/* leading-none: the theme's 1.3em line-height leaves the numeral
+                  glyph taller than its line box, so the label collides with it. */}
+              <div
+                className={`lg:text-[58px] md:text-[34px] text-[28px] font-bold leading-none ${
+                  dark ? 'text-white' : 'text-default-900'
+                }`}
+              >
+                {item.value}
+              </div>
+              {item.label && (
+                <div
+                  className={`mt-3 text-sm uppercase leading-none tracking-[0.2em] ${
+                    dark ? 'text-primary-1' : 'text-primary'
+                  }`}
+                >
+                  {item.label}
+                </div>
+              )}
+              {item.body && (
+                <p className={`mt-5 lg:w-75 w-57 text-base ${dark ? 'text-default-300' : 'text-default-600'}`}>
+                  {item.body}
+                </p>
+              )}
+            </div>
+          )
+        })}
+      </div>
+    </div>
+
+    {/* The template's dashed column grid + film-grain wash. */}
+    <div className="absolute inset-0 flex items-stretch justify-between md:justify-center gap-0 md:gap-45 lg:gap-75 xl:gap-80.5">
+      {[0, 1, 2, 3, 4].map((i) => (
+        <div key={i} className="h-full w-0.5 border border-dashed border-default-900 opacity-7"></div>
+      ))}
+    </div>
+    <div className="absolute inset-0 size-full bg-[url(../images/bg-noice.gif)] bg-auto bg-repeat bg-position-[50%] opacity-4"></div>
   </section>
 )
 
@@ -262,8 +370,13 @@ export const DarkFeatureList = ({
 )
 
 /**
- * Plain visible Q&A, deliberately not an accordion, so crawlers and AI answer
- * engines read the answers without executing JS. FAQPage JSON-LD sits alongside.
+ * Accordion Q&A, built on native <details>/<summary> rather than the template's
+ * JS accordion. Same look and the same plus-to-cross rotation, but the answers
+ * are in the server-rendered HTML and expand without JavaScript — which is the
+ * point of this block, since it is written for crawlers and AI answer engines
+ * as much as for readers. FAQPage JSON-LD sits alongside it on the page.
+ *
+ * The first item is open by default so the block never reads as an empty list.
  */
 export const Faq = ({
   eyebrow,
@@ -280,15 +393,31 @@ export const Faq = ({
     <div className="container">
       <SectionHeading eyebrow={eyebrow} title={title} desc={desc} />
 
-      <div className="mt-14 divide-y divide-default-200 border-t border-default-200">
+      <div className="mt-14 space-y-4">
         {items.map((item, i) => (
-          <div key={item.q} className="grid md:grid-cols-12 gap-6 py-8">
-            <div className="md:col-span-1 text-sm font-semibold text-primary">
-              {String(i + 1).padStart(2, '0')}
-            </div>
-            <h3 className="md:col-span-4 text-lg">{item.q}</h3>
-            <p className="md:col-span-7 text-base text-default-600">{item.a}</p>
-          </div>
+          <details
+            key={item.q}
+            open={i === 0}
+            className="group rounded-lg border border-default-200 bg-default-50 p-6 transition-colors open:bg-white"
+          >
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-6 [&::-webkit-details-marker]:hidden">
+              <div className="flex items-start gap-5">
+                <span className="mt-1 text-sm font-semibold text-primary">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <h3 className="text-lg">{item.q}</h3>
+              </div>
+
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-white">
+                <Icon
+                  icon="tabler:plus"
+                  className="size-5 transition-transform duration-500 group-open:rotate-45"
+                />
+              </span>
+            </summary>
+
+            <p className="mt-5 ps-10 text-base text-default-600">{item.a}</p>
+          </details>
         ))}
       </div>
     </div>
@@ -364,6 +493,65 @@ export const SpecTable = ({ specs }: { specs: { label: string; value: string }[]
       </tbody>
     </table>
   </div>
+)
+
+/**
+ * Dark catalogue cards with a divided attribute list — the template's product
+ * card, carrying EID's real data: what each page contains, and which
+ * applications it serves. The image slot is a wireframe until EID supplies
+ * product photography.
+ */
+export const SpecCards = ({
+  items,
+}: {
+  items: {
+    title: string
+    desc: string
+    href: string
+    rows: { label: string; value: string }[]
+  }[]
+}) => (
+  <section className="relative size-full overflow-hidden bg-default-100 lg:py-30 py-20">
+    <div className="container-full relative z-10">
+      <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-7.5">
+        {items.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className="group flex flex-col rounded-md border border-default-700 bg-default-950 px-5 py-7.5 transition-colors hover:border-primary-1"
+          >
+            <h3 className="mb-5 text-2xl text-white group-hover:text-primary-1">{item.title}</h3>
+
+            <div className="mb-7.5 aspect-[4/3] w-full overflow-hidden rounded-md border border-dashed border-white/15 bg-white/5">
+              <div className="flex size-full items-center justify-center p-4">
+                <span className="text-center text-xs uppercase tracking-[0.15em] text-white/40">
+                  {item.title} — product shot
+                </span>
+              </div>
+            </div>
+
+            <p className="mb-7.5 text-base text-default-400">{item.desc}</p>
+
+            <div className="mt-auto divide-y divide-default-700">
+              {item.rows.map((row) => (
+                <div key={row.label} className="flex items-start justify-between gap-4 py-4">
+                  <div className="text-sm text-default-400">{row.label}</div>
+                  <div className="text-end text-sm text-white">{row.value}</div>
+                </div>
+              ))}
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+
+    <div className="absolute inset-0 flex items-stretch justify-between md:justify-center gap-0 md:gap-45 lg:gap-75 xl:gap-80.5">
+      {[0, 1, 2, 3, 4].map((i) => (
+        <div key={i} className="h-full w-0.5 border border-dashed border-default-900 opacity-7"></div>
+      ))}
+    </div>
+    <div className="absolute inset-0 size-full bg-[url(../images/bg-noice.gif)] bg-auto bg-repeat bg-position-[50%] opacity-4"></div>
+  </section>
 )
 
 /** On-page anchor nav for the merged product pages. */

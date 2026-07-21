@@ -1,11 +1,10 @@
-import { BannerCTA, CardGrid, PageHero } from '@/components/sections'
+import { BannerCTA, CardGrid, PageHero, SpecCards } from '@/components/sections'
 import { ArrowButton, ChapterMarker, SectionHeading } from '@/components/ui'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { getProducts } from '@/lib/i18n-content'
 import { site } from '@/lib/site'
-import { Icon } from '@iconify/react'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
@@ -81,36 +80,25 @@ const ProductsOverview = async ({ params }: { params: Promise<{ locale: Locale }
       <div className="container">
         <ChapterMarker index="02" label="All Products" />
       </div>
-      <section className="lg:py-30 py-20 pt-14">
-        <div className="container">
-          <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-x-10 gap-y-12">
-            {products.map((p) => (
-              <Link key={p.slug} href={`/products/${p.slug}`} className="group flex flex-col gap-4">
-                <div className="flex items-center gap-3">
-                  <Icon
-                    icon={familyIcon[p.family] || 'tabler:diamond'}
-                    className="size-7 text-primary"
-                  />
-                  <h3 className="text-xl group-hover:text-primary">{p.name}</h3>
-                </div>
-                <p className="text-base text-default-600">{p.overviewDesc ?? p.cardDesc}</p>
-                {p.sections.length > 1 && (
-                  <p className="text-sm text-default-500">
-                    Contains: {p.sections.map((sec) => sec.label).join(' · ')}
-                  </p>
-                )}
-                <span className="mt-auto inline-flex items-center gap-2 pt-2 text-sm font-semibold text-primary">
-                  View product
-                  <Icon
-                    icon="tabler:arrow-narrow-right"
-                    className="size-5 transition-transform duration-300 group-hover:translate-x-1"
-                  />
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+      <SpecCards
+        items={products.map((p) => ({
+          title: p.name,
+          desc: p.overviewDesc ?? p.cardDesc,
+          href: `/products/${p.slug}`,
+          rows: [
+            {
+              label: 'Sections',
+              value:
+                p.sections.length > 1 ? p.sections.map((s) => s.label).join(' · ') : 'Single page',
+            },
+            { label: 'Group', value: p.family },
+            {
+              label: 'Datasheet',
+              value: p.sections.some((s) => s.datasheet) ? 'Available' : 'Enquiry-led',
+            },
+          ],
+        }))}
+      />
 
       {/* Route the application-first buyer to a person rather than to more cards. */}
       <section className="border-y border-default-200 bg-default-50 lg:py-24 py-16">

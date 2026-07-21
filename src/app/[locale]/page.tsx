@@ -1,6 +1,15 @@
+import Marquee from '@/components/Marquee'
 import Wireframe from '@/components/Wireframe'
 import Hero from '@/components/home/Hero'
-import { BannerCTA, CardGrid, DarkFeatureList, Faq, Pillars, TrustBar } from '@/components/sections'
+import {
+  BannerCTA,
+  CardGrid,
+  DarkFeatureList,
+  Faq,
+  Pillars,
+  StatMedallions,
+  TrustBar,
+} from '@/components/sections'
 import { ChapterMarker, SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
@@ -208,9 +217,28 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 
       {/* Pillar one carries the graduated production claim, which is the honesty
           a technical buyer checks for before anything else on this page. */}
+      {/* The medallion row — the loudest block in the system, used once. Three
+          circles, not four: at 448px each, a fourth wraps to its own line and
+          reads as an orphan. Figures are the verified ones only. */}
+      <StatMedallions
+        items={[
+          {
+            value: '50+',
+            label: 'Years',
+            body: 'Supplying the material inside the world’s diamond tools, from London.',
+          },
+          { image: true },
+          {
+            value: 'ISO 9001',
+            tone: 'dark',
+            body: 'Certified from incoming raw material through to the shipped lot.',
+          },
+        ]}
+      />
+
       {/* Pillar one carries the graduated production claim, which is the honesty
           a technical buyer checks for before anything else on this page. */}
-      <div className="container">
+      <div className="container pt-20">
         <ChapterMarker index="03" label="Why EID" />
       </div>
       <div className="pt-12">
@@ -244,6 +272,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       <div className="container">
         <ChapterMarker index="04" label="Applications" />
       </div>
+      {/* Six hubs → 3-across, two rows, with the larger card treatment. */}
       <CardGrid
         eyebrow="Applications · six hubs"
         title="Diamond and CBN for the work your tools do."
@@ -251,6 +280,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
         items={hubCards}
         ctaHref="/applications"
         ctaLabel="View All Applications"
+        columns={3}
       />
 
       <DarkFeatureList
@@ -276,6 +306,26 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
             title: 'ISO 9001 & traceability',
             desc: 'Certificate of analysis and retention samples available for every lot.',
           },
+        ]}
+      />
+
+      {/* Material vocabulary rather than a logo wall — the deck names customers
+          only as buyer types, so a wall of client logos would claim
+          endorsements EID has not given us. */}
+      <Marquee
+        items={[
+          'ISO 9001',
+          'Natural Diamond Grit',
+          'Micron Powder',
+          'CBN',
+          'PCBN',
+          'CVD Single Crystal',
+          'MCD',
+          'PCD Blanks',
+          'Metal Bond',
+          'Resin Bond',
+          'Coated in-house',
+          'Made in London',
         ]}
       />
 

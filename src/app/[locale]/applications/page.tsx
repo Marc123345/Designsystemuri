@@ -70,6 +70,7 @@ const ApplicationsOverview = async ({ params }: { params: Promise<{ locale: Loca
         items={items}
         ctaHref="/contact"
         ctaLabel="Request a Quote"
+        columns={3}
       />
 
       {/* The chapter marker sits above the dark band, because the common thread

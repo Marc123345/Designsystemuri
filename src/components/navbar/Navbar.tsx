@@ -125,7 +125,11 @@ const Navbar = () => {
 
   return (
     <header>
-      <div className="nav-sticky navbar fixed inset-x-0 top-0 z-120 w-full border-b lg:border-transparent lg:bg-transparent border-default-200 bg-body-bg transition-all duration-300 lg:[.nav-sticky-on]:border-default-200 [.nav-sticky-on]:bg-body-bg">
+      {/* [&.nav-sticky-on]: — self-referencing. The bare [.nav-sticky-on]:
+          form compiles to a descendant selector (.nav-sticky-on &), so it never
+          matched: the scroll handler puts the class on this element itself, and
+          the header stayed transparent over the page content on desktop. */}
+      <div className="nav-sticky navbar fixed inset-x-0 top-0 z-120 w-full border-b lg:border-transparent lg:bg-transparent border-default-200 bg-body-bg transition-all duration-300 lg:[&.nav-sticky-on]:border-default-200 lg:[&.nav-sticky-on]:bg-body-bg">
         {/* relative: the products mega-panel positions against this container. */}
         <div className="container-full relative py-4.5">
           <div className="flex items-center justify-between">
