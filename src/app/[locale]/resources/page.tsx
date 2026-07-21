@@ -1,6 +1,6 @@
 import { RichText } from '@/components/RichText'
 import { QuoteSection, PageHero, Pillars } from '@/components/sections'
-import { ArrowButton, ArrowLink, ChapterMarker, SectionHeading } from '@/components/ui'
+import { ArrowButton, ArrowLink, SectionHeading } from '@/components/ui'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
@@ -103,9 +103,6 @@ const ResourcesPage = async ({ params }: { params: Promise<{ locale: Locale }> }
       </section>
 
       {/* GUIDES — blog-grid style cards */}
-      <div className="container pt-20">
-        <ChapterMarker index="01" label="Guides" />
-      </div>
       <section className="lg:py-24 py-16">
         <div className="container">
           <SectionHeading
@@ -163,9 +160,6 @@ const ResourcesPage = async ({ params }: { params: Promise<{ locale: Locale }> }
 
       {/* THE REST OF RESOURCES — Phase 2 consolidates guides, the blog, the
           datasheets, and the SDS library under this one section. */}
-      <div className="container pt-6">
-        <ChapterMarker index="02" label="Downloads & Blog" />
-      </div>
       <section className="pt-14">
         <Pillars
           items={[

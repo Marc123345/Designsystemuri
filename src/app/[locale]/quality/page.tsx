@@ -7,7 +7,7 @@ import {
   PageHero,
   StatsBar,
 } from '@/components/sections'
-import { ChapterMarker, SectionHeading } from '@/components/ui'
+import { SectionHeading } from '@/components/ui'
 import Wireframe from '@/components/Wireframe'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
@@ -131,9 +131,6 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
 
       {/* QC PHILOSOPHY — the argument for why the laboratory exists, before any
           list of tests. */}
-      <div className="container pt-20">
-        <ChapterMarker index="01" label="QC Philosophy" />
-      </div>
       <section className="lg:py-24 py-16">
         <div className="container">
           <div className="grid lg:grid-cols-12 gap-12">
@@ -171,9 +168,6 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
         </div>
       </section>
 
-      <div className="container">
-        <ChapterMarker index="02" label="What We Test" />
-      </div>
       <CardGrid
         eyebrow="What we test on every batch"
         title="What we test on every batch."
@@ -183,9 +177,6 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
         ctaLabel="Request a Quote with QC Spec"
       />
 
-      <div className="container pb-20">
-        <ChapterMarker index="03" label="QC Process" />
-      </div>
       <DarkFeatureList
           bgLabel="Background image — QC laboratory"
         eyebrow="How our QC works"
@@ -234,9 +225,6 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
 
       {/* MESH & MICRON QC + ISO 9001 */}
       <div className="bg-default-50">
-        <div className="container pt-20">
-          <ChapterMarker index="04" label="Mesh & Micron QC" />
-        </div>
         <section className="lg:py-24 py-16">
           <div className="container">
             <div className="grid lg:grid-cols-2 gap-10">
@@ -267,9 +255,6 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
       {/* QC MACHINERY — Phase 2 build-out. The equipment is shown as page
           content because "we test everything" is a claim; naming the instrument
           that produces the number is the proof. */}
-      <div className="container pt-20">
-        <ChapterMarker index="05" label="QC Machinery" />
-      </div>
       <section className="lg:py-24 py-16">
         <div className="container">
           <SectionHeading
@@ -298,9 +283,6 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
       {/* CERTIFICATES — shown as content, offered as downloads. This replaces the
           pattern of embedding one large PDF as the whole page. */}
       <div className="bg-default-50">
-        <div className="container pt-20">
-          <ChapterMarker index="06" label="Certificates & Downloads" />
-        </div>
         <section className="lg:py-24 py-16">
           <div className="container">
             <div className="grid lg:grid-cols-12 gap-12">

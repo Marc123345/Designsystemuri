@@ -1,5 +1,4 @@
 import { QuoteSection, CardGrid, DarkFeatureList, PageHero, StatsBar } from '@/components/sections'
-import { ChapterMarker } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { getApplications } from '@/lib/i18n-content'
@@ -60,9 +59,6 @@ const ApplicationsOverview = async ({ params }: { params: Promise<{ locale: Loca
         ]}
       />
 
-      <div className="container pt-20">
-        <ChapterMarker index="01" label="By Application" />
-      </div>
       <CardGrid
         eyebrow="By the job the tool has to do"
         title="Six application hubs, one material supplier behind them."
@@ -72,12 +68,6 @@ const ApplicationsOverview = async ({ params }: { params: Promise<{ locale: Loca
         ctaLabel="Request a Quote"
         columns={3}
       />
-
-      {/* The chapter marker sits above the dark band, because the common thread
-          belongs to every hub above it rather than to a seventh hub. */}
-      <div className="container">
-        <ChapterMarker index="02" label="The Common Thread" />
-      </div>
       <div className="pt-14">
         <DarkFeatureList
           bgLabel="Background image — tool maker at work"

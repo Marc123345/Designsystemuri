@@ -1,6 +1,6 @@
 import { RichText } from '@/components/RichText'
 import { QuoteSection, PageHero } from '@/components/sections'
-import { ChapterMarker, SectionHeading } from '@/components/ui'
+import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { Icon } from '@iconify/react'
@@ -68,9 +68,6 @@ const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
         secondaryCta={{ label: 'Datasheets', href: '/resources/datasheets' }}
       />
 
-      <div className="container pt-20">
-        <ChapterMarker index="01" label="Safety Data" />
-      </div>
       <section className="lg:py-24 py-16">
         <div className="container">
           {/* Deliberately ungated: a safety document behind a form is a liability,

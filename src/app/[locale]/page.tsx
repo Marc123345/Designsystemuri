@@ -4,7 +4,7 @@ import Hero from '@/components/home/Hero'
 import TheProblem from '@/components/home/TheProblem'
 import WhyEid from '@/components/home/WhyEid'
 import { CardGrid, DarkFeatureList, Faq, TrustBar } from '@/components/sections'
-import { ChapterMarker, SectionHeading } from '@/components/ui'
+import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { getApplications, getProducts } from '@/lib/i18n-content'
@@ -154,9 +154,6 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       <TrustBar items={trustPoints} />
 
       {/* THE PROBLEM — names the buyer's real cost before any product copy. */}
-      <div className="container pt-20">
-        <ChapterMarker index="01" label="The Problem" />
-      </div>
       <TheProblem
         eyebrow="Why suppliers get replaced"
         title="The cost of inconsistent diamond"
@@ -168,9 +165,6 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       />
 
       {/* THE RANGE — anchor target for the hero's "Browse the Full Range". */}
-      <div className="container">
-        <ChapterMarker index="02" label="The Range" />
-      </div>
       <div id="products" className="scroll-mt-28">
         <CardGrid
           eyebrow="The range · eight product groups"
@@ -184,9 +178,6 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 
       {/* Pillar one carries the graduated production claim, which is the honesty
           a technical buyer checks for before anything else on this page. */}
-      <div className="container pt-20">
-        <ChapterMarker index="03" label="Why EID" />
-      </div>
       <WhyEid
         eyebrow="Why tool makers qualify EID"
         title="One accountable manufacturer, spec to delivery."
@@ -215,9 +206,6 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
         ]}
       />
 
-      <div className="container">
-        <ChapterMarker index="04" label="Applications" />
-      </div>
       {/* Six hubs → 3-across, two rows, with the larger card treatment. */}
       <CardGrid
         eyebrow="Applications · six hubs"
@@ -320,9 +308,6 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 
       {/* FAQ sits below the conversion CTA, per the deck: it is written for AI
           search and rich results rather than to be read on the way down. */}
-      <div className="container">
-        <ChapterMarker index="05" label="Questions" />
-      </div>
       <Faq
         eyebrow="Frequently asked"
         title="Straight answers about the material."

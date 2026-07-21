@@ -1,6 +1,6 @@
 import QuoteForm from '@/components/QuoteForm'
 import { PageHero, TrustBar } from '@/components/sections'
-import { ArrowButton, ChapterMarker, SectionHeading } from '@/components/ui'
+import { ArrowButton, SectionHeading } from '@/components/ui'
 import Wireframe from '@/components/Wireframe'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
@@ -74,9 +74,6 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
       </section>
 
       {/* COMPANY DETAILS + MAP */}
-      <div className="container">
-        <ChapterMarker index="02" label="Find Us" />
-      </div>
       <section className="py-16 pt-14 lg:py-24">
         <div className="container">
           <SectionHeading eyebrow="Company details" title={site.name} />
@@ -116,9 +113,6 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
         </div>
       </section>
 
-      <div className="container pb-14">
-        <ChapterMarker index="03" label="Why EID" />
-      </div>
       <TrustBar items={['ISO 9001 Certified', 'In-House QC Laboratory', "50+ Years' Experience", 'Complete Superabrasive Range']} />
     </>
   )

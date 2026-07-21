@@ -1,7 +1,7 @@
 import { RichParagraphs } from '@/components/RichText'
 import Wireframe from '@/components/Wireframe'
 import { QuoteSection, CardGrid, CrossLinks, DarkFeatureList, PageHero } from '@/components/sections'
-import { ArrowButton, ChapterMarker, SectionHeading } from '@/components/ui'
+import { ArrowButton, SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { applications } from '@/lib/applications'
 import { localeAlternates } from '@/lib/hreflang'
@@ -91,9 +91,6 @@ const ApplicationPage = async ({
 
       {/* INTRO — the outcome block rides alongside the prose, because a hub has
           to be more than a product list. */}
-      <div className="container pt-20">
-        <ChapterMarker index="01" label="Overview" />
-      </div>
       <section className="lg:py-24 py-16">
         <div className="container">
           <SectionHeading eyebrow={app.eyebrow} title={headline} />
@@ -121,9 +118,6 @@ const ApplicationPage = async ({
       </section>
 
       {/* PRODUCTS USED */}
-      <div className="container">
-        <ChapterMarker index="02" label="Products Used" />
-      </div>
       <CardGrid
         eyebrow={app.productsTitle}
         title="The material behind your tools."
@@ -133,10 +127,7 @@ const ApplicationPage = async ({
         ctaLabel={app.cta}
       />
 
-      {/* WHY EID — dark band; the chapter marker sits above it */}
-      <div className="container">
-        <ChapterMarker index="03" label="Why EID" />
-      </div>
+      {/* WHY EID */}
       <div className="pt-14">
         <DarkFeatureList
           bgLabel="Background image — application in production"

@@ -1,5 +1,5 @@
 import { QuoteSection, PageHero } from '@/components/sections'
-import { ArrowLink, ChapterMarker } from '@/components/ui'
+import { ArrowLink } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import type { Metadata } from 'next'
@@ -50,9 +50,6 @@ const BlogPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
       />
 
       {/* FEATURED */}
-      <div className="container pt-20">
-        <ChapterMarker index="01" label="Featured" />
-      </div>
       <section className="lg:py-24 py-16">
         <div className="container">
           <div className="border-t-2 border-primary bg-default-50 lg:p-12 p-8">
@@ -74,9 +71,6 @@ const BlogPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
       </section>
 
       {/* POST GRID */}
-      <div className="container">
-        <ChapterMarker index="02" label="Latest Posts" />
-      </div>
       <section className="border-y border-default-200 bg-default-50 lg:py-24 py-16 mt-14">
         <div className="container">
           <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-x-10 gap-y-12">

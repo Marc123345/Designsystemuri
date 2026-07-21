@@ -1,6 +1,6 @@
 import { RichText } from '@/components/RichText'
 import { QuoteSection, CrossLinks, DarkFeatureList, PageHero } from '@/components/sections'
-import { ChapterMarker, SectionHeading } from '@/components/ui'
+import { SectionHeading } from '@/components/ui'
 import Wireframe from '@/components/Wireframe'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
@@ -70,9 +70,6 @@ const MicronQcPage = async ({ params }: { params: Promise<{ locale: Locale }> })
 
       {/* D-values first: the page has to define the vocabulary before it can
           claim to control it. */}
-      <div className="container pt-20">
-        <ChapterMarker index="01" label="What D-values mean" />
-      </div>
       <section className="lg:py-24 py-16">
         <div className="container">
           <div className="max-w-4xl">
@@ -109,9 +106,6 @@ const MicronQcPage = async ({ params }: { params: Promise<{ locale: Locale }> })
         </div>
       </section>
 
-      <div className="container pb-20">
-        <ChapterMarker index="02" label="The method" />
-      </div>
       <DarkFeatureList
           bgLabel="Background image — particle sizing bench"
         eyebrow="Micron QC, step by step"

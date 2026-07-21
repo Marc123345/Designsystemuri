@@ -8,7 +8,7 @@ import {
   PageHero,
   SpecTable,
 } from '@/components/sections'
-import { ArrowButton, ArrowLink, ChapterMarker, SectionHeading } from '@/components/ui'
+import { ArrowButton, ArrowLink, SectionHeading } from '@/components/ui'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
@@ -55,11 +55,6 @@ const ProductPage = async ({
   const isSplit = p.sections.length > 1
   const leadSpecs = p.sections.find((s) => s.specs?.length)?.specs ?? []
 
-  // Chapter numbers are assigned up front rather than incremented during render,
-  // so the QC band cannot be numbered ahead of the sections above it.
-  const chapterOrder = ['Overview', ...p.sections.map((s) => s.label), 'Quality Control']
-  const chapterIndex = (label: string) => String(chapterOrder.indexOf(label) + 1).padStart(2, '0')
-
   const crossApplicationLinks = p.crossApplications
     .map((s) => getApplication(locale, s))
     .filter(Boolean)
@@ -85,9 +80,6 @@ const ProductPage = async ({
       {isSplit && <JumpNav items={p.sections.map((s) => ({ id: s.id, label: s.label }))} />}
 
       {/* OVERVIEW */}
-      <div className="container pt-20">
-        <ChapterMarker index={chapterIndex('Overview')} label="Overview" />
-      </div>
       <section className="lg:py-24 py-16">
         <div className="container">
           <SectionHeading eyebrow={p.family} title={headline} />
@@ -125,7 +117,6 @@ const ProductPage = async ({
           section={s}
           gray={i % 2 === 1}
           showHeading={isSplit}
-          chapterIndex={chapterIndex(s.label)}
         />
       ))}
 
@@ -209,21 +200,16 @@ const ProductSectionBlock = ({
   section,
   gray,
   showHeading,
-  chapterIndex,
 }: {
   section: ProductSection
   gray: boolean
   showHeading: boolean
-  chapterIndex: string
 }) => {
   const hasDetail = Boolean(section.applications?.length || section.specs?.length)
 
   return (
     <>
       <div className={gray ? 'bg-default-50' : ''}>
-        <div className="container pt-20">
-          <ChapterMarker index={chapterIndex} label={section.label} />
-        </div>
 
         <section id={section.id} className="scroll-mt-28 lg:py-24 py-16">
           <div className="container">

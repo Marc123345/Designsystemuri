@@ -1,5 +1,5 @@
 import { QuoteSection, DarkFeatureList, FeaturesRow, PageHero, StatsBar } from '@/components/sections'
-import { ArrowButton, ChapterMarker, SectionHeading } from '@/components/ui'
+import { ArrowButton, SectionHeading } from '@/components/ui'
 import Wireframe from '@/components/Wireframe'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
@@ -64,9 +64,6 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
         ]}
       />
 
-      <div className="container pt-20">
-        <ChapterMarker index="01" label="The Company" />
-      </div>
       <section className="py-20 pt-14 lg:py-30">
         <div className="container">
           <SectionHeading eyebrow="London-based superabrasive manufacturer" title="Over 50 years making the material that goes into the world's diamond tools." />
@@ -96,9 +93,6 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
       </section>
 
       {/* HOW WE MAKE IT — the honest, graduated production model */}
-      <div className="container pb-14">
-        <ChapterMarker index="02" label="How We Make It" />
-      </div>
       <section className="pb-14">
         <div className="container">
           <SectionHeading eyebrow="Our production model, stated straight" title="How we make what we sell." />
@@ -129,9 +123,6 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
         </div>
       </section>
 
-      <div className="container pb-14">
-        <ChapterMarker index="03" label="Quality" />
-      </div>
       <section className="pb-14">
         <div className="container">
           <Wireframe label="EID in-house QC laboratory — particle size distribution and morphology testing" ratio="wide" />
@@ -165,9 +156,6 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
       />
 
       {/* WHO WE SERVE — real buyer types and regions, no unverified figures */}
-      <div className="container pt-20">
-        <ChapterMarker index="04" label="Who We Serve" />
-      </div>
       <section className="py-20 pt-14 lg:py-30">
         <div className="container">
           <SectionHeading eyebrow="Who we serve" title="Trusted by tool makers across industries and continents." />

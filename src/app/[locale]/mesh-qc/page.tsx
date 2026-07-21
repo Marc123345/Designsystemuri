@@ -1,6 +1,6 @@
 import { RichText } from '@/components/RichText'
 import { QuoteSection, CrossLinks, DarkFeatureList, PageHero } from '@/components/sections'
-import { ChapterMarker, SectionHeading } from '@/components/ui'
+import { SectionHeading } from '@/components/ui'
 import Wireframe from '@/components/Wireframe'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
@@ -71,9 +71,6 @@ const MeshQcPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =
 
       {/* Why mesh is its own page: sieve grading and micron counting are two
           different problems, and a buyer arrives already in one of them. */}
-      <div className="container pt-20">
-        <ChapterMarker index="01" label="Why mesh differs" />
-      </div>
       <section className="lg:py-24 py-16">
         <div className="container">
           <div className="max-w-4xl">
@@ -102,9 +99,6 @@ const MeshQcPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =
         </div>
       </section>
 
-      <div className="container pb-20">
-        <ChapterMarker index="02" label="The method" />
-      </div>
       <DarkFeatureList
           bgLabel="Background image — sieve grading bench"
         eyebrow="Mesh QC, step by step"

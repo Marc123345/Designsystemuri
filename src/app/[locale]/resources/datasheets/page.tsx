@@ -1,6 +1,6 @@
 import { RichText } from '@/components/RichText'
 import { QuoteSection, PageHero } from '@/components/sections'
-import { ChapterMarker, SectionHeading } from '@/components/ui'
+import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { Icon } from '@iconify/react'
@@ -89,9 +89,6 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
         secondaryCta={{ label: 'MSDS', href: '/resources/msds' }}
       />
 
-      <div className="container pt-20">
-        <ChapterMarker index="01" label="Datasheets" />
-      </div>
       <section className="lg:py-24 py-16">
         <div className="container">
           {/* Deliberately ungated: no form, no login, no gate on a spec sheet. */}
