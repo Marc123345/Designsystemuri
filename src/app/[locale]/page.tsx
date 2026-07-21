@@ -2,13 +2,8 @@ import Marquee from '@/components/Marquee'
 import QuoteForm from '@/components/QuoteForm'
 import Wireframe from '@/components/Wireframe'
 import Hero from '@/components/home/Hero'
-import {
-  CardGrid,
-  DarkFeatureList,
-  Faq,
-  Pillars,
-  TrustBar,
-} from '@/components/sections'
+import WhyEid from '@/components/home/WhyEid'
+import { CardGrid, DarkFeatureList, Faq, TrustBar } from '@/components/sections'
 import { ChapterMarker, SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
@@ -211,33 +206,33 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       <div className="container pt-20">
         <ChapterMarker index="03" label="Why EID" />
       </div>
-      <div className="pt-12">
-        <Pillars
-          items={[
-            {
-              meta: 'Accountability',
-              title: 'We control production, not just supply.',
-              body: 'Natural grit and powder made in our own factory. Bonded and CBN grades processed and graded to your spec. CVD grown to order through a dedicated partner. The quality decision is always ours: one accountable manufacturer, spec to delivery.',
-              href: '/about',
-              cta: 'How we make it',
-            },
-            {
-              meta: 'Consistency',
-              title: 'The same material, every reorder.',
-              body: 'Every run is measured for particle size distribution and morphology, with crystal strength and coating coverage checked where the grade calls for it. ISO 9001, certificate of analysis per lot. Order the same grade twice, get the same grade twice.',
-              href: '/quality',
-              cta: 'See how our QC works',
-            },
-            {
-              meta: 'Breadth',
-              title: 'The full range, one relationship.',
-              body: 'Every diamond and CBN product from one supplier: one contact, one quality standard. Standard grades from stock, specials to your lead time.',
-              href: '/#products',
-              cta: 'Browse the range',
-            },
-          ]}
-        />
-      </div>
+      <WhyEid
+        eyebrow="Why tool makers qualify EID"
+        title="One accountable manufacturer, spec to delivery."
+        pillars={[
+          {
+            meta: 'Accountability',
+            title: 'We control production, not just supply.',
+            body: 'Natural grit and powder made in our own factory. Bonded and CBN grades processed and graded to your spec. CVD grown to order through a dedicated partner. The quality decision is always ours: one accountable manufacturer, spec to delivery.',
+            href: '/about',
+            cta: 'How we make it',
+          },
+          {
+            meta: 'Consistency',
+            title: 'The same material, every reorder.',
+            body: 'Every run is measured for particle size distribution and morphology, with crystal strength and coating coverage checked where the grade calls for it. ISO 9001, certificate of analysis per lot. Order the same grade twice, get the same grade twice.',
+            href: '/quality',
+            cta: 'See how our QC works',
+          },
+          {
+            meta: 'Breadth',
+            title: 'The full range, one relationship.',
+            body: 'Every diamond and CBN product from one supplier: one contact, one quality standard. Standard grades from stock, specials to your lead time.',
+            href: '/#products',
+            cta: 'Browse the range',
+          },
+        ]}
+      />
 
       <div className="container">
         <ChapterMarker index="04" label="Applications" />
