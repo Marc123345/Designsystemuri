@@ -1,0 +1,92 @@
+/* _general.css */
+
+
+@layer base {
+    html {
+        @apply w-full scroll-smooth;
+    }
+
+    body {
+        @apply font-body bg-body-bg text-body-color md:text-lg text-base leading-[1.3em] font-medium overflow-x-clip;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-heading leading-[1.3] font-semibold text-default-900;
+    }
+
+    button:not(:disabled),
+    [role="button"]:not(:disabled) {
+        @apply cursor-pointer;
+    }
+}
+
+select,
+input,
+textarea {
+    @apply transition-all duration-200 focus:border-primary focus:ring-0 focus:outline-0;
+}
+
+
+.container {
+    @apply md:px-7.5 px-4 max-w-340 mx-auto;
+}
+
+.container-full {
+    @apply mx-auto max-w-full lg:px-12.5 md:px-7.5 px-4;
+}
+
+/* Navbar Active Link */
+#navbar a.active {
+    @apply text-primary;
+
+    span {
+        @apply scale-100;
+    }
+
+
+}
+
+#navbar .hs-dropdown-menu a.active {
+    @apply bg-primary/8;
+}
+
+
+
+/* Infinite horizontal scroll */
+
+/* Normal direction */
+@keyframes infinite-scroll {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+.infinite-scroll {
+    animation: infinite-scroll 100s linear infinite;
+    will-change: transform;
+}
+
+/* Inverse direction */
+@keyframes infinite-scroll-inverse {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+.infinite-scroll-inverse {
+    animation: infinite-scroll-inverse 100s linear infinite;
+    will-change: transform;
+}

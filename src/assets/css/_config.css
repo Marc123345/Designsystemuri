@@ -1,0 +1,38 @@
+/* Themes Config */
+@theme {
+
+    --font-heading: "Mona Sans", sans-serif;
+    --font-body: "Geist", sans-serif;
+
+    /* EID — Industrial Precision blue, carried over from the previous build so
+       the brand reads identically. Replaces the template's orange. */
+    --color-primary: #2c3c6c;
+    --color-primary-1: #3d5290;
+    --color-primary-2: #2c3c6c;
+    --color-primary-3: #1c2749;
+
+    --color-body-bg: var(--color-white);
+    --color-body-color: var(--color-slate-600);
+
+    --color-default-50: var(--color-slate-50);
+    --color-default-100: var(--color-slate-100);
+    --color-default-200: var(--color-slate-200);
+    --color-default-300: var(--color-slate-300);
+    --color-default-400: var(--color-slate-400);
+    --color-default-500: var(--color-slate-500);
+    --color-default-600: var(--color-slate-600);
+    --color-default-700: var(--color-slate-700);
+    --color-default-800: var(--color-slate-800);
+    --color-default-900: var(--color-slate-900);
+    --color-default-950: var(--color-slate-950);
+
+    --tw-leading: 1.3em;
+    --text-xs--line-height: 1.3em;
+    --text-sm--line-height: 1.3em;
+    --text-base--line-height: 1.3em;
+    --text-lg--line-height: 1.3em;
+    --text-xl--line-height: 1.3em;
+    --text-2xl--line-height: 1.3em;
+    --text-3xl--line-height: 1.3em;
+    --text-7xl--line-height: 1.1;
+}

@@ -1,0 +1,14 @@
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-button-prev .swiper-navigation-icon,
+.swiper-button-next .swiper-navigation-icon {
+  display: none !important;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  margin-top: 0 !important;
+}
