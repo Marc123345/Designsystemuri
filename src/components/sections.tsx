@@ -341,33 +341,47 @@ export const DarkFeatureList = ({
   ctaLabel: string
   ctaHref: string
 }) => (
-  <section className="relative overflow-hidden lg:py-30 py-20 text-white">
+  <section className="relative size-full overflow-hidden lg:py-37.5 py-20 text-white">
+    {/* Full-bleed backdrop. The template runs a photograph here; until EID
+        supplies one this is the dark gradient plus the dashed column grid and
+        film-grain wash, with a marker so the missing asset stays visible. */}
     <div className="absolute inset-0 bg-linear-to-br from-default-950 via-default-950 to-primary-3"></div>
+    <div className="absolute inset-0 flex items-stretch justify-between md:justify-center gap-0 md:gap-45 lg:gap-75 xl:gap-80.5">
+      {[0, 1, 2, 3, 4].map((i) => (
+        <div key={i} className="h-full w-0.5 border border-dashed border-white opacity-10"></div>
+      ))}
+    </div>
+    <div className="absolute inset-0 size-full bg-[url(../images/bg-noice.gif)] bg-auto bg-repeat bg-position-[50%] opacity-6"></div>
+    <div className="absolute bottom-5 end-5 hidden text-[10px] uppercase tracking-[0.15em] text-white/25 lg:block">
+      Background image pending
+    </div>
 
     <div className="container relative z-10">
-      <div className="grid lg:grid-cols-2 gap-14 items-start">
-        <div>
-          <div className="inline-flex items-center gap-1.5 rounded-2xl border border-white/15 px-3.5 py-1.25">
-            <span className="size-2 bg-primary-1"></span>
-            <span className="text-sm text-white">{eyebrow}</span>
-          </div>
-          <h2 className="mt-4 lg:text-[42px] md:text-[36px] text-[28px] font-bold text-white">{title}</h2>
-          <p className="mt-5 text-default-300">{desc}</p>
-          <div className="mt-9">
-            <ArrowButton href={ctaHref} label={ctaLabel} variant="primary" />
-          </div>
+      {/* The glass card: a translucent panel over the backdrop rather than a
+          two-column split, so the claim reads as one block. */}
+      <div className="max-w-2xl rounded-md border border-white/10 bg-default-900/50 [backdrop-filter:blur(5px)] lg:p-12.5 md:p-7.5 p-6">
+        <div className="inline-flex items-center gap-1.5 rounded-2xl border border-white/15 px-3.5 py-1.25">
+          <span className="size-2 bg-primary-1"></span>
+          <span className="text-sm text-white">{eyebrow}</span>
         </div>
 
-        <div className="divide-y divide-white/10 border-t border-white/10">
+        <h2 className="mt-4 lg:text-[32px] md:text-[28px] text-2xl font-bold text-white">{title}</h2>
+        <p className="mt-5 text-default-200">{desc}</p>
+
+        <div className="mt-7.5 space-y-4">
           {features.map((feature) => (
-            <div key={feature.title} className="flex gap-4 py-6">
-              <Icon icon="tabler:circle-check" className="mt-1 size-6 shrink-0 text-primary-1" />
+            <div key={feature.title} className="flex gap-3">
+              <Icon icon="tabler:check" className="mt-1 size-5 shrink-0 text-primary-1" />
               <div>
-                <h3 className="text-lg text-white">{feature.title}</h3>
-                <p className="mt-1.5 text-base text-default-300">{feature.desc}</p>
+                <h3 className="text-base text-white">{feature.title}</h3>
+                <p className="mt-1 text-base text-default-300">{feature.desc}</p>
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="mt-9">
+          <ArrowButton href={ctaHref} label={ctaLabel} variant="primary" />
         </div>
       </div>
     </div>
