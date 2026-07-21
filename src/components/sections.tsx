@@ -1,7 +1,12 @@
 'use client'
 
 import { Link } from '@/i18n/navigation'
+import type { Locale } from '@/i18n/routing'
+import { getProducts } from '@/lib/i18n-content'
+import { site } from '@/lib/site'
 import { Icon } from '@iconify/react'
+import { useLocale } from 'next-intl'
+import QuoteForm from './QuoteForm'
 import { ArrowButton, ArrowLink, SectionHeading } from './ui'
 
 export type Card = {
@@ -571,6 +576,68 @@ export const JumpNav = ({ items }: { items: { id: string; label: string }[] }) =
     </div>
   </section>
 )
+
+/**
+ * Closing conversion block: the page's own ask beside the actual quote form.
+ *
+ * Replaces the button-to-/contact pattern everywhere. A buyer who has read a
+ * product page should be able to ask about that grade without loading another
+ * page. Each page keeps its own eyebrow, heading and lede; the form itself is
+ * identical site-wide, so the field set and the reply promise never drift.
+ *
+ * Product options resolve from the active locale here rather than being passed
+ * in, so a page only supplies its copy. products.ts is already in the client
+ * bundle via the navbar, so this adds no weight.
+ */
+export const QuoteSection = ({
+  eyebrow,
+  title,
+  desc,
+  formTitle = 'Request a Quote',
+  formDesc = 'Tell us the product, grade, size, and quantity you need. A specialist who understands the material replies within one business day.',
+}: {
+  eyebrow: string
+  title: string
+  desc: string
+  formTitle?: string
+  formDesc?: string
+}) => {
+  const locale = useLocale() as Locale
+  const productOptions = ['Help me specify', ...getProducts(locale).map((p) => p.name)]
+
+  return (
+    <section className="lg:py-30 py-20">
+      <div className="container">
+        <div className="grid lg:grid-cols-12 gap-12 items-start">
+          <div className="lg:col-span-5">
+            <SectionHeading eyebrow={eyebrow} title={title} desc={desc} />
+
+            <div className="mt-8 space-y-3 text-base text-default-600">
+              <p>
+                Email{' '}
+                <a href={`mailto:${site.email}`} className="text-primary underline">
+                  {site.email}
+                </a>
+              </p>
+              <p>
+                Call{' '}
+                <a href={site.phoneHref} className="text-primary underline">
+                  {site.phone}
+                </a>
+              </p>
+            </div>
+          </div>
+
+          <div className="lg:col-span-7">
+            <div className="rounded-md border border-default-200 bg-default-50 p-6 lg:p-10">
+              <QuoteForm formTitle={formTitle} formDesc={formDesc} productOptions={productOptions} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
 
 /** Closing conversion banner. */
 export const BannerCTA = ({

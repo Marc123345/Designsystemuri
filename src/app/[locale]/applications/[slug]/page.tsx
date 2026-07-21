@@ -1,6 +1,6 @@
 import { RichParagraphs } from '@/components/RichText'
 import Wireframe from '@/components/Wireframe'
-import { BannerCTA, CardGrid, CrossLinks, DarkFeatureList, PageHero } from '@/components/sections'
+import { QuoteSection, CardGrid, CrossLinks, DarkFeatureList, PageHero } from '@/components/sections'
 import { ArrowButton, ChapterMarker, SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { applications } from '@/lib/applications'
@@ -167,12 +167,10 @@ const ApplicationPage = async ({
 
       {/* CTA */}
       <div className="pt-20">
-        <BannerCTA
+        <QuoteSection
           eyebrow="Tell us your application"
           title={`${app.cta}.`}
           desc={app.ctaDesc}
-          ctaLabel="Request a Quote"
-          ctaHref="/contact"
         />
       </div>
 

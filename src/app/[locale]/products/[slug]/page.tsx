@@ -1,7 +1,7 @@
 import { RichParagraphs, RichText } from '@/components/RichText'
 import Wireframe from '@/components/Wireframe'
 import {
-  BannerCTA,
+  QuoteSection,
   CrossLinks,
   DarkFeatureList,
   JumpNav,
@@ -159,12 +159,10 @@ const ProductPage = async ({
       />
 
       <div className="pt-20">
-        <BannerCTA
+        <QuoteSection
           eyebrow="Made to your specification"
           title="Request a quote or a sample."
           desc="Give us the grade, size, format, and application, and a real person replies within one business day."
-          ctaLabel={p.cta}
-          ctaHref="/contact"
         />
       </div>
 

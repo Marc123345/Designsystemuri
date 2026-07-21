@@ -1,5 +1,5 @@
 import { RichText } from '@/components/RichText'
-import { BannerCTA, PageHero, Pillars } from '@/components/sections'
+import { QuoteSection, PageHero, Pillars } from '@/components/sections'
 import { ArrowButton, ArrowLink, ChapterMarker, SectionHeading } from '@/components/ui'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
@@ -194,12 +194,10 @@ const ResourcesPage = async ({ params }: { params: Promise<{ locale: Locale }> }
         />
       </section>
 
-      <BannerCTA
+      <QuoteSection
         eyebrow="Can't find what you need?"
         title="Have a technical question the guides don't answer?"
         desc="Tell us the material, the process, and the finish you need, and someone who works with the material will help you specify. Replies within one business day."
-        ctaLabel="Contact our technical team"
-        ctaHref="/contact"
       />
     </>
   )

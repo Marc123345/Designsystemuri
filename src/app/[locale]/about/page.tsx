@@ -1,4 +1,4 @@
-import { BannerCTA, DarkFeatureList, FeaturesRow, PageHero, StatsBar } from '@/components/sections'
+import { QuoteSection, DarkFeatureList, FeaturesRow, PageHero, StatsBar } from '@/components/sections'
 import { ArrowButton, ChapterMarker, SectionHeading } from '@/components/ui'
 import Wireframe from '@/components/Wireframe'
 import type { Locale } from '@/i18n/routing'
@@ -196,7 +196,11 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
       </section>
 
       <div className="pt-20">
-        <BannerCTA eyebrow="Trusted by tool makers across continents" title="Let's talk about what you manufacture." desc="Request a quote, order a sample, or ask a technical question. A real person replies within one business day." ctaLabel="Contact Us" ctaHref="/contact" />
+        <QuoteSection
+          eyebrow="Trusted by tool makers across continents"
+          title="Let's talk about what you manufacture."
+          desc="Request a quote, order a sample, or ask a technical question. A real person replies within one business day."
+        />
       </div>
     </>
   )

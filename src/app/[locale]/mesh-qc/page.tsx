@@ -1,5 +1,5 @@
 import { RichText } from '@/components/RichText'
-import { BannerCTA, CrossLinks, DarkFeatureList, PageHero } from '@/components/sections'
+import { QuoteSection, CrossLinks, DarkFeatureList, PageHero } from '@/components/sections'
 import { ChapterMarker, SectionHeading } from '@/components/ui'
 import Wireframe from '@/components/Wireframe'
 import type { Locale } from '@/i18n/routing'
@@ -115,12 +115,10 @@ const MeshQcPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =
       />
 
       <div className="pt-20">
-        <BannerCTA
+        <QuoteSection
           eyebrow="Specify your tolerances"
           title="Request a quote with your QC specification."
           desc="Send us the mesh grade and the parameters you need documented, and a real person replies within one business day."
-          ctaLabel="Request a Quote"
-          ctaHref="/contact"
         />
       </div>
 

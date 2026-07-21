@@ -1,5 +1,5 @@
 import { RichText } from '@/components/RichText'
-import { BannerCTA, PageHero } from '@/components/sections'
+import { QuoteSection, PageHero } from '@/components/sections'
 import { ChapterMarker, SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
@@ -101,12 +101,10 @@ const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
         </div>
       </section>
 
-      <BannerCTA
+      <QuoteSection
         eyebrow="Need a safety document not listed?"
         title="Need a safety document that isn't listed?"
         desc="Tell us the product and the regional format you need, and we will send the current MSDS. Replies within one business day."
-        ctaLabel="Contact us"
-        ctaHref="/contact"
       />
     </>
   )

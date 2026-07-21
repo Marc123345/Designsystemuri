@@ -1,5 +1,5 @@
 import { RichText } from '@/components/RichText'
-import { BannerCTA, PageHero } from '@/components/sections'
+import { QuoteSection, PageHero } from '@/components/sections'
 import { ChapterMarker, SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
@@ -140,12 +140,10 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
         </div>
       </section>
 
-      <BannerCTA
+      <QuoteSection
         eyebrow="Need a spec not listed?"
         title="Need a spec that isn't listed here?"
         desc="Tell us the product and the parameters you need, and we will send the datasheet or confirm a custom specification. Replies within one business day."
-        ctaLabel="Contact us"
-        ctaHref="/contact"
       />
     </>
   )

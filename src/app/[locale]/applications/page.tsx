@@ -1,4 +1,4 @@
-import { BannerCTA, CardGrid, DarkFeatureList, PageHero, StatsBar } from '@/components/sections'
+import { QuoteSection, CardGrid, DarkFeatureList, PageHero, StatsBar } from '@/components/sections'
 import { ChapterMarker } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
@@ -107,12 +107,10 @@ const ApplicationsOverview = async ({ params }: { params: Promise<{ locale: Loca
       </div>
 
       <div className="pt-20">
-        <BannerCTA
+        <QuoteSection
           eyebrow="Not sure which grade fits?"
           title="Tell us your application and we will recommend the right material."
           desc="A real person replies within one business day, with the grade, size, and lead time you need."
-          ctaLabel="Ask Our Team"
-          ctaHref="/contact"
         />
       </div>
     </>

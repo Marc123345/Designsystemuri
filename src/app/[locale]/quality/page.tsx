@@ -1,6 +1,6 @@
 import { RichText } from '@/components/RichText'
 import {
-  BannerCTA,
+  QuoteSection,
   CardGrid,
   CrossLinks,
   DarkFeatureList,
@@ -356,12 +356,10 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
       </div>
 
       <div className="pt-20">
-        <BannerCTA
+        <QuoteSection
           eyebrow="Specify your tolerances"
           title="Request a quote with your QC specification."
           desc="Send us your grade and the QC parameters you need documented, and a real person replies within one business day. A certificate of analysis is available with the shipment."
-          ctaLabel="Request a Quote"
-          ctaHref="/contact"
         />
       </div>
 

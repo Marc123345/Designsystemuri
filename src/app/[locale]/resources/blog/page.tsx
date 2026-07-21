@@ -1,4 +1,4 @@
-import { BannerCTA, PageHero } from '@/components/sections'
+import { QuoteSection, PageHero } from '@/components/sections'
 import { ArrowLink, ChapterMarker } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
@@ -100,12 +100,10 @@ const BlogPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
       </section>
 
       <div className="pt-20">
-        <BannerCTA
+        <QuoteSection
           eyebrow="Have a technical question?"
           title="Ask our team, we may write about it."
           desc="Send us your application question and we'll point you to the right grade, or cover it in a future guide."
-          ctaLabel="Ask Our Team"
-          ctaHref="/contact"
         />
       </div>
     </>
