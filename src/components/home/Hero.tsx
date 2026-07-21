@@ -18,7 +18,7 @@ const Hero = ({
 }) => {
   return (
     <section className="relative size-full overflow-hidden lg:pt-50 pt-35">
-      <div className="container-full relative z-10">
+      <div className="container relative z-10">
         <div className="grid xl:grid-cols-4 items-end xl:gap-20 gap-12.5">
           <div className="xl:col-span-3">
             <div className="inline-flex items-center gap-1.5 rounded-2xl border border-default-300 bg-white px-3.5 py-1.25">

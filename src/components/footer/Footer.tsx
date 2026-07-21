@@ -30,7 +30,7 @@ const Footer = () => {
       </div>
 
       {/* Content */}
-      <div className="container-full relative z-10 lg:pt-40 pt-25">
+      <div className="container relative z-10 lg:pt-40 pt-25">
         <div className="grid xl:grid-cols-6 lg:gap-20 gap-12">
           {/* Identity + contact */}
           <div className="xl:col-span-2">
@@ -104,7 +104,7 @@ const Footer = () => {
         </div>
 
         {/* Divider */}
-        <div className="border border-dashed h-px border-default-100 opacity-10 my-14 lg:-mx-12.5 md:-mx-7.5 -mx-3.75"></div>
+        <div className="border border-dashed h-px border-default-100 opacity-10 my-14 md:-mx-7.5 -mx-4"></div>
 
         {/* Trust bar — verified signals only */}
         <ul className="flex flex-wrap items-center gap-x-8 gap-y-3 text-sm text-white/70">
@@ -116,7 +116,7 @@ const Footer = () => {
           ))}
         </ul>
 
-        <div className="border border-dashed h-px border-default-100 opacity-10 my-14 lg:-mx-12.5 md:-mx-7.5 -mx-3.75"></div>
+        <div className="border border-dashed h-px border-default-100 opacity-10 my-14 md:-mx-7.5 -mx-4"></div>
 
         {/* Bottom bar */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-white/60">

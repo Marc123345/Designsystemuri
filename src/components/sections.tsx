@@ -36,7 +36,7 @@ export const PageHero = ({
   secondaryCta?: { label: string; href: string }
 }) => (
   <section className="relative overflow-hidden border-b border-default-200 lg:pt-50 pt-35 lg:pb-20 pb-14">
-    <div className="container-full relative z-10">
+    <div className="container relative z-10">
       <nav aria-label="Breadcrumb">
         <ol className="flex flex-wrap items-center gap-2 text-sm text-default-500">
           {crumbs.map((crumb, i) => (
@@ -167,7 +167,7 @@ export const StatMedallions = ({
   items: { value?: string; label?: string; body?: string; tone?: 'light' | 'dark'; image?: boolean }[]
 }) => (
   <section className="relative size-full overflow-hidden bg-default-100 lg:py-30 py-20">
-    <div className="container-full relative z-10">
+    <div className="container relative z-10">
       <div className="flex flex-wrap justify-center">
         {items.map((item, i) => {
           if (item.image) {
@@ -268,7 +268,7 @@ export const StatsBar = ({ items }: { items: { value: string; label: string }[] 
  */
 export const TrustBar = ({ items }: { items: string[] }) => (
   <section className="border-y border-default-200 bg-default-50">
-    <div className="container-full">
+    <div className="container">
       <ul className="flex flex-wrap items-center justify-between gap-x-10 gap-y-4 py-6">
         {items.map((item) => (
           <li key={item} className="flex items-center gap-2.5">
@@ -551,7 +551,7 @@ export const SpecCards = ({
   }[]
 }) => (
   <section className="relative size-full overflow-hidden bg-default-100 lg:py-30 py-20">
-    <div className="container-full relative z-10">
+    <div className="container relative z-10">
       <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-7.5">
         {items.map((item) => (
           <Link

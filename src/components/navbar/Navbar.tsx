@@ -93,7 +93,7 @@ const Navbar = () => {
   return (
     <header>
       <div className="nav-sticky navbar fixed inset-x-0 top-0 z-[120] w-full border-b border-default-200 bg-body-bg transition-all duration-300 lg:border-transparent lg:bg-transparent lg:[&.nav-sticky-on]:border-default-200 lg:[&.nav-sticky-on]:bg-body-bg/95 lg:[&.nav-sticky-on]:backdrop-blur-md">
-        <div className="container-full relative py-4.5">
+        <div className="container relative py-4.5">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center" aria-label="EID Ltd — home">
               <Image
