@@ -7,7 +7,6 @@ import {
   DarkFeatureList,
   Faq,
   Pillars,
-  StatMedallions,
   TrustBar,
 } from '@/components/sections'
 import { ChapterMarker, SectionHeading } from '@/components/ui'
@@ -214,27 +213,6 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           ctaLabel="Browse the Full Range"
         />
       </div>
-
-      {/* Pillar one carries the graduated production claim, which is the honesty
-          a technical buyer checks for before anything else on this page. */}
-      {/* The medallion row — the loudest block in the system, used once. Three
-          circles, not four: at 448px each, a fourth wraps to its own line and
-          reads as an orphan. Figures are the verified ones only. */}
-      <StatMedallions
-        items={[
-          {
-            value: '50+',
-            label: 'Years',
-            body: 'Supplying the material inside the world’s diamond tools, from London.',
-          },
-          { image: true },
-          {
-            value: 'ISO 9001',
-            tone: 'dark',
-            body: 'Certified from incoming raw material through to the shipped lot.',
-          },
-        ]}
-      />
 
       {/* Pillar one carries the graduated production claim, which is the honesty
           a technical buyer checks for before anything else on this page. */}
