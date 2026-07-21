@@ -44,7 +44,8 @@ const Navbar = () => {
 
   // A section is active when the path sits anywhere beneath it, so
   // /products/cbn still lights up "Products".
-  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href))
+  const isActive = (href: string) =>
+    href === '/' ? pathname === '/' : pathname.startsWith(href)
 
   const linkClass = (active: boolean) =>
     `group flex items-center px-2.5 py-4.5 text-base font-medium text-default-800 transition-all hover:text-primary ${
@@ -62,13 +63,11 @@ const Navbar = () => {
   const menuPanel = (menu: 'products' | 'applications' | 'resources') => {
     if (menu === 'products') {
       return (
-        // Positioned explicitly rather than left to Preline's JS placement,
-        // which left the panel in normal flow across the top of the hero.
-        // It anchors to the header container (its trigger is `static`), not to
-        // the trigger itself — centring a four-column panel on a ~90px menu
-        // item pushes it off the left edge of the viewport.
         <div
-          className="hs-dropdown-menu hs-dropdown-open:opacity-100 absolute top-full inset-x-0 z-130 mx-auto mt-2 hidden w-max max-w-full rounded-lg border border-default-200 bg-white p-6 opacity-0 shadow-xl transition-[opacity,margin] duration-300 before:absolute before:start-0 before:-top-4 before:h-4 before:w-full"
+          // `hidden` is the initial state Preline toggles. Without it the panel
+          // stays in the layout at opacity-0 and silently swallows clicks over
+          // the page beneath it.
+          className="hs-dropdown-menu hs-dropdown-open:opacity-100 absolute top-full inset-x-0 z-50 hidden w-max max-w-full rounded-lg border border-default-200 bg-white p-6 opacity-0 shadow-xl transition-[opacity,margin] duration-300 before:absolute before:start-0 before:-top-4 before:h-4 before:w-full"
           role="menu"
         >
           <div className="grid grid-cols-4 gap-x-8 gap-y-1">
@@ -90,7 +89,7 @@ const Navbar = () => {
           </div>
           <Link
             href="/products"
-            className="mt-3 block border-t border-default-200 px-3 pt-3 text-sm font-semibold text-primary"
+            className="mt-3 block border-t border-default-200 px-3 pt-3 text-sm font-semibold text-primary transition-colors hover:text-primary/80"
           >
             {t(locale, 'View all products')}
           </Link>
@@ -101,7 +100,7 @@ const Navbar = () => {
     const entries = menu === 'applications' ? applicationMenu : resourceMenu
     return (
       <div
-        className="hs-dropdown-menu hs-dropdown-open:opacity-100 absolute top-full start-0 z-130 mt-2 hidden w-60 rounded-lg border border-default-200 bg-white p-2 opacity-0 shadow-xl transition-[opacity,margin] duration-300 before:absolute before:start-0 before:-top-4 before:h-4 before:w-full"
+        className="hs-dropdown-menu hs-dropdown-open:opacity-100 absolute top-full start-0 z-50 hidden rounded-lg border border-default-200 bg-white p-2 opacity-0 shadow-xl transition-[opacity,margin] duration-300 before:absolute before:start-0 before:-top-4 before:h-4 before:w-full"
         role="menu"
       >
         <div className="flex flex-col gap-1">
@@ -125,37 +124,26 @@ const Navbar = () => {
 
   return (
     <header>
-      {/* [&.nav-sticky-on]: — self-referencing. The bare [.nav-sticky-on]:
-          form compiles to a descendant selector (.nav-sticky-on &), so it never
-          matched: the scroll handler puts the class on this element itself, and
-          the header stayed transparent over the page content on desktop. */}
-      <div className="nav-sticky navbar fixed inset-x-0 top-0 z-120 w-full border-b lg:border-transparent lg:bg-transparent border-default-200 bg-body-bg transition-all duration-300 lg:[&.nav-sticky-on]:border-default-200 lg:[&.nav-sticky-on]:bg-body-bg">
-        {/* relative: the products mega-panel positions against this container. */}
+      <div className="nav-sticky navbar fixed inset-x-0 top-0 z-[120] w-full border-b border-default-200 bg-body-bg transition-all duration-300 lg:border-transparent lg:bg-transparent lg:[&.nav-sticky-on]:border-default-200 lg:[&.nav-sticky-on]:bg-body-bg/95 lg:[&.nav-sticky-on]:backdrop-blur-md">
         <div className="container-full relative py-4.5">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center" aria-label="EID Ltd — home">
-              {/* The only supplied logo artwork is white-on-transparent, which is
-                  invisible on this light header. brightness-0 renders the same
-                  mark solid dark; swap for a dark-variant file when EID sends one. */}
               <Image
                 src="/eid/logo-white.png"
                 alt="EID Ltd"
                 width={650}
                 height={221}
                 priority
-                className="w-40.75 brightness-0"
+                className="w-40.75 brightness-0 transition-all hover:opacity-80"
               />
             </Link>
 
-            <div id="navbar" className="mx-auto hidden lg:flex items-center justify-center">
+            <div id="navbar" className="mx-auto hidden items-center justify-center lg:flex">
               {navItems.map((item) => {
                 const active = isActive(item.href)
                 const menu = 'menu' in item ? item.menu : undefined
                 if (menu) {
                   return (
-                    // The products mega-panel is `static` so it positions
-                    // against the header container; the narrow menus anchor to
-                    // their own trigger.
                     <div
                       key={item.href}
                       className={`hs-dropdown inline-flex [--trigger:hover] ${
@@ -170,7 +158,7 @@ const Navbar = () => {
                       >
                         {dot(active)}
                         {t(locale, item.label)}
-                        <Icon icon="tabler:chevron-down" className="ms-3" />
+                        <Icon icon="tabler:chevron-down" className="ms-3 size-4" />
                       </button>
                       {menuPanel(menu)}
                     </div>
@@ -188,28 +176,26 @@ const Navbar = () => {
             <div className="flex items-center justify-end gap-4">
               <LanguageSwitcher />
 
-              {/* Same geometry as ArrowButton — uniform radius, badge inset by
-                  the shell's own padding so it cannot break the corner. */}
               <Link
                 href="/contact"
-                className="group md:inline-flex hidden items-center gap-4 rounded-md bg-primary ps-6 pe-1.5 py-1.5 text-base font-medium leading-none text-white transition-all"
+                className="group hidden items-center gap-4 rounded-md bg-primary ps-6 pe-1.5 py-1.5 text-base font-medium leading-none text-white shadow-md transition-all hover:bg-primary/90 hover:shadow-lg md:inline-flex"
               >
                 <span className="relative block overflow-hidden">
-                  <span className="block group-hover:-translate-y-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
+                  <span className="block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:-translate-y-7">
                     {t(locale, 'Request A Quote')}
                   </span>
-                  <span className="absolute top-7 start-0 group-hover:top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
+                  <span className="absolute start-0 top-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:top-0">
                     {t(locale, 'Request A Quote')}
                   </span>
                 </span>
 
-                <span className="flex size-10 shrink-0 items-center justify-center rounded bg-default-900 text-white">
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-white/20 backdrop-blur-sm">
                   <span className="relative block overflow-hidden">
-                    <span className="block group-hover:translate-x-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
-                      <Icon icon="tabler:arrow-narrow-right" className="flex size-6" />
+                    <span className="block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-x-7">
+                      <Icon icon="tabler:arrow-narrow-right" className="flex size-5" />
                     </span>
-                    <span className="absolute top-0 end-7 group-hover:end-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)]">
-                      <Icon icon="tabler:arrow-narrow-right" className="flex size-6" />
+                    <span className="absolute end-7 top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:end-0">
+                      <Icon icon="tabler:arrow-narrow-right" className="flex size-5" />
                     </span>
                   </span>
                 </span>
@@ -222,7 +208,7 @@ const Navbar = () => {
                   aria-expanded="false"
                   aria-controls="mobile-menu"
                   data-hs-overlay="#mobile-menu"
-                  className="inline-flex size-12 items-center justify-center rounded-md bg-linear-to-tr from-primary-1 to-primary-2 text-base font-medium text-white transition-all"
+                  className="inline-flex size-12 items-center justify-center rounded-md bg-linear-to-tr from-primary/90 to-primary text-base font-medium text-white shadow-sm transition-all hover:opacity-90"
                   aria-label="Open menu"
                 >
                   <Icon icon="tabler:align-right" className="size-6" />
@@ -235,7 +221,7 @@ const Navbar = () => {
 
       <div
         id="mobile-menu"
-        className="hs-overlay hs-overlay-open:translate-y-0 hs-overlay-open:top-21 [--body-scroll:true] fixed inset-x-0 top-0 z-110 max-h-[80vh] -translate-y-full transform overflow-y-auto bg-body-bg shadow-xl transition-all duration-300 lg:hidden"
+        className="hs-overlay hs-overlay-open:translate-y-0 hs-overlay-open:top-[84px] absolute top-0 z-[110] w-full max-h-[80vh] -translate-y-full transform overflow-y-auto bg-body-bg/95 backdrop-blur-md shadow-xl transition-all duration-300 lg:hidden"
         role="dialog"
         tabIndex={-1}
       >
@@ -254,19 +240,19 @@ const Navbar = () => {
                 <div key={'m-' + item.href} className="hs-accordion">
                   <button
                     type="button"
-                    className={`hs-accordion-toggle ${linkClass(active)}`}
+                    className={`hs-accordion-toggle w-full ${linkClass(active)}`}
                     aria-expanded="false"
                   >
                     {dot(active)}
                     {t(locale, item.label)}
-                    <Icon icon="tabler:chevron-down" className="ms-4" />
+                    <Icon icon="tabler:chevron-down" className="ms-auto size-4" />
                   </button>
                   <div className="hs-accordion-content hidden w-full overflow-hidden ps-5 pb-4 transition-[height]">
                     {entries.map((entry) => (
                       <Link
                         key={'m-' + entry.href}
                         href={entry.href}
-                        className="block rounded-sm px-3 py-2 text-sm font-semibold text-default-800 hover:bg-primary/6 hover:text-primary"
+                        className="block rounded-sm px-3 py-2 text-sm font-medium text-default-600 transition-colors hover:text-primary"
                       >
                         {t(locale, entry.label)}
                       </Link>
