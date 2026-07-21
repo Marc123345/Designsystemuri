@@ -153,13 +153,49 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           here, not reading. */}
       <TrustBar items={trustPoints} />
 
-      {/* THE PROBLEM — names the buyer's real cost before any product copy. */}
+      {/* THE PROBLEM — states the cost in the buyer's own process parameters,
+          then answers it with the graduated production model rather than a
+          fourth restatement of "we control quality". */}
       <TheProblem
         eyebrow="Why suppliers get replaced"
         title="The cost of inconsistent diamond"
-        lede="When diamond varies between lots, tools vary with it, and the customer notices. Sourcing across several suppliers multiplies that risk: several specifications, several lead times, several definitions of acceptable, each mismatch paid for in rejects and re-set machines."
-        closing="EID removes the variable. One manufacturer covers the full diamond and CBN range, every grade verified in the same QC laboratory before it ships. The grade you qualify is the grade you reorder."
-        imageLabel="Factory / production floor — London"
+        lede="When diamond varies between lots, tools vary with it, and the customer notices. Sourcing across several suppliers multiplies it: several specifications, several lead times, several definitions of acceptable."
+        drivers={[
+          {
+            variable: 'Particle size distribution',
+            effect: 'Wheel wear rate and dressing interval shift, so a line tuned to the last lot stops running to the same cycle.',
+          },
+          {
+            variable: 'Crystal shape and friability',
+            effect: 'Cutting action changes. Grades that break down too slowly glaze; too quickly and tool life drops.',
+          },
+          {
+            variable: 'Coating weight and coverage',
+            effect: 'Retention in the bond changes. In a sintered tool that shows up as pull-out and shortened instrument life.',
+          },
+          {
+            variable: 'Lot-to-lot variance',
+            effect: 'Every delivery has to be re-qualified before it goes near production, which is hours you had not planned.',
+          },
+        ]}
+        driversNote="Cause and effect pairings to be confirmed with Uri, together with the tolerance figures that belong beside them."
+        imageLabel="Certificate of analysis — sample lot"
+        resolutionTitle="EID removes the variable, and is specific about how."
+        production={[
+          {
+            title: 'Natural grit and powder',
+            body: 'Manufactured entirely in-house at our own factory, from raw material through crushing, grading, and final QC.',
+          },
+          {
+            title: 'Metal bond, resin bond and CBN',
+            body: 'Produced to order, then processed and graded through our facility to your specification. Coating applied in-house rather than sourced from a second vendor.',
+          },
+          {
+            title: 'CVD single crystal',
+            body: "Grown to EID's exact specification, orientation, and quality standard through a dedicated growth partner, then finished and inspected by us.",
+          },
+        ]}
+        resolutionClosing="Across all three, the specification and the QC pass are ours. That is the part a tool maker is actually buying."
         primaryCta={{ label: 'See how our QC works', href: '/quality' }}
         secondaryCta={{ label: 'Browse the Full Range', href: '/#products' }}
       />
