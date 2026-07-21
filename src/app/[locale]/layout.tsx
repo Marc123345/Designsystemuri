@@ -1,4 +1,5 @@
 import favicon from '@/assets/images/favicon.svg'
+import WhatsAppButton from '@/components/WhatsAppButton'
 import AppProvidersWrapper from '@/components/wrappers/AppProvidersWrapper'
 import { routing } from '@/i18n/routing'
 import { site } from '@/lib/site'
@@ -88,6 +89,8 @@ const LocaleLayout = async ({
       <body suppressHydrationWarning>
         <NextIntlClientProvider>
           <AppProvidersWrapper>{children}</AppProvidersWrapper>
+          {/* Outside the page wrapper so it floats above every route. */}
+          <WhatsAppButton />
         </NextIntlClientProvider>
       </body>
     </html>
