@@ -3,7 +3,7 @@
 import { Link, usePathname } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
-import { applicationMenu, primaryNav, productMenuColumns, resourceMenu } from '@/lib/site'
+import { applicationMenu, primaryNav, productMenu, resourceMenu } from '@/lib/site'
 import { Icon } from '@iconify/react'
 import Image from 'next/image'
 import { useLocale } from 'next-intl'
@@ -60,38 +60,12 @@ const Navbar = () => {
     />
   )
 
+  // All three menus render the same way: one vertical column anchored under
+  // its trigger. Products used to be a four-column mega-panel; it now stacks
+  // like Applications and Resources.
   const menuPanel = (menu: 'products' | 'applications' | 'resources') => {
-    if (menu === 'products') {
-      return (
-        <div
-          // `hidden` is the initial state Preline toggles. Without it the panel
-          // stays in the layout at opacity-0 and silently swallows clicks over
-          // the page beneath it.
-          className="hs-dropdown-menu hs-dropdown-open:opacity-100 absolute top-full inset-x-0 z-50 hidden w-max max-w-full rounded-lg border border-default-200 bg-white p-6 opacity-0 shadow-xl transition-[opacity,margin] duration-300 before:absolute before:start-0 before:-top-4 before:h-4 before:w-full"
-          role="menu"
-        >
-          <div className="grid grid-cols-4 gap-x-8 gap-y-1">
-            {productMenuColumns.map((column, i) => (
-              <div key={i} className="flex flex-col gap-1">
-                {column.map((entry) => (
-                  <Link
-                    key={entry.href}
-                    href={entry.href}
-                    className={`block rounded-sm px-3 py-2 text-sm font-semibold text-default-800 hover:bg-primary/6 hover:text-primary ${
-                      isActive(entry.href) ? 'active text-primary bg-primary/6' : ''
-                    }`}
-                  >
-                    {entry.label}
-                  </Link>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-      )
-    }
-
-    const entries = menu === 'applications' ? applicationMenu : resourceMenu
+    const entries =
+      menu === 'products' ? productMenu : menu === 'applications' ? applicationMenu : resourceMenu
     return (
       <div
         className="hs-dropdown-menu hs-dropdown-open:opacity-100 absolute top-full start-0 z-50 hidden rounded-lg border border-default-200 bg-white p-2 opacity-0 shadow-xl transition-[opacity,margin] duration-300 before:absolute before:start-0 before:-top-4 before:h-4 before:w-full"
@@ -138,11 +112,12 @@ const Navbar = () => {
                 const menu = 'menu' in item ? item.menu : undefined
                 if (menu) {
                   return (
+                    // All panels are narrow now, so every trigger anchors its
+                    // own. Products was `static` only because the old
+                    // four-column panel had to position against the header.
                     <div
                       key={item.href}
-                      className={`hs-dropdown inline-flex [--trigger:hover] ${
-                        menu === 'products' ? 'static' : 'relative'
-                      }`}
+                      className="hs-dropdown relative inline-flex [--trigger:hover]"
                     >
                       <button
                         type="button"
@@ -226,7 +201,7 @@ const Navbar = () => {
             if (menu) {
               const entries =
                 menu === 'products'
-                  ? productMenuColumns.flat()
+                  ? productMenu
                   : menu === 'applications'
                     ? applicationMenu
                     : resourceMenu

@@ -1,4 +1,4 @@
-import { products, MEGA_MENU_COLUMNS, getProduct } from "./products";
+import { products } from "./products";
 import { applications } from "./applications";
 
 export const site = {
@@ -34,12 +34,15 @@ export const trustPoints = [
  * coatings, PCBN, and PCD blanks are sections inside their parent page,
  * reachable by anchor from the page and from the footer index, never from here.
  */
-export const productMenuColumns = MEGA_MENU_COLUMNS.map((column) =>
-  column
-    .map((slug) => getProduct(slug))
-    .filter((p): p is NonNullable<typeof p> => Boolean(p))
-    .map((p) => ({ slug: p.slug, label: p.name, href: `/products/${p.slug}` })),
-);
+/**
+ * The eight product pages as one vertical list, matching the Applications and
+ * Resources menus. Ordered by the locked product sequence rather than the
+ * 2-2-2-2 grid reading order, which only made sense across four columns.
+ */
+export const productMenu = products.map((p) => ({
+  label: p.name,
+  href: `/products/${p.slug}`,
+}));
 
 export const applicationMenu = applications.map((a) => ({
   label: a.name,
