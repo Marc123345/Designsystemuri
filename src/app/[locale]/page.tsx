@@ -1,8 +1,8 @@
 import Marquee from '@/components/Marquee'
+import QuoteForm from '@/components/QuoteForm'
 import Wireframe from '@/components/Wireframe'
 import Hero from '@/components/home/Hero'
 import {
-  BannerCTA,
   CardGrid,
   DarkFeatureList,
   Faq,
@@ -131,6 +131,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
   setRequestLocale(locale)
 
   const products = getProducts(locale)
+  const productOptions = ['Help me specify', ...products.map((p) => p.name)]
   const apps = getApplications(locale)
 
   const groupCards = products.map((p) => ({
@@ -307,25 +308,47 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
         ]}
       />
 
-      <BannerCTA
-        eyebrow="Tell us what you need"
-        title="Tell us the grade you need. A real person replies within one business day."
-        desc="Request a quote, order a sample, or ask a technical question. One form, routed to someone who works with the material."
-        ctaLabel="Request a Quote"
-        ctaHref="/contact"
-        footnote={
-          <>
-            Email{' '}
-            <a href={`mailto:${site.email}`} className="text-primary underline">
-              {site.email}
-            </a>{' '}
-            · Call{' '}
-            <a href={site.phoneHref} className="text-primary underline">
-              {site.phone}
-            </a>
-          </>
-        }
-      />
+      {/* The conversion block is the form itself, not a button that defers to
+          /contact. A buyer who has read this far should not have to load
+          another page to ask a question. */}
+      <section className="lg:py-30 py-20">
+        <div className="container">
+          <div className="grid lg:grid-cols-12 gap-12 items-start">
+            <div className="lg:col-span-5">
+              <SectionHeading
+                eyebrow="Tell us what you need"
+                title="Tell us the grade you need. A real person replies within one business day."
+                desc="Request a quote, order a sample, or ask a technical question. One form, routed to someone who works with the material."
+              />
+
+              <div className="mt-8 space-y-3 text-base text-default-600">
+                <p>
+                  Email{' '}
+                  <a href={`mailto:${site.email}`} className="text-primary underline">
+                    {site.email}
+                  </a>
+                </p>
+                <p>
+                  Call{' '}
+                  <a href={site.phoneHref} className="text-primary underline">
+                    {site.phone}
+                  </a>
+                </p>
+              </div>
+            </div>
+
+            <div className="lg:col-span-7">
+              <div className="rounded-md border border-default-200 bg-default-50 p-6 lg:p-10">
+                <QuoteForm
+                  formTitle="Request a Quote"
+                  formDesc="Tell us the product, grade, size, and quantity you need. A specialist who understands the material replies within one business day."
+                  productOptions={productOptions}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* FAQ sits below the conversion CTA, per the deck: it is written for AI
           search and rich results rather than to be read on the way down. */}
