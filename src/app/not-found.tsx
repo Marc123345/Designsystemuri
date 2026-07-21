@@ -31,7 +31,7 @@ const NotFound = () => (
               Back to home
             </Link>
             <Link
-              href="/products"
+              href="/#products"
               className="rounded-md border border-default-200 px-6 py-3.75 font-medium"
             >
               Browse products

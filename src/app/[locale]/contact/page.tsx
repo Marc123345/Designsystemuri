@@ -35,7 +35,7 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
         desc="Request a quote, order a sample, or ask a technical question. One form, and a specialist who understands the material replies within one business day."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Contact' }]}
         primaryCta={{ label: 'Request a Quote', href: '/contact' }}
-        secondaryCta={{ label: 'View Products', href: '/products' }}
+        secondaryCta={{ label: 'View Products', href: '/#products' }}
       />
 
       {/* The panel copy sits beside the form rather than above it, so the

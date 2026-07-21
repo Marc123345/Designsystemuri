@@ -117,7 +117,7 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
         title="Quality Control & ISO 9001"
         desc="EID's in-house QC laboratory tests every batch of diamond and CBN for size distribution and morphology, with strength and coating coverage where required. ISO 9001."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Quality' }]}
-        secondaryCta={{ label: 'View Products', href: '/products' }}
+        secondaryCta={{ label: 'View Products', href: '/#products' }}
       />
 
       <StatsBar
@@ -368,7 +368,7 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
       {/* CROSS-LINKS — the deck's Products / Detail / Support blocks */}
       <CrossLinks
         groups={[
-          { title: 'Products', links: [{ label: 'Products overview', href: '/products' }] },
+          { title: 'Products', links: [{ label: 'Products overview', href: '/#products' }] },
           {
             title: 'Detail',
             links: [

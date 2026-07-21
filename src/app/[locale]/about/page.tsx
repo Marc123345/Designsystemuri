@@ -52,7 +52,7 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
         desc="EID has manufactured and quality-controlled the full industrial diamond and CBN range from London for over 50 years, supplying tool makers worldwide."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'About' }]}
         primaryCta={{ label: 'Request a Quote', href: '/contact' }}
-        secondaryCta={{ label: 'View Products', href: '/products' }}
+        secondaryCta={{ label: 'View Products', href: '/#products' }}
       />
 
       <StatsBar

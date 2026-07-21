@@ -87,12 +87,6 @@ const Navbar = () => {
               </div>
             ))}
           </div>
-          <Link
-            href="/products"
-            className="mt-3 block border-t border-default-200 px-3 pt-3 text-sm font-semibold text-primary transition-colors hover:text-primary/80"
-          >
-            {t(locale, 'View all products')}
-          </Link>
         </div>
       )
     }

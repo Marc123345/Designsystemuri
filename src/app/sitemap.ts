@@ -19,7 +19,6 @@ type Meta = { priority: number; changeFrequency: MetadataRoute.Sitemap[number]["
 // Locale-agnostic paths with their SEO weighting.
 const paths: Record<string, Meta> = {
   "/": { priority: 1.0, changeFrequency: "weekly" },
-  "/products": { priority: 0.9, changeFrequency: "weekly" },
   "/applications": { priority: 0.9, changeFrequency: "weekly" },
   "/about": { priority: 0.6, changeFrequency: "monthly" },
   "/contact": { priority: 0.7, changeFrequency: "monthly" },

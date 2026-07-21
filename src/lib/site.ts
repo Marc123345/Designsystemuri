@@ -58,7 +58,9 @@ export const resourceMenu = [
 // differentiator), then research, then company, then the conversion endpoint.
 export const primaryNav = [
   { label: "Home", href: "/" },
-  { label: "Products", href: "/products", menu: "products" as const },
+  // There is no standalone products page. Hovering reveals the eight product
+  // pages in the mega-menu; clicking goes to the range section on the homepage.
+  { label: "Products", href: "/#products", menu: "products" as const },
   { label: "Applications", href: "/applications", menu: "applications" as const },
   { label: "Quality", href: "/quality" },
   { label: "Resources", href: "/resources", menu: "resources" as const },
@@ -99,7 +101,7 @@ export const footerColumns = [
   {
     title: "Company & Resources",
     links: [
-      { label: "Products Overview", href: "/products" },
+      { label: "Products Overview", href: "/#products" },
       { label: "Quality, QC & ISO 9001", href: "/quality" },
       { label: "Mesh QC", href: "/mesh-qc" },
       { label: "Micron QC", href: "/micron-qc" },

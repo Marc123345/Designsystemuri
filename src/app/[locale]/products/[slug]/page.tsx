@@ -75,11 +75,11 @@ const ProductPage = async ({
         desc={p.metaDesc}
         crumbs={[
           { label: 'Home', href: '/' },
-          { label: 'Products', href: '/products' },
+          { label: 'Products', href: '/#products' },
           { label: p.name },
         ]}
         primaryCta={{ label: p.cta, href: '/contact' }}
-        secondaryCta={{ label: 'All Products', href: '/products' }}
+        secondaryCta={{ label: 'All Products', href: '/#products' }}
       />
 
       {isSplit && <JumpNav items={p.sections.map((s) => ({ id: s.id, label: s.label }))} />}

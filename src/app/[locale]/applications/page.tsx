@@ -48,7 +48,7 @@ const ApplicationsOverview = async ({ params }: { params: Promise<{ locale: Loca
         title="Diamond and CBN for the work your tools do"
         desc="EID supplies industrial diamond and CBN to tool makers across dental, semiconductor and advanced electronics, automotive and aerospace, tool and die, grinding and cutting, and polishing and lapping."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'Applications' }]}
-        secondaryCta={{ label: 'View Products', href: '/products' }}
+        secondaryCta={{ label: 'View Products', href: '/#products' }}
       />
 
       <StatsBar

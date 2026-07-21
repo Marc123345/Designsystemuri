@@ -210,7 +210,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           title="Every industrial diamond and CBN product, from one source."
           desc="Natural grit and powder made in our own factory, bonded and CBN grades processed and graded to your spec, and single crystal grown to your exact orientation."
           items={groupCards}
-          ctaHref="/products"
+          ctaHref="/#products"
           ctaLabel="Browse the Full Range"
         />
       </div>
@@ -262,7 +262,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
               meta: 'Breadth',
               title: 'The full range, one relationship.',
               body: 'Every diamond and CBN product from one supplier: one contact, one quality standard. Standard grades from stock, specials to your lead time.',
-              href: '/products',
+              href: '/#products',
               cta: 'Browse the range',
             },
           ]}
