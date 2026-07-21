@@ -11,12 +11,10 @@ const Hero = ({
   eyebrow,
   title,
   desc,
-  metaStats,
 }: {
   eyebrow: string
   title: string
   desc: string
-  metaStats: { value: string; label: string }[]
 }) => {
   return (
     <section className="relative size-full overflow-hidden lg:pt-50 pt-35">
@@ -44,21 +42,18 @@ const Hero = ({
           <Wireframe label="Hero image — diamond grit / production floor, London" ratio="wide" />
         </div>
 
-        <div className="mt-16 grid md:grid-cols-3 grid-cols-1 border-t border-default-200">
-          {metaStats.map((stat) => (
-            <div key={stat.label} className="border-b border-default-200 py-7 md:border-b-0">
-              <div className="text-3xl font-bold text-default-900">{stat.value}</div>
-              <div className="mt-1 text-sm text-default-500">{stat.label}</div>
-            </div>
-          ))}
-        </div>
-
-        <div className="mb-10 flex justify-between pt-6">
+        {/* No stats row and no ISO line here: the trust bar sits immediately
+            below the hero and already carries ISO 9001, the QC laboratory, the
+            range and the 50-year record. Repeating them one screen apart made
+            "ISO 9001 Certified" appear three times before the fold. */}
+        <div className="mb-10 mt-16 flex items-center justify-between border-t border-default-200 pt-6">
           <div className="text-sm text-default-900">Based in: {site.location}</div>
-          <a href="#footer" className="text-center text-sm uppercase transition-colors hover:text-primary">
+          <a
+            href="#products"
+            className="text-center text-sm uppercase transition-colors hover:text-primary"
+          >
             Scroll Down
           </a>
-          <div className="hidden text-sm text-default-900 md:block">ISO 9001 Certified</div>
         </div>
       </div>
 

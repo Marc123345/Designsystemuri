@@ -152,16 +152,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 
   return (
     <>
-      <Hero
-        eyebrow={hero.eyebrow}
-        title={hero.title}
-        desc={hero.desc}
-        metaStats={[
-          { value: '50+', label: "Years' experience" },
-          { value: '8', label: 'Product groups' },
-          { value: 'ISO 9001', label: 'Certified' },
-        ]}
-      />
+      <Hero eyebrow={hero.eyebrow} title={hero.title} desc={hero.desc} />
 
       {/* Proof points as icon plus label. No sentences — a buyer is scanning
           here, not reading. */}
