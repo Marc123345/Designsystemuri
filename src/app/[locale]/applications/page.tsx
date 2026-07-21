@@ -80,6 +80,7 @@ const ApplicationsOverview = async ({ params }: { params: Promise<{ locale: Loca
       </div>
       <div className="pt-14">
         <DarkFeatureList
+          bgLabel="Background image — tool maker at work"
           eyebrow="One standard behind every hub"
           title="Consistency your production line can rely on."
           desc="Whatever the application, tool performance depends on predictable crystal strength and size distribution, and that is exactly what our QC process delivers."

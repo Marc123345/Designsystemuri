@@ -138,6 +138,7 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
         </div>
       </section>
       <DarkFeatureList
+          bgLabel="Background image — production floor, London"
         eyebrow="Quality & certification"
         title="Consistency, measured on every run."
         desc="Our QC laboratory tests every production lot for particle size distribution and morphology, with additional testing such as crystal strength and coating coverage performed where required."

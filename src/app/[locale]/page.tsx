@@ -249,6 +249,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       />
 
       <DarkFeatureList
+          bgLabel="Background image — QC laboratory, London"
         eyebrow="Quality"
         title="Every production run is tested before it leaves."
         desc="Consistency is a process, and ours runs on measurement. Each lot is tested in our QC laboratory for particle size distribution and morphology, with crystal strength and coating coverage checked where the grade requires it. We test the run and record the result rather than sampling and assuming. ISO 9001 certified, with full traceability from incoming raw material to shipped lot."

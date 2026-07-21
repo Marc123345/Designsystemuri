@@ -187,6 +187,7 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
         <ChapterMarker index="03" label="QC Process" />
       </div>
       <DarkFeatureList
+          bgLabel="Background image — QC laboratory"
         eyebrow="How our QC works"
         title="How a batch moves through our laboratory."
         desc="Five steps from incoming inspection to shipped product, with documentation at every stage and a retention sample kept from every batch."

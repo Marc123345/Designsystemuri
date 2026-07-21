@@ -139,6 +139,7 @@ const ApplicationPage = async ({
       </div>
       <div className="pt-14">
         <DarkFeatureList
+          bgLabel="Background image — application in production"
           eyebrow="The EID advantage"
           title={app.why.title}
           desc={app.why.body}

@@ -333,6 +333,7 @@ export const DarkFeatureList = ({
   features,
   ctaLabel,
   ctaHref,
+  bgLabel = 'Background image — QC laboratory',
 }: {
   eyebrow: string
   title: string
@@ -340,21 +341,40 @@ export const DarkFeatureList = ({
   features: { title: string; desc: string }[]
   ctaLabel: string
   ctaHref: string
+  /** Names the photograph this slot is waiting on. */
+  bgLabel?: string
 }) => (
   <section className="relative size-full overflow-hidden lg:py-37.5 py-20 text-white">
-    {/* Full-bleed backdrop. The template runs a photograph here; until EID
-        supplies one this is the dark gradient plus the dashed column grid and
-        film-grain wash, with a marker so the missing asset stays visible. */}
+    {/* Full-bleed background image slot. The template runs a photograph here.
+        Until EID supplies one this renders as a wireframe — dashed frame,
+        diagonals and a centred label — over a dark base that keeps the glass
+        card legible. Replace the whole block with a single <Image fill /> when
+        the photography lands. */}
     <div className="absolute inset-0 bg-linear-to-br from-default-950 via-default-950 to-primary-3"></div>
-    <div className="absolute inset-0 flex items-stretch justify-between md:justify-center gap-0 md:gap-45 lg:gap-75 xl:gap-80.5">
-      {[0, 1, 2, 3, 4].map((i) => (
-        <div key={i} className="h-full w-0.5 border border-dashed border-white opacity-10"></div>
-      ))}
+
+    <div
+      role="img"
+      aria-label={`Placeholder image: ${bgLabel}`}
+      className="absolute inset-4 rounded-md border border-dashed border-white/20"
+    >
+      <svg
+        className="absolute inset-0 size-full text-white/10"
+        preserveAspectRatio="none"
+        viewBox="0 0 100 100"
+        aria-hidden="true"
+      >
+        <line x1="0" y1="0" x2="100" y2="100" stroke="currentColor" strokeWidth="1" vectorEffect="non-scaling-stroke" />
+        <line x1="100" y1="0" x2="0" y2="100" stroke="currentColor" strokeWidth="1" vectorEffect="non-scaling-stroke" />
+      </svg>
+
+      <div className="absolute inset-x-0 bottom-6 flex justify-center lg:bottom-10">
+        <span className="rounded border border-white/15 bg-default-950/70 px-3 py-2 text-center text-[11px] uppercase tracking-[0.15em] text-white/50">
+          {bgLabel}
+        </span>
+      </div>
     </div>
+
     <div className="absolute inset-0 size-full bg-[url(../images/bg-noice.gif)] bg-auto bg-repeat bg-position-[50%] opacity-6"></div>
-    <div className="absolute bottom-5 end-5 hidden text-[10px] uppercase tracking-[0.15em] text-white/25 lg:block">
-      Background image pending
-    </div>
 
     <div className="container relative z-10">
       {/* The glass card: a translucent panel over the backdrop rather than a

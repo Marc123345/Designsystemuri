@@ -130,6 +130,7 @@ const ProductPage = async ({
       ))}
 
       <DarkFeatureList
+          bgLabel="Background image — QC laboratory"
         eyebrow="Proven on every lot"
         title="Tested in our own laboratory."
         desc={

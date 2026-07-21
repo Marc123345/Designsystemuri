@@ -106,6 +106,7 @@ const MeshQcPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =
         <ChapterMarker index="02" label="The method" />
       </div>
       <DarkFeatureList
+          bgLabel="Background image — sieve grading bench"
         eyebrow="Mesh QC, step by step"
         title="What we check on a mesh lot."
         desc="Sizing and shape factor are verified on every lot, with strength tested where the grade or the application requires it. The record is what you can put in a qualification file."

@@ -113,6 +113,7 @@ const MicronQcPage = async ({ params }: { params: Promise<{ locale: Locale }> })
         <ChapterMarker index="02" label="The method" />
       </div>
       <DarkFeatureList
+          bgLabel="Background image — particle sizing bench"
         eyebrow="Micron QC, step by step"
         title="What we measure on every micron batch."
         desc="Consistency at the top of the distribution is what protects the workpiece, so that is what our micron QC controls for."
