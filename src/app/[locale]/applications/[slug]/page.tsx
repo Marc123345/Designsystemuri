@@ -1,6 +1,7 @@
 import { RichParagraphs } from '@/components/RichText'
 import Wireframe from '@/components/Wireframe'
-import { QuoteSection, CardGrid, CrossLinks, DarkFeatureList, PageHero } from '@/components/sections'
+import CardCarousel from '@/components/CardCarousel'
+import { QuoteSection, CrossLinks, DarkFeatureList, PageHero } from '@/components/sections'
 import { ArrowButton, SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { applications } from '@/lib/applications'
@@ -118,7 +119,7 @@ const ApplicationPage = async ({
       </section>
 
       {/* PRODUCTS USED */}
-      <CardGrid
+      <CardCarousel
         eyebrow={app.productsTitle}
         title="The material behind your tools."
         desc="Every grade quality-controlled through our own laboratory to the same standard, every time. Tell us your application and we will recommend the right product."
