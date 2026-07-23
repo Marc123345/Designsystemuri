@@ -2,10 +2,14 @@
 
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
+import type { GradeSeries, SectionCatalog } from '@/lib/product-catalog'
 import { getProducts } from '@/lib/i18n-content'
+import { getProductImage } from '@/lib/product-images'
 import { site } from '@/lib/site'
 import { Icon } from '@iconify/react'
+import Image from 'next/image'
 import { useLocale } from 'next-intl'
+import { useState } from 'react'
 import QuoteForm from './QuoteForm'
 import { ArrowButton, ArrowLink, SectionHeading } from './ui'
 
@@ -531,6 +535,228 @@ export const SpecTable = ({ specs }: { specs: { label: string; value: string }[]
         ))}
       </tbody>
     </table>
+  </div>
+)
+
+/* ------------------------------------------------------------------------- */
+/* Real catalogue layout — product photo, grade cards, size chips, coatings.  */
+/* Driven by src/lib/product-catalog.ts (data scraped from eid-ltd.com).      */
+/* ------------------------------------------------------------------------- */
+
+const Chip = ({ children }: { children: React.ReactNode }) => (
+  <span className="inline-flex items-center rounded-md border border-default-200 bg-default-50 px-2.5 py-1 text-sm text-default-700">
+    {children}
+  </span>
+)
+
+/** A real product photo, replacing the Wireframe placeholder where EID art exists. */
+export const ProductPhoto = ({
+  image,
+  alt,
+  gallery,
+}: {
+  image: string
+  alt: string
+  gallery?: string[]
+}) => {
+  const src = getProductImage(image)
+  if (!src) return null
+  const thumbs = (gallery ?? []).filter((g) => g !== image)
+  return (
+    <div className="space-y-3">
+      <div className="overflow-hidden rounded-xl border border-default-200 bg-white">
+        <Image
+          src={src}
+          alt={alt}
+          placeholder="blur"
+          sizes="(min-width: 1024px) 40vw, 100vw"
+          className="aspect-[4/3] h-full w-full object-cover"
+        />
+      </div>
+      {thumbs.length > 0 && (
+        <div className="grid grid-cols-3 gap-3">
+          {thumbs.slice(0, 3).map((key) => {
+            const t = getProductImage(key)
+            return t ? (
+              <div key={key} className="overflow-hidden rounded-lg border border-default-200 bg-white">
+                <Image
+                  src={t}
+                  alt={`${alt} — additional view`}
+                  placeholder="blur"
+                  sizes="(min-width: 1024px) 13vw, 30vw"
+                  className="aspect-square h-full w-full object-cover"
+                />
+              </div>
+            ) : null
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
+
+/**
+ * Grade selector for one series — the eid-ltd.com pattern: a size-range
+ * heading, a row of grade tabs (each with its shape/type subtitle), and a
+ * photo + description card for the active grade.
+ */
+const GradeSeriesBlock = ({
+  series,
+  fallbackImage,
+}: {
+  series: GradeSeries
+  fallbackImage?: string
+}) => {
+  const [active, setActive] = useState(0)
+  const grade = series.grades[active] ?? series.grades[0]
+  const photo = getProductImage(grade?.image ?? series.image ?? fallbackImage)
+
+  return (
+    <div>
+      <h4 className="inline-block border-b-2 border-primary pb-1.5 text-xl font-semibold text-default-900">
+        {series.range ?? series.title}
+      </h4>
+      {series.range && (
+        <div className="mt-2 text-sm uppercase tracking-wider text-default-500">{series.title}</div>
+      )}
+      {series.note && <p className="mt-4 max-w-3xl text-base text-default-600">{series.note}</p>}
+
+      <div className="mt-6 flex flex-wrap gap-3">
+        {series.grades.map((g, i) => {
+          const on = i === active
+          return (
+            <button
+              key={g.code + i}
+              type="button"
+              onClick={() => setActive(i)}
+              aria-pressed={on}
+              className={[
+                'rounded-md border px-4 py-2 text-center transition-colors',
+                on
+                  ? 'border-primary bg-primary text-white'
+                  : 'border-default-300 bg-white text-default-700 hover:border-primary/50',
+              ].join(' ')}
+            >
+              <span className="block font-mono text-sm font-semibold">{g.code}</span>
+              {g.tag && (
+                <span className={['block text-xs', on ? 'text-white/80' : 'text-default-500'].join(' ')}>
+                  {g.tag}
+                </span>
+              )}
+            </button>
+          )
+        })}
+      </div>
+
+      <div className="mt-8 grid overflow-hidden rounded-xl border border-default-200 md:grid-cols-2">
+        {photo ? (
+          <Image
+            src={photo}
+            alt={`${grade?.code} — EID`}
+            placeholder="blur"
+            sizes="(min-width: 768px) 40vw, 100vw"
+            className="aspect-square h-full w-full object-cover"
+          />
+        ) : (
+          <div className="aspect-square bg-default-100" />
+        )}
+        <div className="flex flex-col justify-center bg-default-50 p-8 lg:p-10">
+          <h5 className="text-center text-2xl font-semibold text-primary">{grade?.code}</h5>
+          <div className="mx-auto mt-3 h-px w-14 bg-default-300" />
+          <p className="mt-5 text-center text-base leading-relaxed text-default-600">
+            {grade?.desc ?? series.note ?? 'Available across the full range — enquire for the complete specification.'}
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/** The full grade / size / coating / property block for a catalogued section. */
+export const CatalogSpecs = ({ cat }: { cat: SectionCatalog }) => (
+  <div className="space-y-14">
+    {cat.series?.length ? (
+      <div className="space-y-12">
+        {cat.series.map((s, si) => (
+          <GradeSeriesBlock key={s.title + si} series={s} fallbackImage={cat.image} />
+        ))}
+      </div>
+    ) : null}
+
+    {cat.meshSizes?.length ? (
+      <div>
+        <h4 className="text-sm uppercase tracking-wider text-default-500">Available mesh sizes</h4>
+        <div className="mt-4 space-y-4">
+          {cat.meshSizes.map((g) => (
+            <div key={g.label}>
+              <div className="text-sm font-medium text-default-700">{g.label}</div>
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {g.sizes.map((s, i) => (
+                  <Chip key={s + i}>{s}</Chip>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ) : null}
+
+    {cat.micronSizes?.length ? (
+      <div>
+        <h4 className="text-sm uppercase tracking-wider text-default-500">
+          Micron size ranges <span className="normal-case text-default-400">(µm)</span>
+        </h4>
+        <div className="mt-4 flex flex-wrap gap-1.5">
+          {cat.micronSizes.map((s, i) => (
+            <Chip key={s + i}>{s}</Chip>
+          ))}
+        </div>
+        {cat.micronNote && <p className="mt-4 max-w-3xl text-sm text-default-600">{cat.micronNote}</p>}
+      </div>
+    ) : null}
+
+    {cat.properties?.length || cat.coatings?.length ? (
+      <div className="grid gap-10 lg:grid-cols-2">
+        {cat.properties?.length ? (
+          <div>
+            <h4 className="mb-4 text-sm uppercase tracking-wider text-default-500">Properties</h4>
+            <SpecTable specs={cat.properties} />
+          </div>
+        ) : null}
+        {cat.coatings?.length ? (
+          <div>
+            <h4 className="mb-4 text-sm uppercase tracking-wider text-default-500">Coating options</h4>
+            <div className="flex flex-wrap gap-1.5">
+              {cat.coatings.map((c, i) => (
+                <Chip key={c + i}>{c}</Chip>
+              ))}
+            </div>
+          </div>
+        ) : null}
+      </div>
+    ) : null}
+
+    {cat.imageGallery && cat.imageGallery.length > 1 ? (
+      <div>
+        <h4 className="mb-4 text-sm uppercase tracking-wider text-default-500">Gallery</h4>
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {cat.imageGallery.map((key) => {
+            const img = getProductImage(key)
+            return img ? (
+              <div key={key} className="overflow-hidden rounded-lg border border-default-200 bg-white">
+                <Image
+                  src={img}
+                  alt="EID product"
+                  placeholder="blur"
+                  sizes="(min-width: 640px) 22vw, 45vw"
+                  className="aspect-square h-full w-full object-cover"
+                />
+              </div>
+            ) : null
+          })}
+        </div>
+      </div>
+    ) : null}
   </div>
 )
 

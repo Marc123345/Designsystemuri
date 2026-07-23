@@ -2,10 +2,12 @@ import { RichParagraphs, RichText } from '@/components/RichText'
 import Wireframe from '@/components/Wireframe'
 import {
   QuoteSection,
+  CatalogSpecs,
   CrossLinks,
   DarkFeatureList,
   JumpNav,
   PageHero,
+  ProductPhoto,
   SpecTable,
 } from '@/components/sections'
 import { ArrowButton, ArrowLink, SectionHeading } from '@/components/ui'
@@ -13,6 +15,7 @@ import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { getApplication, getProduct } from '@/lib/i18n-content'
+import { getSectionCatalog } from '@/lib/product-catalog'
 import { products, type ProductSection } from '@/lib/products'
 import { Icon } from '@iconify/react'
 import type { Metadata } from 'next'
@@ -54,6 +57,10 @@ const ProductPage = async ({
   // heading chrome, because there is nothing to jump between.
   const isSplit = p.sections.length > 1
   const leadSpecs = p.sections.find((s) => s.specs?.length)?.specs ?? []
+  // Lead image for the overview: the first catalogued section that has a photo.
+  const leadImage = p.sections
+    .map((s) => getSectionCatalog(p.slug, s.id))
+    .find((c) => c?.image)
 
   const crossApplicationLinks = p.crossApplications
     .map((s) => getApplication(locale, s))
@@ -93,7 +100,11 @@ const ProductPage = async ({
             </div>
 
             <div className="lg:col-span-5 space-y-8">
-              <Wireframe label={`Product image — ${p.name}`} />
+              {leadImage?.image ? (
+                <ProductPhoto image={leadImage.image} alt={`${p.name} — EID`} />
+              ) : (
+                <Wireframe label={`Product image — ${p.name}`} />
+              )}
 
               {leadSpecs.length > 0 && (
                 <div className="divide-y divide-default-200 border-t border-default-200">
@@ -114,6 +125,7 @@ const ProductPage = async ({
       {p.sections.map((s, i) => (
         <ProductSectionBlock
           key={s.id}
+          slug={p.slug}
           section={s}
           gray={i % 2 === 1}
           showHeading={isSplit}
@@ -197,15 +209,22 @@ export default ProductPage
 /* ------------------------------------------------------------------------- */
 
 const ProductSectionBlock = ({
+  slug,
   section,
   gray,
   showHeading,
 }: {
+  slug: string
   section: ProductSection
   gray: boolean
   showHeading: boolean
 }) => {
-  const hasDetail = Boolean(section.applications?.length || section.specs?.length)
+  const cat = getSectionCatalog(slug, section.id)
+  // The catalogue's real property table supersedes the copy deck's [confirm]
+  // placeholder specs, so only fall back to the placeholder table where no
+  // catalogue entry exists for this section.
+  const hasCatalog = Boolean(cat)
+  const hasDetail = Boolean(section.applications?.length || (!hasCatalog && section.specs?.length))
 
   return (
     <>
@@ -234,7 +253,18 @@ const ProductSectionBlock = ({
               </div>
 
               <div className="lg:col-span-5 space-y-6">
-                <Wireframe label={`${section.label} — material / tooling shot`} ratio="landscape" />
+                {/* When the section has grade blocks, the photos live inside
+                    those blocks (mirroring eid-ltd.com); only show a header
+                    photo for single-image sections without a grade selector. */}
+                {!cat?.series?.length && cat?.image ? (
+                  <ProductPhoto
+                    image={cat.image}
+                    alt={`${section.title} — EID`}
+                    gallery={cat.imageGallery}
+                  />
+                ) : !cat ? (
+                  <Wireframe label={`${section.label} — material / tooling shot`} ratio="landscape" />
+                ) : null}
 
                 {section.callouts?.map((c) => (
                     <div key={c.title} className="border-t-2 border-primary pt-5">
@@ -290,7 +320,7 @@ const ProductSectionBlock = ({
                   </div>
                 ) : null}
 
-                {section.specs?.length ? (
+                {!hasCatalog && section.specs?.length ? (
                   <div>
                     <h3 className="mb-6 text-2xl">{section.specsTitle ?? 'Specifications'}</h3>
                     <SpecTable specs={section.specs} />
@@ -310,6 +340,37 @@ const ProductSectionBlock = ({
                     )}
                   </div>
                 ) : null}
+              </div>
+            )}
+
+            {/* Real grade / size / coating / property data from eid-ltd.com */}
+            {cat && (
+              <div className="mt-16 border-t border-default-200 pt-14">
+                <div className="mb-10 flex items-baseline gap-3">
+                  <h3 className="text-2xl">Grades &amp; specifications</h3>
+                  {section.datasheet && (
+                    <Link
+                      href="/resources/datasheets"
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary"
+                    >
+                      <Icon icon="tabler:download" className="size-4" />
+                      {section.datasheet}
+                    </Link>
+                  )}
+                </div>
+                <CatalogSpecs
+                  cat={{
+                    ...cat,
+                    // Merge the copy deck's verified attribute rows (Form,
+                    // Formats, Custom grades…) into the catalogue property table.
+                    properties: [...(section.specs ?? []), ...(cat.properties ?? [])],
+                  }}
+                />
+                {section.specsNote && (
+                  <p className="mt-8 text-sm text-default-600">
+                    <RichText>{section.specsNote}</RichText>
+                  </p>
+                )}
               </div>
             )}
           </div>

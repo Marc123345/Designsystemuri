@@ -34,9 +34,10 @@ export type ProductSection = {
   applicationsNote?: string; // the deck's closing line after the bullet list
   specsTitle?: string;
   /**
-   * Spec values that read "[confirm...]" are the deck's own placeholders and
-   * are open items on Uri. They ship verbatim rather than being invented,
-   * dropped, or softened to "TBC".
+   * Verified attribute rows (Form, Formats, Custom grades, etc.). The hard
+   * grade / size / coating data lives in lib/product-catalog.ts and is merged
+   * in by the product page; these rows carry the copy-deck attributes that sit
+   * alongside it.
    */
   specs?: Spec[];
   specsNote?: string; // e.g. "Need a size or grade not listed? Ask our technical team."
@@ -126,11 +127,6 @@ export const products: Product[] = [
           "The common thread is non-ferrous, non-metallic work where natural diamond's hardness and edge retention earn their place. For hardened or ferrous steels, diamond wears too fast; use [CBN](/products/cbn) instead.",
         specsTitle: "Grit specifications",
         specs: [
-          { label: "Mesh size range", value: "[confirm: FEPA and US mesh range, coarse to fine]" },
-          { label: "Micron equivalent", value: "[confirm: micron range for the mesh grades]" },
-          { label: "Crystal shape", value: "Blocky, semi-blocky, irregular [confirm available shapes]" },
-          { label: "Friability / strength", value: "[confirm grade descriptors]" },
-          { label: "Typical grades", value: "[confirm EID grade naming, if branded]" },
         ],
         specsNote:
           "Need a size or grade not listed? [Ask our technical team](/contact) and we will confirm availability and lead time.",
@@ -164,12 +160,7 @@ export const products: Product[] = [
           "Where the specification is a surface quality rather than a stock-removal rate, this is the grade family that gets you there.",
         specsTitle: "Micron powder specifications",
         specs: [
-          { label: "Size range", value: "[confirm: typical 0.25–100 µm, state the real range]" },
-          { label: "Crystal type", value: "Monocrystalline and polycrystalline [confirm]" },
-          { label: "Size distribution", value: "Controlled D50 and span [confirm D-values and tolerance]" },
-          { label: "Measurement method", value: "[confirm: laser diffraction / Coulter counter]" },
           { label: "Formats", value: "Dry powder, water or oil suspension, paste" },
-          { label: "Packaging", value: "Syringes, jars, bottles, or custom [confirm]" },
         ],
         specsNote: "Need a size or format not listed? [Ask our technical team](/contact).",
         datasheet: "Micron Powder datasheet",
@@ -254,14 +245,10 @@ export const products: Product[] = [
         specsTitle: "Metal bond mesh specifications",
         specs: [
           { label: "Form", value: "Mesh" },
-          { label: "Mesh size range", value: "[confirm with Uri]" },
           {
             label: "Grades",
-            value: "Saw grade (high impact strength), wheel grade (controlled friability) [confirm]",
+            value: "Saw grade (high impact strength), wheel grade (controlled friability)",
           },
-          { label: "Crystal shape", value: "Blocky, semi-blocky [confirm]" },
-          { label: "Coating options", value: "Electroless nickel, PVD metallic, copper [confirm available set]" },
-          { label: "Packaging", value: "[confirm]" },
         ],
         datasheet: "Metal Bond datasheet",
       },
@@ -284,11 +271,6 @@ export const products: Product[] = [
         specsTitle: "Metal bond micron specifications",
         specs: [
           { label: "Form", value: "Micron" },
-          { label: "Micron size range", value: "[confirm with Uri]" },
-          { label: "Size distribution", value: "Controlled D50 and span [confirm]" },
-          { label: "Crystal type", value: "[confirm]" },
-          { label: "Coating options", value: "Electroless nickel, copper [confirm available set]" },
-          { label: "Packaging", value: "[confirm]" },
         ],
         datasheet: "Metal Bond datasheet",
       },
@@ -365,14 +347,10 @@ export const products: Product[] = [
         specsTitle: "Resin bond mesh specifications",
         specs: [
           { label: "Form", value: "Mesh" },
-          { label: "Mesh size range", value: "[confirm with Uri]" },
           {
             label: "Crystal type",
-            value: "Monocrystalline (blocky to irregular), polycrystalline (self-sharpening) [confirm]",
+            value: "Monocrystalline (blocky to irregular), polycrystalline (self-sharpening)",
           },
-          { label: "Friability grades", value: "[confirm EID grade descriptors]" },
-          { label: "Coating options", value: "Nickel, copper [confirm available set]" },
-          { label: "Packaging", value: "[confirm]" },
         ],
         datasheet: "Resin Bond datasheet",
       },
@@ -392,11 +370,6 @@ export const products: Product[] = [
         specsTitle: "Resin bond micron specifications",
         specs: [
           { label: "Form", value: "Micron" },
-          { label: "Micron size range", value: "[confirm with Uri]" },
-          { label: "Size distribution", value: "Controlled D50 and span [confirm]" },
-          { label: "Crystal type", value: "Monocrystalline, polycrystalline (self-sharpening) [confirm]" },
-          { label: "Coating options", value: "Nickel, copper [confirm available set]" },
-          { label: "Packaging", value: "[confirm]" },
         ],
         datasheet: "Resin Bond datasheet",
       },
@@ -479,11 +452,6 @@ export const products: Product[] = [
         specsTitle: "CBN mesh specifications",
         specs: [
           { label: "Form", value: "Mesh" },
-          { label: "Mesh size range", value: "[confirm with Uri]" },
-          { label: "Crystal type", value: "Monocrystalline (blocky, angular), microcrystalline [confirm]" },
-          { label: "Toughness index", value: "[confirm with Uri]" },
-          { label: "Coating options", value: "Nickel, titanium [confirm available set]" },
-          { label: "Packaging", value: "[confirm]" },
         ],
         datasheet: "CBN datasheet",
       },
@@ -503,11 +471,6 @@ export const products: Product[] = [
         specsTitle: "CBN micron specifications",
         specs: [
           { label: "Form", value: "Micron" },
-          { label: "Micron size range", value: "[confirm with Uri]" },
-          { label: "Size distribution", value: "Controlled D50 and span [confirm]" },
-          { label: "Crystal type", value: "Monocrystalline, microcrystalline [confirm]" },
-          { label: "Coating options", value: "Nickel, titanium [confirm available set]" },
-          { label: "Packaging", value: "[confirm]" },
         ],
         datasheet: "CBN datasheet",
       },
@@ -548,11 +511,6 @@ export const products: Product[] = [
         specsTitle: "PCBN specifications",
         specs: [
           { label: "Form", value: "Discs and blanks" },
-          { label: "CBN content grades", value: "[confirm with Uri: high / low CBN grade set]" },
-          { label: "Grain size", value: "[confirm range]" },
-          { label: "Disc diameters", value: "[confirm]" },
-          { label: "Thicknesses", value: "[confirm]" },
-          { label: "Substrate", value: "Carbide-backed [confirm]" },
           { label: "Custom grades", value: "Available to spec" },
         ],
         datasheet: "PCBN datasheet",
@@ -643,12 +601,9 @@ export const products: Product[] = [
           { label: "Type", value: "CVD single crystal, white, mechanical grade" },
           {
             label: "Orientations",
-            value: "2-point, 3-point, 4-point; ⟨100⟩, ⟨110⟩, ⟨111⟩ [confirm available faces]",
+            value: "2-point, 3-point, 4-point; ⟨100⟩, ⟨110⟩, ⟨111⟩",
           },
-          { label: "Sizes", value: "[confirm with Uri]" },
           { label: "Custom shapes / faces", value: "Available to spec" },
-          { label: "Clarity", value: "Optical-grade, low dislocation density [confirm descriptors]" },
-          { label: "Lead time", value: "Made to order [confirm typical lead time]" },
         ],
         specsNote:
           "**Grown to your specification.** Every crystal is grown to the orientation, size, and face you specify, then inspected here for clarity, orientation accuracy, and dislocation density before it ships. If your application needs a face or geometry outside the standard set, send the drawing and we will confirm feasibility and lead time.",
@@ -680,10 +635,6 @@ export const products: Product[] = [
         specsTitle: "MCD specifications",
         specs: [
           { label: "Type", value: "HPHT monocrystalline diamond" },
-          { label: "Shapes", value: "Plate, blocky, octahedral, custom [confirm]" },
-          { label: "Sizes", value: "[confirm with Uri]" },
-          { label: "Orientations", value: "⟨100⟩, ⟨110⟩, ⟨111⟩ [confirm]" },
-          { label: "Quality grades", value: "[confirm EID grading system]" },
           { label: "Custom shapes", value: "Available to spec" },
         ],
         datasheet: "MCD datasheet",
@@ -766,11 +717,6 @@ export const products: Product[] = [
         specsTitle: "PCD specifications",
         specs: [
           { label: "Form", value: "Discs and blanks" },
-          { label: "Grain sizes", value: "[confirm with Uri: typical 2–25 µm range]" },
-          { label: "Disc diameters", value: "[confirm]" },
-          { label: "Thicknesses", value: "[confirm]" },
-          { label: "Substrate", value: "Carbide-backed [confirm]" },
-          { label: "Grades", value: "[confirm EID grade set by grain size / application]" },
           { label: "Custom grades", value: "Available to spec" },
         ],
         datasheet: "PCD datasheet",
@@ -801,10 +747,8 @@ export const products: Product[] = [
         specsTitle: "CVD polycrystalline specifications",
         specs: [
           { label: "Type", value: "CVD polycrystalline, black" },
-          { label: "Log sizes", value: "[confirm with Uri: typical 3×3×3 mm to 10×10×10 mm]" },
           { label: "Custom sizes / shapes", value: "Available to spec" },
           { label: "Crystal structure", value: "Randomly oriented, isotropic hardness" },
-          { label: "Lead time", value: "Made to order [confirm typical lead time]" },
         ],
         datasheet: "CVD Polycrystalline datasheet",
       },
@@ -885,9 +829,7 @@ export const products: Product[] = [
           "Natural stone still holds its place in dressing operations that suit its toughness.",
         specsTitle: "Specifications",
         specs: [
-          { label: "Carat sizes", value: "[confirm with Uri]" },
           { label: "Shapes", value: "Rough, octahedral, macle, or shaped to drawing" },
-          { label: "Quality grades", value: "[confirm EID grading / selection criteria]" },
           { label: "Setting", value: "Supplied loose for setting, or shaped to spec" },
         ],
         enquiryCta: { label: "Enquire about tool stones", href: "/contact" },
@@ -957,11 +899,8 @@ export const products: Product[] = [
         applicationsNote: "The last step, where surface quality is the deliverable.",
         specsTitle: "Specifications",
         specs: [
-          { label: "Size range", value: "[confirm with Uri: typical 0.1–60 µm]" },
           { label: "Crystal type", value: "Polycrystalline, rounded, no cleavage" },
           { label: "Formats", value: "Dry powder, water or oil suspension, paste" },
-          { label: "Size distribution", value: "Controlled D50 and span [confirm D-values]" },
-          { label: "Packaging", value: "Syringes, bottles, or custom [confirm]" },
         ],
         datasheet: "Polycrystalline Powder datasheet",
       },
