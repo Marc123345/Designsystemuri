@@ -7,7 +7,7 @@ import { CardGrid, DarkFeatureList, Faq, TrustBar } from '@/components/sections'
 import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
-import { getApplications, getProducts } from '@/lib/i18n-content'
+import { getApplications, getProducts, t } from '@/lib/i18n-content'
 import { site, trustPoints } from '@/lib/site'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
@@ -126,7 +126,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
   setRequestLocale(locale)
 
   const products = getProducts(locale)
-  const productOptions = ['Help me specify', ...products.map((p) => p.name)]
+  const productOptions = [t(locale, 'Help me specify'), ...products.map((p) => p.name)]
   const apps = getApplications(locale)
 
   const groupCards = products.map((p) => ({
@@ -147,7 +147,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 
   return (
     <>
-      <Hero eyebrow={hero.eyebrow} title={hero.title} desc={hero.desc} />
+      <Hero eyebrow={t(locale, hero.eyebrow)} title={t(locale, hero.title)} desc={t(locale, hero.desc)} />
 
       {/* Proof points as icon plus label. No sentences — a buyer is scanning
           here, not reading. */}
@@ -157,128 +157,128 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           then answers it with the graduated production model rather than a
           fourth restatement of "we control quality". */}
       <TheProblem
-        eyebrow="Why suppliers get replaced"
-        title="The cost of inconsistent diamond"
-        lede="When diamond varies between lots, tools vary with it, and the customer notices. Sourcing across several suppliers multiplies it: several specifications, several lead times, several definitions of acceptable."
+        eyebrow={t(locale, 'Why suppliers get replaced')}
+        title={t(locale, 'The cost of inconsistent diamond')}
+        lede={t(locale, 'When diamond varies between lots, tools vary with it, and the customer notices. Sourcing across several suppliers multiplies it: several specifications, several lead times, several definitions of acceptable.')}
         drivers={[
           {
-            variable: 'Particle size distribution',
-            effect: 'Wheel wear rate and dressing interval shift, so a line tuned to the last lot stops running to the same cycle.',
-            evidence: 'Particle size distribution — D50 and span curve',
+            variable: t(locale, 'Particle size distribution'),
+            effect: t(locale, 'Wheel wear rate and dressing interval shift, so a line tuned to the last lot stops running to the same cycle.'),
+            evidence: t(locale, 'Particle size distribution — D50 and span curve'),
           },
           {
-            variable: 'Crystal shape and friability',
-            effect: 'Cutting action changes. Grades that break down too slowly glaze; too quickly and tool life drops.',
-            evidence: 'Crystal morphology — microscopy against the grade spec',
+            variable: t(locale, 'Crystal shape and friability'),
+            effect: t(locale, 'Cutting action changes. Grades that break down too slowly glaze; too quickly and tool life drops.'),
+            evidence: t(locale, 'Crystal morphology — microscopy against the grade spec'),
           },
           {
-            variable: 'Coating weight and coverage',
-            effect: 'Retention in the bond changes. In a sintered tool that shows up as pull-out and shortened instrument life.',
-            evidence: 'Coating weight assay — target percentage per batch',
+            variable: t(locale, 'Coating weight and coverage'),
+            effect: t(locale, 'Retention in the bond changes. In a sintered tool that shows up as pull-out and shortened instrument life.'),
+            evidence: t(locale, 'Coating weight assay — target percentage per batch'),
           },
           {
-            variable: 'Lot-to-lot variance',
-            effect: 'Every delivery has to be re-qualified before it goes near production, which is hours you had not planned.',
-            evidence: 'Certificate of analysis — sample lot',
+            variable: t(locale, 'Lot-to-lot variance'),
+            effect: t(locale, 'Every delivery has to be re-qualified before it goes near production, which is hours you had not planned.'),
+            evidence: t(locale, 'Certificate of analysis — sample lot'),
           },
         ]}
-        driversNote="Cause and effect pairings to be confirmed with Uri, together with the tolerance figures that belong beside them."
-        resolutionTitle="EID removes the variable, and is specific about how."
+        driversNote={t(locale, 'Cause and effect pairings to be confirmed with Uri, together with the tolerance figures that belong beside them.')}
+        resolutionTitle={t(locale, 'EID removes the variable, and is specific about how.')}
         production={[
           {
-            title: 'Natural grit and powder',
-            body: 'Manufactured entirely in-house at our own factory, from raw material through crushing, grading, and final QC.',
+            title: t(locale, 'Natural grit and powder'),
+            body: t(locale, 'Manufactured entirely in-house at our own factory, from raw material through crushing, grading, and final QC.'),
           },
           {
-            title: 'Metal bond, resin bond and CBN',
-            body: 'Produced to order, then processed and graded through our facility to your specification. Coating applied in-house rather than sourced from a second vendor.',
+            title: t(locale, 'Metal bond, resin bond and CBN'),
+            body: t(locale, 'Produced to order, then processed and graded through our facility to your specification. Coating applied in-house rather than sourced from a second vendor.'),
           },
           {
-            title: 'CVD single crystal',
-            body: "Grown to EID's exact specification, orientation, and quality standard through a dedicated growth partner, then finished and inspected by us.",
+            title: t(locale, 'CVD single crystal'),
+            body: t(locale, "Grown to EID's exact specification, orientation, and quality standard through a dedicated growth partner, then finished and inspected by us."),
           },
         ]}
-        resolutionClosing="Across all three, the specification and the QC pass are ours. That is the part a tool maker is actually buying."
-        primaryCta={{ label: 'See how our QC works', href: '/quality' }}
-        secondaryCta={{ label: 'Browse the Full Range', href: '/#products' }}
+        resolutionClosing={t(locale, 'Across all three, the specification and the QC pass are ours. That is the part a tool maker is actually buying.')}
+        primaryCta={{ label: t(locale, 'See how our QC works'), href: '/quality' }}
+        secondaryCta={{ label: t(locale, 'Browse the Full Range'), href: '/#products' }}
       />
 
       {/* THE RANGE — anchor target for the hero's "Browse the Full Range". */}
       <div id="products" className="scroll-mt-28">
         <CardGrid
-          eyebrow="The range · eight product groups"
-          title="Every industrial diamond and CBN product, from one source."
-          desc="Natural grit and powder made in our own factory, bonded and CBN grades processed and graded to your spec, and single crystal grown to your exact orientation."
+          eyebrow={t(locale, 'The range · eight product groups')}
+          title={t(locale, 'Every industrial diamond and CBN product, from one source.')}
+          desc={t(locale, 'Natural grit and powder made in our own factory, bonded and CBN grades processed and graded to your spec, and single crystal grown to your exact orientation.')}
           items={groupCards}
           ctaHref="/#products"
-          ctaLabel="Browse the Full Range"
+          ctaLabel={t(locale, 'Browse the Full Range')}
         />
       </div>
 
       {/* Pillar one carries the graduated production claim, which is the honesty
           a technical buyer checks for before anything else on this page. */}
       <WhyEid
-        eyebrow="Why tool makers qualify EID"
-        title="One accountable manufacturer, spec to delivery."
+        eyebrow={t(locale, 'Why tool makers qualify EID')}
+        title={t(locale, 'One accountable manufacturer, spec to delivery.')}
         pillars={[
           {
-            meta: 'Accountability',
-            title: 'We control production, not just supply.',
-            body: 'Natural grit and powder made in our own factory. Bonded and CBN grades processed and graded to your spec. CVD grown to order through a dedicated partner. The quality decision is always ours: one accountable manufacturer, spec to delivery.',
+            meta: t(locale, 'Accountability'),
+            title: t(locale, 'We control production, not just supply.'),
+            body: t(locale, 'Natural grit and powder made in our own factory. Bonded and CBN grades processed and graded to your spec. CVD grown to order through a dedicated partner. The quality decision is always ours: one accountable manufacturer, spec to delivery.'),
             href: '/about',
-            cta: 'How we make it',
+            cta: t(locale, 'How we make it'),
           },
           {
-            meta: 'Consistency',
-            title: 'The same material, every reorder.',
-            body: 'Every run is measured for particle size distribution and morphology, with crystal strength and coating coverage checked where the grade calls for it. ISO 9001, certificate of analysis per lot. Order the same grade twice, get the same grade twice.',
+            meta: t(locale, 'Consistency'),
+            title: t(locale, 'The same material, every reorder.'),
+            body: t(locale, 'Every run is measured for particle size distribution and morphology, with crystal strength and coating coverage checked where the grade calls for it. ISO 9001, certificate of analysis per lot. Order the same grade twice, get the same grade twice.'),
             href: '/quality',
-            cta: 'See how our QC works',
+            cta: t(locale, 'See how our QC works'),
           },
           {
-            meta: 'Breadth',
-            title: 'The full range, one relationship.',
-            body: 'Every diamond and CBN product from one supplier: one contact, one quality standard. Standard grades from stock, specials to your lead time.',
+            meta: t(locale, 'Breadth'),
+            title: t(locale, 'The full range, one relationship.'),
+            body: t(locale, 'Every diamond and CBN product from one supplier: one contact, one quality standard. Standard grades from stock, specials to your lead time.'),
             href: '/#products',
-            cta: 'Browse the range',
+            cta: t(locale, 'Browse the range'),
           },
         ]}
       />
 
       {/* Six hubs → 3-across, two rows, with the larger card treatment. */}
       <CardGrid
-        eyebrow="Applications · six hubs"
-        title="Diamond and CBN for the work your tools do."
-        desc="We supply the material. You build the tools that serve these applications."
+        eyebrow={t(locale, 'Applications · six hubs')}
+        title={t(locale, 'Diamond and CBN for the work your tools do.')}
+        desc={t(locale, 'We supply the material. You build the tools that serve these applications.')}
         items={hubCards}
         ctaHref="/applications"
-        ctaLabel="View All Applications"
+        ctaLabel={t(locale, 'View All Applications')}
         columns={3}
       />
 
       <DarkFeatureList
           bgLabel="Background image — QC laboratory, London"
-        eyebrow="Quality"
-        title="Every production run is tested before it leaves."
-        desc="Consistency is a process, and ours runs on measurement. Each lot is tested in our QC laboratory for particle size distribution and morphology, with crystal strength and coating coverage checked where the grade requires it. We test the run and record the result rather than sampling and assuming. ISO 9001 certified, with full traceability from incoming raw material to shipped lot."
-        ctaLabel="See how our QC works"
+        eyebrow={t(locale, 'Quality')}
+        title={t(locale, 'Every production run is tested before it leaves.')}
+        desc={t(locale, 'Consistency is a process, and ours runs on measurement. Each lot is tested in our QC laboratory for particle size distribution and morphology, with crystal strength and coating coverage checked where the grade requires it. We test the run and record the result rather than sampling and assuming. ISO 9001 certified, with full traceability from incoming raw material to shipped lot.')}
+        ctaLabel={t(locale, 'See how our QC works')}
         ctaHref="/quality"
         features={[
           {
-            title: 'Particle size distribution',
-            desc: 'Graded and verified for tight D50 and span, with outliers controlled, on every lot.',
+            title: t(locale, 'Particle size distribution'),
+            desc: t(locale, 'Graded and verified for tight D50 and span, with outliers controlled, on every lot.'),
           },
           {
-            title: 'Crystal morphology',
-            desc: 'Inspected on every lot, with shape factor on mesh grades.',
+            title: t(locale, 'Crystal morphology'),
+            desc: t(locale, 'Inspected on every lot, with shape factor on mesh grades.'),
           },
           {
-            title: 'Coating weight & coverage',
-            desc: 'Every coated batch checked for target weight and uniform coverage.',
+            title: t(locale, 'Coating weight & coverage'),
+            desc: t(locale, 'Every coated batch checked for target weight and uniform coverage.'),
           },
           {
-            title: 'ISO 9001 & traceability',
-            desc: 'Certificate of analysis and retention samples available for every lot.',
+            title: t(locale, 'ISO 9001 & traceability'),
+            desc: t(locale, 'Certificate of analysis and retention samples available for every lot.'),
           },
         ]}
       />
@@ -288,18 +288,18 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           endorsements EID has not given us. */}
       <Marquee
         items={[
-          'ISO 9001',
-          'Natural Diamond Grit',
-          'Micron Powder',
-          'CBN',
-          'PCBN',
-          'CVD Single Crystal',
-          'MCD',
-          'PCD Blanks',
-          'Metal Bond',
-          'Resin Bond',
-          'Coated in-house',
-          'Made in London',
+          t(locale, 'ISO 9001'),
+          t(locale, 'Natural Diamond Grit'),
+          t(locale, 'Micron Powder'),
+          t(locale, 'CBN'),
+          t(locale, 'PCBN'),
+          t(locale, 'CVD Single Crystal'),
+          t(locale, 'MCD'),
+          t(locale, 'PCD Blanks'),
+          t(locale, 'Metal Bond'),
+          t(locale, 'Resin Bond'),
+          t(locale, 'Coated in-house'),
+          t(locale, 'Made in London'),
         ]}
       />
 
@@ -311,20 +311,20 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           <div className="grid lg:grid-cols-12 gap-12 items-start">
             <div className="lg:col-span-5">
               <SectionHeading
-                eyebrow="Tell us what you need"
-                title="Tell us the grade you need. A real person replies within one business day."
-                desc="Request a quote, order a sample, or ask a technical question. One form, routed to someone who works with the material."
+                eyebrow={t(locale, 'Tell us what you need')}
+                title={t(locale, 'Tell us the grade you need. A real person replies within one business day.')}
+                desc={t(locale, 'Request a quote, order a sample, or ask a technical question. One form, routed to someone who works with the material.')}
               />
 
               <div className="mt-8 space-y-3 text-base text-default-600">
                 <p>
-                  Email{' '}
+                  {t(locale, 'Email')}{' '}
                   <a href={`mailto:${site.email}`} className="text-primary underline">
                     {site.email}
                   </a>
                 </p>
                 <p>
-                  Call{' '}
+                  {t(locale, 'Call')}{' '}
                   <a href={site.phoneHref} className="text-primary underline">
                     {site.phone}
                   </a>
@@ -335,8 +335,8 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
             <div className="lg:col-span-7">
               <div className="rounded-md border border-default-200 bg-default-50 p-6 lg:p-10">
                 <QuoteForm
-                  formTitle="Request a Quote"
-                  formDesc="Tell us the product, grade, size, and quantity you need. A specialist who understands the material replies within one business day."
+                  formTitle={t(locale, 'Request a Quote')}
+                  formDesc={t(locale, 'Tell us the product, grade, size, and quantity you need. A specialist who understands the material replies within one business day.')}
                   productOptions={productOptions}
                 />
               </div>
@@ -348,10 +348,10 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       {/* FAQ sits below the conversion CTA, per the deck: it is written for AI
           search and rich results rather than to be read on the way down. */}
       <Faq
-        eyebrow="Frequently asked"
-        title="Straight answers about the material."
-        desc="The questions technical buyers ask before they qualify a superabrasive supplier. If yours is not here, ask us and someone who works with the material will answer."
-        items={faqs}
+        eyebrow={t(locale, 'Frequently asked')}
+        title={t(locale, 'Straight answers about the material.')}
+        desc={t(locale, 'The questions technical buyers ask before they qualify a superabrasive supplier. If yours is not here, ask us and someone who works with the material will answer.')}
+        items={faqs.map((f) => ({ q: t(locale, f.q), a: t(locale, f.a) }))}
       />
       <script
         type="application/ld+json"

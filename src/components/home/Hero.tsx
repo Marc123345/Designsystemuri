@@ -1,6 +1,9 @@
 import Wireframe from '@/components/Wireframe'
 import { ArrowButton } from '@/components/ui'
+import type { Locale } from '@/i18n/routing'
+import { t } from '@/lib/i18n-content'
 import { site } from '@/lib/site'
+import { useLocale } from 'next-intl'
 
 /**
  * One hero, one message. The Vol 03 deck replaced the rotating three-slide
@@ -16,6 +19,8 @@ const Hero = ({
   title: string
   desc: string
 }) => {
+  const locale = useLocale() as Locale
+
   return (
     <section className="relative size-full overflow-hidden lg:pt-50 pt-35">
       <div className="container relative z-10">
@@ -32,8 +37,8 @@ const Hero = ({
           <div>
             <p className="mb-7.5 text-base">{desc}</p>
             <div className="flex flex-wrap gap-4">
-              <ArrowButton href="/contact" label="Request a Quote" />
-              <ArrowButton href="#products" label="Browse the Full Range" variant="dark" external />
+              <ArrowButton href="/contact" label={t(locale, 'Request a Quote')} />
+              <ArrowButton href="#products" label={t(locale, 'Browse the Full Range')} variant="dark" external />
             </div>
           </div>
         </div>
@@ -47,12 +52,12 @@ const Hero = ({
             range and the 50-year record. Repeating them one screen apart made
             "ISO 9001 Certified" appear three times before the fold. */}
         <div className="mb-10 mt-16 flex items-center justify-between border-t border-default-200 pt-6">
-          <div className="text-sm text-default-900">Based in: {site.location}</div>
+          <div className="text-sm text-default-900">{t(locale, 'Based in:')} {site.location}</div>
           <a
             href="#products"
             className="text-center text-sm uppercase transition-colors hover:text-primary"
           >
-            Scroll Down
+            {t(locale, 'Scroll Down')}
           </a>
         </div>
       </div>

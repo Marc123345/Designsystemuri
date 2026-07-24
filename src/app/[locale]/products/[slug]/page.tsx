@@ -14,8 +14,7 @@ import { ArrowButton, ArrowLink, SectionHeading } from '@/components/ui'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
-import { getApplication, getProduct } from '@/lib/i18n-content'
-import { getSectionCatalog } from '@/lib/product-catalog'
+import { getApplication, getProduct, getSectionCatalog, t } from '@/lib/i18n-content'
 import { products, type ProductSection } from '@/lib/products'
 import { Icon } from '@iconify/react'
 import type { Metadata } from 'next'
@@ -59,7 +58,7 @@ const ProductPage = async ({
   const leadSpecs = p.sections.find((s) => s.specs?.length)?.specs ?? []
   // Lead image for the overview: the first catalogued section that has a photo.
   const leadImage = p.sections
-    .map((s) => getSectionCatalog(p.slug, s.id))
+    .map((s) => getSectionCatalog(locale, p.slug, s.id))
     .find((c) => c?.image)
 
   const crossApplicationLinks = p.crossApplications
@@ -76,12 +75,12 @@ const ProductPage = async ({
         title={p.h1}
         desc={p.metaDesc}
         crumbs={[
-          { label: 'Home', href: '/' },
-          { label: 'Products', href: '/#products' },
+          { label: t(locale, 'Home'), href: '/' },
+          { label: t(locale, 'Products'), href: '/#products' },
           { label: p.name },
         ]}
         primaryCta={{ label: p.cta, href: '/contact' }}
-        secondaryCta={{ label: 'All Products', href: '/#products' }}
+        secondaryCta={{ label: t(locale, 'All Products'), href: '/#products' }}
       />
 
       {isSplit && <JumpNav items={p.sections.map((s) => ({ id: s.id, label: s.label }))} />}
@@ -125,6 +124,7 @@ const ProductPage = async ({
       {p.sections.map((s, i) => (
         <ProductSectionBlock
           key={s.id}
+          locale={locale}
           slug={p.slug}
           section={s}
           gray={i % 2 === 1}
@@ -134,39 +134,39 @@ const ProductPage = async ({
 
       <DarkFeatureList
           bgLabel="Background image — QC laboratory"
-        eyebrow="Proven on every lot"
-        title="Tested in our own laboratory."
+        eyebrow={t(locale, 'Proven on every lot')}
+        title={t(locale, 'Tested in our own laboratory.')}
         desc={
           p.quality ??
-          'Every production run is tested in our in-house QC laboratory for size distribution, crystal morphology, and strength. ISO 9001 certified. Full traceability from raw material to shipped product.'
+          t(locale, 'Every production run is tested in our in-house QC laboratory for size distribution, crystal morphology, and strength. ISO 9001 certified. Full traceability from raw material to shipped product.')
         }
-        ctaLabel={p.qualityCta ?? 'See how our QC works'}
+        ctaLabel={p.qualityCta ?? t(locale, 'See how our QC works')}
         ctaHref="/quality"
         features={[
           {
-            title: 'Particle size distribution',
-            desc: 'Tight D50 and span, graded and verified on every batch.',
+            title: t(locale, 'Particle size distribution'),
+            desc: t(locale, 'Tight D50 and span, graded and verified on every batch.'),
           },
           {
-            title: 'Crystal strength & morphology',
-            desc: 'Confirmed to perform as expected in your bond system.',
+            title: t(locale, 'Crystal strength & morphology'),
+            desc: t(locale, 'Confirmed to perform as expected in your bond system.'),
           },
           {
-            title: 'Coating weight & coverage',
-            desc: 'Every coated batch checked for target weight and uniformity.',
+            title: t(locale, 'Coating weight & coverage'),
+            desc: t(locale, 'Every coated batch checked for target weight and uniformity.'),
           },
           {
-            title: 'ISO 9001 & traceability',
-            desc: 'Certificate of analysis and retention samples on request.',
+            title: t(locale, 'ISO 9001 & traceability'),
+            desc: t(locale, 'Certificate of analysis and retention samples on request.'),
           },
         ]}
       />
 
       <div className="pt-20">
         <QuoteSection
-          eyebrow="Made to your specification"
-          title="Request a quote or a sample."
-          desc="Give us the grade, size, format, and application, and a real person replies within one business day."
+          eyebrow={t(locale, 'Made to your specification')}
+          title={t(locale, 'Request a quote or a sample.')}
+          desc={t(locale, 'Give us the grade, size, format, and application, and a real person replies within one business day.')}
         />
       </div>
 
@@ -178,7 +178,7 @@ const ProductPage = async ({
           ...(isSplit && !(p.crossLinks ?? []).some((g) => g.title === 'On this page')
             ? [
                 {
-                  title: 'On this page',
+                  title: t(locale, 'On this page'),
                   links: p.sections.map((s) => ({
                     label: s.label,
                     href: `/products/${p.slug}#${s.id}`,
@@ -187,14 +187,14 @@ const ProductPage = async ({
               ]
             : []),
           ...(p.crossLinks ?? []),
-          { title: 'Applications', links: crossApplicationLinks },
+          { title: t(locale, 'Applications'), links: crossApplicationLinks },
           {
-            title: 'Quality & resources',
+            title: t(locale, 'Quality & resources'),
             links: [
-              { label: 'Quality, QC & ISO 9001', href: '/quality' },
+              { label: t(locale, 'Quality, QC & ISO 9001'), href: '/quality' },
               // Tool Stones is deliberately enquiry-led: the deck specifies no
               // datasheet for it, so we do not offer a download that has no file.
-              ...(hasDatasheet ? [{ label: 'Datasheets', href: '/resources/datasheets' }] : []),
+              ...(hasDatasheet ? [{ label: t(locale, 'Datasheets'), href: '/resources/datasheets' }] : []),
               ...guideLinks,
             ],
           },
@@ -209,17 +209,19 @@ export default ProductPage
 /* ------------------------------------------------------------------------- */
 
 const ProductSectionBlock = ({
+  locale,
   slug,
   section,
   gray,
   showHeading,
 }: {
+  locale: Locale
   slug: string
   section: ProductSection
   gray: boolean
   showHeading: boolean
 }) => {
-  const cat = getSectionCatalog(slug, section.id)
+  const cat = getSectionCatalog(locale, slug, section.id)
   // The catalogue's real property table supersedes the copy deck's [confirm]
   // placeholder specs, so only fall back to the placeholder table where no
   // catalogue entry exists for this section.
@@ -303,7 +305,7 @@ const ProductSectionBlock = ({
               <div className="mt-16 grid lg:grid-cols-2 gap-12">
                 {section.applications?.length ? (
                   <div>
-                    <h3 className="text-2xl">{section.applicationsTitle ?? "Where it's used."}</h3>
+                    <h3 className="text-2xl">{section.applicationsTitle ?? t(locale, "Where it's used.")}</h3>
                     <ul className="mt-6 space-y-3">
                       {section.applications.map((a, i) => (
                         <li key={i} className="flex gap-2.5 text-base text-default-600">
@@ -322,7 +324,7 @@ const ProductSectionBlock = ({
 
                 {!hasCatalog && section.specs?.length ? (
                   <div>
-                    <h3 className="mb-6 text-2xl">{section.specsTitle ?? 'Specifications'}</h3>
+                    <h3 className="mb-6 text-2xl">{section.specsTitle ?? t(locale, 'Specifications')}</h3>
                     <SpecTable specs={section.specs} />
                     {section.specsNote && (
                       <p className="mt-5 text-base text-default-600">
@@ -335,7 +337,7 @@ const ProductSectionBlock = ({
                         className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary"
                       >
                         <Icon icon="tabler:download" className="size-5" />
-                        Download the {section.datasheet} (PDF)
+                        {t(locale, 'Download the')} {section.datasheet} {t(locale, '(PDF)')}
                       </Link>
                     )}
                   </div>
@@ -347,7 +349,7 @@ const ProductSectionBlock = ({
             {cat && (
               <div className="mt-16 border-t border-default-200 pt-14">
                 <div className="mb-10 flex items-baseline gap-3">
-                  <h3 className="text-2xl">Grades &amp; specifications</h3>
+                  <h3 className="text-2xl">{t(locale, 'Grades & specifications')}</h3>
                   {section.datasheet && (
                     <Link
                       href="/resources/datasheets"

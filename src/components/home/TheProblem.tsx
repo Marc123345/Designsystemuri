@@ -2,6 +2,9 @@
 
 import Wireframe from '@/components/Wireframe'
 import { ArrowButton } from '@/components/ui'
+import type { Locale } from '@/i18n/routing'
+import { t } from '@/lib/i18n-content'
+import { useLocale } from 'next-intl'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 export type Driver = {
@@ -88,6 +91,7 @@ const TheProblem = ({
   primaryCta: { label: string; href: string }
   secondaryCta: { label: string; href: string }
 }) => {
+  const locale = useLocale() as Locale
   const stageRef = useRef<HTMLDivElement>(null)
   const railRef = useRef<HTMLDivElement>(null)
   const activeRef = useRef(0)
@@ -192,7 +196,7 @@ const TheProblem = ({
               <div className="lg:col-span-6">
                 <div className="mb-8 flex items-baseline gap-4">
                   <span className="text-xs uppercase tracking-[0.15em] text-default-400">
-                    What drifts
+                    {t(locale, 'What drifts')}
                   </span>
                   {pinned && (
                     <span className="font-mono text-xs text-white/40">
@@ -260,7 +264,7 @@ const TheProblem = ({
                         }}
                       >
                         <div className="mb-4 text-xs uppercase tracking-[0.15em] text-default-400">
-                          What moves on your line
+                          {t(locale, 'What moves on your line')}
                         </div>
                         <p className="mb-10 text-xl text-white lg:text-2xl">{d.effect}</p>
                         <Wireframe label={d.evidence} ratio="wide" tone="dark" />

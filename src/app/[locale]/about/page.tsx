@@ -3,6 +3,7 @@ import { ArrowButton, SectionHeading } from '@/components/ui'
 import Wireframe from '@/components/Wireframe'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
+import { t } from '@/lib/i18n-content'
 import { site } from '@/lib/site'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
@@ -47,40 +48,40 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
   return (
     <>
       <PageHero
-        eyebrow="Over 50 years · the full range · made and graded in-house"
-        title="About EID — Industrial Diamond Manufacturer"
-        desc="EID has manufactured and quality-controlled the full industrial diamond and CBN range from London for over 50 years, supplying tool makers worldwide."
-        crumbs={[{ label: 'Home', href: '/' }, { label: 'About' }]}
-        primaryCta={{ label: 'Request a Quote', href: '/contact' }}
-        secondaryCta={{ label: 'View Products', href: '/#products' }}
+        eyebrow={t(locale, 'Over 50 years · the full range · made and graded in-house')}
+        title={t(locale, 'About EID — Industrial Diamond Manufacturer')}
+        desc={t(locale, 'EID has manufactured and quality-controlled the full industrial diamond and CBN range from London for over 50 years, supplying tool makers worldwide.')}
+        crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'About') }]}
+        primaryCta={{ label: t(locale, 'Request a Quote'), href: '/contact' }}
+        secondaryCta={{ label: t(locale, 'View Products'), href: '/#products' }}
       />
 
       <StatsBar
         items={[
-          { value: '50+', label: "Years' experience" },
-          { value: '8', label: 'Product groups' },
-          { value: '12', label: 'Product lines' },
-          { value: '100%', label: 'Lots QC-tested' },
+          { value: '50+', label: t(locale, "Years' experience") },
+          { value: '8', label: t(locale, 'Product groups') },
+          { value: '12', label: t(locale, 'Product lines') },
+          { value: '100%', label: t(locale, 'Lots QC-tested') },
         ]}
       />
 
       <section className="py-20 pt-14 lg:py-30">
         <div className="container">
-          <SectionHeading eyebrow="London-based superabrasive manufacturer" title="Over 50 years making the material that goes into the world's diamond tools." />
+          <SectionHeading eyebrow={t(locale, 'London-based superabrasive manufacturer')} title={t(locale, "Over 50 years making the material that goes into the world's diamond tools.")} />
 
           <div className="mt-14 grid gap-10 lg:grid-cols-12">
             <div className="space-y-5 lg:col-span-7">
               {companyParagraphs.map((p) => (
                 <p key={p} className="text-default-600 text-base">
-                  {p}
+                  {t(locale, p)}
                 </p>
               ))}
             </div>
             <div className="divide-default-200 border-default-200 divide-y border-t lg:col-span-5">
               {companyFeatures.map((feature) => (
                 <div key={feature.title} className="py-6">
-                  <h3 className="text-lg">{feature.title}</h3>
-                  <p className="text-default-600 mt-1.5 text-base">{feature.desc}</p>
+                  <h3 className="text-lg">{t(locale, feature.title)}</h3>
+                  <p className="text-default-600 mt-1.5 text-base">{t(locale, feature.desc)}</p>
                 </div>
               ))}
             </div>
@@ -95,31 +96,31 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
       {/* HOW WE MAKE IT — the honest, graduated production model */}
       <section className="pb-14">
         <div className="container">
-          <SectionHeading eyebrow="Our production model, stated straight" title="How we make what we sell." />
+          <SectionHeading eyebrow={t(locale, 'Our production model, stated straight')} title={t(locale, 'How we make what we sell.')} />
         </div>
       </section>
       <FeaturesRow
         items={[
           {
-            title: 'Natural grit & powder',
-            desc: 'Natural grit and powder are manufactured entirely in-house at our own factory, from raw material through crushing, grading, and final QC.',
+            title: t(locale, 'Natural grit & powder'),
+            desc: t(locale, 'Natural grit and powder are manufactured entirely in-house at our own factory, from raw material through crushing, grading, and final QC.'),
             href: '/products/natural-grit-powder#grit',
           },
           {
-            title: 'CVD single crystal',
-            desc: "CVD single crystal diamond is grown to EID's exact specification, orientation, and quality standard through a dedicated growth partner, then finished and inspected by us.",
+            title: t(locale, 'CVD single crystal'),
+            desc: t(locale, "CVD single crystal diamond is grown to EID's exact specification, orientation, and quality standard through a dedicated growth partner, then finished and inspected by us."),
             href: '/products/single-crystal#cvd',
           },
           {
-            title: 'Metal bond, resin bond & CBN',
-            desc: 'Metal bond, resin bond, and CBN grades are produced to order, then processed and graded through our facility to your specification before shipping. Coating, where you need it, is applied in-house rather than sourced from a second vendor.',
+            title: t(locale, 'Metal bond, resin bond & CBN'),
+            desc: t(locale, 'Metal bond, resin bond, and CBN grades are produced to order, then processed and graded through our facility to your specification before shipping. Coating, where you need it, is applied in-house rather than sourced from a second vendor.'),
             href: '/products/metal-bond',
           },
         ]}
       />
       <section className="py-16 lg:py-24">
         <div className="container">
-          <p className="text-default-600 max-w-[860px] text-base">Across all three, the specification and the QC pass are ours. That is the part a tool maker is actually buying.</p>
+          <p className="text-default-600 max-w-[860px] text-base">{t(locale, 'Across all three, the specification and the QC pass are ours. That is the part a tool maker is actually buying.')}</p>
         </div>
       </section>
 
@@ -130,41 +131,40 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
       </section>
       <DarkFeatureList
           bgLabel="Background image — production floor, London"
-        eyebrow="Quality & certification"
-        title="Consistency, measured on every run."
-        desc="Our QC laboratory tests every production lot for particle size distribution and morphology, with additional testing such as crystal strength and coating coverage performed where required."
+        eyebrow={t(locale, 'Quality & certification')}
+        title={t(locale, 'Consistency, measured on every run.')}
+        desc={t(locale, 'Our QC laboratory tests every production lot for particle size distribution and morphology, with additional testing such as crystal strength and coating coverage performed where required.')}
         features={[
           {
-            title: 'In-house QC laboratory',
-            desc: 'The backbone of everything we ship, not an afterthought.',
+            title: t(locale, 'In-house QC laboratory'),
+            desc: t(locale, 'The backbone of everything we ship, not an afterthought.'),
           },
           {
-            title: 'Every production lot',
-            desc: 'Particle size distribution and morphology on every lot, with crystal strength and coating coverage where required.',
+            title: t(locale, 'Every production lot'),
+            desc: t(locale, 'Particle size distribution and morphology on every lot, with crystal strength and coating coverage where required.'),
           },
           {
-            title: 'Full traceability',
-            desc: 'Documented from raw material through QC to delivery.',
+            title: t(locale, 'Full traceability'),
+            desc: t(locale, 'Documented from raw material through QC to delivery.'),
           },
           {
-            title: 'ISO 9001 certified',
-            desc: 'Covering production, QC, and the full supply chain.',
+            title: t(locale, 'ISO 9001 certified'),
+            desc: t(locale, 'Covering production, QC, and the full supply chain.'),
           },
         ]}
-        ctaLabel="See how our QC works"
+        ctaLabel={t(locale, 'See how our QC works')}
         ctaHref="/quality"
       />
 
       {/* WHO WE SERVE — real buyer types and regions, no unverified figures */}
       <section className="py-20 pt-14 lg:py-30">
         <div className="container">
-          <SectionHeading eyebrow="Who we serve" title="Trusted by tool makers across industries and continents." />
+          <SectionHeading eyebrow={t(locale, 'Who we serve')} title={t(locale, 'Trusted by tool makers across industries and continents.')} />
           <p className="text-default-600 mt-8 max-w-[860px] text-base">
-            Our customers convert raw diamond and CBN into finished tools: diamond and CBN grinding and dressing tool makers, dental bur and rotary instrument producers, ultra-precision tool makers for optics and watch components, and flexible-abrasive manufacturers for glass and
-            stone. We supply them across Europe, the Middle East, Asia, the Americas, and beyond, with the material behind dental, optics and precision components, automotive and aerospace, tool and die, stone and glass, and electronics applications.
+            {t(locale, 'Our customers convert raw diamond and CBN into finished tools: diamond and CBN grinding and dressing tool makers, dental bur and rotary instrument producers, ultra-precision tool makers for optics and watch components, and flexible-abrasive manufacturers for glass and stone. We supply them across Europe, the Middle East, Asia, the Americas, and beyond, with the material behind dental, optics and precision components, automotive and aerospace, tool and die, stone and glass, and electronics applications.')}
           </p>
           <div className="mt-9">
-            <ArrowButton href="/contact" label="Contact Us" />
+            <ArrowButton href="/contact" label={t(locale, 'Contact Us')} />
           </div>
         </div>
       </section>
@@ -172,11 +172,11 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
       {/* COMPANY DETAILS — reinforce that EID is a physical manufacturer */}
       <section className="border-default-200 border-t py-16 lg:py-24">
         <div className="container">
-          <SectionHeading eyebrow="Company details" title={site.name} />
+          <SectionHeading eyebrow={t(locale, 'Company details')} title={site.name} />
           <p className="text-default-600 mt-8 text-base">
             EID House, 12 St. Cross Street, London, EC1N 8UB, England
             <br />
-            Tel: {site.phone} ·{' '}
+            {t(locale, 'Tel:')} {site.phone} ·{' '}
             <a href={`mailto:${site.email}`} className="text-primary underline">
               {site.email}
             </a>
@@ -186,9 +186,9 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
 
       <div className="pt-20">
         <QuoteSection
-          eyebrow="Trusted by tool makers across continents"
-          title="Let's talk about what you manufacture."
-          desc="Request a quote, order a sample, or ask a technical question. A real person replies within one business day."
+          eyebrow={t(locale, 'Trusted by tool makers across continents')}
+          title={t(locale, "Let's talk about what you manufacture.")}
+          desc={t(locale, 'Request a quote, order a sample, or ask a technical question. A real person replies within one business day.')}
         />
       </div>
     </>

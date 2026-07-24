@@ -4,6 +4,7 @@ import { SectionHeading } from '@/components/ui'
 import Wireframe from '@/components/Wireframe'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
+import { t } from '@/lib/i18n-content'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
@@ -56,16 +57,16 @@ const MicronQcPage = async ({ params }: { params: Promise<{ locale: Locale }> })
   return (
     <>
       <PageHero
-        eyebrow="Quality · Micron QC in detail"
-        title="Micron QC"
-        desc="Particle-size-distribution measurement and the D-value control that fine polishing depends on."
+        eyebrow={t(locale, 'Quality · Micron QC in detail')}
+        title={t(locale, 'Micron QC')}
+        desc={t(locale, 'Particle-size-distribution measurement and the D-value control that fine polishing depends on.')}
         crumbs={[
-          { label: 'Home', href: '/' },
-          { label: 'Quality', href: '/quality' },
-          { label: 'Micron QC' },
+          { label: t(locale, 'Home'), href: '/' },
+          { label: t(locale, 'Quality'), href: '/quality' },
+          { label: t(locale, 'Micron QC') },
         ]}
-        primaryCta={{ label: 'Request a Quote', href: '/contact' }}
-        secondaryCta={{ label: 'Back to Quality', href: '/quality' }}
+        primaryCta={{ label: t(locale, 'Request a Quote'), href: '/contact' }}
+        secondaryCta={{ label: t(locale, 'Back to Quality'), href: '/quality' }}
       />
 
       {/* D-values first: the page has to define the vocabulary before it can
@@ -74,21 +75,18 @@ const MicronQcPage = async ({ params }: { params: Promise<{ locale: Locale }> })
         <div className="container">
           <div className="max-w-4xl">
             <SectionHeading
-              eyebrow="The buying criterion"
-              title="In fine finishing, the distribution is the specification."
+              eyebrow={t(locale, 'The buying criterion')}
+              title={t(locale, 'In fine finishing, the distribution is the specification.')}
             />
             <div className="mt-7 space-y-4 text-base text-default-600">
               <p>
-                D50 is the midpoint of the distribution: half the particles sit below it, half above.
-                D10 and D90 mark the fine and coarse tails, and span describes how wide the spread is
-                between them. Two powders can share a D50 and behave completely differently, because
-                the tails are where the surface finish is won or lost.
+                {t(locale, 'D50 is the midpoint of the distribution: half the particles sit below it, half above. D10 and D90 mark the fine and coarse tails, and span describes how wide the spread is between them. Two powders can share a D50 and behave completely differently, because the tails are where the surface finish is won or lost.')}
               </p>
               <p>
                 <RichText>
-                  {
+                  {t(locale,
                     'That is why we grade and verify the whole curve rather than a single number. Mesh grit is a different problem, sized mechanically against a calibrated sieve stack, which [Mesh QC](/mesh-qc) covers.'
-                  }
+                  )}
                 </RichText>
               </p>
             </div>
@@ -108,50 +106,50 @@ const MicronQcPage = async ({ params }: { params: Promise<{ locale: Locale }> })
 
       <DarkFeatureList
           bgLabel="Background image — particle sizing bench"
-        eyebrow="Micron QC, step by step"
-        title="What we measure on every micron batch."
-        desc="Consistency at the top of the distribution is what protects the workpiece, so that is what our micron QC controls for."
-        features={steps}
-        ctaLabel="See the full QC process"
+        eyebrow={t(locale, 'Micron QC, step by step')}
+        title={t(locale, 'What we measure on every micron batch.')}
+        desc={t(locale, 'Consistency at the top of the distribution is what protects the workpiece, so that is what our micron QC controls for.')}
+        features={steps.map((s) => ({ title: t(locale, s.title), desc: t(locale, s.desc) }))}
+        ctaLabel={t(locale, 'See the full QC process')}
         ctaHref="/quality"
       />
 
       <div className="pt-20">
         <QuoteSection
-          eyebrow="Specify your tolerances"
-          title="Request a quote with your QC specification."
-          desc="Send us the grade and the D-values you need documented, and a real person replies within one business day."
+          eyebrow={t(locale, 'Specify your tolerances')}
+          title={t(locale, 'Request a quote with your QC specification.')}
+          desc={t(locale, 'Send us the grade and the D-values you need documented, and a real person replies within one business day.')}
         />
       </div>
 
       <CrossLinks
         groups={[
           {
-            title: 'Quality',
+            title: t(locale, 'Quality'),
             links: [
-              { label: 'Quality, QC & ISO 9001', href: '/quality' },
-              { label: 'Mesh QC', href: '/mesh-qc' },
+              { label: t(locale, 'Quality, QC & ISO 9001'), href: '/quality' },
+              { label: t(locale, 'Mesh QC'), href: '/mesh-qc' },
             ],
           },
           {
-            title: 'Products graded this way',
+            title: t(locale, 'Products graded this way'),
             links: [
               {
-                label: 'Natural Diamond Micron Powder',
+                label: t(locale, 'Natural Diamond Micron Powder'),
                 href: '/products/natural-grit-powder#micron',
               },
               {
-                label: 'Polycrystalline Diamond Powder',
+                label: t(locale, 'Polycrystalline Diamond Powder'),
                 href: '/products/polycrystalline-powder',
               },
-              { label: 'Resin Bond Diamond', href: '/products/resin-bond' },
+              { label: t(locale, 'Resin Bond Diamond'), href: '/products/resin-bond' },
             ],
           },
           {
-            title: 'Support',
+            title: t(locale, 'Support'),
             links: [
-              { label: 'Datasheets', href: '/resources/datasheets' },
-              { label: 'MSDS', href: '/resources/msds' },
+              { label: t(locale, 'Datasheets'), href: '/resources/datasheets' },
+              { label: t(locale, 'MSDS'), href: '/resources/msds' },
             ],
           },
         ]}

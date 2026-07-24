@@ -1,25 +1,41 @@
 import type { Locale } from "@/i18n/routing";
 import { products as productsEN, type Product } from "./products";
 import { applications as applicationsEN, type Application } from "./applications";
+import { catalog as catalogEN, type SectionCatalog } from "./product-catalog";
+import { generated } from "./i18n-generated";
 
 /* =========================================================================
    Locale-aware content with EN fallback-merge.
-   EN (lib/products.ts, lib/applications.ts) is the source of truth. Per-locale
-   override tables below supply machine-translated strings (reviewed later);
-   any field not present in an override falls back to the EN value, so partial
-   translations render cleanly. The visible layer (names, card descriptions,
-   nav/footer chrome, home hero, CTAs) is translated first; long-form body
-   prose currently falls back to EN and is filled in a later batch.
+   EN (lib/products.ts, lib/applications.ts, lib/product-catalog.ts) is the
+   source of truth. Two override layers sit on top of it, English filling any
+   gap in either:
+     1. machine translation from lib/i18n-generated (via `npm run translate`),
+     2. the hand-written tables below — reviewed, so they win over machine output.
    ========================================================================= */
 
 type Overrides<T> = Partial<Record<Locale, Record<string, Partial<T>>>>;
 
+// Fold the generated bundle for a dataset into the hand-written override table,
+// with the hand table winning per slug. The result feeds mergeBySlug unchanged.
+const withGenerated = <T>(
+  hand: Overrides<T>,
+  locale: Locale,
+  gen: Record<string, Record<string, unknown>> | undefined,
+): Record<string, Partial<T>> | undefined => {
+  const handTable = hand[locale];
+  if (!gen) return handTable;
+  const out: Record<string, Partial<T>> = {};
+  for (const [slug, fields] of Object.entries(gen)) out[slug] = fields as Partial<T>;
+  if (handTable) for (const [slug, fields] of Object.entries(handTable)) {
+    out[slug] = { ...out[slug], ...fields };
+  }
+  return out;
+};
+
 const mergeBySlug = <T extends { slug: string }>(
   base: T[],
-  overrides: Overrides<T>,
-  locale: Locale,
+  table: Record<string, Partial<T>> | undefined,
 ): T[] => {
-  const table = overrides[locale];
   if (!table) return base;
   return base.map((item) => (table[item.slug] ? { ...item, ...table[item.slug] } : item));
 };
@@ -312,13 +328,31 @@ const applicationOverrides: Overrides<Application> = {
 
 /* ------------------------------- GETTERS --------------------------------- */
 export const getProducts = (locale: Locale): Product[] =>
-  mergeBySlug(productsEN, productOverrides, locale);
+  mergeBySlug(productsEN, withGenerated(productOverrides, locale, generated[locale]?.products));
 export const getProduct = (locale: Locale, slug: string): Product | undefined =>
   getProducts(locale).find((p) => p.slug === slug);
 export const getApplications = (locale: Locale): Application[] =>
-  mergeBySlug(applicationsEN, applicationOverrides, locale);
+  mergeBySlug(
+    applicationsEN,
+    withGenerated(applicationOverrides, locale, generated[locale]?.applications),
+  );
 export const getApplication = (locale: Locale, slug: string): Application | undefined =>
   getApplications(locale).find((a) => a.slug === slug);
+
+/* --------------------------- PRODUCT CATALOGUE --------------------------- */
+// Locale-aware grade/spec data: English base with the generated translation of
+// that section merged over it (structure is identical, so a shallow spread
+// swaps in the translated series/notes while keeping image keys and codes).
+export const getSectionCatalog = (
+  locale: Locale,
+  slug: string,
+  sectionId: string,
+): SectionCatalog | undefined => {
+  const base = catalogEN[slug]?.[sectionId];
+  if (!base) return undefined;
+  const gen = generated[locale]?.catalog?.[slug]?.[sectionId] as Partial<SectionCatalog> | undefined;
+  return gen ? { ...base, ...gen } : base;
+};
 
 /* --------------------- PRODUCT GROUP (FAMILY) LABELS --------------------- */
 // Partial on purpose: a locale with no table falls back to the EN label, which
@@ -430,4 +464,7 @@ const ui: Partial<Record<Locale, Dict>> = {
     footerAbout: "工業用ダイヤモンドおよび超砥粒材料のフルレンジを製造・仕上げし、世界中の工具メーカーに供給しています。",
   },
 };
-export const t = (locale: Locale, key: string): string => ui[locale]?.[key] ?? key;
+// Lookup order: hand-written table wins (reviewed), then the machine-generated
+// table from `npm run translate`, then the English key itself as fallback.
+export const t = (locale: Locale, key: string): string =>
+  ui[locale]?.[key] ?? generated[locale]?.ui?.[key] ?? key;

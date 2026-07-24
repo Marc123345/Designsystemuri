@@ -2,6 +2,7 @@ import { QuoteSection, PageHero } from '@/components/sections'
 import { ArrowLink } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
+import { t } from '@/lib/i18n-content'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
@@ -38,15 +39,15 @@ const BlogPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
   return (
     <>
       <PageHero
-        eyebrow="News, application notes & technical insight"
-        title="The EID Blog"
-        desc="News, application notes, and technical insight on industrial diamond and CBN from EID Ltd, London-based superabrasive manufacturer."
+        eyebrow={t(locale, 'News, application notes & technical insight')}
+        title={t(locale, 'The EID Blog')}
+        desc={t(locale, 'News, application notes, and technical insight on industrial diamond and CBN from EID Ltd, London-based superabrasive manufacturer.')}
         crumbs={[
-          { label: 'Home', href: '/' },
-          { label: 'Resources', href: '/resources' },
-          { label: 'Blog' },
+          { label: t(locale, 'Home'), href: '/' },
+          { label: t(locale, 'Resources'), href: '/resources' },
+          { label: t(locale, 'Blog') },
         ]}
-        secondaryCta={{ label: 'Resources & Guides', href: '/resources' }}
+        secondaryCta={{ label: t(locale, 'Resources & Guides'), href: '/resources' }}
       />
 
       {/* FEATURED */}
@@ -54,17 +55,16 @@ const BlogPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
         <div className="container">
           <div className="border-t-2 border-primary bg-default-50 lg:p-12 p-8">
             <span className="inline-flex w-fit items-center gap-1.5 rounded-2xl border border-default-300 bg-white px-3.5 py-1.25 text-sm text-default-900">
-              Application Note
+              {t(locale, 'Application Note')}
             </span>
             <h2 className="mt-4 max-w-3xl lg:text-[42px] md:text-[36px] text-[28px] font-bold">
-              Why batch-to-batch consistency is the real cost driver in diamond tooling
+              {t(locale, 'Why batch-to-batch consistency is the real cost driver in diamond tooling')}
             </h2>
             <p className="mt-5 max-w-3xl text-base text-default-600">
-              Procurement optimises for price per carat. The bigger number is what an inconsistent
-              batch costs downstream: rejected product, recalibrated lines, lost trust.
+              {t(locale, 'Procurement optimises for price per carat. The bigger number is what an inconsistent batch costs downstream: rejected product, recalibrated lines, lost trust.')}
             </p>
             <div className="mt-7">
-              <ArrowLink href="/contact" label="Read article" />
+              <ArrowLink href="/contact" label={t(locale, 'Read article')} />
             </div>
           </div>
         </div>
@@ -77,27 +77,27 @@ const BlogPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
             {posts.map((p) => (
               <article key={p.title} className="flex flex-col gap-4">
                 <span className="inline-flex w-fit items-center gap-1.5 rounded-2xl border border-default-300 bg-white px-3.5 py-1.25 text-sm text-default-900">
-                  {p.category}
+                  {t(locale, p.category)}
                 </span>
-                <h3 className="text-xl">{p.title}</h3>
+                <h3 className="text-xl">{t(locale, p.title)}</h3>
                 <div className="mt-auto pt-2">
-                  <ArrowLink href="/contact" label="Read" />
+                  <ArrowLink href="/contact" label={t(locale, 'Read')} />
                 </div>
               </article>
             ))}
           </div>
           {/* Nothing is published yet — say so rather than imply a live archive. */}
           <p className="mt-12 text-center text-sm text-default-500">
-            Coming soon. Content hub launches with the site.
+            {t(locale, 'Coming soon. Content hub launches with the site.')}
           </p>
         </div>
       </section>
 
       <div className="pt-20">
         <QuoteSection
-          eyebrow="Have a technical question?"
-          title="Ask our team, we may write about it."
-          desc="Send us your application question and we'll point you to the right grade, or cover it in a future guide."
+          eyebrow={t(locale, 'Have a technical question?')}
+          title={t(locale, 'Ask our team, we may write about it.')}
+          desc={t(locale, "Send us your application question and we'll point you to the right grade, or cover it in a future guide.")}
         />
       </div>
     </>

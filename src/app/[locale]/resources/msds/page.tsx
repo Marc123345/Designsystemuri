@@ -3,6 +3,7 @@ import { QuoteSection, PageHero } from '@/components/sections'
 import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
+import { t } from '@/lib/i18n-content'
 import { Icon } from '@iconify/react'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
@@ -57,25 +58,25 @@ const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
   return (
     <>
       <PageHero
-        eyebrow="Handling, storage & regulatory information"
-        title="Material Safety Data Sheets (MSDS)"
-        desc="Download safety data sheets for EID's industrial diamond and CBN products. Handling, storage, disposal, and regulatory information. Free, no login."
+        eyebrow={t(locale, 'Handling, storage & regulatory information')}
+        title={t(locale, 'Material Safety Data Sheets (MSDS)')}
+        desc={t(locale, "Download safety data sheets for EID's industrial diamond and CBN products. Handling, storage, disposal, and regulatory information. Free, no login.")}
         crumbs={[
-          { label: 'Home', href: '/' },
-          { label: 'Resources', href: '/resources' },
-          { label: 'MSDS' },
+          { label: t(locale, 'Home'), href: '/' },
+          { label: t(locale, 'Resources'), href: '/resources' },
+          { label: t(locale, 'MSDS') },
         ]}
-        secondaryCta={{ label: 'Datasheets', href: '/resources/datasheets' }}
+        secondaryCta={{ label: t(locale, 'Datasheets'), href: '/resources/datasheets' }}
       />
 
       <section className="lg:py-24 py-16">
         <div className="container">
           {/* Deliberately ungated: a safety document behind a form is a liability,
               not a lead magnet. */}
-          <SectionHeading eyebrow="No form, no login" title="Safety data sheets, free to download." />
+          <SectionHeading eyebrow={t(locale, 'No form, no login')} title={t(locale, 'Safety data sheets, free to download.')} />
           <p className="mt-5 max-w-3xl text-base text-default-600">
             <RichText>
-              {"Safety data sheets for EID's diamond and CBN products, covering handling, storage, disposal, and regulatory information. No form, no login. If you need a document that isn't listed, or a specific regional format, [ask us](/contact)."}
+              {t(locale, "Safety data sheets for EID's diamond and CBN products, covering handling, storage, disposal, and regulatory information. No form, no login. If you need a document that isn't listed, or a specific regional format, [ask us](/contact).")}
             </RichText>
           </p>
           <div className="mt-14 divide-y divide-default-200 border-t border-default-200">
@@ -84,8 +85,8 @@ const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
                 <div className="flex items-start gap-4">
                   <Icon icon="tabler:shield" className="mt-0.5 size-6 shrink-0 text-primary" />
                   <div>
-                    <h3 className="text-base font-semibold text-default-900">{name}</h3>
-                    <p className="mt-1 text-base text-default-600">{desc}</p>
+                    <h3 className="text-base font-semibold text-default-900">{t(locale, name)}</h3>
+                    <p className="mt-1 text-base text-default-600">{t(locale, desc)}</p>
                   </div>
                 </div>
                 <span className="inline-flex items-center gap-2 rounded-2xl border border-default-300 px-3.5 py-1.5 text-sm font-semibold text-default-800">
@@ -99,9 +100,9 @@ const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
       </section>
 
       <QuoteSection
-        eyebrow="Need a safety document not listed?"
-        title="Need a safety document that isn't listed?"
-        desc="Tell us the product and the regional format you need, and we will send the current MSDS. Replies within one business day."
+        eyebrow={t(locale, 'Need a safety document not listed?')}
+        title={t(locale, "Need a safety document that isn't listed?")}
+        desc={t(locale, 'Tell us the product and the regional format you need, and we will send the current MSDS. Replies within one business day.')}
       />
     </>
   )

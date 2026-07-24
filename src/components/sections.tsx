@@ -3,7 +3,7 @@
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import type { GradeSeries, SectionCatalog } from '@/lib/product-catalog'
-import { getProducts } from '@/lib/i18n-content'
+import { getProducts, t } from '@/lib/i18n-content'
 import { getProductImage } from '@/lib/product-images'
 import { site } from '@/lib/site'
 import { Icon } from '@iconify/react'
@@ -109,7 +109,9 @@ export const CardGrid = ({
    * card, since three across leaves room for it and the hubs carry more weight.
    */
   columns?: 4 | 3
-}) => (
+}) => {
+  const locale = useLocale() as Locale
+  return (
   <section className="lg:py-30 py-20">
     <div className="container">
       <SectionHeading eyebrow={eyebrow} title={title} desc={desc} />
@@ -138,7 +140,7 @@ export const CardGrid = ({
               {item.desc}
             </p>
             <span className="mt-auto pt-2 inline-flex items-center gap-2 text-sm font-semibold text-primary">
-              Learn more
+              {t(locale, 'Learn more')}
               <Icon
                 icon="tabler:arrow-narrow-right"
                 className="size-5 transition-transform duration-300 group-hover:translate-x-1"
@@ -155,7 +157,8 @@ export const CardGrid = ({
       )}
     </div>
   </section>
-)
+  )
+}
 
 /**
  * The template's signature medallion row — full-bleed circles that butt against
@@ -169,7 +172,9 @@ export const StatMedallions = ({
   items,
 }: {
   items: { value?: string; label?: string; body?: string; tone?: 'light' | 'dark'; image?: boolean }[]
-}) => (
+}) => {
+  const locale = useLocale() as Locale
+  return (
   <section className="relative size-full overflow-hidden bg-default-100 lg:py-30 py-20">
     <div className="container relative z-10">
       <div className="flex flex-wrap justify-center">
@@ -192,7 +197,7 @@ export const StatMedallions = ({
                   <line x1="100" y1="0" x2="0" y2="100" stroke="currentColor" strokeWidth="0.4" vectorEffect="non-scaling-stroke" />
                 </svg>
                 <span className="relative rounded bg-white/90 px-3 py-2 text-center text-xs uppercase tracking-[0.15em] text-default-500">
-                  Production floor — London
+                  {t(locale, 'Production floor — London')}
                 </span>
               </div>
             )
@@ -243,7 +248,8 @@ export const StatMedallions = ({
     </div>
     <div className="absolute inset-0 size-full bg-[url(../images/bg-noice.gif)] bg-auto bg-repeat bg-position-[50%] opacity-4"></div>
   </section>
-)
+  )
+}
 
 /**
  * Verified figures, set as a rule-separated band. Values are strings so a mixed
@@ -347,7 +353,9 @@ export const DarkFeatureList = ({
   ctaHref: string
   /** Names the photograph this slot is waiting on. */
   bgLabel?: string
-}) => (
+}) => {
+  const locale = useLocale() as Locale
+  return (
   <section className="relative size-full overflow-hidden lg:py-37.5 py-20 text-white">
     {/* Full-bleed background image slot. The template runs a photograph here.
         Until EID supplies one this renders as a wireframe — dashed frame,
@@ -373,7 +381,7 @@ export const DarkFeatureList = ({
 
       <div className="absolute inset-x-0 bottom-6 flex justify-center lg:bottom-10">
         <span className="rounded border border-white/15 bg-default-950/70 px-3 py-2 text-center text-[11px] uppercase tracking-[0.15em] text-white/50">
-          {bgLabel}
+          {t(locale, bgLabel)}
         </span>
       </div>
     </div>
@@ -392,15 +400,24 @@ export const DarkFeatureList = ({
         <h2 className="mt-4 lg:text-[32px] md:text-[28px] text-2xl font-bold text-white">{title}</h2>
         <p className="mt-5 text-default-200">{desc}</p>
 
-        <div className="mt-7.5 space-y-4">
-          {features.map((feature) => (
-            <div key={feature.title} className="flex gap-3">
-              <Icon icon="tabler:check" className="mt-1 size-5 shrink-0 text-primary-1" />
-              <div>
-                <h3 className="text-base text-white">{feature.title}</h3>
-                <p className="mt-1 text-base text-default-300">{feature.desc}</p>
-              </div>
-            </div>
+        {/* Progressive disclosure: the four proof points read as a list of
+            titles, each expanding to its detail on demand. Native
+            <details>/<summary> like the FAQ — server-rendered, no JS, and the
+            plus rotates to a cross on open. First item open so it never reads
+            as an empty list. */}
+        <div className="mt-7.5 divide-y divide-white/10 border-y border-white/10">
+          {features.map((feature, i) => (
+            <details key={feature.title} open={i === 0} className="group py-4">
+              <summary className="flex cursor-pointer list-none items-center gap-3 [&::-webkit-details-marker]:hidden">
+                <Icon icon="tabler:check" className="size-5 shrink-0 text-primary-1" />
+                <h3 className="flex-1 text-base text-white">{feature.title}</h3>
+                <Icon
+                  icon="tabler:plus"
+                  className="size-4 shrink-0 text-white/60 transition-transform duration-500 group-open:rotate-45"
+                />
+              </summary>
+              <p className="mt-2 ps-8 text-base text-default-300">{feature.desc}</p>
+            </details>
           ))}
         </div>
 
@@ -410,7 +427,8 @@ export const DarkFeatureList = ({
       </div>
     </div>
   </section>
-)
+  )
+}
 
 /**
  * Accordion Q&A, built on native <details>/<summary> rather than the template's
@@ -513,16 +531,18 @@ export const CrossLinks = ({
 }
 
 /** Two-column attribute table used by every product spec block. */
-export const SpecTable = ({ specs }: { specs: { label: string; value: string }[] }) => (
+export const SpecTable = ({ specs }: { specs: { label: string; value: string }[] }) => {
+  const locale = useLocale() as Locale
+  return (
   <div className="overflow-x-auto">
     <table className="w-full border-collapse text-base">
       <thead>
         <tr className="border-b border-default-300">
           <th className="py-3 pe-4 text-start text-sm uppercase tracking-wider text-default-500">
-            Attribute
+            {t(locale, 'Attribute')}
           </th>
           <th className="py-3 text-start text-sm uppercase tracking-wider text-default-500">
-            Detail
+            {t(locale, 'Detail')}
           </th>
         </tr>
       </thead>
@@ -536,7 +556,8 @@ export const SpecTable = ({ specs }: { specs: { label: string; value: string }[]
       </tbody>
     </table>
   </div>
-)
+  )
+}
 
 /* ------------------------------------------------------------------------- */
 /* Real catalogue layout — product photo, grade cards, size chips, coatings.  */
@@ -607,6 +628,7 @@ const GradeSeriesBlock = ({
   series: GradeSeries
   fallbackImage?: string
 }) => {
+  const locale = useLocale() as Locale
   const [active, setActive] = useState(0)
   const grade = series.grades[active] ?? series.grades[0]
   const photo = getProductImage(grade?.image ?? series.image ?? fallbackImage)
@@ -664,7 +686,7 @@ const GradeSeriesBlock = ({
           <h5 className="text-center text-2xl font-semibold text-primary">{grade?.code}</h5>
           <div className="mx-auto mt-3 h-px w-14 bg-default-300" />
           <p className="mt-5 text-center text-base leading-relaxed text-default-600">
-            {grade?.desc ?? series.note ?? 'Available across the full range — enquire for the complete specification.'}
+            {grade?.desc ?? series.note ?? t(locale, 'Available across the full range — enquire for the complete specification.')}
           </p>
         </div>
       </div>
@@ -673,7 +695,9 @@ const GradeSeriesBlock = ({
 }
 
 /** The full grade / size / coating / property block for a catalogued section. */
-export const CatalogSpecs = ({ cat }: { cat: SectionCatalog }) => (
+export const CatalogSpecs = ({ cat }: { cat: SectionCatalog }) => {
+  const locale = useLocale() as Locale
+  return (
   <div className="space-y-14">
     {cat.series?.length ? (
       <div className="space-y-12">
@@ -685,7 +709,7 @@ export const CatalogSpecs = ({ cat }: { cat: SectionCatalog }) => (
 
     {cat.meshSizes?.length ? (
       <div>
-        <h4 className="text-sm uppercase tracking-wider text-default-500">Available mesh sizes</h4>
+        <h4 className="text-sm uppercase tracking-wider text-default-500">{t(locale, 'Available mesh sizes')}</h4>
         <div className="mt-4 space-y-4">
           {cat.meshSizes.map((g) => (
             <div key={g.label}>
@@ -704,7 +728,7 @@ export const CatalogSpecs = ({ cat }: { cat: SectionCatalog }) => (
     {cat.micronSizes?.length ? (
       <div>
         <h4 className="text-sm uppercase tracking-wider text-default-500">
-          Micron size ranges <span className="normal-case text-default-400">(µm)</span>
+          {t(locale, 'Micron size ranges')} <span className="normal-case text-default-400">(µm)</span>
         </h4>
         <div className="mt-4 flex flex-wrap gap-1.5">
           {cat.micronSizes.map((s, i) => (
@@ -719,13 +743,13 @@ export const CatalogSpecs = ({ cat }: { cat: SectionCatalog }) => (
       <div className="grid gap-10 lg:grid-cols-2">
         {cat.properties?.length ? (
           <div>
-            <h4 className="mb-4 text-sm uppercase tracking-wider text-default-500">Properties</h4>
+            <h4 className="mb-4 text-sm uppercase tracking-wider text-default-500">{t(locale, 'Properties')}</h4>
             <SpecTable specs={cat.properties} />
           </div>
         ) : null}
         {cat.coatings?.length ? (
           <div>
-            <h4 className="mb-4 text-sm uppercase tracking-wider text-default-500">Coating options</h4>
+            <h4 className="mb-4 text-sm uppercase tracking-wider text-default-500">{t(locale, 'Coating options')}</h4>
             <div className="flex flex-wrap gap-1.5">
               {cat.coatings.map((c, i) => (
                 <Chip key={c + i}>{c}</Chip>
@@ -738,7 +762,7 @@ export const CatalogSpecs = ({ cat }: { cat: SectionCatalog }) => (
 
     {cat.imageGallery && cat.imageGallery.length > 1 ? (
       <div>
-        <h4 className="mb-4 text-sm uppercase tracking-wider text-default-500">Gallery</h4>
+        <h4 className="mb-4 text-sm uppercase tracking-wider text-default-500">{t(locale, 'Gallery')}</h4>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {cat.imageGallery.map((key) => {
             const img = getProductImage(key)
@@ -758,7 +782,8 @@ export const CatalogSpecs = ({ cat }: { cat: SectionCatalog }) => (
       </div>
     ) : null}
   </div>
-)
+  )
+}
 
 /**
  * Dark catalogue cards with a divided attribute list — the template's product
@@ -775,7 +800,9 @@ export const SpecCards = ({
     href: string
     rows: { label: string; value: string }[]
   }[]
-}) => (
+}) => {
+  const locale = useLocale() as Locale
+  return (
   <section className="relative size-full overflow-hidden bg-default-100 lg:py-30 py-20">
     <div className="container relative z-10">
       <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-7.5">
@@ -790,7 +817,7 @@ export const SpecCards = ({
             <div className="mb-7.5 aspect-[4/3] w-full overflow-hidden rounded-md border border-dashed border-white/15 bg-white/5">
               <div className="flex size-full items-center justify-center p-4">
                 <span className="text-center text-xs uppercase tracking-[0.15em] text-white/40">
-                  {item.title} — product shot
+                  {item.title} {t(locale, '— product shot')}
                 </span>
               </div>
             </div>
@@ -817,13 +844,16 @@ export const SpecCards = ({
     </div>
     <div className="absolute inset-0 size-full bg-[url(../images/bg-noice.gif)] bg-auto bg-repeat bg-position-[50%] opacity-4"></div>
   </section>
-)
+  )
+}
 
 /** On-page anchor nav for the merged product pages. */
-export const JumpNav = ({ items }: { items: { id: string; label: string }[] }) => (
+export const JumpNav = ({ items }: { items: { id: string; label: string }[] }) => {
+  const locale = useLocale() as Locale
+  return (
   <section className="border-b border-default-200 py-6">
     <div className="container flex flex-wrap items-center gap-3">
-      <span className="text-sm uppercase tracking-[0.2em] text-default-500">On this page</span>
+      <span className="text-sm uppercase tracking-[0.2em] text-default-500">{t(locale, 'On this page')}</span>
       {items.map((item) => (
         <a
           key={item.id}
@@ -835,7 +865,8 @@ export const JumpNav = ({ items }: { items: { id: string; label: string }[] }) =
       ))}
     </div>
   </section>
-)
+  )
+}
 
 /**
  * Closing conversion block: the page's own ask beside the actual quote form.
@@ -863,7 +894,7 @@ export const QuoteSection = ({
   formDesc?: string
 }) => {
   const locale = useLocale() as Locale
-  const productOptions = ['Help me specify', ...getProducts(locale).map((p) => p.name)]
+  const productOptions = [t(locale, 'Help me specify'), ...getProducts(locale).map((p) => p.name)]
 
   return (
     <section className="lg:py-30 py-20">
@@ -874,13 +905,13 @@ export const QuoteSection = ({
 
             <div className="mt-8 space-y-3 text-base text-default-600">
               <p>
-                Email{' '}
+                {t(locale, 'Email')}{' '}
                 <a href={`mailto:${site.email}`} className="text-primary underline">
                   {site.email}
                 </a>
               </p>
               <p>
-                Call{' '}
+                {t(locale, 'Call')}{' '}
                 <a href={site.phoneHref} className="text-primary underline">
                   {site.phone}
                 </a>
@@ -890,7 +921,7 @@ export const QuoteSection = ({
 
           <div className="lg:col-span-7">
             <div className="rounded-md border border-default-200 bg-default-50 p-6 lg:p-10">
-              <QuoteForm formTitle={formTitle} formDesc={formDesc} productOptions={productOptions} />
+              <QuoteForm formTitle={t(locale, formTitle)} formDesc={t(locale, formDesc)} productOptions={productOptions} />
             </div>
           </div>
         </div>

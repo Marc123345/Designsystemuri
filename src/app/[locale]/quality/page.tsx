@@ -12,6 +12,7 @@ import Wireframe from '@/components/Wireframe'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
+import { t } from '@/lib/i18n-content'
 import { Icon } from '@iconify/react'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
@@ -113,19 +114,19 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
   return (
     <>
       <PageHero
-        eyebrow="In-house QC · ISO 9001 · full traceability"
-        title="Quality Control & ISO 9001"
-        desc="EID's in-house QC laboratory tests every batch of diamond and CBN for size distribution and morphology, with strength and coating coverage where required. ISO 9001."
-        crumbs={[{ label: 'Home', href: '/' }, { label: 'Quality' }]}
-        secondaryCta={{ label: 'View Products', href: '/#products' }}
+        eyebrow={t(locale, 'In-house QC · ISO 9001 · full traceability')}
+        title={t(locale, 'Quality Control & ISO 9001')}
+        desc={t(locale, "EID's in-house QC laboratory tests every batch of diamond and CBN for size distribution and morphology, with strength and coating coverage where required. ISO 9001.")}
+        crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Quality') }]}
+        secondaryCta={{ label: t(locale, 'View Products'), href: '/#products' }}
       />
 
       <StatsBar
         items={[
-          { value: '5', label: 'QC process steps' },
-          { value: '100%', label: 'Batches tested' },
-          { value: '8', label: 'Product groups' },
-          { value: '50+', label: "Years' experience" },
+          { value: '5', label: t(locale, 'QC process steps') },
+          { value: '100%', label: t(locale, 'Batches tested') },
+          { value: '8', label: t(locale, 'Product groups') },
+          { value: '50+', label: t(locale, "Years' experience") },
         ]}
       />
 
@@ -136,20 +137,15 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
           <div className="grid lg:grid-cols-12 gap-12">
             <div className="lg:col-span-7">
               <SectionHeading
-                eyebrow="Quality is the product"
-                title="Quality control is what you are buying."
+                eyebrow={t(locale, 'Quality is the product')}
+                title={t(locale, 'Quality control is what you are buying.')}
               />
               <div className="mt-7 space-y-4 text-base text-default-600">
                 <p>
-                  EID does not check quality after the fact. It is built into every stage, from raw
-                  material selection through grading, coating, and final inspection, and the in-house
-                  QC laboratory is the backbone of everything we ship.
+                  {t(locale, 'EID does not check quality after the fact. It is built into every stage, from raw material selection through grading, coating, and final inspection, and the in-house QC laboratory is the backbone of everything we ship.')}
                 </p>
                 <p>
-                  The reason matters more than the badge. When a tool maker reorders a grade, they
-                  are trusting that this lot behaves like the last one, because their own production
-                  is tuned to it. Our job is to make that true every time, and to prove it with data
-                  rather than a promise.
+                  {t(locale, 'The reason matters more than the badge. When a tool maker reorders a grade, they are trusting that this lot behaves like the last one, because their own production is tuned to it. Our job is to make that true every time, and to prove it with data rather than a promise.')}
                 </p>
               </div>
             </div>
@@ -158,8 +154,8 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
               <div className="divide-y divide-default-200 border-t border-default-200">
                 {philosophyFeatures.map((f) => (
                   <div key={f.title} className="py-5">
-                    <h4 className="text-base font-semibold text-default-900">{f.title}</h4>
-                    <p className="mt-1 text-base text-default-600">{f.desc}</p>
+                    <h4 className="text-base font-semibold text-default-900">{t(locale, f.title)}</h4>
+                    <p className="mt-1 text-base text-default-600">{t(locale, f.desc)}</p>
                   </div>
                 ))}
               </div>
@@ -169,41 +165,45 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
       </section>
 
       <CardGrid
-        eyebrow="What we test on every batch"
-        title="What we test on every batch."
-        desc="Particle size distribution and morphology are verified on every lot, with crystal strength and coating coverage tested where the grade or the application requires it. Every lot is documented and traceable from raw material through QC to delivery."
-        items={tests}
+        eyebrow={t(locale, 'What we test on every batch')}
+        title={t(locale, 'What we test on every batch.')}
+        desc={t(locale, 'Particle size distribution and morphology are verified on every lot, with crystal strength and coating coverage tested where the grade or the application requires it. Every lot is documented and traceable from raw material through QC to delivery.')}
+        items={tests.map((item) => ({
+          ...item,
+          title: t(locale, item.title),
+          desc: t(locale, item.desc),
+        }))}
         ctaHref="/contact"
-        ctaLabel="Request a Quote with QC Spec"
+        ctaLabel={t(locale, 'Request a Quote with QC Spec')}
       />
 
       <DarkFeatureList
           bgLabel="Background image — QC laboratory"
-        eyebrow="How our QC works"
-        title="How a batch moves through our laboratory."
-        desc="Five steps from incoming inspection to shipped product, with documentation at every stage and a retention sample kept from every batch."
-        ctaLabel="Request a Quote"
+        eyebrow={t(locale, 'How our QC works')}
+        title={t(locale, 'How a batch moves through our laboratory.')}
+        desc={t(locale, 'Five steps from incoming inspection to shipped product, with documentation at every stage and a retention sample kept from every batch.')}
+        ctaLabel={t(locale, 'Request a Quote')}
         ctaHref="/contact"
         features={[
           {
-            title: '01 · Incoming inspection',
-            desc: 'Raw materials are tested on arrival against their incoming specification before anything enters production.',
+            title: t(locale, '01 · Incoming inspection'),
+            desc: t(locale, 'Raw materials are tested on arrival against their incoming specification before anything enters production.'),
           },
           {
-            title: '02 · In-process control',
-            desc: 'Production parameters are monitored and recorded through grading, coating, and finishing.',
+            title: t(locale, '02 · In-process control'),
+            desc: t(locale, 'Production parameters are monitored and recorded through grading, coating, and finishing.'),
           },
           {
-            title: '03 · Final QC',
-            desc: 'Every finished batch is sampled and tested in our laboratory, and results are compared against your specification and our internal standards.',
+            title: t(locale, '03 · Final QC'),
+            desc: t(locale, 'Every finished batch is sampled and tested in our laboratory, and results are compared against your specification and our internal standards.'),
           },
           {
-            title: '04 · Certificate of analysis',
-            desc: 'Issued with any shipment on request, documenting the results for that specific lot.',
+            title: t(locale, '04 · Certificate of analysis'),
+            desc: t(locale, 'Issued with any shipment on request, documenting the results for that specific lot.'),
           },
           {
-            title: '05 · Retention samples',
-            desc: 'A sample from every batch is kept, so any later question can be checked against the exact material that shipped.',
+            title: t(locale, '05 · Retention samples'),
+            desc: t(locale, 'A sample from every batch is kept, so any later question can be checked against the exact material that shipped.'),
           },
         ]}
       />
@@ -230,21 +230,19 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
             <div className="grid lg:grid-cols-2 gap-10">
               <div className="border-t-2 border-primary pt-5">
                 <div className="text-sm uppercase tracking-[0.2em] text-default-500">
-                  Mesh &amp; micron QC in detail
+                  {t(locale, 'Mesh & micron QC in detail')}
                 </div>
-                <h3 className="mt-3 text-2xl">Mesh and micron QC in detail.</h3>
+                <h3 className="mt-3 text-2xl">{t(locale, 'Mesh and micron QC in detail.')}</h3>
                 <p className="mt-3 text-base text-default-600">
-                  Grading and testing differ between mesh grit and micron powder, so each has its own
-                  detail.{' '}
+                  {t(locale, 'Grading and testing differ between mesh grit and micron powder, so each has its own detail.')}{' '}
                   <Link href="/mesh-qc" className="text-primary underline underline-offset-2">
-                    Mesh QC
+                    {t(locale, 'Mesh QC')}
                   </Link>{' '}
-                  covers how we grade and verify grit sizing and shape factor.{' '}
+                  {t(locale, 'covers how we grade and verify grit sizing and shape factor.')}{' '}
                   <Link href="/micron-qc" className="text-primary underline underline-offset-2">
-                    Micron QC
+                    {t(locale, 'Micron QC')}
                   </Link>{' '}
-                  covers particle-size-distribution measurement and the D-value control fine
-                  polishing depends on.
+                  {t(locale, 'covers particle-size-distribution measurement and the D-value control fine polishing depends on.')}
                 </p>
               </div>
             </div>
@@ -258,17 +256,17 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
       <section className="lg:py-24 py-16">
         <div className="container">
           <SectionHeading
-            eyebrow="The laboratory"
-            title="The instruments behind the numbers."
-            desc="Every figure on a certificate of analysis comes off a named instrument, calibrated and logged. Photographs of the laboratory and the exact model designations are to be supplied by Uri before launch."
+            eyebrow={t(locale, 'The laboratory')}
+            title={t(locale, 'The instruments behind the numbers.')}
+            desc={t(locale, 'Every figure on a certificate of analysis comes off a named instrument, calibrated and logged. Photographs of the laboratory and the exact model designations are to be supplied by Uri before launch.')}
           />
 
           <div className="mt-14 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-10">
             {machinery.map((m) => (
               <div key={m.title} className="border-t-2 border-primary pt-5">
-                <div className="text-sm uppercase tracking-[0.2em] text-default-500">{m.meta}</div>
-                <h3 className="mt-3 text-xl">{m.title}</h3>
-                <p className="mt-3 text-base text-default-600">{m.desc}</p>
+                <div className="text-sm uppercase tracking-[0.2em] text-default-500">{t(locale, m.meta)}</div>
+                <h3 className="mt-3 text-xl">{t(locale, m.title)}</h3>
+                <p className="mt-3 text-base text-default-600">{t(locale, m.desc)}</p>
               </div>
             ))}
           </div>
@@ -288,14 +286,11 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
             <div className="grid lg:grid-cols-12 gap-12">
               <div className="lg:col-span-7">
                 <SectionHeading
-                  eyebrow="ISO 9001 certified"
-                  title="A documented, audited, repeatable process."
+                  eyebrow={t(locale, 'ISO 9001 certified')}
+                  title={t(locale, 'A documented, audited, repeatable process.')}
                 />
                 <p className="mt-7 text-base text-default-600">
-                  EID&apos;s quality management system is ISO 9001 certified, covering the full
-                  process from incoming raw material inspection through manufacturing, testing,
-                  packaging, and delivery. Certification means the process is documented, audited,
-                  and repeatable, which is what stands behind every certificate of analysis we issue.
+                  {t(locale, "EID's quality management system is ISO 9001 certified, covering the full process from incoming raw material inspection through manufacturing, testing, packaging, and delivery. Certification means the process is documented, audited, and repeatable, which is what stands behind every certificate of analysis we issue.")}
                 </p>
                 <p className="mt-5 font-mono text-sm text-default-500">
                   Certificate number, issuing body, and validity dates to be confirmed with Uri. The
@@ -310,7 +305,7 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
                 <Wireframe label="ISO 9001 certificate — scan pending from Uri" ratio="portrait" />
 
                 <div className="mt-10 border-t-2 border-primary pt-5">
-                  <div className="text-sm uppercase tracking-[0.2em] text-default-500">Downloads</div>
+                  <div className="text-sm uppercase tracking-[0.2em] text-default-500">{t(locale, 'Downloads')}</div>
                   <ul className="mt-4 space-y-3">
                     {[
                       'ISO 9001 certificate (PDF) — [awaiting file from Uri]',
@@ -325,10 +320,10 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
                   </ul>
                   <div className="mt-6 flex flex-col gap-3">
                     <p className="text-base">
-                      <RichText>[All datasheets](/resources/datasheets)</RichText>
+                      <RichText>{t(locale, '[All datasheets](/resources/datasheets)')}</RichText>
                     </p>
                     <p className="text-base">
-                      <RichText>[Safety data sheets](/resources/msds)</RichText>
+                      <RichText>{t(locale, '[Safety data sheets](/resources/msds)')}</RichText>
                     </p>
                   </div>
                 </div>
@@ -340,28 +335,28 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
 
       <div className="pt-20">
         <QuoteSection
-          eyebrow="Specify your tolerances"
-          title="Request a quote with your QC specification."
-          desc="Send us your grade and the QC parameters you need documented, and a real person replies within one business day. A certificate of analysis is available with the shipment."
+          eyebrow={t(locale, 'Specify your tolerances')}
+          title={t(locale, 'Request a quote with your QC specification.')}
+          desc={t(locale, 'Send us your grade and the QC parameters you need documented, and a real person replies within one business day. A certificate of analysis is available with the shipment.')}
         />
       </div>
 
       {/* CROSS-LINKS — the deck's Products / Detail / Support blocks */}
       <CrossLinks
         groups={[
-          { title: 'Products', links: [{ label: 'Products overview', href: '/#products' }] },
+          { title: t(locale, 'Products'), links: [{ label: t(locale, 'Products overview'), href: '/#products' }] },
           {
-            title: 'Detail',
+            title: t(locale, 'Detail'),
             links: [
-              { label: 'Mesh QC', href: '/mesh-qc' },
-              { label: 'Micron QC', href: '/micron-qc' },
+              { label: t(locale, 'Mesh QC'), href: '/mesh-qc' },
+              { label: t(locale, 'Micron QC'), href: '/micron-qc' },
             ],
           },
           {
-            title: 'Support',
+            title: t(locale, 'Support'),
             links: [
-              { label: 'Datasheets', href: '/resources/datasheets' },
-              { label: 'MSDS', href: '/resources/msds' },
+              { label: t(locale, 'Datasheets'), href: '/resources/datasheets' },
+              { label: t(locale, 'MSDS'), href: '/resources/msds' },
             ],
           },
         ]}

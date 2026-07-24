@@ -4,6 +4,7 @@ import { ArrowButton, ArrowLink, SectionHeading } from '@/components/ui'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
+import { t } from '@/lib/i18n-content'
 import { Icon } from '@iconify/react'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
@@ -80,23 +81,23 @@ const ResourcesPage = async ({ params }: { params: Promise<{ locale: Locale }> }
   return (
     <>
       <PageHero
-        eyebrow="Written by EID's technical team"
-        title="Resources & Guides"
-        desc="Technical guides on choosing superabrasives: diamond vs CBN, grit size charts, bond systems, and size distribution. Written by EID's technical team."
-        crumbs={[{ label: 'Home', href: '/' }, { label: 'Resources' }]}
-        secondaryCta={{ label: 'Read the blog', href: '/resources/blog' }}
+        eyebrow={t(locale, "Written by EID's technical team")}
+        title={t(locale, 'Resources & Guides')}
+        desc={t(locale, "Technical guides on choosing superabrasives: diamond vs CBN, grit size charts, bond systems, and size distribution. Written by EID's technical team.")}
+        crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Resources') }]}
+        secondaryCta={{ label: t(locale, 'Read the blog'), href: '/resources/blog' }}
       />
 
       {/* INTRO — the research-stage entry point that feeds the product pages */}
       <section className="lg:pt-24 pt-16">
         <div className="container">
           <SectionHeading
-            eyebrow="Where to start"
-            title="Technical guides for choosing the right superabrasive."
+            eyebrow={t(locale, 'Where to start')}
+            title={t(locale, 'Technical guides for choosing the right superabrasive.')}
           />
           <p className="mt-5 max-w-3xl text-base text-default-600">
             <RichText>
-              {'Reference charts, comparisons, and application notes to match the diamond or CBN grade to your process, written by the people who grade and test the material. Still deciding? Start here. Already know the grade? The [product pages](/products) carry the specs.'}
+              {t(locale, 'Reference charts, comparisons, and application notes to match the diamond or CBN grade to your process, written by the people who grade and test the material. Still deciding? Start here. Already know the grade? The [product pages](/products) carry the specs.')}
             </RichText>
           </p>
         </div>
@@ -106,8 +107,8 @@ const ResourcesPage = async ({ params }: { params: Promise<{ locale: Locale }> }
       <section className="lg:py-24 py-16">
         <div className="container">
           <SectionHeading
-            eyebrow="Technical knowledge"
-            title="Guides, charts, and application notes."
+            eyebrow={t(locale, 'Technical knowledge')}
+            title={t(locale, 'Guides, charts, and application notes.')}
             align="center"
           />
 
@@ -115,23 +116,23 @@ const ResourcesPage = async ({ params }: { params: Promise<{ locale: Locale }> }
             {guides.map((g) => (
               <article key={g.title} className="flex flex-col gap-4">
                 <span className="inline-flex w-fit items-center gap-1.5 rounded-2xl border border-default-300 px-3.5 py-1.25 text-sm text-default-900">
-                  Guide
+                  {t(locale, 'Guide')}
                 </span>
-                <h3 className="text-xl">{g.title}</h3>
-                <p className="text-base text-default-600">{g.desc}</p>
+                <h3 className="text-xl">{t(locale, g.title)}</h3>
+                <p className="text-base text-default-600">{t(locale, g.desc)}</p>
                 <p className="text-sm text-default-500">
-                  Links to:{' '}
+                  {t(locale, 'Links to:')}{' '}
                   {g.links.map((l, i) => (
                     <span key={l.href}>
                       {i > 0 ? ' · ' : ''}
                       <Link href={l.href} className="text-primary underline underline-offset-2">
-                        {l.label}
+                        {t(locale, l.label)}
                       </Link>
                     </span>
                   ))}
                 </p>
                 <div className="mt-auto pt-2">
-                  <ArrowLink href="/contact" label="Read" />
+                  <ArrowLink href="/contact" label={t(locale, 'Read')} />
                 </div>
                 {/* The six guides are listed but not yet written. Each is a separate
                     page under /resources/ and a real deliverable, drafted as a
@@ -139,19 +140,19 @@ const ResourcesPage = async ({ params }: { params: Promise<{ locale: Locale }> }
                     deliberate, so nobody ships a card that promises a document that
                     does not exist. */}
                 <p className="text-sm text-default-500">
-                  Guide not yet written; deck defers the six guides to a later batch.
+                  {t(locale, 'Guide not yet written; deck defers the six guides to a later batch.')}
                 </p>
               </article>
             ))}
 
             <article className="flex flex-col justify-center gap-4 bg-default-50 p-7">
               <Icon icon="tabler:diamond" className="size-7 text-primary" />
-              <h3 className="text-xl">Have a technical question?</h3>
+              <h3 className="text-xl">{t(locale, 'Have a technical question?')}</h3>
               <p className="text-base text-default-600">
-                Our team answers application and specification questions directly.
+                {t(locale, 'Our team answers application and specification questions directly.')}
               </p>
               <div className="pt-2">
-                <ArrowButton href="/contact" label="Contact us" />
+                <ArrowButton href="/contact" label={t(locale, 'Contact us')} />
               </div>
             </article>
           </div>
@@ -164,34 +165,34 @@ const ResourcesPage = async ({ params }: { params: Promise<{ locale: Locale }> }
         <Pillars
           items={[
             {
-              meta: 'Blog',
-              title: 'Technical comparisons & notes',
-              body: 'The comparison content that earns search traffic: application notes, materials explainers, and news from the laboratory.',
+              meta: t(locale, 'Blog'),
+              title: t(locale, 'Technical comparisons & notes'),
+              body: t(locale, 'The comparison content that earns search traffic: application notes, materials explainers, and news from the laboratory.'),
               href: '/resources/blog',
-              cta: 'Read the blog',
+              cta: t(locale, 'Read the blog'),
             },
             {
-              meta: 'Reference',
-              title: 'Datasheets',
-              body: 'Technical specifications as page content with a downloadable PDF each: grades, sizes, crystal types, coatings. Ungated, no form.',
+              meta: t(locale, 'Reference'),
+              title: t(locale, 'Datasheets'),
+              body: t(locale, 'Technical specifications as page content with a downloadable PDF each: grades, sizes, crystal types, coatings. Ungated, no form.'),
               href: '/resources/datasheets',
-              cta: 'Browse datasheets',
+              cta: t(locale, 'Browse datasheets'),
             },
             {
-              meta: 'Safety',
-              title: 'MSDS',
-              body: 'Safety data sheets covering handling, storage, disposal, and regulatory information. Ungated, no login.',
+              meta: t(locale, 'Safety'),
+              title: t(locale, 'MSDS'),
+              body: t(locale, 'Safety data sheets covering handling, storage, disposal, and regulatory information. Ungated, no login.'),
               href: '/resources/msds',
-              cta: 'Browse MSDS',
+              cta: t(locale, 'Browse MSDS'),
             },
           ]}
         />
       </section>
 
       <QuoteSection
-        eyebrow="Can't find what you need?"
-        title="Have a technical question the guides don't answer?"
-        desc="Tell us the material, the process, and the finish you need, and someone who works with the material will help you specify. Replies within one business day."
+        eyebrow={t(locale, "Can't find what you need?")}
+        title={t(locale, "Have a technical question the guides don't answer?")}
+        desc={t(locale, 'Tell us the material, the process, and the finish you need, and someone who works with the material will help you specify. Replies within one business day.')}
       />
     </>
   )

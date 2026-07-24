@@ -77,7 +77,7 @@ const Footer = () => {
                 className="mt-7 inline-flex items-center gap-2 rounded border border-white/15 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:border-white/40"
               >
                 <Icon icon="tabler:brand-whatsapp" className="size-5" />
-                WhatsApp us
+                {t(locale, 'WhatsApp us')}
               </a>
             </div>
           </div>

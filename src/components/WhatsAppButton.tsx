@@ -1,4 +1,7 @@
+import type { Locale } from '@/i18n/routing'
+import { t } from '@/lib/i18n-content'
 import { site } from '@/lib/site'
+import { useLocale } from 'next-intl'
 
 /**
  * Persistent WhatsApp Business channel.
@@ -11,7 +14,10 @@ import { site } from '@/lib/site'
  * component, so it stays a server component and costs nothing on first paint —
  * it renders on every page of the site.
  */
-const WhatsAppButton = () => (
+const WhatsAppButton = () => {
+  const locale = useLocale() as Locale
+
+  return (
   <a
     href={site.whatsappHref}
     target="_blank"
@@ -26,9 +32,10 @@ const WhatsAppButton = () => (
     {/* The label expands on hover on pointer devices; the icon alone carries it
         on touch, where there is no hover state to reveal anything. */}
     <span className="hidden max-w-0 overflow-hidden whitespace-nowrap text-sm font-semibold opacity-0 transition-all duration-300 group-hover:max-w-40 group-hover:opacity-100 lg:inline">
-      WhatsApp us
+      {t(locale, 'WhatsApp us')}
     </span>
   </a>
-)
+  )
+}
 
 export default WhatsAppButton

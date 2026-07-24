@@ -3,6 +3,7 @@ import { QuoteSection, PageHero } from '@/components/sections'
 import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
+import { t } from '@/lib/i18n-content'
 import { Icon } from '@iconify/react'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
@@ -78,38 +79,38 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
   return (
     <>
       <PageHero
-        eyebrow="Ungated · specifications, grades & sizing"
-        title="Product Datasheets"
-        desc="Download technical datasheets for EID's full diamond and CBN range: grades, sizes, crystal types, coatings, and packaging. Ungated, free to download."
+        eyebrow={t(locale, 'Ungated · specifications, grades & sizing')}
+        title={t(locale, 'Product Datasheets')}
+        desc={t(locale, "Download technical datasheets for EID's full diamond and CBN range: grades, sizes, crystal types, coatings, and packaging. Ungated, free to download.")}
         crumbs={[
-          { label: 'Home', href: '/' },
-          { label: 'Resources', href: '/resources' },
-          { label: 'Datasheets' },
+          { label: t(locale, 'Home'), href: '/' },
+          { label: t(locale, 'Resources'), href: '/resources' },
+          { label: t(locale, 'Datasheets') },
         ]}
-        secondaryCta={{ label: 'MSDS', href: '/resources/msds' }}
+        secondaryCta={{ label: t(locale, 'MSDS'), href: '/resources/msds' }}
       />
 
       <section className="lg:py-24 py-16">
         <div className="container">
           {/* Deliberately ungated: no form, no login, no gate on a spec sheet. */}
           <SectionHeading
-            eyebrow="No form, no login"
-            title="Product datasheets, free to download."
+            eyebrow={t(locale, 'No form, no login')}
+            title={t(locale, 'Product datasheets, free to download.')}
           />
           <p className="mt-5 max-w-3xl text-base text-default-600">
             <RichText>
-              {'Technical specifications for every EID product: grades, sizes, crystal types, coating options, and packaging. No form, no login. Download what you need, and if the exact spec you are after is not here, [ask us](/contact).'}
+              {t(locale, 'Technical specifications for every EID product: grades, sizes, crystal types, coating options, and packaging. No form, no login. Download what you need, and if the exact spec you are after is not here, [ask us](/contact).')}
             </RichText>
           </p>
           <p className="mt-5 text-sm text-default-500">
-            Placeholder downloads. Confirm available datasheets with Uri and upload the actual PDFs.
+            {t(locale, 'Placeholder downloads. Confirm available datasheets with Uri and upload the actual PDFs.')}
           </p>
 
           <div className="mt-14 grid gap-10">
             {groups.map(({ group, sheets }) => (
               <div key={group}>
                 <div className="border-b border-default-200 pb-2.5 text-sm uppercase tracking-[0.2em] text-default-500">
-                  {group}
+                  {t(locale, group)}
                 </div>
                 <div className="divide-y divide-default-200">
                   {sheets.map(([name, desc]) => (
@@ -120,8 +121,8 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
                       <div className="flex items-start gap-4">
                         <Icon icon="tabler:file-text" className="mt-0.5 size-6 shrink-0 text-primary" />
                         <div>
-                          <h3 className="text-base font-semibold text-default-900">{name}</h3>
-                          <p className="mt-1 text-base text-default-600">{desc}</p>
+                          <h3 className="text-base font-semibold text-default-900">{t(locale, name)}</h3>
+                          <p className="mt-1 text-base text-default-600">{t(locale, desc)}</p>
                         </div>
                       </div>
                       <span className="inline-flex items-center gap-2 rounded-2xl border border-default-300 px-3.5 py-1.5 text-sm font-semibold text-default-800">
@@ -138,9 +139,9 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
       </section>
 
       <QuoteSection
-        eyebrow="Need a spec not listed?"
-        title="Need a spec that isn't listed here?"
-        desc="Tell us the product and the parameters you need, and we will send the datasheet or confirm a custom specification. Replies within one business day."
+        eyebrow={t(locale, 'Need a spec not listed?')}
+        title={t(locale, "Need a spec that isn't listed here?")}
+        desc={t(locale, 'Tell us the product and the parameters you need, and we will send the datasheet or confirm a custom specification. Replies within one business day.')}
       />
     </>
   )

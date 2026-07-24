@@ -7,7 +7,9 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "format": "prettier --write './src/**/*.{ts,tsx,js,jsx}'"
+    "format": "prettier --write './src/**/*.{ts,tsx,js,jsx}'",
+    "translate": "tsx scripts/translate.ts",
+    "prebuild": "tsx scripts/translate.ts --auto"
   },
   "dependencies": {
     "@iconify/react": "^6.0.2",
@@ -41,6 +43,7 @@
     "prettier-plugin-organize-imports": "^4.3.0",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "tailwindcss": "^4.3.1",
+    "tsx": "^4.23.1",
     "typescript": "^6.0.3"
   }
 }

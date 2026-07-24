@@ -6,7 +6,7 @@ import { ArrowButton, SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { applications } from '@/lib/applications'
 import { localeAlternates } from '@/lib/hreflang'
-import { getApplication, getApplications, getProduct } from '@/lib/i18n-content'
+import { getApplication, getApplications, getProduct, t } from '@/lib/i18n-content'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
@@ -82,12 +82,12 @@ const ApplicationPage = async ({
         title={app.h1}
         desc={app.metaDesc}
         crumbs={[
-          { label: 'Home', href: '/' },
-          { label: 'Applications', href: '/applications' },
+          { label: t(locale, 'Home'), href: '/' },
+          { label: t(locale, 'Applications'), href: '/applications' },
           { label: app.name },
         ]}
         primaryCta={{ label: app.cta, href: '/contact' }}
-        secondaryCta={{ label: 'All Applications', href: '/applications' }}
+        secondaryCta={{ label: t(locale, 'All Applications'), href: '/applications' }}
       />
 
       {/* INTRO — the outcome block rides alongside the prose, because a hub has
@@ -121,8 +121,8 @@ const ApplicationPage = async ({
       {/* PRODUCTS USED */}
       <CardCarousel
         eyebrow={app.productsTitle}
-        title="The material behind your tools."
-        desc="Every grade quality-controlled through our own laboratory to the same standard, every time. Tell us your application and we will recommend the right product."
+        title={t(locale, 'The material behind your tools.')}
+        desc={t(locale, 'Every grade quality-controlled through our own laboratory to the same standard, every time. Tell us your application and we will recommend the right product.')}
         items={serviceItems}
         ctaHref="/contact"
         ctaLabel={app.cta}
@@ -132,27 +132,27 @@ const ApplicationPage = async ({
       <div className="pt-14">
         <DarkFeatureList
           bgLabel="Background image — application in production"
-          eyebrow="The EID advantage"
+          eyebrow={t(locale, 'The EID advantage')}
           title={app.why.title}
           desc={app.why.body}
-          ctaLabel={app.whyCta ?? 'See how our QC works'}
+          ctaLabel={app.whyCta ?? t(locale, 'See how our QC works')}
           ctaHref="/quality"
           features={[
             {
-              title: 'Batch-to-batch consistency',
-              desc: 'Re-order and get the same material, tested on every production run.',
+              title: t(locale, 'Batch-to-batch consistency'),
+              desc: t(locale, 'Re-order and get the same material, tested on every production run.'),
             },
             {
-              title: 'Full range, one supplier',
-              desc: 'Everything this application needs from a single relationship and standard.',
+              title: t(locale, 'Full range, one supplier'),
+              desc: t(locale, 'Everything this application needs from a single relationship and standard.'),
             },
             {
-              title: 'In-house QC laboratory',
-              desc: 'Size distribution, crystal strength, morphology, and coating coverage.',
+              title: t(locale, 'In-house QC laboratory'),
+              desc: t(locale, 'Size distribution, crystal strength, morphology, and coating coverage.'),
             },
             {
-              title: 'ISO 9001 & traceability',
-              desc: 'Certificate of analysis and retention samples available on request.',
+              title: t(locale, 'ISO 9001 & traceability'),
+              desc: t(locale, 'Certificate of analysis and retention samples available on request.'),
             },
           ]}
         />
@@ -161,7 +161,7 @@ const ApplicationPage = async ({
       {/* CTA */}
       <div className="pt-20">
         <QuoteSection
-          eyebrow="Tell us your application"
+          eyebrow={t(locale, 'Tell us your application')}
           title={`${app.cta}.`}
           desc={app.ctaDesc}
         />
@@ -170,18 +170,18 @@ const ApplicationPage = async ({
       {/* CROSS-LINKS */}
       <CrossLinks
         groups={[
-          { title: 'Products for this application', links: productLinks },
+          { title: t(locale, 'Products for this application'), links: productLinks },
           {
-            title: 'Quality & resources',
+            title: t(locale, 'Quality & resources'),
             links: [
-              { label: 'Quality, QC & ISO 9001', href: '/quality' },
-              { label: 'Datasheets', href: '/resources/datasheets' },
+              { label: t(locale, 'Quality, QC & ISO 9001'), href: '/quality' },
+              { label: t(locale, 'Datasheets'), href: '/resources/datasheets' },
               ...guideLinks,
             ],
           },
-          ...(relatedHubLinks.length ? [{ title: 'Related hub', links: relatedHubLinks }] : []),
+          ...(relatedHubLinks.length ? [{ title: t(locale, 'Related hub'), links: relatedHubLinks }] : []),
           {
-            title: 'Other applications',
+            title: t(locale, 'Other applications'),
             links: getApplications(locale)
               .filter((o) => o.slug !== app.slug)
               .map((o) => ({ label: o.name, href: `/applications/${o.slug}` })),

@@ -4,6 +4,7 @@ import { SectionHeading } from '@/components/ui'
 import Wireframe from '@/components/Wireframe'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
+import { t } from '@/lib/i18n-content'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
@@ -57,16 +58,16 @@ const MeshQcPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =
   return (
     <>
       <PageHero
-        eyebrow="Quality · Mesh QC in detail"
-        title="Mesh QC"
-        desc="How we grade and verify grit sizing and shape factor, lot after lot."
+        eyebrow={t(locale, 'Quality · Mesh QC in detail')}
+        title={t(locale, 'Mesh QC')}
+        desc={t(locale, 'How we grade and verify grit sizing and shape factor, lot after lot.')}
         crumbs={[
-          { label: 'Home', href: '/' },
-          { label: 'Quality', href: '/quality' },
-          { label: 'Mesh QC' },
+          { label: t(locale, 'Home'), href: '/' },
+          { label: t(locale, 'Quality'), href: '/quality' },
+          { label: t(locale, 'Mesh QC') },
         ]}
-        primaryCta={{ label: 'Request a Quote', href: '/contact' }}
-        secondaryCta={{ label: 'Back to Quality', href: '/quality' }}
+        primaryCta={{ label: t(locale, 'Request a Quote'), href: '/contact' }}
+        secondaryCta={{ label: t(locale, 'Back to Quality'), href: '/quality' }}
       />
 
       {/* Why mesh is its own page: sieve grading and micron counting are two
@@ -75,14 +76,14 @@ const MeshQcPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =
         <div className="container">
           <div className="max-w-4xl">
             <SectionHeading
-              eyebrow="Grading by form"
-              title="Mesh grit is graded by sieve, not by counter."
+              eyebrow={t(locale, 'Grading by form')}
+              title={t(locale, 'Mesh grit is graded by sieve, not by counter.')}
             />
             <p className="mt-7 text-base text-default-600">
               <RichText>
-                {
+                {t(locale,
                   'Grading and testing differ between mesh grit and micron powder, so each has its own method. Mesh grit is sized mechanically against a calibrated sieve stack, and the buying criteria are the size fraction, the shape factor, and how the grit breaks down under load. Micron powder is a different problem entirely, measured by particle counting and controlled on D-values, which [Micron QC](/micron-qc) covers.'
-                }
+                )}
               </RichText>
             </p>
             <p className="mt-5 font-mono text-sm text-default-500">
@@ -101,44 +102,44 @@ const MeshQcPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =
 
       <DarkFeatureList
           bgLabel="Background image — sieve grading bench"
-        eyebrow="Mesh QC, step by step"
-        title="What we check on a mesh lot."
-        desc="Sizing and shape factor are verified on every lot, with strength tested where the grade or the application requires it. The record is what you can put in a qualification file."
-        features={steps}
-        ctaLabel="See the full QC process"
+        eyebrow={t(locale, 'Mesh QC, step by step')}
+        title={t(locale, 'What we check on a mesh lot.')}
+        desc={t(locale, 'Sizing and shape factor are verified on every lot, with strength tested where the grade or the application requires it. The record is what you can put in a qualification file.')}
+        features={steps.map((s) => ({ title: t(locale, s.title), desc: t(locale, s.desc) }))}
+        ctaLabel={t(locale, 'See the full QC process')}
         ctaHref="/quality"
       />
 
       <div className="pt-20">
         <QuoteSection
-          eyebrow="Specify your tolerances"
-          title="Request a quote with your QC specification."
-          desc="Send us the mesh grade and the parameters you need documented, and a real person replies within one business day."
+          eyebrow={t(locale, 'Specify your tolerances')}
+          title={t(locale, 'Request a quote with your QC specification.')}
+          desc={t(locale, 'Send us the mesh grade and the parameters you need documented, and a real person replies within one business day.')}
         />
       </div>
 
       <CrossLinks
         groups={[
           {
-            title: 'Quality',
+            title: t(locale, 'Quality'),
             links: [
-              { label: 'Quality, QC & ISO 9001', href: '/quality' },
-              { label: 'Micron QC', href: '/micron-qc' },
+              { label: t(locale, 'Quality, QC & ISO 9001'), href: '/quality' },
+              { label: t(locale, 'Micron QC'), href: '/micron-qc' },
             ],
           },
           {
-            title: 'Products graded this way',
+            title: t(locale, 'Products graded this way'),
             links: [
-              { label: 'Natural Diamond Grit (Mesh)', href: '/products/natural-grit-powder#grit' },
-              { label: 'Metal Bond Diamond', href: '/products/metal-bond' },
-              { label: 'CBN Powder', href: '/products/cbn#mesh' },
+              { label: t(locale, 'Natural Diamond Grit (Mesh)'), href: '/products/natural-grit-powder#grit' },
+              { label: t(locale, 'Metal Bond Diamond'), href: '/products/metal-bond' },
+              { label: t(locale, 'CBN Powder'), href: '/products/cbn#mesh' },
             ],
           },
           {
-            title: 'Support',
+            title: t(locale, 'Support'),
             links: [
-              { label: 'Datasheets', href: '/resources/datasheets' },
-              { label: 'MSDS', href: '/resources/msds' },
+              { label: t(locale, 'Datasheets'), href: '/resources/datasheets' },
+              { label: t(locale, 'MSDS'), href: '/resources/msds' },
             ],
           },
         ]}

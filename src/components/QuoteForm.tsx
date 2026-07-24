@@ -1,6 +1,9 @@
 'use client'
 
+import type { Locale } from '@/i18n/routing'
+import { t } from '@/lib/i18n-content'
 import { site } from '@/lib/site'
+import { useLocale } from 'next-intl'
 import { useState } from 'react'
 
 /**
@@ -24,6 +27,7 @@ const LABEL_CLASS = 'mb-2 block text-sm font-medium text-default-900'
 const HELP_CLASS = 'mt-2 text-sm text-default-500'
 
 const QuoteForm = ({ formTitle, formDesc, productOptions }: { formTitle: string; formDesc: string; productOptions: string[] }) => {
+  const locale = useLocale() as Locale
   const [sent, setSent] = useState(false)
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -56,86 +60,86 @@ const QuoteForm = ({ formTitle, formDesc, productOptions }: { formTitle: string;
       <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2">
         <div>
           <label className={LABEL_CLASS} htmlFor="qf-name">
-            Name
+            {t(locale, 'Name')}
           </label>
           <input id="qf-name" name="name" type="text" autoComplete="name" required className={FIELD_CLASS} />
         </div>
 
         <div>
           <label className={LABEL_CLASS} htmlFor="qf-company">
-            Company
+            {t(locale, 'Company')}
           </label>
           <input id="qf-company" name="company" type="text" autoComplete="organization" className={FIELD_CLASS} />
         </div>
 
         <div>
           <label className={LABEL_CLASS} htmlFor="qf-email">
-            Email
+            {t(locale, 'Email')}
           </label>
           <input id="qf-email" name="email" type="email" autoComplete="email" required className={FIELD_CLASS} />
         </div>
 
         <div>
           <label className={LABEL_CLASS} htmlFor="qf-phone">
-            Phone
+            {t(locale, 'Phone')}
           </label>
           <input id="qf-phone" name="phone" type="tel" autoComplete="tel" className={FIELD_CLASS} />
         </div>
 
         <div>
           <label className={LABEL_CLASS} htmlFor="qf-country">
-            Country
+            {t(locale, 'Country')}
           </label>
           <input id="qf-country" name="country" type="text" autoComplete="country-name" className={FIELD_CLASS} />
         </div>
 
         <div>
           <label className={LABEL_CLASS} htmlFor="qf-product">
-            Product of interest
+            {t(locale, 'Product of interest')}
           </label>
           <select id="qf-product" name="product" required aria-describedby="qf-product-help" className={FIELD_CLASS} defaultValue="">
             <option value="" disabled>
-              Select a product
+              {t(locale, 'Select a product')}
             </option>
             {productOptions.map((p) => (
               <option key={p}>{p}</option>
             ))}
           </select>
           <p id="qf-product-help" className={HELP_CLASS}>
-            Pick the closest product. Not sure? Choose &apos;Help me specify&apos; and describe your application below.
+            {t(locale, "Pick the closest product. Not sure? Choose 'Help me specify' and describe your application below.")}
           </p>
         </div>
 
         <div>
           <label className={LABEL_CLASS} htmlFor="qf-grade">
-            Grade or size (optional)
+            {t(locale, 'Grade or size (optional)')}
           </label>
           <input id="qf-grade" name="grade" type="text" aria-describedby="qf-grade-help" className={FIELD_CLASS} />
           <p id="qf-grade-help" className={HELP_CLASS}>
-            If you know it. Mesh, micron, or FEPA all fine.
+            {t(locale, 'If you know it. Mesh, micron, or FEPA all fine.')}
           </p>
         </div>
 
         <div>
           <label className={LABEL_CLASS} htmlFor="qf-quantity">
-            Quantity (optional)
+            {t(locale, 'Quantity (optional)')}
           </label>
           <input id="qf-quantity" name="quantity" type="text" className={FIELD_CLASS} />
         </div>
 
         <div className="md:col-span-2">
           <label className={LABEL_CLASS} htmlFor="qf-message">
-            Message
+            {t(locale, 'Message')}
           </label>
           <textarea id="qf-message" name="message" required rows={5} className={FIELD_CLASS} />
         </div>
 
         <div className="md:col-span-2">
           <button type="submit" className="bg-primary hover:bg-default-900 rounded-md px-6 py-3.75 text-base font-medium text-white transition-all">
-            Send request
+            {t(locale, 'Send request')}
           </button>
           <p className="text-default-500 mt-4 text-sm" role="status">
-            {sent ? `Thanks. Your request reached our technical team, and someone will reply within one business day. Urgent? Call ${site.phone} or message us on WhatsApp.` : 'A real person replies within one business day.'}
+            {sent ? `${t(locale, 'Thanks. Your request reached our technical team, and someone will reply within one business day. Urgent? Call ')}${site.phone}${t(locale, ' or message us on WhatsApp.')}` : t(locale, 'A real person replies within one business day.')}
           </p>
         </div>
       </div>
