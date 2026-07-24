@@ -17,6 +17,3 @@ yarn-error.log*
 next-env.d.ts
 *.tsbuildinfo
 .env
-
-# Machine-translation bundles (generated at build by prebuild)
-src/lib/i18n-generated/*.json
