@@ -9,7 +9,7 @@ import { site } from '@/lib/site'
 import { Icon } from '@iconify/react'
 import Image from 'next/image'
 import { useLocale } from 'next-intl'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import QuoteForm from './QuoteForm'
 import { ArrowButton, ArrowLink, SectionHeading } from './ui'
 
@@ -848,23 +848,66 @@ export const SpecCards = ({
 }
 
 /** On-page anchor nav for the merged product pages. */
+/**
+ * Sticky section nav with scrollspy. On a long product page this keeps the
+ * section anchors pinned through the vertical (F-pattern) scan and marks the
+ * section currently in view (Nielsen: visibility of system status, recognition
+ * over recall). Sticks below the fixed header (top-0, ~84px) and reuses the
+ * header's own translucent-blur treatment so the two bars read as one system.
+ */
 export const JumpNav = ({ items }: { items: { id: string; label: string }[] }) => {
   const locale = useLocale() as Locale
+  const [active, setActive] = useState(items[0]?.id ?? '')
+
+  useEffect(() => {
+    const sections = items
+      .map((it) => document.getElementById(it.id))
+      .filter((el): el is HTMLElement => Boolean(el))
+    if (!sections.length) return
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        // The section whose top is highest within the detection band wins, so
+        // the active pill tracks the one currently under the sticky nav.
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
+        if (visible[0]) setActive(visible[0].target.id)
+      },
+      // Detection band: a thin strip just below the header + this nav, down to
+      // 30% of the viewport — a section goes active as its top passes under.
+      { rootMargin: '-150px 0px -70% 0px', threshold: 0 },
+    )
+    sections.forEach((s) => io.observe(s))
+    return () => io.disconnect()
+  }, [items])
+
   return (
-  <section className="border-b border-default-200 py-6">
-    <div className="container flex flex-wrap items-center gap-3">
-      <span className="text-sm uppercase tracking-[0.2em] text-default-500">{t(locale, 'On this page')}</span>
-      {items.map((item) => (
-        <a
-          key={item.id}
-          href={`#${item.id}`}
-          className="rounded-2xl border border-default-300 px-3.5 py-1.5 text-sm text-default-800 transition-colors hover:border-primary hover:text-primary"
-        >
-          {item.label}
-        </a>
-      ))}
-    </div>
-  </section>
+    <nav
+      aria-label={t(locale, 'On this page')}
+      className="sticky top-[84px] z-40 border-b border-default-200 bg-body-bg/95 backdrop-blur-md"
+    >
+      <div className="container flex flex-wrap items-center gap-3 py-4">
+        <span className="text-sm uppercase tracking-[0.2em] text-default-500">{t(locale, 'On this page')}</span>
+        {items.map((item) => {
+          const isActive = item.id === active
+          return (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              aria-current={isActive ? 'true' : undefined}
+              className={`rounded-2xl border px-3.5 py-1.5 text-sm transition-colors ${
+                isActive
+                  ? 'border-primary bg-primary text-white'
+                  : 'border-default-300 text-default-800 hover:border-primary hover:text-primary'
+              }`}
+            >
+              {item.label}
+            </a>
+          )
+        })}
+      </div>
+    </nav>
   )
 }
 

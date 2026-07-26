@@ -232,7 +232,9 @@ const ProductSectionBlock = ({
     <>
       <div className={gray ? 'bg-default-50' : ''}>
 
-        <section id={section.id} className="scroll-mt-28 lg:py-24 py-16">
+        {/* scroll-mt clears both the fixed header (~84px) and the sticky
+            JumpNav (~57px) so a jumped-to section lands below both, not under. */}
+        <section id={section.id} className="scroll-mt-40 lg:py-24 py-16">
           <div className="container">
             <div className="grid lg:grid-cols-12 gap-12">
               <div className="lg:col-span-7">
@@ -305,7 +307,7 @@ const ProductSectionBlock = ({
               <div className="mt-16 grid lg:grid-cols-2 gap-12">
                 {section.applications?.length ? (
                   <div>
-                    <h3 className="text-2xl">{section.applicationsTitle ?? t(locale, "Where it's used.")}</h3>
+                    <h3 className="text-2xl">{section.applicationsTitle ?? t(locale, 'Typical Applications')}</h3>
                     <ul className="mt-6 space-y-3">
                       {section.applications.map((a, i) => (
                         <li key={i} className="flex gap-2.5 text-base text-default-600">
