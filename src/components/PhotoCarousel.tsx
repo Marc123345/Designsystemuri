@@ -1,50 +1,43 @@
 'use client'
 
-import { Link } from '@/i18n/navigation'
+import Wireframe from '@/components/Wireframe'
+import type { Locale } from '@/i18n/routing'
+import { t } from '@/lib/i18n-content'
 import { Icon } from '@iconify/react'
+import { useLocale } from 'next-intl'
 import { useId } from 'react'
 import { A11y, Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import type { Card } from './sections'
-import { ArrowButton, SectionHeading } from './ui'
+import { SectionHeading } from './ui'
 
 /**
- * Swipeable version of the card grid, for the products a hub routes to.
- *
- * A hub carries between four and six products, which is exactly the count that
- * reads badly as a static grid — either a stranded row of one or a wall of six
- * competing for the same glance. Swiping puts them in a sequence the reader
- * controls, and the partial next card is what tells them there is one.
- *
- * Lives in its own file rather than in sections.tsx so Swiper is bundled only
- * on the routes that use it; sections.tsx is imported by every page.
+ * Swipeable row of images, for the QC-step photos on the Quality page. Same
+ * Swiper setup and prev/next chrome as CardCarousel, but each slide is a
+ * Wireframe (or, once EID supplies the photography, a real image) rather than a
+ * link card. Until the photos land, the labelled wireframes read as a sequence
+ * the visitor controls instead of a static wall of empty slots.
  */
-const CardCarousel = ({
+const PhotoCarousel = ({
   eyebrow,
   title,
   desc,
   items,
-  ctaHref,
-  ctaLabel,
 }: {
   eyebrow?: string
   title: string
   desc?: string
-  items: Card[]
-  ctaHref?: string
-  ctaLabel?: string
+  items: { label: string; ratio?: 'landscape' | 'wide' | 'portrait' | 'square' }[]
 }) => {
-  // Swiper binds navigation by selector, so two carousels on one page would
-  // otherwise share controls — whichever mounted last would win.
+  const locale = useLocale() as Locale
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '')
-  const prev = `cc-prev-${uid}`
-  const next = `cc-next-${uid}`
+  const prev = `pc-prev-${uid}`
+  const next = `pc-next-${uid}`
 
   const arrow = (dir: 'prev' | 'next') => (
     <button
       type="button"
       className={`${dir === 'prev' ? prev : next} static! group flex`}
-      aria-label={dir === 'prev' ? 'Previous products' : 'Next products'}
+      aria-label={dir === 'prev' ? t(locale, 'Previous photos') : t(locale, 'Next photos')}
     >
       <span
         className={`inline-flex! size-12! cursor-pointer items-center justify-center rounded bg-default-100 text-default-900! transition-all hover:bg-default-200 ${
@@ -78,11 +71,10 @@ const CardCarousel = ({
   )
 
   return (
-    <section className="lg:py-30 py-20">
+    <section className="lg:py-24 py-16">
       <div className="container">
-        <div className="grid md:grid-cols-2 grid-cols-1 items-end gap-8">
+        <div className="grid grid-cols-1 items-end gap-8 md:grid-cols-2">
           <SectionHeading eyebrow={eyebrow} title={title} desc={desc} />
-
           <div className="flex md:ms-auto">
             {arrow('prev')}
             {arrow('next')}
@@ -94,8 +86,6 @@ const CardCarousel = ({
             modules={[Navigation, A11y]}
             grabCursor
             spaceBetween={24}
-            // The fractional counts leave the next card partly visible, which
-            // is what signals the row can be swiped at all.
             slidesPerView={1.1}
             breakpoints={{
               640: { slidesPerView: 2.1 },
@@ -105,35 +95,15 @@ const CardCarousel = ({
             a11y={{ enabled: true }}
           >
             {items.map((item) => (
-              <SwiperSlide key={item.title} className="h-auto!">
-                <Link
-                  href={item.href}
-                  className="group flex h-full flex-col gap-5 rounded-md border border-default-200 p-8 transition-colors hover:border-primary hover:bg-default-50"
-                >
-                  <Icon icon={item.icon} className="size-10 text-primary" />
-                  <h3 className="text-xl group-hover:text-primary">{item.title}</h3>
-                  <p className="text-base text-default-600">{item.desc}</p>
-                  <span className="mt-auto inline-flex items-center gap-2 pt-2 text-sm font-semibold text-primary">
-                    Learn more
-                    <Icon
-                      icon="tabler:arrow-narrow-right"
-                      className="size-5 transition-transform duration-300 group-hover:translate-x-1"
-                    />
-                  </span>
-                </Link>
+              <SwiperSlide key={item.label} className="h-auto!">
+                <Wireframe label={item.label} ratio={item.ratio ?? 'landscape'} />
               </SwiperSlide>
             ))}
           </Swiper>
         </div>
-
-        {ctaHref && ctaLabel && (
-          <div className="mt-12">
-            <ArrowButton href={ctaHref} label={ctaLabel} variant="dark" />
-          </div>
-        )}
       </div>
     </section>
   )
 }
 
-export default CardCarousel
+export default PhotoCarousel

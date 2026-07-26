@@ -1,7 +1,8 @@
+import CardCarousel from '@/components/CardCarousel'
+import PhotoCarousel from '@/components/PhotoCarousel'
 import { RichText } from '@/components/RichText'
 import {
   QuoteSection,
-  CardGrid,
   CrossLinks,
   DarkFeatureList,
   PageHero,
@@ -164,7 +165,7 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
         </div>
       </section>
 
-      <CardGrid
+      <CardCarousel
         eyebrow={t(locale, 'What we test on every batch')}
         title={t(locale, 'What we test on every batch.')}
         desc={t(locale, 'Particle size distribution and morphology are verified on every lot, with crystal strength and coating coverage tested where the grade or the application requires it. Every lot is documented and traceable from raw material through QC to delivery.')}
@@ -210,18 +211,20 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
 
       {/* The deck asks for each QC step to be supported by a photo of the actual
           machinery or lab. EID has not supplied those assets, so every slot is a
-          labelled wireframe rather than a stock image. */}
-      <section className="lg:pt-24 pt-16">
-        <div className="container">
-          <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8">
-            <Wireframe label="Incoming inspection — lab photo pending from Uri" />
-            <Wireframe label="In-process control — production floor photo pending from Uri" />
-            <Wireframe label="Final QC — laboratory photo pending from Uri" />
-            <Wireframe label="Certificate of analysis — document photo pending from Uri" />
-            <Wireframe label="Retention samples — sample store photo pending from Uri" />
-          </div>
-        </div>
-      </section>
+          labelled wireframe rather than a stock image — presented as a swipeable
+          sequence the visitor controls. */}
+      <PhotoCarousel
+        eyebrow={t(locale, 'Inside the laboratory')}
+        title={t(locale, 'The QC process, step by step.')}
+        desc={t(locale, 'Each stage, from incoming inspection to the retained sample, photographed on our own floor.')}
+        items={[
+          { label: 'Incoming inspection — lab photo pending from Uri' },
+          { label: 'In-process control — production floor photo pending from Uri' },
+          { label: 'Final QC — laboratory photo pending from Uri' },
+          { label: 'Certificate of analysis — document photo pending from Uri' },
+          { label: 'Retention samples — sample store photo pending from Uri' },
+        ]}
+      />
 
       {/* MESH & MICRON QC + ISO 9001 */}
       <div className="bg-default-50">
@@ -261,13 +264,25 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
             desc={t(locale, 'Every figure on a certificate of analysis comes off a named instrument, calibrated and logged. Photographs of the laboratory and the exact model designations are to be supplied by Uri before launch.')}
           />
 
-          <div className="mt-14 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-10">
-            {machinery.map((m) => (
-              <div key={m.title} className="border-t-2 border-primary pt-5">
-                <div className="text-sm uppercase tracking-[0.2em] text-default-500">{t(locale, m.meta)}</div>
-                <h3 className="mt-3 text-xl">{t(locale, m.title)}</h3>
-                <p className="mt-3 text-base text-default-600">{t(locale, m.desc)}</p>
-              </div>
+          {/* Progressive disclosure: each instrument is a row (function label +
+              instrument name) that opens to what it measures, on demand. Native
+              exclusive <details> accordion (plus->cross), so the reader drills
+              into one instrument at a time instead of scanning a six-card wall. */}
+          <div className="mt-14 max-w-3xl divide-y divide-default-200 border-y border-default-200">
+            {machinery.map((m, i) => (
+              <details key={m.title} name="qc-instruments" open={i === 0} className="group py-5">
+                <summary className="flex cursor-pointer list-none items-center gap-4 [&::-webkit-details-marker]:hidden">
+                  <div className="flex-1">
+                    <div className="text-xs uppercase tracking-[0.2em] text-default-500">{t(locale, m.meta)}</div>
+                    <h3 className="mt-1 text-xl text-default-900">{t(locale, m.title)}</h3>
+                  </div>
+                  <Icon
+                    icon="tabler:plus"
+                    className="size-5 shrink-0 text-default-400 transition-transform duration-500 group-open:rotate-45"
+                  />
+                </summary>
+                <p className="mt-3 max-w-2xl text-base text-default-600">{t(locale, m.desc)}</p>
+              </details>
             ))}
           </div>
 
