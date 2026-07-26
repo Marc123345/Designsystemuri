@@ -244,7 +244,6 @@ export const products: Product[] = [
           "High-load work where the tool has to keep cutting predictably run after run.",
         specsTitle: "Metal bond mesh specifications",
         specs: [
-          { label: "Form", value: "Mesh" },
           {
             label: "Grades",
             value: "Saw grade (high impact strength), wheel grade (controlled friability)",
@@ -270,7 +269,6 @@ export const products: Product[] = [
           "Where the finish and the wheel form matter as much as stock removal.",
         specsTitle: "Metal bond micron specifications",
         specs: [
-          { label: "Form", value: "Micron" },
         ],
         datasheet: "Metal Bond datasheet",
       },
@@ -346,7 +344,6 @@ export const products: Product[] = [
         ],
         specsTitle: "Resin bond mesh specifications",
         specs: [
-          { label: "Form", value: "Mesh" },
           {
             label: "Crystal type",
             value: "Monocrystalline (blocky to irregular), polycrystalline (self-sharpening)",
@@ -369,7 +366,6 @@ export const products: Product[] = [
         ],
         specsTitle: "Resin bond micron specifications",
         specs: [
-          { label: "Form", value: "Micron" },
         ],
         datasheet: "Resin Bond datasheet",
       },
@@ -451,7 +447,6 @@ export const products: Product[] = [
           "High-volume ferrous grinding where the wheel has to hold form across long runs.",
         specsTitle: "CBN mesh specifications",
         specs: [
-          { label: "Form", value: "Mesh" },
         ],
         datasheet: "CBN datasheet",
       },
@@ -470,7 +465,6 @@ export const products: Product[] = [
         ],
         specsTitle: "CBN micron specifications",
         specs: [
-          { label: "Form", value: "Micron" },
         ],
         datasheet: "CBN datasheet",
       },

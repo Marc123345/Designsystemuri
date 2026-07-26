@@ -33,6 +33,7 @@ import {
 } from 'framer-motion'
 import Wireframe from '@/components/Wireframe'
 import { ArrowButton } from '@/components/ui'
+import { Icon } from '@iconify/react'
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
@@ -355,17 +356,28 @@ const Resolution = ({
           {resolutionTitle}
         </motion.h3>
 
-        <div className="mt-12 grid gap-10 lg:grid-cols-3">
-          {production.map((item) => (
-            <motion.div
-              key={item.title}
-              variants={child}
-              className="border-t-2 border-primary pt-5"
-            >
-              <h4 className="text-lg text-white">{item.title}</h4>
-              <p className="mt-3 text-base leading-relaxed text-default-300">
-                {item.body}
-              </p>
+        {/* Progressive disclosure: the three production modes read as a list of
+            titles, each opening to its detail on demand — the same native
+            <details>/<summary> accordion (plus rotates to a cross) the FAQ and
+            DarkFeatureList use. `name` makes it exclusive: opening one closes
+            the others, so only the mode you're reading is expanded. First open
+            so it never reads as an empty list. */}
+        <div className="mt-10 max-w-2xl divide-y divide-white/10 border-y border-white/10">
+          {production.map((item, i) => (
+            <motion.div key={item.title} variants={child}>
+              <details name="eid-production" open={i === 0} className="group py-4">
+                <summary className="flex cursor-pointer list-none items-center gap-3 [&::-webkit-details-marker]:hidden">
+                  <Icon icon="tabler:check" className="size-5 shrink-0 text-primary-1" />
+                  <h4 className="flex-1 text-base text-white">{item.title}</h4>
+                  <Icon
+                    icon="tabler:plus"
+                    className="size-4 shrink-0 text-white/60 transition-transform duration-500 group-open:rotate-45"
+                  />
+                </summary>
+                <p className="mt-2 ps-8 text-base leading-relaxed text-default-300">
+                  {item.body}
+                </p>
+              </details>
             </motion.div>
           ))}
         </div>

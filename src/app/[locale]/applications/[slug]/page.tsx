@@ -90,28 +90,43 @@ const ApplicationPage = async ({
         secondaryCta={{ label: t(locale, 'All Applications'), href: '/applications' }}
       />
 
-      {/* INTRO — the outcome block rides alongside the prose, because a hub has
-          to be more than a product list. */}
+      {/* INTRO — prose + image, then the outcome as a full-width thesis band.
+          The hub's core argument was previously a small label in the sidebar,
+          below the fold of the F-pattern scan; promoting it to its own band
+          (heading left, argument right) gives it the weight it converts on.
+          The intro CTA is dropped here: the hero one sentence up already
+          carries it, so a second identical button read as repetition. */}
       <section className="lg:py-24 py-16">
         <div className="container">
           <SectionHeading eyebrow={app.eyebrow} title={headline} />
 
-          <div className="mt-12 grid lg:grid-cols-12 gap-12">
+          <div className="mt-12 grid lg:grid-cols-12 gap-12 items-start">
             <div className="lg:col-span-7">
-              <RichParagraphs className="text-base text-default-600" paragraphs={bodyParas} />
-              <div className="mt-8">
-                <ArrowButton href="/contact" label={app.cta} />
-              </div>
+              <RichParagraphs
+                className="text-lg leading-relaxed text-default-600"
+                paragraphs={bodyParas}
+              />
             </div>
 
-            <div className="lg:col-span-5 space-y-8">
+            <div className="lg:col-span-5">
               <Wireframe label={`Application image — ${app.name}`} />
+            </div>
+          </div>
 
-              <div className="border-t-2 border-primary pt-5">
-                <div className="text-sm uppercase tracking-[0.2em] text-default-500">
-                  {app.outcome.title}
-                </div>
-                <p className="mt-3 text-base text-default-600">{app.outcome.body}</p>
+          <div className="mt-14 grid lg:grid-cols-12 gap-12 items-start border-t border-default-200 pt-12">
+            <div className="lg:col-span-4">
+              <div className="flex items-center gap-2.5 text-sm uppercase tracking-[0.2em] text-default-500">
+                <span aria-hidden="true" className="size-2 bg-primary" />
+                {t(locale, 'Why it matters')}
+              </div>
+              <h3 className="mt-4 lg:text-[28px] md:text-[24px] text-2xl font-bold leading-snug text-default-900">
+                {app.outcome.title}
+              </h3>
+            </div>
+            <div className="lg:col-span-8">
+              <p className="text-lg leading-relaxed text-default-600">{app.outcome.body}</p>
+              <div className="mt-8">
+                <ArrowButton href="/contact" label={app.cta} />
               </div>
             </div>
           </div>
