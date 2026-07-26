@@ -171,7 +171,9 @@ const batchStrings = (arr: string[]): string[][] => {
   return out
 }
 
-const translateBatch = async (texts: string[], target: string): Promise<string[]> => {
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
+const translateBatch = async (texts: string[], target: string, attempt = 0): Promise<string[]> => {
   const res = await fetch(
     `https://translation.googleapis.com/language/translate/v2?key=${KEY}`,
     {
@@ -180,6 +182,18 @@ const translateBatch = async (texts: string[], target: string): Promise<string[]
       body: JSON.stringify({ q: texts, source: 'en', target, format: 'html' }),
     },
   )
+  // Google's per-user QPS cap surfaces as 403 userRateLimitExceeded (or 429).
+  // These are transient — back off and retry rather than failing the whole run.
+  if ((res.status === 403 || res.status === 429) && attempt < 7) {
+    const body = await res.text()
+    if (/rate limit|rateLimit|quota|userRateLimitExceeded/i.test(body)) {
+      const wait = Math.min(1500 * 2 ** attempt, 30_000)
+      process.stdout.write(`  rate-limited on ${target}; retry #${attempt + 1} in ${wait}ms\n`)
+      await sleep(wait)
+      return translateBatch(texts, target, attempt + 1)
+    }
+    throw new Error(`Translate ${target} failed ${res.status}: ${body}`)
+  }
   if (!res.ok) throw new Error(`Translate ${target} failed ${res.status}: ${await res.text()}`)
   const json = (await res.json()) as { data: { translations: { translatedText: string }[] } }
   return json.data.translations.map((t) => t.translatedText)
@@ -238,6 +252,8 @@ const run = async () => {
       outHtml.forEach((h, i) => translated.set(batch[i], htmlToMd(h)))
       done += batch.length
       process.stdout.write(`  ${done}/${unique.length}\r`)
+      await sleep(250) // stay under the per-user QPS cap
+
     }
 
     const bundle = {

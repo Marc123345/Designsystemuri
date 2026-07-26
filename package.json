@@ -13,7 +13,9 @@
   },
   "dependencies": {
     "@iconify/react": "^6.0.2",
+    "@types/three": "^0.183.1",
     "aos": "^2.3.4",
+    "globe.gl": "^2.46.1",
     "lightgallery": "^2.9.0",
     "lucide-react": "^1.18.0",
     "next": "^16.2.9",
@@ -21,7 +23,8 @@
     "preline": "4.0.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "swiper": "^12.2.0"
+    "swiper": "^12.2.0",
+    "three": "^0.183.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",

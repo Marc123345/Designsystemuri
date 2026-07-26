@@ -84,7 +84,7 @@ const TheProblem = ({
   title: string
   lede: string
   drivers: Driver[]
-  driversNote: string
+  driversNote?: string
   resolutionTitle: string
   production: { title: string; body: string }[]
   resolutionClosing: string
@@ -243,7 +243,9 @@ const TheProblem = ({
                   </ul>
                 </div>
 
-                <p className="mt-10 font-mono text-sm text-white/40">{driversNote}</p>
+                {driversNote && (
+                  <p className="mt-10 font-mono text-sm text-white/40">{driversNote}</p>
+                )}
               </div>
 
               {/* Every step is mounted and stacked in one grid cell, so the

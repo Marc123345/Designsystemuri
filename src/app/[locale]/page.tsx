@@ -1,3 +1,4 @@
+import GlobeSection from '@/components/GlobeSection'
 import Marquee from '@/components/Marquee'
 import QuoteForm from '@/components/QuoteForm'
 import Hero from '@/components/home/Hero'
@@ -26,7 +27,7 @@ const hero = {
   eyebrow: 'Industrial Diamond & CBN Solutions · Precision Manufactured & QC-Controlled',
   title:
     'The full industrial diamond and CBN range, manufactured, processed, and graded in-house to EID standards.',
-  desc: 'EID manufactures industrial diamond and CBN for tool makers worldwide, plus CBN for the hardened and ferrous work diamond cannot do. Every grade is processed and tested in our own laboratory, so the material you reorder matches the run before it. One manufacturer, one specification, the whole range.',
+  desc: 'For over 50 years, EID has manufactured industrial diamond and CBN for tool makers worldwide. Every grade is processed and tested in our own laboratory, delivering consistent performance from batch to batch. One manufacturer, one specification, the complete superabrasive range.',
 }
 
 /**
@@ -107,7 +108,7 @@ const hubIcon: Record<string, string> = {
   'automotive-aerospace': 'tabler:engine',
   'tool-and-die': 'tabler:tools',
   'grinding-cutting-sawing-drilling': 'tabler:blade',
-  'polishing-lapping': 'tabler:lens',
+  'polishing-lapping': 'tabler:aperture',
 }
 
 // Home lists the hubs in the copy deck's order, which leads with the two
@@ -182,7 +183,6 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
             evidence: t(locale, 'Certificate of analysis — sample lot'),
           },
         ]}
-        driversNote={t(locale, 'Cause and effect pairings to be confirmed with Uri, together with the tolerance figures that belong beside them.')}
         resolutionTitle={t(locale, 'EID removes the variable, and is specific about how.')}
         production={[
           {
@@ -302,6 +302,10 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           t(locale, 'Made in London'),
         ]}
       />
+
+      {/* REACH — the one-facility-worldwide story made visible: an animated globe
+          with London as the hub and arcs out to the markets EID ships to. */}
+      <GlobeSection />
 
       {/* The conversion block is the form itself, not a button that defers to
           /contact. A buyer who has read this far should not have to load

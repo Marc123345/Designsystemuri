@@ -1,3 +1,4 @@
+import GlobeSection from '@/components/GlobeSection'
 import { QuoteSection, DarkFeatureList, FeaturesRow, PageHero, StatsBar } from '@/components/sections'
 import { ArrowButton, SectionHeading } from '@/components/ui'
 import Wireframe from '@/components/Wireframe'
@@ -168,6 +169,14 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
           </div>
         </div>
       </section>
+
+      {/* REACH — the regions named above, made visible: London hub with arcs to
+          the markets EID ships to across four continents. */}
+      <GlobeSection
+        eyebrow={t(locale, 'Where our material ships')}
+        title={t(locale, 'From one London facility to four continents.')}
+        desc={t(locale, 'We supply tool makers across Europe, the Middle East, Asia, the Americas, and beyond — every grade manufactured and quality-controlled in London before it ships.')}
+      />
 
       {/* COMPANY DETAILS — reinforce that EID is a physical manufacturer */}
       <section className="border-default-200 border-t py-16 lg:py-24">
