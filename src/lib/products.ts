@@ -169,7 +169,7 @@ export const products: Product[] = [
     quality:
       "Every run is graded and inspected in our QC laboratory: mesh grit for sizing and shape factor, micron powder for particle size distribution with controlled D50 and span. The quality system is ISO 9001 certified, with full traceability from raw material to shipped lot and a certificate of analysis on request. Grading is how the consistency is built; QC is how it is proven.",
     qualityCta: "See how our mesh and micron QC works",
-    cta: "Request a Quote or Sample",
+    cta: "Request a Quote",
     crossLinks: [
       {
         title: "Within the range",
@@ -288,7 +288,7 @@ export const products: Product[] = [
     quality:
       "The quality system is ISO 9001 certified, and every lot is traceable from incoming material through QC to delivery, with a certificate of analysis on request. Our lab measures particle size distribution and morphology on every lot, with coating weight and coverage checked on coated grades, and crystal strength where the grade calls for it. For a sintered tool, consistent sizing and coating weight are what keep your sinter results repeatable.",
     qualityCta: "See how our QC works",
-    cta: "Request a Quote or Sample",
+    cta: "Request a Quote",
     crossLinks: [
       {
         title: "Within the range",
@@ -386,7 +386,7 @@ export const products: Product[] = [
     quality:
       "The quality system is ISO 9001 certified, with a certificate of analysis per lot on request. Our lab measures particle size distribution and morphology on every lot, with coating checked on coated grades. For fine grinding and polishing, a grade that breaks down the same way each order is what keeps your finish predictable.",
     qualityCta: "See how our QC works",
-    cta: "Request a Quote or Sample",
+    cta: "Request a Quote",
     crossLinks: [
       {
         title: "Within the range",
@@ -519,7 +519,7 @@ export const products: Product[] = [
     quality:
       "The quality system is ISO 9001 certified, with a certificate of analysis per lot on request. Our lab measures particle size distribution and morphology on every lot, with crystal strength and coating checked where the grade requires it. In high-volume ferrous grinding, a lot that matches the last one keeps the line from a re-set; for an insert maker, a PCBN substrate and grade that match the last order keep insert performance repeatable.",
     qualityCta: "See how our QC works",
-    cta: "Request a Quote or Sample",
+    cta: "Request a Quote",
     crossLinks: [
       {
         title: "On this page",
@@ -908,7 +908,7 @@ export const products: Product[] = [
     quality:
       "Particle size distribution is measured on every batch, with controlled D50 and span, because in final polishing a single oversized particle can scratch the workpiece and cost the whole part. The quality system is ISO 9001 certified, with a certificate of analysis per lot on request. Control at the top of the distribution is what protects the surface, and that is what our micron QC verifies.",
     qualityCta: "See how our micron QC works",
-    cta: "Request a Quote or Sample",
+    cta: "Request a Quote",
     crossLinks: [
       {
         title: "Step down in finish",

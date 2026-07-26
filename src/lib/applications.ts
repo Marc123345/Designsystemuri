@@ -371,7 +371,7 @@ export const applications: Application[] = [
       body: "Tight distribution, a grade for every stage, and QC you can document. Every batch is measured for particle size distribution with controlled D50 and span, ISO 9001 certified, with a certificate of analysis per lot. Because EID grades both the lapping powders and the final polycrystalline polish in-house, one supplier covers your whole finishing sequence, and the recommendation follows the finish you need rather than the single grade a vendor happens to stock.",
     },
     whyCta: "See how our micron QC works",
-    cta: "Request a Quote or Sample",
+    cta: "Request a Quote",
     ctaDesc:
       "Tell us the material, the stage, and the finish you are targeting, and a real person replies within one business day.",
     guides: ["How size distribution affects tool performance"],

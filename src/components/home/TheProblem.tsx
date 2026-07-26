@@ -1,342 +1,432 @@
 'use client'
 
+/**
+ * TheProblem — "Why suppliers get replaced"
+ *
+ * Rework of the pinned section. What changed vs the old version:
+ *
+ * 1. The 04/04 counter and one-slide-at-a-time panel are gone. All four
+ *    drivers stay on screen as a QC-ledger deck; the active row opens to
+ *    show its effect while the others compress to their variable name.
+ *    The reader always sees the full scope of the problem.
+ * 2. Scroll drives a continuous progress rail beside the deck (scrubbed,
+ *    not stepped). Rows are also clickable and jump to their segment.
+ * 3. The evidence panel swaps with a layered transition: incoming record
+ *    clips in from the top over the outgoing one (550ms, custom ease),
+ *    outgoing fades under it. Row text moves faster than the panel so the
+ *    two layers read as separate materials.
+ * 4. Mobile and reduced-motion get the same hierarchy, not a flattened
+ *    dump: a single-open accordion with the evidence record inside each
+ *    expanded row. Keyboard and aria wired throughout.
+ * 5. Resolution block moves to a dark band so problem -> resolution reads
+ *    as a register change, with a once-only staggered reveal.
+ *
+ * Assumes framer-motion. If eid-v2 imports from 'motion/react', change
+ * the import line only.
+ */
+
+import { useRef, useState } from 'react'
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+} from 'framer-motion'
 import Wireframe from '@/components/Wireframe'
 import { ArrowButton } from '@/components/ui'
-import type { Locale } from '@/i18n/routing'
-import { t } from '@/lib/i18n-content'
-import { useLocale } from 'next-intl'
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
-export type Driver = {
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
+
+type Driver = {
   variable: string
   effect: string
-  /** The document or instrument that proves this one. Changes with the step. */
   evidence: string
 }
 
-/** The system's easing — the same curve the buttons slide on. */
-const EASE = 'cubic-bezier(0.19,1,0.22,1)'
-
-/**
- * Reveals its target once, when it first enters the viewport.
- *
- * Returns `true` immediately when motion is not wanted or IntersectionObserver
- * is unavailable, so the content is never left hidden by a effect that did not
- * run. useLayoutEffect sets the starting state before paint, so there is no
- * flash of the revealed state on hydration.
- */
-const useReveal = <T extends HTMLElement>() => {
-  const ref = useRef<T>(null)
-  const [shown, setShown] = useState(true)
-
-  useLayoutEffect(() => {
-    if (typeof IntersectionObserver === 'undefined') return
-    if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return
-
-    const el = ref.current
-    if (!el) return
-
-    setShown(false)
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setShown(true)
-          io.disconnect()
-        }
-      },
-      { threshold: 0.15 },
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
-
-  return { ref, shown }
+type ProductionItem = {
+  title: string
+  body: string
 }
 
-/**
- * The problem section, written for a tool maker qualifying a supplier.
- *
- * The four variables are disclosed one at a time against a pinned stage, then
- * the section hands off to the production model that answers them.
- *
- * On smoothness: the scroll handler is rAF-throttled and writes the progress
- * rail straight to the DOM, so a scroll frame never triggers a React render —
- * only crossing a step boundary does. The panels are stacked in one grid cell
- * and crossfade rather than remounting, so nothing reflows mid-transition.
- *
- * On the hand-off: the stage releases into the resolution, whose heading,
- * three production blocks and closing line stagger in as they enter view, so
- * the answer arrives as a sequence rather than all at once under the fold.
- */
-const TheProblem = ({
-  eyebrow,
-  title,
-  lede,
+type Cta = {
+  label: string
+  href: string
+}
+
+type TheProblemProps = {
+  eyebrow: string
+  title: string
+  lede: string
+  drivers: Driver[]
+  resolutionTitle: string
+  production: ProductionItem[]
+  resolutionClosing: string
+  primaryCta: Cta
+  secondaryCta: Cta
+}
+
+/* ------------------------------------------------------------------ */
+/* Deck row — desktop pinned stage                                     */
+/* ------------------------------------------------------------------ */
+
+const DeckRow = ({
+  driver,
+  active,
+  onSelect,
+}: {
+  driver: Driver
+  active: boolean
+  onSelect: () => void
+}) => (
+  <button
+    type="button"
+    onClick={onSelect}
+    aria-current={active || undefined}
+    className="group/row w-full border-t border-default-200 py-5 text-start outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+  >
+    <span className="flex items-baseline gap-3">
+      <span
+        aria-hidden="true"
+        className={`block size-2 shrink-0 self-center rounded-[2px] transition-colors duration-300 ${
+          active ? 'bg-primary' : 'bg-default-300 group-hover/row:bg-default-400'
+        }`}
+      />
+      <span
+        className={`text-lg font-medium transition-colors duration-300 sm:text-xl ${
+          active ? 'text-default-900' : 'text-default-400 group-hover/row:text-default-600'
+        }`}
+      >
+        {driver.variable}
+      </span>
+    </span>
+
+    {/* Progressive disclosure: 0fr -> 1fr, no height measuring needed */}
+    <span
+      className="grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+      style={{ gridTemplateRows: active ? '1fr' : '0fr' }}
+    >
+      <span className="block overflow-hidden">
+        <span
+          className={`block max-w-md ps-5 pt-3 text-base leading-relaxed text-default-500 transition-opacity delay-100 duration-300 motion-reduce:transition-none ${
+            active ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          {driver.effect}
+        </span>
+      </span>
+    </span>
+  </button>
+)
+
+/* ------------------------------------------------------------------ */
+/* Pinned stage — desktop, motion allowed                              */
+/* ------------------------------------------------------------------ */
+
+const PinnedStage = ({ drivers }: { drivers: Driver[] }) => {
+  const stageRef = useRef<HTMLDivElement>(null)
+  const [active, setActive] = useState(0)
+  const count = drivers.length
+
+  const { scrollYProgress } = useScroll({
+    target: stageRef,
+    offset: ['start start', 'end end'],
+  })
+
+  useMotionValueEvent(scrollYProgress, 'change', (v) => {
+    const next = Math.min(count - 1, Math.max(0, Math.floor(v * count)))
+    if (next !== active) setActive(next)
+  })
+
+  const jumpTo = (index: number) => {
+    const el = stageRef.current
+    if (!el) return
+    const top = el.getBoundingClientRect().top + window.scrollY
+    const segment = (el.offsetHeight - window.innerHeight) / count
+    window.scrollTo({
+      top: top + segment * index + segment * 0.5,
+      behavior: 'smooth',
+    })
+  }
+
+  return (
+    <div
+      ref={stageRef}
+      className="relative hidden lg:block"
+      style={{ height: `${(count + 1) * 100}vh` }}
+    >
+      <div className="sticky top-0 flex h-screen items-center">
+        <div className="mx-auto grid w-full max-w-6xl grid-cols-12 gap-10 px-6">
+          {/* Deck + rail */}
+          <div className="col-span-5 flex gap-6">
+            <div
+              aria-hidden="true"
+              className="relative w-px shrink-0 self-stretch bg-default-200"
+            >
+              <motion.div
+                className="absolute inset-x-0 top-0 origin-top bg-primary"
+                style={{ scaleY: scrollYProgress, height: '100%' }}
+              />
+            </div>
+
+            <div className="flex-1 border-b border-default-200">
+              {drivers.map((driver, i) => (
+                <DeckRow
+                  key={driver.variable}
+                  driver={driver}
+                  active={i === active}
+                  onSelect={() => jumpTo(i)}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Evidence panel */}
+          <div className="col-span-7 self-center">
+            <div className="relative aspect-[4/3] w-full">
+              <AnimatePresence initial={false}>
+                <motion.div
+                  key={active}
+                  className="absolute inset-0"
+                  style={{ zIndex: 1 }}
+                  initial={{ clipPath: 'inset(0 0 100% 0)' }}
+                  animate={{ clipPath: 'inset(0 0 0% 0)' }}
+                  exit={{
+                    zIndex: 0,
+                    opacity: 0,
+                    transition: { duration: 0.35, delay: 0.2 },
+                  }}
+                  transition={{ duration: 0.55, ease: EASE }}
+                >
+                  <Wireframe
+                    label={drivers[active].evidence}
+                    ratio="landscape"
+                    className="h-full"
+                  />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/* Accordion stage — mobile, and any width with reduced motion         */
+/* ------------------------------------------------------------------ */
+
+const AccordionStage = ({
   drivers,
-  driversNote,
+  className = '',
+}: {
+  drivers: Driver[]
+  className?: string
+}) => {
+  const [open, setOpen] = useState(0)
+
+  return (
+    <div className={`mx-auto max-w-6xl px-6 ${className}`}>
+      <div className="border-b border-default-200">
+        {drivers.map((driver, i) => {
+          const isOpen = i === open
+          return (
+            <div key={driver.variable} className="border-t border-default-200">
+              <button
+                type="button"
+                onClick={() => setOpen(isOpen ? -1 : i)}
+                aria-expanded={isOpen}
+                aria-controls={`driver-panel-${i}`}
+                className="flex w-full items-center justify-between gap-4 py-5 text-start outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+              >
+                <span className="flex items-center gap-3">
+                  <span
+                    aria-hidden="true"
+                    className={`block size-2 shrink-0 rounded-[2px] transition-colors duration-300 motion-reduce:transition-none ${
+                      isOpen ? 'bg-primary' : 'bg-default-300'
+                    }`}
+                  />
+                  <span
+                    className={`text-lg font-medium ${
+                      isOpen ? 'text-default-900' : 'text-default-500'
+                    }`}
+                  >
+                    {driver.variable}
+                  </span>
+                </span>
+                <span
+                  aria-hidden="true"
+                  className={`text-default-400 transition-transform duration-300 motion-reduce:transition-none ${
+                    isOpen ? 'rotate-45' : ''
+                  }`}
+                >
+                  +
+                </span>
+              </button>
+
+              <div
+                id={`driver-panel-${i}`}
+                role="region"
+                aria-label={driver.variable}
+                className="grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+                style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}
+              >
+                <div className="overflow-hidden">
+                  <div className="space-y-5 pb-6 ps-5">
+                    <p className="max-w-prose text-base leading-relaxed text-default-500">
+                      {driver.effect}
+                    </p>
+                    <Wireframe label={driver.evidence} ratio="wide" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/* Resolution band                                                     */
+/* ------------------------------------------------------------------ */
+
+const Resolution = ({
   resolutionTitle,
   production,
   resolutionClosing,
   primaryCta,
   secondaryCta,
-}: {
-  eyebrow: string
-  title: string
-  lede: string
-  drivers: Driver[]
-  driversNote?: string
-  resolutionTitle: string
-  production: { title: string; body: string }[]
-  resolutionClosing: string
-  primaryCta: { label: string; href: string }
-  secondaryCta: { label: string; href: string }
-}) => {
-  const locale = useLocale() as Locale
-  const stageRef = useRef<HTMLDivElement>(null)
-  const railRef = useRef<HTMLDivElement>(null)
-  const activeRef = useRef(0)
-  const [active, setActive] = useState(0)
-  const [pinned, setPinned] = useState(false)
+}: Pick<
+  TheProblemProps,
+  'resolutionTitle' | 'production' | 'resolutionClosing' | 'primaryCta' | 'secondaryCta'
+>) => {
+  const reduced = useReducedMotion()
 
-  const resolution = useReveal<HTMLDivElement>()
+  const parent = {
+    hidden: {},
+    show: {
+      transition: { staggerChildren: reduced ? 0 : 0.09 },
+    },
+  }
 
-  useEffect(() => {
-    const motionOk = window.matchMedia('(prefers-reduced-motion: no-preference)')
-    const wide = window.matchMedia('(min-width: 1024px)')
-    const decide = () => setPinned(motionOk.matches && wide.matches)
-
-    decide()
-    motionOk.addEventListener('change', decide)
-    wide.addEventListener('change', decide)
-    return () => {
-      motionOk.removeEventListener('change', decide)
-      wide.removeEventListener('change', decide)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!pinned) {
-      setActive(0)
-      activeRef.current = 0
-      return
-    }
-
-    let frame = 0
-
-    const measure = () => {
-      frame = 0
-      const el = stageRef.current
-      if (!el) return
-
-      const travel = el.offsetHeight - window.innerHeight
-      const progress =
-        travel > 0 ? Math.min(Math.max(-el.getBoundingClientRect().top / travel, 0), 1) : 0
-
-      // The rail moves every frame, so it is written straight to the node.
-      // Routing it through state would re-render the section on every scroll.
-      if (railRef.current) railRef.current.style.transform = `scaleY(${progress})`
-
-      const index = Math.min(Math.floor(progress * drivers.length * 1.04), drivers.length - 1)
-      if (index !== activeRef.current) {
-        activeRef.current = index
-        setActive(index)
-      }
-    }
-
-    const onScroll = () => {
-      if (frame) return
-      frame = requestAnimationFrame(measure)
-    }
-
-    measure()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-    return () => {
-      if (frame) cancelAnimationFrame(frame)
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-    }
-  }, [pinned, drivers.length])
+  const child = {
+    hidden: reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: EASE },
+    },
+  }
 
   return (
-    // No `overflow-hidden` here: it silently breaks `position: sticky` on any
-    // descendant, so the stage below would scroll past instead of pinning. The
-    // backdrop layers are inset-0 and clip themselves.
-    <section className="relative size-full bg-default-900">
-      <div className="absolute inset-0 z-1 flex items-stretch justify-between md:justify-center gap-0 md:gap-45 lg:gap-75 xl:gap-80.5">
-        {[0, 1, 2, 3, 4].map((i) => (
-          <div key={i} className="h-full w-0.5 border border-dashed border-default-100 opacity-7"></div>
-        ))}
-      </div>
-
-      <div className="container relative z-10 lg:pt-25 pt-20">
-        <div className="flex lg:flex-row flex-col items-start justify-between gap-12.5 xl:gap-20">
-          <div className="inline-flex items-center gap-7.5 rounded-2xl border border-default-800 bg-default-950 px-3.5 py-1.25">
-            <span className="size-2 bg-primary"></span>
-            <span className="text-sm text-default-100">{eyebrow}</span>
-          </div>
-
-          <div className="lg:ms-auto lg:max-w-2xl">
-            <h2 className="mb-5 lg:text-[52px] md:text-[40px] text-[30px] font-bold leading-tight text-white">
-              {title}
-            </h2>
-            <p className="text-default-400">{lede}</p>
-          </div>
-        </div>
-      </div>
-
-      <div
-        ref={stageRef}
-        className="relative z-10"
-        style={pinned ? { height: `${(drivers.length + 1) * 90}vh` } : undefined}
+    <div className="mx-auto max-w-6xl px-6 pb-24 pt-6 lg:pb-32 lg:pt-20">
+      <motion.div
+        className="rounded-lg bg-default-950 px-6 py-14 text-white sm:px-10 lg:px-14 lg:py-16"
+        variants={parent}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: '-15% 0px' }}
       >
-        <div className={pinned ? 'sticky top-0 flex h-screen items-center' : ''}>
-          <div className="container w-full lg:py-0 py-16">
-            <div className="grid lg:grid-cols-12 gap-12 items-center">
-              <div className="lg:col-span-6">
-                <div className="mb-8 flex items-baseline gap-4">
-                  <span className="text-xs uppercase tracking-[0.15em] text-default-400">
-                    {t(locale, 'What drifts')}
-                  </span>
-                  {pinned && (
-                    <span className="font-mono text-xs text-white/40">
-                      {String(active + 1).padStart(2, '0')} / {String(drivers.length).padStart(2, '0')}
-                    </span>
-                  )}
-                </div>
-
-                <div className="relative">
-                  {/* Continuous rail behind the list. It fills with scroll
-                      rather than snapping per step, which is what carries the
-                      motion between one parameter and the next. */}
-                  {pinned && (
-                    <>
-                      <div className="absolute inset-y-0 start-0 w-0.5 bg-white/10" />
-                      <div
-                        ref={railRef}
-                        className="absolute inset-y-0 start-0 w-0.5 origin-top bg-primary-1"
-                        style={{ transform: 'scaleY(0)' }}
-                      />
-                    </>
-                  )}
-
-                  <ul className={pinned ? 'ps-5' : ''}>
-                    {drivers.map((d, i) => {
-                      const isActive = !pinned || i === active
-                      return (
-                        <li
-                          key={d.variable}
-                          aria-current={pinned && i === active ? 'true' : undefined}
-                          className={pinned ? 'py-3.5' : 'border-s-2 border-primary-1 py-4 ps-5'}
-                        >
-                          <div
-                            className={`text-lg lg:text-2xl ${isActive ? 'text-white' : 'text-white/25'}`}
-                            style={{ transition: `color .6s ${EASE}, opacity .6s ${EASE}` }}
-                          >
-                            {d.variable}
-                          </div>
-
-                          {!pinned && <p className="mt-2 text-base text-default-400">{d.effect}</p>}
-                        </li>
-                      )
-                    })}
-                  </ul>
-                </div>
-
-                {driversNote && (
-                  <p className="mt-10 font-mono text-sm text-white/40">{driversNote}</p>
-                )}
-              </div>
-
-              {/* Every step is mounted and stacked in one grid cell, so the
-                  change is a crossfade with no reflow and no remount. */}
-              {pinned && (
-                <div className="lg:col-span-6">
-                  <div className="grid">
-                    {drivers.map((d, i) => (
-                      <div
-                        key={d.variable}
-                        aria-hidden={i !== active}
-                        className="[grid-area:1/1]"
-                        style={{
-                          opacity: i === active ? 1 : 0,
-                          transform: i === active ? 'none' : 'translateY(14px)',
-                          transition: `opacity .7s ${EASE}, transform .7s ${EASE}`,
-                          pointerEvents: i === active ? 'auto' : 'none',
-                        }}
-                      >
-                        <div className="mb-4 text-xs uppercase tracking-[0.15em] text-default-400">
-                          {t(locale, 'What moves on your line')}
-                        </div>
-                        <p className="mb-10 text-xl text-white lg:text-2xl">{d.effect}</p>
-                        <Wireframe label={d.evidence} ratio="wide" tone="dark" />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* The hand-off. Heading, blocks and closing stagger in on entry so the
-          answer arrives as a sequence rather than all at once. */}
-      <div ref={resolution.ref} className="container relative z-10 md:pb-25 pb-20 lg:pt-10 pt-0">
-        <div
-          className="border-t border-white/10 pt-14"
-          style={{
-            opacity: resolution.shown ? 1 : 0,
-            transition: `opacity .8s ${EASE}`,
-          }}
+        <motion.h3
+          variants={child}
+          className="max-w-2xl text-2xl font-medium leading-snug sm:text-3xl"
         >
-          <h3
-            className="mb-10 lg:text-[32px] md:text-[28px] text-2xl font-semibold text-white lg:max-w-3xl"
-            style={{
-              opacity: resolution.shown ? 1 : 0,
-              transform: resolution.shown ? 'none' : 'translateY(18px)',
-              transition: `opacity .7s ${EASE}, transform .7s ${EASE}`,
-            }}
-          >
-            {resolutionTitle}
-          </h3>
+          {resolutionTitle}
+        </motion.h3>
 
-          <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-10">
-            {production.map((block, i) => (
-              <div
-                key={block.title}
-                className="border-t-2 border-primary pt-5"
-                style={{
-                  opacity: resolution.shown ? 1 : 0,
-                  transform: resolution.shown ? 'none' : 'translateY(18px)',
-                  transition: `opacity .7s ${EASE} ${120 + i * 110}ms, transform .7s ${EASE} ${120 + i * 110}ms`,
-                }}
-              >
-                <h4 className="mb-3 text-lg text-white">{block.title}</h4>
-                <p className="text-base text-default-400">{block.body}</p>
-              </div>
-            ))}
-          </div>
-
-          <div
-            className="mt-12 flex lg:flex-row flex-col lg:items-center items-start gap-7.5"
-            style={{
-              opacity: resolution.shown ? 1 : 0,
-              transform: resolution.shown ? 'none' : 'translateY(18px)',
-              transition: `opacity .7s ${EASE} 480ms, transform .7s ${EASE} 480ms`,
-            }}
-          >
-            <p className="text-lg text-white lg:max-w-2xl">{resolutionClosing}</p>
-
-            {/* The secondary is `light`, not `dark`: a dark shell on this dark
-                band renders as an invisible button with a floating badge. */}
-            <div className="flex grow flex-wrap gap-4 lg:justify-end">
-              <ArrowButton href={primaryCta.href} label={primaryCta.label} />
-              <ArrowButton href={secondaryCta.href} label={secondaryCta.label} variant="light" />
-            </div>
-          </div>
+        <div className="mt-12 grid gap-10 lg:grid-cols-3">
+          {production.map((item) => (
+            <motion.div
+              key={item.title}
+              variants={child}
+              className="border-t border-white/15 pt-5"
+            >
+              <h4 className="text-lg font-medium">{item.title}</h4>
+              <p className="mt-3 text-base leading-relaxed text-white/60">
+                {item.body}
+              </p>
+            </motion.div>
+          ))}
         </div>
+
+        <motion.p
+          variants={child}
+          className="mt-14 max-w-2xl text-lg leading-relaxed text-white/80"
+        >
+          {resolutionClosing}
+        </motion.p>
+
+        <motion.div variants={child} className="mt-8 flex flex-wrap gap-3">
+          <ArrowButton
+            href={primaryCta.href}
+            label={primaryCta.label}
+            variant="primary"
+          />
+          <ArrowButton
+            href={secondaryCta.href}
+            label={secondaryCta.label}
+            variant="light"
+          />
+        </motion.div>
+      </motion.div>
+    </div>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/* Section                                                             */
+/* ------------------------------------------------------------------ */
+
+const TheProblem = ({
+  eyebrow,
+  title,
+  lede,
+  drivers,
+  resolutionTitle,
+  production,
+  resolutionClosing,
+  primaryCta,
+  secondaryCta,
+}: TheProblemProps) => {
+  const reduced = useReducedMotion()
+
+  return (
+    <section className="bg-white">
+      {/* Header */}
+      <div className="mx-auto max-w-6xl px-6 pb-14 pt-24 lg:pb-20 lg:pt-32">
+        <p className="flex items-center gap-2.5 text-sm font-medium uppercase tracking-[0.15em] text-default-500">
+          <span aria-hidden="true" className="block size-2 rounded-[2px] bg-primary" />
+          {eyebrow}
+        </p>
+        <h2 className="mt-5 max-w-3xl text-3xl font-medium leading-tight text-default-900 sm:text-4xl lg:text-5xl">
+          {title}
+        </h2>
+        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-default-500">
+          {lede}
+        </p>
       </div>
+
+      {/* Drivers: pinned deck on desktop, accordion on mobile.
+          Reduced motion gets the accordion at every width. */}
+      {reduced ? (
+        <AccordionStage drivers={drivers} className="pb-20" />
+      ) : (
+        <>
+          <PinnedStage drivers={drivers} />
+          <AccordionStage drivers={drivers} className="pb-20 lg:hidden" />
+        </>
+      )}
+
+      <Resolution
+        resolutionTitle={resolutionTitle}
+        production={production}
+        resolutionClosing={resolutionClosing}
+        primaryCta={primaryCta}
+        secondaryCta={secondaryCta}
+      />
     </section>
   )
 }
