@@ -86,7 +86,7 @@ export const applications: Application[] = [
       title: "Why dental manufacturers choose EID",
       body: "Consistency, breadth, and a real technical reply. In-house grading and QC on every lot give the repeatability a dental line depends on. In-house coating means you do not manage a second vendor for retention. When you specify a grade for a new instrument, you talk to someone who works with the material, not a catalogue. ISO 9001 certified, with a certificate of analysis per lot.",
     },
-    cta: "Request a Quote for Dental Diamond",
+    cta: "Request a Quote",
     ctaDesc:
       "Tell us the instrument, the grade, and the volume, and a real person replies within one business day.",
   },
@@ -145,7 +145,7 @@ export const applications: Application[] = [
       body: "Tight distribution, low outlier risk, and documentation you can put in a qualification file. Every batch is measured for particle size distribution with controlled D50 and minimal outliers, ISO 9001 certified, with a certificate of analysis per lot. When your process qualification depends on the input staying constant, in-house grading and QC are what let you lock the material in.",
     },
     whyCta: "See how our micron QC works",
-    cta: "Request a Quote for Electronics-Grade Diamond",
+    cta: "Request a Quote",
     ctaDesc:
       "Tell us the substrate, the process step, and the grade or finish you need, and a real person replies within one business day.",
     guides: ["How size distribution affects tool performance"],
@@ -198,7 +198,7 @@ export const applications: Application[] = [
       body: "Consistency at volume, backed by QC on every lot. A CBN lot that matches the last one keeps a grinding line running without a re-set, and in-house grading and testing are how EID delivers it. Covering both the ferrous grinding materials and the non-ferrous cutting materials from one supplier means fewer vendors qualifying into a process that does not tolerate surprises. ISO 9001 certified, with a certificate of analysis per lot.",
     },
     whyCta: "See how our QC works",
-    cta: "Request a Quote for Automotive & Aerospace",
+    cta: "Request a Quote",
     ctaDesc:
       "Tell us the operation, the material you are cutting or grinding, and the grade, and a real person replies within one business day.",
     guides: ["Diamond vs CBN"],
@@ -259,7 +259,7 @@ export const applications: Application[] = [
     // dedicated Optics hub in the locked six. Keep the made-to-spec CVD and MCD
     // story strong. If Uri adds an Optics & Precision hub later, much of this
     // precision content moves or duplicates there. Confirm before the per-page build.
-    cta: "Request a Quote for Tool & Die",
+    cta: "Request a Quote",
     ctaDesc:
       "Tell us the tool, the material it machines, and the tolerance, and a real person replies within one business day.",
     guides: ["CVD, HPHT (MCD), and natural diamond compared"],
