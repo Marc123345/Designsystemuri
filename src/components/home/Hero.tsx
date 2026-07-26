@@ -37,8 +37,7 @@ const Hero = ({
           <div>
             <p className="mb-7.5 text-base">{desc}</p>
             <div className="flex flex-wrap gap-4">
-              <ArrowButton href="/contact" label={t(locale, 'Request a Quote')} />
-              <ArrowButton href="#products" label={t(locale, 'Browse the Full Range')} variant="dark" external />
+              <ArrowButton href="#products" label={t(locale, 'Browse the Full Range')} external />
             </div>
           </div>
         </div>
