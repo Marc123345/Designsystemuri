@@ -1,0 +1,825 @@
+/* =========================================================================
+   EID — Product page: design & layout, as plain CSS
+   =========================================================================
+
+   The site is built in Tailwind v4, so there is no hand-written stylesheet to
+   hand over. This file is that stylesheet: every rule below is the compiled
+   equivalent of the utility classes the product pages actually use, with the
+   Tailwind spacing scale resolved to rem (1 unit = 0.25rem = 4px).
+
+   It is a reference document, not an import. Nothing loads it. Change the
+   components to change the site; change this file when you want to redesign on
+   paper first.
+
+   Source of truth for the values:
+     tokens   — src/assets/css/_config.css
+     base     — src/assets/css/_general.css
+     page     — src/app/[locale]/products/[slug]/page.tsx
+     blocks   — src/components/sections.tsx, src/components/ui.tsx
+     explorer — src/components/GradeExplorer.tsx
+
+   ---------------------------------------------------------------------------
+   PAGE STRUCTURE, top to bottom
+   ---------------------------------------------------------------------------
+
+   header.site-header            fixed, 76px → 96px
+   ├ PageHero                    breadcrumb · eyebrow · H1 · lede · 2 CTAs
+   ├ JumpNav                     sticky under the header; only on split products
+   ├ Overview                    12-col: 7 prose + CTA / 5 image + lead specs
+   ├ ProductSection × n          repeated per section, background alternates
+   │  ├ intro + callouts         col 7
+   │  ├ enquiry CTA              col 5
+   │  ├ Typical Applications     2-col detail row
+   │  └ Grades & specifications  ← the catalogue block
+   │     └ GradeExplorer × n     one per series: Explore | Compare
+   ├ DarkFeatureList             QC proof band, dark
+   ├ QuoteSection                form
+   ├ CrossLinks                  internal-link matrix
+   └ footer.site-footer          split panel over a brand bar
+
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   1 · TOKENS
+   ------------------------------------------------------------------------- */
+
+:root {
+  /* Brand — EID "Industrial Precision" blue. Replaced the template's orange. */
+  --color-primary: #2c3c6c;
+  --color-primary-1: #3d5290; /* lighter — hover states, accents on white */
+  --color-primary-2: #2c3c6c;
+  --color-primary-3: #1c2749; /* darker — footer bottom bar */
+
+  /* Neutrals are Tailwind's slate ramp, aliased to `default-*`. */
+  --color-default-50: #f8fafc;
+  --color-default-100: #f1f5f9;
+  --color-default-200: #e2e8f0; /* every hairline and card border */
+  --color-default-300: #cbd5e1;
+  --color-default-400: #94a3b8;
+  --color-default-500: #64748b; /* eyebrows, captions */
+  --color-default-600: #475569; /* body copy */
+  --color-default-700: #334155;
+  --color-default-800: #1e293b;
+  --color-default-900: #0f172a; /* headings */
+  --color-default-950: #020617; /* dark panels */
+
+  --color-body-bg: #ffffff;
+  --color-body-color: var(--color-default-600);
+
+  --font-heading: 'Mona Sans', sans-serif;
+  --font-body: 'Geist', sans-serif;
+
+  /* Tight global leading — set deliberately; headings would otherwise sit too
+     open against the condensed display face. */
+  --leading-base: 1.3em;
+
+  /* Layout constants */
+  --container-max: 85rem; /* 1360px */
+  --gutter: 1rem; /* ≥768px: 1.875rem */
+  --header-h: 76px; /* ≥1024px: 96px */
+  --jumpnav-top: 84px;
+}
+
+/* -------------------------------------------------------------------------
+   2 · BASE
+   ------------------------------------------------------------------------- */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: var(--leading-base);
+  background: var(--color-body-bg);
+  color: var(--color-body-color);
+  overflow-x: clip;
+}
+@media (min-width: 768px) {
+  body {
+    font-size: 1.125rem;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-default-900);
+}
+
+/* Corner radius is deliberately absent sitewide. Only genuine circles — the
+   stat medallions, the FAQ toggle, the grade-rail dots — carry border-radius,
+   and they use 9999px because the radius is the shape, not a corner treatment. */
+
+.container {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+@media (min-width: 768px) {
+  .container {
+    padding-inline: 1.875rem;
+  }
+}
+
+/* Vertical rhythm. Every major band uses this pair; nothing on a product page
+   invents its own section padding. */
+.section {
+  padding-block: 4rem;
+}
+@media (min-width: 1024px) {
+  .section {
+    padding-block: 6rem;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   3 · PAGE HERO
+   ------------------------------------------------------------------------- */
+
+.page-hero {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--color-default-200);
+  /* Top padding clears the fixed header and then some — the hero is meant to
+     open with air, not to sit tight under the bar. */
+  padding-top: 8.75rem;
+  padding-bottom: 3.5rem;
+}
+@media (min-width: 1024px) {
+  .page-hero {
+    padding-top: 12.5rem;
+    padding-bottom: 5rem;
+  }
+}
+
+/* Faint animated noise wash across the whole hero. */
+.page-hero__noise {
+  position: absolute;
+  inset: 0;
+  background: url('../src/assets/images/bg-noice.gif') repeat 50% / auto;
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+.page-hero__crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-default-500);
+}
+.page-hero__crumbs [aria-current] {
+  color: var(--color-default-900);
+}
+
+.page-hero__grid {
+  margin-top: 1.75rem;
+  display: grid;
+  gap: 2.5rem;
+  align-items: end;
+}
+@media (min-width: 1280px) {
+  .page-hero__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 5rem;
+  }
+  .page-hero__grid > :first-child {
+    grid-column: span 3;
+  }
+}
+
+/* Eyebrow chip: a hard-edged outline box with a solid brand square. Used in
+   the hero and again in every SectionHeading, so the page has one eyebrow
+   language throughout. */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border: 1px solid var(--color-default-300);
+  background: #fff;
+  padding: 0.3125rem 0.875rem;
+  font-size: 0.875rem;
+  color: var(--color-default-900);
+}
+.eyebrow::before {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--color-primary);
+}
+
+.page-hero h1 {
+  margin-top: 1rem;
+  font-size: 34px;
+  font-weight: 700;
+}
+@media (min-width: 768px) {
+  .page-hero h1 {
+    font-size: 48px;
+  }
+}
+@media (min-width: 1024px) {
+  .page-hero h1 {
+    font-size: 60px;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   4 · JUMP NAV  (split products only — pages with more than one section)
+   ------------------------------------------------------------------------- */
+
+.jump-nav {
+  position: sticky;
+  top: var(--jumpnav-top);
+  z-index: 40;
+  border-bottom: 1px solid var(--color-default-200);
+  background: color-mix(in srgb, var(--color-body-bg) 95%, transparent);
+  backdrop-filter: blur(12px);
+}
+.jump-nav__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding-block: 1rem;
+}
+.jump-nav__pill {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--color-default-200);
+  color: var(--color-default-700);
+  transition: colors 0.2s;
+}
+.jump-nav__pill[aria-current='true'] {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+/* Sections must clear BOTH the fixed header and this sticky bar when jumped to,
+   or the heading lands underneath them. */
+.product-section {
+  scroll-margin-top: 10rem;
+}
+
+/* -------------------------------------------------------------------------
+   5 · SECTION HEADING  (shared by every band on the page)
+   ------------------------------------------------------------------------- */
+
+.section-heading {
+  max-width: 48rem;
+}
+.section-heading h2 {
+  margin-top: 1rem;
+  font-size: 28px;
+  font-weight: 700;
+}
+@media (min-width: 768px) {
+  .section-heading h2 {
+    font-size: 36px;
+  }
+}
+@media (min-width: 1024px) {
+  .section-heading h2 {
+    font-size: 42px;
+  }
+}
+.section-heading p {
+  margin-top: 1.25rem;
+}
+
+/* -------------------------------------------------------------------------
+   6 · OVERVIEW  &  PRODUCT SECTIONS
+   The same 12-column split runs through both: 7 columns of argument, 5 of
+   evidence. Keeping one grid means the eye never has to re-learn the page.
+   ------------------------------------------------------------------------- */
+
+.product-grid {
+  display: grid;
+  gap: 3rem;
+}
+@media (min-width: 1024px) {
+  .product-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+  .product-grid__main {
+    grid-column: span 7;
+  }
+  .product-grid__aside {
+    grid-column: span 5;
+  }
+}
+
+/* Sections alternate white / slate-50 so a long page reads as distinct blocks
+   without adding borders or cards. */
+.product-section--tinted {
+  background: var(--color-default-50);
+}
+
+/* Lead spec list beside the overview image: rules, not boxes. */
+.lead-specs {
+  border-top: 1px solid var(--color-default-200);
+}
+.lead-specs > * + * {
+  border-top: 1px solid var(--color-default-200);
+}
+.lead-specs__row {
+  padding-block: 1.25rem;
+}
+.lead-specs__label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-default-900);
+}
+.lead-specs__value {
+  margin-top: 0.25rem;
+  color: var(--color-default-600);
+}
+
+/* Typical Applications + spec detail sit as a two-column row under the intro. */
+.detail-row {
+  margin-top: 4rem;
+  display: grid;
+  gap: 3rem;
+}
+@media (min-width: 1024px) {
+  .detail-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.applications-list li {
+  display: flex;
+  gap: 0.625rem;
+  color: var(--color-default-600);
+}
+.applications-list li::before {
+  /* tabler:check, brand blue, nudged to sit on the first line */
+  content: '';
+  flex: 0 0 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.25rem;
+  background: currentColor;
+  color: var(--color-primary);
+}
+
+/* -------------------------------------------------------------------------
+   7 · GRADES & SPECIFICATIONS  (the catalogue block)
+   ------------------------------------------------------------------------- */
+
+.catalogue {
+  margin-top: 4rem;
+  border-top: 1px solid var(--color-default-200);
+  padding-top: 3.5rem;
+}
+.catalogue__head {
+  margin-bottom: 2.5rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+.catalogue__head h3 {
+  font-size: 1.5rem;
+}
+/* Datasheet link sits inline with the heading and points at the real PDF in
+   /public/eid/docs, not at the Resources index. */
+.catalogue__datasheet {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+/* Each series in the section is one explorer; they stack with 3rem between. */
+.catalogue__series > * + * {
+  margin-top: 3rem;
+}
+/* Size chips and coating options below the explorers. */
+.catalogue > * + * {
+  margin-top: 3.5rem;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--color-default-200);
+  background: var(--color-default-50);
+  padding: 0.25rem 0.625rem;
+  font-size: 0.875rem;
+  color: var(--color-default-700);
+}
+
+/* -------------------------------------------------------------------------
+   8 · GRADE EXPLORER
+   The one loud element on the page: a full-width dark panel carrying the
+   grade photography, with the series laid out on the trade-off its codes
+   encode. Two views over the same data — Explore (default) and Compare.
+   ------------------------------------------------------------------------- */
+
+.explorer {
+  overflow: hidden;
+  background: var(--color-default-950);
+  color: #fff;
+  box-shadow:
+    0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 8px 10px -6px rgb(0 0 0 / 0.1);
+  outline: 1px solid rgb(255 255 255 / 0.1);
+  outline-offset: -1px;
+}
+
+.explorer__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid rgb(255 255 255 / 0.1);
+}
+@media (min-width: 640px) {
+  .explorer__head {
+    padding-inline: 2rem;
+  }
+}
+.explorer__range {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+}
+.explorer__series {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgb(255 255 255 / 0.5);
+}
+
+/* Explore | Compare switch */
+.explorer__views {
+  display: flex;
+  flex-shrink: 0;
+  border: 1px solid rgb(255 255 255 / 0.15);
+  padding: 0.25rem;
+}
+.explorer__view {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgb(255 255 255 / 0.7);
+  transition: color 0.2s, background-color 0.2s;
+}
+.explorer__view[aria-pressed='true'] {
+  background: #fff;
+  color: var(--color-default-950);
+}
+
+/* --- Explore body: square photo left, detail right --- */
+.explorer__body {
+  display: grid;
+}
+@media (min-width: 1024px) {
+  .explorer__body {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+  .explorer__photo,
+  .explorer__detail {
+    grid-column: span 6;
+  }
+}
+.explorer__photo {
+  position: relative;
+  aspect-ratio: 1 / 1;
+}
+.explorer__photo img {
+  object-fit: cover;
+  animation: grade-fade 400ms ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .explorer__photo img {
+    animation: none;
+  }
+}
+@keyframes grade-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* Grade code overlaid on the photo, over a bottom-up scrim. */
+.explorer__photo-code {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  padding: 1.5rem;
+  background: linear-gradient(to top, rgb(2 6 23 / 0.8), transparent);
+  font-family: ui-monospace, monospace;
+  font-size: 0.875rem;
+  color: rgb(255 255 255 / 0.8);
+  pointer-events: none;
+}
+
+.explorer__detail {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 2rem;
+}
+@media (min-width: 1024px) {
+  .explorer__detail {
+    padding: 3rem;
+  }
+}
+.explorer__tag {
+  align-self: start;
+  border: 1px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
+  background: color-mix(in srgb, var(--color-primary) 15%, transparent);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #fff;
+}
+.explorer__code {
+  font-family: ui-monospace, monospace;
+  font-size: 1.875rem;
+  font-weight: 600;
+  color: #fff;
+}
+@media (min-width: 1024px) {
+  .explorer__code {
+    font-size: 2.25rem;
+  }
+}
+.explorer__desc {
+  max-width: 65ch;
+  line-height: 1.625;
+  color: rgb(255 255 255 / 0.7);
+}
+.explorer__sizes-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgb(255 255 255 / 0.4);
+}
+.explorer__size {
+  border: 1px solid rgb(255 255 255 / 0.15);
+  padding: 0.125rem 0.5rem;
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: rgb(255 255 255 / 0.7);
+}
+
+/* --- The rail: selector, and the only place the trade-off is stated --- */
+.explorer__rail {
+  border-top: 1px solid rgb(255 255 255 / 0.1);
+  padding: 2rem 1.5rem;
+}
+@media (min-width: 640px) {
+  .explorer__rail {
+    padding-inline: 2rem;
+  }
+}
+/* End labels: "Tougher · longer life" ←→ "Free-cutting · faster". Rendered
+   only where the grades genuinely sit on a continuum. */
+.explorer__axis {
+  margin-bottom: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgb(255 255 255 / 0.4);
+}
+.explorer__track {
+  position: relative;
+}
+.explorer__track::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 7px;
+  height: 1px;
+  background: rgb(255 255 255 / 0.15);
+}
+.explorer__tabs {
+  position: relative;
+  display: grid;
+  gap: 0.5rem;
+  /* one equal column per grade — set inline from grades.length */
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+}
+.explorer__tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.625rem;
+  text-align: center;
+}
+.explorer__dot {
+  width: 0.875rem;
+  height: 0.875rem;
+  border: 2px solid rgb(255 255 255 / 0.4);
+  border-radius: 9999px; /* a circle, not a rounded corner */
+  background: var(--color-default-950);
+  transition: transform 0.2s;
+}
+.explorer__tab[aria-selected='true'] .explorer__dot {
+  border-color: #fff;
+  background: #fff;
+  transform: scale(1.25);
+}
+.explorer__tab-code {
+  font-family: ui-monospace, monospace;
+  font-size: 0.875rem;
+  color: rgb(255 255 255 / 0.6);
+}
+.explorer__tab[aria-selected='true'] .explorer__tab-code {
+  font-weight: 600;
+  color: #fff;
+}
+.explorer__tab-tag {
+  font-size: 0.75rem;
+  color: rgb(255 255 255 / 0.4);
+}
+.explorer__tab:focus-visible {
+  outline: 2px solid #fff;
+}
+
+/* --- Compare view: grades as columns, attributes as rows --- */
+.explorer__table-wrap {
+  overflow-x: auto;
+}
+.explorer__table {
+  width: 100%;
+  min-width: 42rem;
+  border-collapse: collapse;
+  text-align: left;
+  vertical-align: top;
+}
+.explorer__table th,
+.explorer__table td {
+  padding: 1rem;
+  border-bottom: 1px solid rgb(255 255 255 / 0.1);
+}
+@media (min-width: 640px) {
+  .explorer__table th,
+  .explorer__table td {
+    padding: 1.5rem;
+  }
+}
+.explorer__table td,
+.explorer__table thead th + th {
+  border-left: 1px solid rgb(255 255 255 / 0.1);
+}
+.explorer__table thead th:first-child {
+  width: 10rem;
+}
+.explorer__table tbody th {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgb(255 255 255 / 0.4);
+}
+.explorer__table tbody td {
+  font-size: 0.875rem;
+  line-height: 1.625;
+  color: rgb(255 255 255 / 0.7);
+}
+
+/* -------------------------------------------------------------------------
+   9 · BUTTONS
+   ------------------------------------------------------------------------- */
+
+/* The template's signature: a solid shell with a contrasting square arrow
+   badge. On hover the label slides up and a duplicate rides in behind it, and
+   the arrow does the same horizontally. The label wrapper must stay exactly one
+   line tall with NO vertical padding — pad the shell instead, or the duplicate
+   stops being clipped and both copies show at rest. */
+.btn-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  padding-left: 1.5rem;
+  padding-block: 0.375rem;
+  padding-right: 0.375rem;
+  font-weight: 500;
+  line-height: 1;
+  background: var(--color-primary);
+  color: #fff;
+}
+.btn-arrow--dark {
+  background: var(--color-default-900);
+}
+.btn-arrow--light {
+  background: #fff;
+  color: var(--color-default-900);
+  border: 1px solid var(--color-default-200);
+}
+.btn-arrow__badge {
+  display: flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-default-900);
+  color: #fff;
+}
+.btn-arrow--dark .btn-arrow__badge,
+.btn-arrow--light .btn-arrow__badge {
+  background: var(--color-primary);
+}
+.btn-arrow__label {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+.btn-arrow__label > span {
+  display: block;
+  transition: transform 1.125s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.btn-arrow:hover .btn-arrow__label > span:first-child {
+  transform: translateY(-1.75rem);
+}
+.btn-arrow__label > span:last-child {
+  position: absolute;
+  inset-inline-start: 0;
+  top: 1.75rem;
+  transition: top 1.125s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.btn-arrow:hover .btn-arrow__label > span:last-child {
+  top: 0;
+}
+
+/* -------------------------------------------------------------------------
+   10 · WIREFRAME PLACEHOLDER
+   Every product image slot currently renders this rather than photography.
+   A labelled, crossed box — deliberately obvious, so an outstanding asset is
+   visible at a glance instead of quietly shipping the wrong picture.
+   ------------------------------------------------------------------------- */
+
+.wireframe {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px dashed var(--color-default-300);
+  background: var(--color-default-50);
+  aspect-ratio: 4 / 3; /* .wireframe--square 1/1, --portrait 3/4, --wide 16/9 */
+}
+.wireframe--dark {
+  border-color: rgb(255 255 255 / 0.2);
+  background: rgb(255 255 255 / 0.05);
+}
+/* Two full-bleed diagonals, drawn as a non-scaling-stroke SVG. */
+.wireframe__cross {
+  position: absolute;
+  inset: 0;
+  color: var(--color-default-200);
+}
+.wireframe__label {
+  position: relative;
+  background: rgb(255 255 255 / 0.9);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-default-500);
+}
+
+/* -------------------------------------------------------------------------
+   11 · RESPONSIVE SUMMARY
+   -------------------------------------------------------------------------
+   The page has three real states, not six:
+
+   < 640   single column. Explorer photo full-bleed square above the detail.
+           Compare table scrolls horizontally inside its own container.
+   640–1023 same single column, section padding still 4rem, explorer head
+           gains its 2rem side padding.
+   ≥ 1024  the 12-column split engages (7/5), section padding goes to 6rem,
+           explorer body splits 6/6, detail padding 3rem.
+   ≥ 1280  hero grid becomes 4 columns with the H1 spanning 3.
+
+   Breakpoints are Tailwind defaults: 640 / 768 / 1024 / 1280 / 1536.
+   ------------------------------------------------------------------------- */
