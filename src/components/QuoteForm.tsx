@@ -4,7 +4,7 @@ import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
 import { site } from '@/lib/site'
 import { useLocale } from 'next-intl'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 /**
  * The quote form. Previously this was decorative markup: no <form>, no name
@@ -29,6 +29,24 @@ const HELP_CLASS = 'mt-2 text-sm text-default-500'
 const QuoteForm = ({ formTitle, formDesc, productOptions }: { formTitle: string; formDesc: string; productOptions: string[] }) => {
   const locale = useLocale() as Locale
   const [sent, setSent] = useState(false)
+
+  // The grade selector links here as /contact?product=…&grade=…, so someone who
+  // has already picked a grade does not retype it. Read after mount rather than
+  // during render: these pages are statically generated, so the server has no
+  // query string and an initial value read from one would not match the markup
+  // it hydrates into. Both fields stay editable — this is a prefill, not a lock.
+  const [product, setProduct] = useState('')
+  const [grade, setGrade] = useState('')
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const p = params.get('product')
+    const g = params.get('grade')
+    // Only accept a product the select actually offers; anything else would
+    // silently select nothing and look broken.
+    if (p && productOptions.includes(p)) setProduct(p)
+    if (g) setGrade(g)
+  }, [productOptions])
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -97,7 +115,7 @@ const QuoteForm = ({ formTitle, formDesc, productOptions }: { formTitle: string;
           <label className={LABEL_CLASS} htmlFor="qf-product">
             {t(locale, 'Product of interest')}
           </label>
-          <select id="qf-product" name="product" required aria-describedby="qf-product-help" className={FIELD_CLASS} defaultValue="">
+          <select id="qf-product" name="product" required aria-describedby="qf-product-help" className={FIELD_CLASS} value={product} onChange={(e) => setProduct(e.target.value)}>
             <option value="" disabled>
               {t(locale, 'Select a product')}
             </option>
@@ -114,7 +132,7 @@ const QuoteForm = ({ formTitle, formDesc, productOptions }: { formTitle: string;
           <label className={LABEL_CLASS} htmlFor="qf-grade">
             {t(locale, 'Grade or size (optional)')}
           </label>
-          <input id="qf-grade" name="grade" type="text" aria-describedby="qf-grade-help" className={FIELD_CLASS} />
+          <input id="qf-grade" name="grade" type="text" aria-describedby="qf-grade-help" className={FIELD_CLASS} value={grade} onChange={(e) => setGrade(e.target.value)} />
           <p id="qf-grade-help" className={HELP_CLASS}>
             {t(locale, 'If you know it. Mesh, micron, or FEPA all fine.')}
           </p>

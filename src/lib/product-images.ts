@@ -112,3 +112,15 @@ export const productImages: Record<string, StaticImageData> = {
 }
 
 export const getProductImage = (key?: string): StaticImageData | undefined => (key ? productImages[key] : undefined)
+
+/**
+ * Master switch for product photography.
+ *
+ * The registry above and the per-grade image keys in product-catalog.ts are
+ * complete; the imagery itself is being reconsidered, so every slot across the
+ * products area renders the labelled wireframe instead. This is the one place
+ * that decision lives — it used to be duplicated as a local const in both
+ * ProductPhoto and the grade explorer, where flipping one and missing the other
+ * would have shipped a half-illustrated page.
+ */
+export const SHOW_PHOTOS = false

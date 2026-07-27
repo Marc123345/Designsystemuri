@@ -1,7 +1,8 @@
 import { RichParagraphs, RichText } from '@/components/RichText'
 import Wireframe from '@/components/Wireframe'
 import { CatalogSpecs, CrossLinks, DarkFeatureList, JumpNav, PageHero, ProductPhoto, QuoteSection, SpecTable } from '@/components/sections'
-import { ArrowButton, ArrowLink, SectionHeading } from '@/components/ui'
+import { ArrowLink, SectionHeading } from '@/components/ui'
+import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { getSectionDatasheet } from '@/lib/documents'
 import { localeAlternates } from '@/lib/hreflang'
@@ -38,9 +39,26 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
   // A single-section product renders flat: no jump nav, no repeated section
   // heading chrome, because there is nothing to jump between.
   const isSplit = p.sections.length > 1
-  const leadSpecs = p.sections.find((s) => s.specs?.length)?.specs ?? []
+
+  // Every fact in the overview panel is derived from the catalogue rather than
+  // written per product, so all eight pages carry the same shape of summary and
+  // none of it can drift out of step with the grade data below it.
+  const catalogued = p.sections.map((s) => ({ section: s, cat: getSectionCatalog(locale, p.slug, s.id) }))
+  const allSeries = catalogued.flatMap(({ cat }) => cat?.series ?? [])
+  const gradeCount = allSeries.reduce((n, s) => n + s.grades.length, 0)
+  const spans = allSeries.map((s) => s.meshSpan).filter((m): m is [number, number] => Boolean(m))
+  const micron = catalogued.map(({ cat }) => cat?.micronSizes).find((m) => m?.length)
+  const coatings = catalogued.map(({ cat }) => cat?.coatings).find((c) => c?.length)
   // Lead image for the overview: the first catalogued section that has a photo.
-  const leadImage = p.sections.map((s) => getSectionCatalog(locale, p.slug, s.id)).find((c) => c?.image)
+  const leadImage = catalogued.map(({ cat }) => cat).find((c) => c?.image)
+
+  const facts: { label: string; value: string }[] = [
+    gradeCount > 0 ? { label: t(locale, 'Grades'), value: allSeries.length > 1 ? `${gradeCount} ${t(locale, 'across')} ${allSeries.length} ${t(locale, 'series')}` : `${gradeCount}` } : null,
+    spans.length ? { label: t(locale, 'Mesh range'), value: `${Math.min(...spans.map((m) => m[0]))}–${Math.max(...spans.map((m) => m[1]))}` } : null,
+    micron?.length ? { label: t(locale, 'Micron range'), value: `${micron[0]} ${t(locale, 'to')} ${micron[micron.length - 1]} µm` } : null,
+    coatings?.length ? { label: t(locale, 'Coatings'), value: `${coatings.length} ${t(locale, 'options')}` } : null,
+    { label: t(locale, 'Sections'), value: `${p.sections.length}` },
+  ].filter((f): f is { label: string; value: string } => Boolean(f))
 
   const crossApplicationLinks = p.crossApplications
     .map((s) => getApplication(locale, s))
@@ -52,7 +70,6 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
   return (
     <>
       <PageHero
-        eyebrow={p.eyebrow}
         title={p.h1}
         desc={p.metaDesc}
         crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Products'), href: '/#products' }, { label: p.name }]}
@@ -62,40 +79,75 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
 
       {isSplit && <JumpNav items={p.sections.map((s) => ({ id: s.id, label: s.label }))} />}
 
-      {/* OVERVIEW */}
+      {/* OVERVIEW
+          No eyebrow here: it used to repeat p.family, which is the H1 verbatim,
+          so the page opened by saying its own name three times before it said
+          anything. No CTA either — the hero carries the same one two hundred
+          pixels above. The lede leads, and the panel beside it carries facts
+          instead of an empty spec list. */}
       <section className="py-16 lg:py-24">
         <div className="container">
-          <SectionHeading eyebrow={p.family} title={headline} />
-
-          <div className="mt-12 grid gap-12 lg:grid-cols-12">
+          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-7">
-              <RichParagraphs className="text-default-600 text-base" paragraphs={bodyParas} />
-              <div className="mt-8">
-                <ArrowButton href="/contact" label={p.cta} />
-              </div>
+              <h2 className="text-default-900 max-w-3xl text-[26px] font-bold md:text-[32px] lg:text-[38px]">{headline}</h2>
+              <RichParagraphs className="text-default-600 mt-7 text-base" paragraphs={bodyParas} />
             </div>
 
-            <div className="space-y-8 lg:col-span-5">
-              {leadImage?.image ? <ProductPhoto image={leadImage.image} alt={`${p.name} — EID`} /> : <Wireframe label={`Product image — ${p.name}`} />}
+            <aside className="lg:col-span-5">
+              {/* Sticky so the summary stays with the reader through a long
+                  intro; top clears the fixed header and the jump nav. */}
+              <div className="lg:sticky lg:top-40">
+                {leadImage?.image ? <ProductPhoto image={leadImage.image} alt={`${p.name} — EID`} /> : <Wireframe label={`Product image — ${p.name}`} />}
 
-              {leadSpecs.length > 0 && (
-                <div className="divide-default-200 border-default-200 divide-y border-t">
-                  {leadSpecs.slice(0, 3).map((s) => (
-                    <div key={s.label} className="py-5">
-                      <h4 className="text-default-900 text-base font-semibold">{s.label}</h4>
-                      <p className="text-default-600 mt-1 text-base">{s.value}</p>
+                <dl className="border-default-200 divide-default-200 mt-7 divide-y border-t">
+                  {facts.map((f) => (
+                    <div key={f.label} className="flex items-baseline justify-between gap-6 py-3.5">
+                      <dt className="text-default-500 text-xs tracking-wider uppercase">{f.label}</dt>
+                      <dd className="text-default-900 text-right font-mono text-sm font-semibold">{f.value}</dd>
                     </div>
                   ))}
-                </div>
-              )}
-            </div>
+                </dl>
+
+                {hasDatasheet && (
+                  <Link href="/resources/datasheets" className="text-primary mt-5 inline-flex items-center gap-2 text-sm font-semibold">
+                    <Icon icon="tabler:download" className="size-5" />
+                    {t(locale, 'Datasheets for this range')}
+                  </Link>
+                )}
+              </div>
+            </aside>
           </div>
+
+          {/* IN THIS RANGE — the sections as real entry points. These links used
+              to live buried in the last sentence of the intro prose, where a
+              reader scanning the page never saw them. */}
+          {isSplit && (
+            <div className="mt-16 lg:mt-20">
+              <h3 className="text-default-500 border-default-200 border-b pb-3 text-xs tracking-[0.2em] uppercase">{t(locale, 'In this range')}</h3>
+
+              <div className={`border-default-200 grid grid-cols-1 border-s md:grid-cols-2 ${p.sections.length >= 3 ? 'lg:grid-cols-3' : ''}`}>
+                {catalogued.map(({ section, cat }) => {
+                  const n = (cat?.series ?? []).reduce((acc, sr) => acc + sr.grades.length, 0)
+                  return (
+                    <Link key={section.id} href={`/products/${p.slug}#${section.id}`} className="group border-default-200 hover:bg-default-50 flex flex-col gap-3 border-e border-b p-7 transition-colors lg:p-8">
+                      <h4 className="group-hover:text-primary text-xl">{section.label}</h4>
+                      <p className="text-default-600 line-clamp-3 text-base">{section.intro[0]}</p>
+                      <span className="text-default-500 mt-auto inline-flex items-center gap-2 pt-2 font-mono text-xs">
+                        {n > 0 ? `${n} ${t(locale, n === 1 ? 'grade' : 'grades')}` : t(locale, 'Enquiry-led')}
+                        <Icon icon="tabler:arrow-narrow-right" className="text-primary size-5 transition-transform duration-300 group-hover:translate-x-1" />
+                      </span>
+                    </Link>
+                  )
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
       {/* SECTIONS — each keeps its H2, anchor, applications, and spec table */}
       {p.sections.map((s, i) => (
-        <ProductSectionBlock key={s.id} locale={locale} slug={p.slug} section={s} gray={i % 2 === 1} showHeading={isSplit} />
+        <ProductSectionBlock key={s.id} locale={locale} slug={p.slug} productName={p.name} section={s} gray={i % 2 === 1} showHeading={isSplit} />
       ))}
 
       <DarkFeatureList
@@ -167,7 +219,7 @@ export default ProductPage
 
 /* ------------------------------------------------------------------------- */
 
-const ProductSectionBlock = ({ locale, slug, section, gray, showHeading }: { locale: Locale; slug: string; section: ProductSection; gray: boolean; showHeading: boolean }) => {
+const ProductSectionBlock = ({ locale, slug, productName, section, gray, showHeading }: { locale: Locale; slug: string; productName: string; section: ProductSection; gray: boolean; showHeading: boolean }) => {
   const cat = getSectionCatalog(locale, slug, section.id)
   // EID's real PDF for this section, where one exists — the download links go
   // straight to the file rather than bouncing through the Resources index.
@@ -286,14 +338,7 @@ copy field rather than render as literal markdown. */}
                     </a>
                   )}
                 </div>
-                <CatalogSpecs
-                  cat={{
-                    ...cat,
-                    // Merge the copy deck's verified attribute rows (Form,
-                    // Formats, Custom grades…) into the catalogue property table.
-                    properties: [...(section.specs ?? []), ...(cat.properties ?? [])],
-                  }}
-                />
+                <CatalogSpecs cat={cat} sectionTitle={section.label} productName={productName} />
                 {section.specsNote && (
                   <p className="text-default-600 mt-8 text-sm">
                     <RichText>{section.specsNote}</RichText>

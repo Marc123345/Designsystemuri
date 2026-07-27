@@ -1,13 +1,13 @@
 'use client'
 
-import GradeExplorer from '@/components/GradeExplorer'
+import GradeSelector from '@/components/GradeSelector'
 import { RichText } from '@/components/RichText'
 import Wireframe from '@/components/Wireframe'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { getProducts, t } from '@/lib/i18n-content'
 import type { SectionCatalog } from '@/lib/product-catalog'
-import { getProductImage } from '@/lib/product-images'
+import { SHOW_PHOTOS, getProductImage } from '@/lib/product-images'
 import { site } from '@/lib/site'
 import { Icon } from '@iconify/react'
 import { useLocale } from 'next-intl'
@@ -27,7 +27,7 @@ export type Card = {
  * Interior page hero. Every page below home opens with the same block —
  * breadcrumb, eyebrow, H1, lede — so depth in the site is always legible.
  */
-export const PageHero = ({ eyebrow, title, desc, crumbs, primaryCta, secondaryCta }: { eyebrow: string; title: string; desc?: string; crumbs: { label: string; href?: string }[]; primaryCta?: { label: string; href: string }; secondaryCta?: { label: string; href: string } }) => (
+export const PageHero = ({ eyebrow, title, desc, crumbs, primaryCta, secondaryCta }: { eyebrow?: string; title: string; desc?: string; crumbs: { label: string; href?: string }[]; primaryCta?: { label: string; href: string }; secondaryCta?: { label: string; href: string } }) => (
   <section className="border-default-200 relative overflow-hidden border-b pt-35 pb-14 lg:pt-50 lg:pb-20">
     <div className="relative z-10 container">
       <nav aria-label="Breadcrumb">
@@ -49,11 +49,13 @@ export const PageHero = ({ eyebrow, title, desc, crumbs, primaryCta, secondaryCt
 
       <div className="mt-7 grid items-end gap-10 xl:grid-cols-4 xl:gap-20">
         <div className="xl:col-span-3">
-          <div className="border-default-300 inline-flex items-center gap-1.5 border bg-white px-3.5 py-1.25">
-            <span className="bg-primary size-2"></span>
-            <span className="text-default-900 text-sm">{eyebrow}</span>
-          </div>
-          <h1 className="mt-4 text-[34px] font-bold md:text-[48px] lg:text-6xl">{title}</h1>
+          {eyebrow && (
+            <div className="border-default-300 mb-4 inline-flex items-center gap-1.5 border bg-white px-3.5 py-1.25">
+              <span className="bg-primary size-2"></span>
+              <span className="text-default-900 text-sm">{eyebrow}</span>
+            </div>
+          )}
+          <h1 className="text-[34px] font-bold md:text-[48px] lg:text-6xl">{title}</h1>
         </div>
 
         <div>
@@ -454,11 +456,8 @@ const Chip = ({ children }: { children: React.ReactNode }) => <span className="b
  */
 export const ProductPhoto = ({ image, alt }: { image: string; alt: string; gallery?: string[] }) => {
   const src = getProductImage(image)
-  // Held on the wireframe while the product imagery is reconsidered. Flip
-  // SHOW_PHOTOS to bring EID's catalogue photography back; the registry and the
-  // per-grade image keys are all still in place.
-  const SHOW_PHOTOS = false
-
+  // Held on the wireframe while the product imagery is reconsidered; the switch
+  // for the whole products area is SHOW_PHOTOS in product-images.ts.
   if (!SHOW_PHOTOS || !src) return <Wireframe label={alt} ratio="landscape" />
   return (
     <div className="relative aspect-[4/3] overflow-hidden">
@@ -468,17 +467,14 @@ export const ProductPhoto = ({ image, alt }: { image: string; alt: string; galle
 }
 
 /** The full grade / size / coating / property block for a catalogued section. */
-export const CatalogSpecs = ({ cat }: { cat: SectionCatalog }) => {
+export const CatalogSpecs = ({ cat, sectionTitle, productName }: { cat: SectionCatalog; sectionTitle: string; productName: string }) => {
   const locale = useLocale() as Locale
   return (
     <div className="space-y-14">
-      {cat.series?.length ? (
-        <div className="space-y-12">
-          {cat.series.map((s, si) => (
-            <GradeExplorer key={s.title + si} series={s} fallbackImage={cat.image} />
-          ))}
-        </div>
-      ) : null}
+      {/* One panel per section holding every series, rather than one panel per
+          series: two near-identical dark cards stacked a viewport apart read as
+          two different controls when they are the same control twice. */}
+      {cat.series?.length ? <GradeSelector series={cat.series} fallbackImage={cat.image} sectionTitle={sectionTitle} productName={productName} /> : null}
 
       {cat.meshSizes?.length ? (
         <div>

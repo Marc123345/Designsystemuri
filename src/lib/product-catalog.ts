@@ -13,9 +13,35 @@
  * polycrystalline-micron, cvd-*, pcd, pcbn, mcd).
  */
 
-export type Grade = { code: string; tag?: string; desc?: string; image?: string }
+export type Grade = {
+  code: string
+  tag?: string
+  desc?: string
+  image?: string
+  /**
+   * One line for the Compare table — the shortest true thing that separates
+   * this grade from its neighbours.
+   *
+   * UNLIKE every other field in this file, `character` is NOT scraped from
+   * eid-ltd.com or from a datasheet. It is condensed from each grade's own
+   * `desc`, but the wording is ours. NEEDS URI'S SIGN-OFF BEFORE LAUNCH, and
+   * anything added here later must be condensed from EID's own copy the same
+   * way rather than written fresh.
+   */
+  character?: string
+  /** e.g. "40×" — printed under the photo. No values on record yet. */
+  magnification?: string
+}
 export type GradeSeries = {
   title: string
+  /** Short form used in summaries, the series switcher and the table: "NS". */
+  short?: string
+  /**
+   * Coarsest and finest mesh this series covers, e.g. [12, 60]. Drives the
+   * proportional width of the series segment. Omit and the segments render
+   * equal-width.
+   */
+  meshSpan?: [number, number]
   /** Size-range label shown as the block heading, mirroring eid-ltd.com
    *  ("12-60 Mesh", "60-500 Mesh"). Falls back to `title` when absent. */
   range?: string
@@ -72,6 +98,8 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
         {
           title: 'NS Series — Saw Diamond',
           range: '12–60 Mesh',
+          short: 'NS',
+          meshSpan: [12, 60],
           image: 'ns-100-p',
           axis: { from: 'Tougher · longer life', to: 'Free-cutting · faster' },
           sizes: NS_SIZES,
@@ -80,13 +108,21 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
             {
               code: 'NS-100-P',
               tag: 'Blocky',
+              character: 'Super blocky crystal, highest thermal strength in the saw range.',
               image: 'ns-100-p',
               desc: 'A specially engineered natural diamond abrasive, consisting of super blocky well shaped crystals. Its thermal properties allow exposure to very high temperatures without affecting its crystal strength. Its sharp cutting edges make it ideal for the drilling and sawing of concrete, reinforced plastics, masonry and marble. Ideal for electroplating tools.',
             },
-            { code: 'NS-1-P', tag: 'Regular', image: 'ns-100-p', desc: 'This product with its blocky sharp cutting crystals and high thermal strength make it the perfect cost effective choice for the sawing and drilling of stone, concrete, masonry and refractories.' },
+            {
+              code: 'NS-1-P',
+              tag: 'Regular',
+              character: 'The cost-effective choice for stone, concrete and refractories.',
+              image: 'ns-100-p',
+              desc: 'This product with its blocky sharp cutting crystals and high thermal strength make it the perfect cost effective choice for the sawing and drilling of stone, concrete, masonry and refractories.',
+            },
             {
               code: 'NS-1-S',
               tag: 'Sharp',
+              character: 'More friable and irregular, with well-defined cutting edges.',
               image: 'ns-100-p',
               desc: 'This is a strong but more irregular natural diamond grit with well defined cutting edges. More friable and irregular in shape, it possesses sharp cutting characteristics and the thermal stability of natural diamond.',
             },
@@ -95,6 +131,8 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
         {
           title: 'MB Series — Wheel Diamond',
           range: '60–500 Mesh',
+          short: 'MB',
+          meshSpan: [60, 500],
           image: 'mb-100-p',
           axis: { from: 'Tougher · longer life', to: 'Free-cutting · faster' },
           sizes: WHEEL_SIZES,
@@ -103,18 +141,21 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
             {
               code: 'MB-100-P',
               tag: 'Blocky',
+              character: 'The flagship wheel grade, free of all metal inclusions.',
               image: 'mb-100-p',
               desc: 'The flagship product of the EID Natural diamond range: a strong engineered blocky natural diamond abrasive, free of all metal inclusions. Its sharp cutting edges make it ideal for use in free-cutting diamond tools and dental burs, and for the drilling and grinding of glass, ceramics, plastics and tungsten carbide. For electroplated and metal bonds.',
             },
             {
               code: 'MB-1-P',
               tag: 'Regular',
+              character: 'Crushed to shape for ideal wear and free-cutting behaviour.',
               image: 'mb-100-p',
               desc: 'Special crushing techniques have ensured that this grit is composed of blocky, strong well shaped natural diamond crystals, with ideal wear characteristics, high thermal stability and free cutting characteristics. This MB-1-P grit features sharp cutting edges for maximum performance, for metal bond and electroplated tools.',
             },
             {
               code: 'MB-1-S',
               tag: 'Sharp',
+              character: 'Irregular but blocky — the general-purpose free-cutting grade.',
               image: 'mb-100-p',
               desc: 'Irregular but blocky natural diamond, this product, with its well defined cutting edges, is the product of choice in general purpose applications where high thermal strength and the sharp cutting properties of natural diamond is required. Also recommended for electroplated diamond tools.',
             },

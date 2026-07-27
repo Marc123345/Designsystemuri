@@ -12,20 +12,29 @@ import { useLocale } from 'next-intl'
 
 // London is the manufacturing hub; the rest are markets EID ships to, grouped by
 // the four regions named in the copy deck. Cities, not offices.
-const MARKETS: { city: string; region: string }[] = [
-  { city: 'London', region: 'Manufacturing · UK' },
-  { city: 'Frankfurt', region: 'Europe' },
-  { city: 'Milan', region: 'Europe' },
-  { city: 'Paris', region: 'Europe' },
-  { city: 'Tel Aviv', region: 'Middle East' },
-  { city: 'Dubai', region: 'Middle East' },
-  { city: 'Shanghai', region: 'Asia' },
-  { city: 'Tokyo', region: 'Asia' },
-  { city: 'Seoul', region: 'Asia' },
-  { city: 'Mumbai', region: 'Asia' },
-  { city: 'New York', region: 'Americas' },
-  { city: 'Chicago', region: 'Americas' },
+//
+// x / y place the tile's background crop. The card art is the same
+// equirectangular earth-night texture the globe itself is wrapped in, so each
+// tile shows the actual patch of night lights at that city:
+//   x = (lon + 180) / 360      y = (90 - lat) / 180
+// Zoomed to TILE_ZOOM, that reads as a city-lights crop rather than a map.
+const MARKETS: { city: string; region: string; x: number; y: number }[] = [
+  { city: 'London', region: 'Manufacturing · UK', x: 50.0, y: 21.4 },
+  { city: 'Frankfurt', region: 'Europe', x: 52.4, y: 22.2 },
+  { city: 'Milan', region: 'Europe', x: 52.6, y: 24.7 },
+  { city: 'Paris', region: 'Europe', x: 50.7, y: 22.9 },
+  { city: 'Tel Aviv', region: 'Middle East', x: 59.7, y: 32.2 },
+  { city: 'Dubai', region: 'Middle East', x: 65.4, y: 36.0 },
+  { city: 'Shanghai', region: 'Asia', x: 83.7, y: 32.6 },
+  { city: 'Tokyo', region: 'Asia', x: 88.8, y: 30.2 },
+  { city: 'Seoul', region: 'Asia', x: 85.3, y: 29.1 },
+  { city: 'Mumbai', region: 'Asia', x: 70.2, y: 39.4 },
+  { city: 'New York', region: 'Americas', x: 29.4, y: 27.4 },
+  { city: 'Chicago', region: 'Americas', x: 25.7, y: 26.7 },
 ]
+
+/** Background zoom on the world texture — roughly 36° of longitude per tile. */
+const TILE_ZOOM = '1000%'
 
 const GlobeSection = ({ eyebrow, title, desc, ctaLabel, ctaHref = '/contact' }: { eyebrow?: string; title?: string; desc?: string; ctaLabel?: string; ctaHref?: string }) => {
   const locale = useLocale() as Locale
@@ -52,11 +61,27 @@ const GlobeSection = ({ eyebrow, title, desc, ctaLabel, ctaHref = '/contact' }: 
               {desc ?? t(locale, 'One facility manufactures and quality-controls the full diamond and CBN range, then ships it to tool makers across Europe, the Middle East, Asia, and the Americas. One specification, wherever you are.')}
             </p>
 
+            {/* Same grid and same type as before — each cell is now an image
+                tile with the text over it, cropped to that city's own patch of
+                the night-lights texture. */}
             <ul className="mt-8 grid max-w-xl grid-cols-2 gap-3 border-t border-white/10 pt-8 sm:grid-cols-3">
               {MARKETS.map((m) => (
-                <li key={m.city} className="border-b border-white/10 pb-3">
-                  <div className="text-base leading-tight text-white">{m.city}</div>
-                  <div className="mt-1 font-mono text-[10px] tracking-[0.2em] text-white/40 uppercase">{t(locale, m.region)}</div>
+                <li
+                  key={m.city}
+                  className="group relative isolate overflow-hidden"
+                  style={{
+                    backgroundImage: 'url(/images/earth-night.jpg)',
+                    backgroundSize: TILE_ZOOM,
+                    backgroundPosition: `${m.x}% ${m.y}%`,
+                  }}
+                >
+                  {/* Scrim: heavy enough that 10px mono clears contrast over the
+                      brightest lights, lifting on hover to let the city through. */}
+                  <span aria-hidden className="bg-primary-3/72 group-hover:bg-primary-3/45 absolute inset-0 transition-colors duration-500" />
+                  <div className="relative z-10 px-3 py-2.5">
+                    <div className="text-base leading-tight text-white">{m.city}</div>
+                    <div className="mt-1 font-mono text-[10px] tracking-[0.2em] text-white/60 uppercase">{t(locale, m.region)}</div>
+                  </div>
                 </li>
               ))}
             </ul>

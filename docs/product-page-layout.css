@@ -16,7 +16,7 @@
      base     — src/assets/css/_general.css
      page     — src/app/[locale]/products/[slug]/page.tsx
      blocks   — src/components/sections.tsx, src/components/ui.tsx
-     explorer — src/components/GradeExplorer.tsx
+     selector — src/components/GradeSelector.tsx
 
    ---------------------------------------------------------------------------
    PAGE STRUCTURE, top to bottom
@@ -25,13 +25,14 @@
    header.site-header            fixed, 76px → 96px
    ├ PageHero                    breadcrumb · eyebrow · H1 · lede · 2 CTAs
    ├ JumpNav                     sticky under the header; only on split products
-   ├ Overview                    12-col: 7 prose + CTA / 5 image + lead specs
+   ├ Overview                    12-col: 7 lede + prose / 5 sticky facts panel
+   │  └ In this range            section cards, split products only
    ├ ProductSection × n          repeated per section, background alternates
    │  ├ intro + callouts         col 7
    │  ├ enquiry CTA              col 5
    │  ├ Typical Applications     2-col detail row
    │  └ Grades & specifications  ← the catalogue block
-   │     └ GradeExplorer × n     one per series: Explore | Compare
+   │     └ GradeSelector × 1     ONE panel for the whole section, all series
    ├ DarkFeatureList             QC proof band, dark
    ├ QuoteSection                form
    ├ CrossLinks                  internal-link matrix
@@ -258,7 +259,10 @@ h6 {
   font-size: 0.875rem;
   border: 1px solid var(--color-default-200);
   color: var(--color-default-700);
-  transition: colors 0.2s;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    color 0.2s;
 }
 .jump-nav__pill[aria-current='true'] {
   background: var(--color-primary);
@@ -300,8 +304,16 @@ h6 {
 
 /* -------------------------------------------------------------------------
    6 · OVERVIEW  &  PRODUCT SECTIONS
+   -------------------------------------------------------------------------
    The same 12-column split runs through both: 7 columns of argument, 5 of
    evidence. Keeping one grid means the eye never has to re-learn the page.
+
+   The overview used to open with an eyebrow set to the product family — which
+   is the H1 word for word — above a headline that paraphrased it again, so the
+   page said its own name three times before it said anything. It also repeated
+   the hero's Request a Quote about two hundred pixels below the original, and
+   its right-hand column was a placeholder image sitting on an empty spec list.
+   All three are gone. The lede leads; the column beside it carries facts.
    ------------------------------------------------------------------------- */
 
 .product-grid {
@@ -311,6 +323,7 @@ h6 {
 @media (min-width: 1024px) {
   .product-grid {
     grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 4rem;
   }
   .product-grid__main {
     grid-column: span 7;
@@ -320,30 +333,143 @@ h6 {
   }
 }
 
+/* Lede. Smaller than an H2 elsewhere on the page because it is a sentence, not
+   a label — it should read as the opening line of an argument. */
+.overview__lede {
+  max-width: 48rem;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--color-default-900);
+}
+@media (min-width: 768px) {
+  .overview__lede {
+    font-size: 32px;
+  }
+}
+@media (min-width: 1024px) {
+  .overview__lede {
+    font-size: 38px;
+  }
+}
+.overview__body {
+  margin-top: 1.75rem;
+  color: var(--color-default-600);
+}
+
+/*
+  At-a-glance panel. Sticky, so the summary stays with the reader through a
+  long intro; the offset clears the fixed header and the jump nav.
+
+  Every row is DERIVED from the catalogue, never authored per product:
+
+    Grades        total across every series in every section
+    Mesh range    min/max of the series meshSpan values
+    Micron range  first and last of the section's micron size chart
+    Coatings      count of coating options
+    Sections      how many sections the page carries
+
+  A row with no data does not render, so the panel is four rows on Natural Grit
+  and two on Single Crystal without either page hard-coding anything. That also
+  means the panel cannot drift out of step with the grade data below it.
+*/
+.overview__facts {
+  position: static;
+  margin-top: 1.75rem;
+  border-top: 1px solid var(--color-default-200);
+}
+@media (min-width: 1024px) {
+  .overview__aside > div {
+    position: sticky;
+    top: 10rem;
+  }
+}
+.overview__fact {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-block: 0.875rem;
+  border-bottom: 1px solid var(--color-default-200);
+}
+.overview__fact dt {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-default-500);
+}
+.overview__fact dd {
+  font-family: ui-monospace, monospace;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-align: right;
+  color: var(--color-default-900);
+}
+
+/*
+  "In this range" — the sections as entry points, on split products only. These
+  links used to exist only inside the last sentence of the intro prose, where a
+  reader scanning the page never met them. Each card carries the section label,
+  its opening sentence clamped to three lines, and its real grade count, so the
+  row shows the shape of the range before you enter it.
+
+  Same borderless-card language as CardGrid: the grid draws the top and start
+  rules, each card draws its own end and bottom, so a row of three reads as a
+  catalogue rather than three boxes.
+*/
+.range-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  border-inline-start: 1px solid var(--color-default-200);
+}
+@media (min-width: 768px) {
+  .range-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .range-grid--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.range-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.75rem;
+  border-inline-end: 1px solid var(--color-default-200);
+  border-bottom: 1px solid var(--color-default-200);
+  transition: background-color 0.2s;
+}
+@media (min-width: 1024px) {
+  .range-card {
+    padding: 2rem;
+  }
+}
+.range-card:hover {
+  background: var(--color-default-50);
+}
+.range-card__desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: var(--color-default-600);
+}
+.range-card__meta {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: var(--color-default-500);
+}
+
 /* Sections alternate white / slate-50 so a long page reads as distinct blocks
    without adding borders or cards. */
 .product-section--tinted {
   background: var(--color-default-50);
-}
-
-/* Lead spec list beside the overview image: rules, not boxes. */
-.lead-specs {
-  border-top: 1px solid var(--color-default-200);
-}
-.lead-specs > * + * {
-  border-top: 1px solid var(--color-default-200);
-}
-.lead-specs__row {
-  padding-block: 1.25rem;
-}
-.lead-specs__label {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--color-default-900);
-}
-.lead-specs__value {
-  margin-top: 0.25rem;
-  color: var(--color-default-600);
 }
 
 /* Typical Applications + spec detail sit as a two-column row under the intro. */
@@ -363,13 +489,19 @@ h6 {
   color: var(--color-default-600);
 }
 .applications-list li::before {
-  /* tabler:check, brand blue, nudged to sit on the first line */
+  /* tabler:check in brand blue, nudged down to sit on the first line. The
+     component renders an <Icon>; as CSS the faithful equivalent is a mask, not
+     a background — a plain background paints a solid 20px square. */
   content: '';
   flex: 0 0 1.25rem;
   height: 1.25rem;
   margin-top: 0.25rem;
-  background: currentColor;
-  color: var(--color-primary);
+  background: var(--color-primary);
+  -webkit-mask: var(--icon-check) center / contain no-repeat;
+  mask: var(--icon-check) center / contain no-repeat;
+}
+:root {
+  --icon-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E");
 }
 
 /* -------------------------------------------------------------------------
@@ -420,58 +552,78 @@ h6 {
 }
 
 /* -------------------------------------------------------------------------
-   8 · GRADE EXPLORER
-   The one loud element on the page: a full-width dark panel carrying the
-   grade photography, with the series laid out on the trade-off its codes
-   encode. Two views over the same data — Explore (default) and Compare.
+   8 · GRADE SELECTOR
+   -------------------------------------------------------------------------
+   One dark panel per section, holding every series in that section. It is the
+   only loud element on the page, and it is deliberately about one viewport
+   tall — it used to be one panel per series, so the Natural Grit page stacked
+   two near-identical cards two viewports deep, each with its own view switch
+   and its own rail. A reader had to scroll a full screen to find out the
+   second card was the same control again.
+
+   Reading order inside the panel, and why:
+
+     1  header           what this section is, how much is in it, and the view
+     2  series switcher  which series — segment widths carry the mesh scale
+     3  grade rail       which grade, on the axis the codes encode
+     4  detail           the grade itself, then the CTA carrying the selection
+
+   Selection narrows top to bottom, and the answer sits at the bottom where the
+   eye has arrived. Compare replaces 3 and 4 but keeps 1 and 2, so switching
+   view never moves the controls you just used.
    ------------------------------------------------------------------------- */
 
-.explorer {
-  overflow: hidden;
+.selector {
   background: var(--color-default-950);
   color: #fff;
-  box-shadow:
-    0 20px 25px -5px rgb(0 0 0 / 0.1),
-    0 8px 10px -6px rgb(0 0 0 / 0.1);
-  outline: 1px solid rgb(255 255 255 / 0.1);
-  outline-offset: -1px;
+  /* No box-shadow and no ring. The rest of the page separates blocks with 1px
+     hairlines and background changes; a shadowed, ringed card belongs to a
+     different system and read as pasted-on. */
 }
 
-.explorer__head {
+/* --- 8.1 Header ------------------------------------------------------- */
+
+.selector__head {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1.25rem 1.5rem;
+  padding: 1rem 1.25rem;
   border-bottom: 1px solid rgb(255 255 255 / 0.1);
 }
 @media (min-width: 640px) {
-  .explorer__head {
-    padding-inline: 2rem;
+  .selector__head {
+    padding: 1.25rem 2rem;
   }
 }
-.explorer__range {
-  font-size: 1.25rem;
+.selector__title {
+  font-size: 1.125rem;
   font-weight: 600;
   color: #fff;
 }
-.explorer__series {
+@media (min-width: 640px) {
+  .selector__title {
+    font-size: 1.25rem;
+  }
+}
+/* "2 series · 6 grades · 12–500 mesh" — the size of the thing, before you
+   operate it. The mesh clause appears only when every series declares a span. */
+.selector__summary {
   margin-top: 0.25rem;
   font-size: 0.875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: rgb(255 255 255 / 0.5);
+  color: rgb(255 255 255 / 0.6);
 }
 
-/* Explore | Compare switch */
-.explorer__views {
+/* Explore | Compare — once per panel now, so the two switches can no longer
+   disagree with each other. */
+.selector__views {
   display: flex;
   flex-shrink: 0;
   border: 1px solid rgb(255 255 255 / 0.15);
   padding: 0.25rem;
 }
-.explorer__view {
+.selector__view {
   display: flex;
   align-items: center;
   gap: 0.375rem;
@@ -479,36 +631,263 @@ h6 {
   font-size: 0.875rem;
   font-weight: 500;
   color: rgb(255 255 255 / 0.7);
-  transition: color 0.2s, background-color 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
 }
-.explorer__view[aria-pressed='true'] {
+.selector__view[aria-pressed='true'] {
   background: #fff;
   color: var(--color-default-950);
 }
 
-/* --- Explore body: square photo left, detail right --- */
-.explorer__body {
+/* --- 8.2 Series switcher ---------------------------------------------- */
+
+.selector__series {
+  padding: 1.25rem 1.25rem 1rem;
+  border-bottom: 1px solid rgb(255 255 255 / 0.1);
+}
+@media (min-width: 640px) {
+  .selector__series {
+    padding-inline: 2rem;
+  }
+}
+.selector__segments {
+  display: flex;
+}
+
+/*
+  Segment width is proportional to log(finest / coarsest) from the series'
+  meshSpan, set inline as flex-grow with flex-basis 0.
+
+    NS  [12,  60]  ->  ln(60/12)  = 1.61
+    MB  [60, 500]  ->  ln(500/60) = 2.12
+
+  Mesh is a ratio scale: 12→60 and 60→500 are comparable spans of usable grit
+  size, so the log of the ratio is what makes them read fairly against each
+  other. Linear widths would hand MB about nine tenths of the bar and imply it
+  is the whole product line.
+
+  If any series in the section omits meshSpan, every segment falls back to
+  equal width — a mix of proportional and arbitrary widths would imply a scale
+  that is not there.
+*/
+.selector__segment {
+  flex-basis: 0;
+  min-width: 0;
+  border: 1px solid rgb(255 255 255 / 0.15);
+  padding: 0.625rem 0.75rem;
+  text-align: left;
+  color: rgb(255 255 255 / 0.7);
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+}
+@media (min-width: 640px) {
+  .selector__segment {
+    padding-inline: 1rem;
+  }
+}
+.selector__segment + .selector__segment {
+  margin-left: -1px; /* shared seam, not a double rule */
+}
+.selector__segment[aria-pressed='true'] {
+  background: var(--color-primary-1);
+  border-color: var(--color-primary-1);
+  color: #fff;
+}
+.selector__segment-name {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Second line, "NS · 12–60 Mesh". Dropped below 640px, where the segments are
+   narrow enough that two lines of truncated text say less than one. */
+.selector__segment-range {
+  display: none;
+  margin-top: 0.125rem;
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: rgb(255 255 255 / 0.45);
+}
+@media (min-width: 640px) {
+  .selector__segment-range {
+    display: block;
+  }
+}
+
+/* Caption row under the segments: coarsest at the far left, the boundary value
+   at each seam, finest at the far right — the scale the widths are drawn from,
+   written out so the proportions can be read rather than guessed. */
+.selector__scale {
+  display: flex;
+  margin-top: 0.5rem;
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  color: rgb(255 255 255 / 0.45);
+}
+.selector__scale-cell {
+  position: relative;
+  flex-basis: 0; /* same flex-grow as its segment */
+  height: 1rem;
+}
+.selector__scale-cell > .start {
+  position: absolute;
+  inset-inline-start: 0;
+}
+.selector__scale-cell:last-child > .end {
+  position: absolute;
+  inset-inline-end: 0;
+}
+
+/* --- 8.3 Grade rail ---------------------------------------------------- */
+
+.selector__rail {
+  padding: 1.5rem 1.25rem 1.75rem;
+  border-bottom: 1px solid rgb(255 255 255 / 0.1);
+}
+@media (min-width: 640px) {
+  .selector__rail {
+    padding-inline: 2rem;
+  }
+}
+
+/* Axis end labels, from series.axis. These carry the whole point of the
+   control — that the grade code is a position on a trade-off, not a ranking —
+   so they are 12px at 70% white. They were 11px at 40%, which read as a
+   caption on the rail rather than as the thing the rail measures. */
+.selector__axis {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.7);
+}
+
+.selector__track {
+  position: relative;
+}
+/* Inset to the dot centres — 7px is half a 14px dot — so the track's ends sit
+   exactly under the first and last dot and line up with the axis labels above.
+   A full-width track would overshoot both ends by half a dot. */
+.selector__track::before {
+  content: '';
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  right: 7px;
+  height: 1px;
+  background: rgb(255 255 255 / 0.2);
+}
+
+.selector__tabs {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+/* First dot flush left, last flush right. The tab's own alignment does that
+   without pushing its label off the panel edge: the end tabs align their text
+   to the same edge as their dot. */
+.selector__tab {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  text-align: center;
+}
+.selector__tab:first-child {
+  align-items: flex-start;
+  text-align: left;
+}
+.selector__tab:last-child {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.selector__dot {
+  width: 0.875rem;
+  height: 0.875rem;
+  border: 2px solid rgb(255 255 255 / 0.4);
+  border-radius: 9999px; /* a circle — the one radius on the page */
+  background: var(--color-default-950);
+  transition: transform 0.2s;
+}
+.selector__tab[aria-selected='true'] .selector__dot {
+  border-color: #fff;
+  background: #fff;
+  transform: scale(1.25);
+}
+.selector__tab-code {
+  font-family: ui-monospace, monospace;
+  font-size: 0.875rem;
+  color: rgb(255 255 255 / 0.6);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.selector__tab[aria-selected='true'] .selector__tab-code {
+  font-weight: 600;
+  color: #fff;
+}
+.selector__tab-tag {
+  font-size: 0.75rem;
+  color: rgb(255 255 255 / 0.4);
+}
+
+/* Long series scroll rather than crush. Under six grades the row fits and
+   justify-between spreads it edge to edge; above that the inner row takes a
+   min-width of grades × 5.5rem and the wrapper scrolls. The ten-grade ESN
+   series will land here. */
+.selector__rail-scroll {
+  overflow-x: auto;
+}
+
+/* --- 8.4 Detail -------------------------------------------------------- */
+
+.selector__detail {
   display: grid;
 }
 @media (min-width: 1024px) {
-  .explorer__body {
+  .selector__detail {
     grid-template-columns: repeat(12, minmax(0, 1fr));
   }
-  .explorer__photo,
-  .explorer__detail {
-    grid-column: span 6;
+  .selector__figure {
+    grid-column: span 5;
+    border-inline-end: 1px solid rgb(255 255 255 / 0.1);
+    border-bottom: 0;
+  }
+  .selector__body {
+    grid-column: span 7;
+    padding: 2.5rem;
   }
 }
-.explorer__photo {
-  position: relative;
-  aspect-ratio: 1 / 1;
+.selector__figure {
+  padding: 1.25rem;
+  border-bottom: 1px solid rgb(255 255 255 / 0.1);
 }
-.explorer__photo img {
+@media (min-width: 640px) {
+  .selector__figure {
+    padding: 2rem;
+  }
+}
+.selector__photo {
+  position: relative;
+  aspect-ratio: 4 / 3;
+}
+.selector__photo img {
   object-fit: cover;
   animation: grade-fade 400ms ease-out;
 }
 @media (prefers-reduced-motion: reduce) {
-  .explorer__photo img {
+  .selector__photo img {
     animation: none;
   }
 }
@@ -520,65 +899,80 @@ h6 {
     opacity: 1;
   }
 }
-/* Grade code overlaid on the photo, over a bottom-up scrim. */
-.explorer__photo-code {
-  position: absolute;
-  inset-inline: 0;
-  bottom: 0;
-  padding: 1.5rem;
-  background: linear-gradient(to top, rgb(2 6 23 / 0.8), transparent);
+/* Caption under the photo, not over it: code plus magnification on the left,
+   "Grade 2 of 3" on the right. The code is NOT overlaid on the image — it
+   already appears as the heading immediately to the right, and printing it
+   twice on one screen made the photo look like a separate card. */
+.selector__caption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+}
+.selector__caption-code {
   font-family: ui-monospace, monospace;
-  font-size: 0.875rem;
-  color: rgb(255 255 255 / 0.8);
-  pointer-events: none;
+  color: rgb(255 255 255 / 0.7);
+}
+.selector__caption-count {
+  flex-shrink: 0;
+  color: rgb(255 255 255 / 0.4);
 }
 
-.explorer__detail {
+.selector__body {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 1.25rem;
-  padding: 2rem;
+  gap: 1rem;
+  padding: 1.25rem;
 }
-@media (min-width: 1024px) {
-  .explorer__detail {
-    padding: 3rem;
+@media (min-width: 640px) {
+  .selector__body {
+    padding: 2rem;
   }
 }
-.explorer__tag {
-  align-self: start;
-  border: 1px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
-  background: color-mix(in srgb, var(--color-primary) 15%, transparent);
-  padding: 0.25rem 0.75rem;
+.selector__code {
+  font-family: ui-monospace, monospace;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+}
+@media (min-width: 1024px) {
+  .selector__code {
+    font-size: 1.875rem;
+  }
+}
+.selector__tag {
+  border: 1px solid color-mix(in srgb, var(--color-primary-1) 50%, transparent);
+  background: color-mix(in srgb, var(--color-primary-1) 20%, transparent);
+  padding: 0.25rem 0.625rem;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: #fff;
 }
-.explorer__code {
-  font-family: ui-monospace, monospace;
-  font-size: 1.875rem;
-  font-weight: 600;
-  color: #fff;
-}
-@media (min-width: 1024px) {
-  .explorer__code {
-    font-size: 2.25rem;
-  }
-}
-.explorer__desc {
+.selector__desc {
   max-width: 65ch;
   line-height: 1.625;
   color: rgb(255 255 255 / 0.7);
 }
-.explorer__sizes-label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: rgb(255 255 255 / 0.4);
+
+/* Sizes collapse to one line — "15 mesh sizes, 16/18–50/70 · all NS grades" —
+   with a Show all toggle. The full list is fifteen chips that say nothing
+   until someone is specifying, and it was pushing the CTA off the screen. */
+.selector__sizes {
+  border-top: 1px solid rgb(255 255 255 / 0.1);
+  padding-top: 1rem;
+  font-size: 0.875rem;
+  color: rgb(255 255 255 / 0.7);
 }
-.explorer__size {
+.selector__sizes button {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.selector__size {
   border: 1px solid rgb(255 255 255 / 0.15);
   padding: 0.125rem 0.5rem;
   font-family: ui-monospace, monospace;
@@ -586,124 +980,91 @@ h6 {
   color: rgb(255 255 255 / 0.7);
 }
 
-/* --- The rail: selector, and the only place the trade-off is stated --- */
-.explorer__rail {
-  border-top: 1px solid rgb(255 255 255 / 0.1);
-  padding: 2rem 1.5rem;
-}
-@media (min-width: 640px) {
-  .explorer__rail {
-    padding-inline: 2rem;
-  }
-}
-/* End labels: "Tougher · longer life" ←→ "Free-cutting · faster". Rendered
-   only where the grades genuinely sit on a continuum. */
-.explorer__axis {
-  margin-bottom: 1.25rem;
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: rgb(255 255 255 / 0.4);
-}
-.explorer__track {
-  position: relative;
-}
-.explorer__track::before {
-  content: '';
-  position: absolute;
-  inset-inline: 0;
-  top: 7px;
-  height: 1px;
-  background: rgb(255 255 255 / 0.15);
-}
-.explorer__tabs {
-  position: relative;
-  display: grid;
-  gap: 0.5rem;
-  /* one equal column per grade — set inline from grades.length */
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(0, 1fr);
-}
-.explorer__tab {
-  display: flex;
-  flex-direction: column;
+/* Carries the selection: /contact?product=…&grade=…, which the quote form
+   reads and prefills, so nobody retypes what they just picked. */
+.selector__cta {
+  margin-top: auto;
+  display: inline-flex;
+  width: fit-content;
   align-items: center;
   gap: 0.625rem;
-  text-align: center;
-}
-.explorer__dot {
-  width: 0.875rem;
-  height: 0.875rem;
-  border: 2px solid rgb(255 255 255 / 0.4);
-  border-radius: 9999px; /* a circle, not a rounded corner */
-  background: var(--color-default-950);
-  transition: transform 0.2s;
-}
-.explorer__tab[aria-selected='true'] .explorer__dot {
-  border-color: #fff;
-  background: #fff;
-  transform: scale(1.25);
-}
-.explorer__tab-code {
-  font-family: ui-monospace, monospace;
+  background: var(--color-primary-1);
+  padding: 0.75rem 1.25rem;
   font-size: 0.875rem;
-  color: rgb(255 255 255 / 0.6);
-}
-.explorer__tab[aria-selected='true'] .explorer__tab-code {
   font-weight: 600;
   color: #fff;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
 }
-.explorer__tab-tag {
-  font-size: 0.75rem;
-  color: rgb(255 255 255 / 0.4);
-}
-.explorer__tab:focus-visible {
-  outline: 2px solid #fff;
+.selector__cta:hover {
+  background: #fff;
+  color: var(--color-default-950);
 }
 
-/* --- Compare view: grades as columns, attributes as rows --- */
-.explorer__table-wrap {
+/* --- 8.5 Compare ------------------------------------------------------- */
+
+/* One flat table for the whole section: every grade of every series as a row,
+   so someone who knows the range never operates a control to read it. Replaces
+   the rail and the detail; the header and the series switcher stay put. */
+.selector__table-wrap {
   overflow-x: auto;
 }
-.explorer__table {
+.selector__table {
   width: 100%;
-  min-width: 42rem;
+  min-width: 40rem;
   border-collapse: collapse;
   text-align: left;
+}
+.selector__table th,
+.selector__table td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid rgb(255 255 255 / 0.1);
   vertical-align: top;
 }
-.explorer__table th,
-.explorer__table td {
-  padding: 1rem;
-  border-bottom: 1px solid rgb(255 255 255 / 0.1);
-}
 @media (min-width: 640px) {
-  .explorer__table th,
-  .explorer__table td {
-    padding: 1.5rem;
+  .selector__table th,
+  .selector__table td {
+    padding: 1rem 1.5rem;
   }
 }
-.explorer__table td,
-.explorer__table thead th + th {
-  border-left: 1px solid rgb(255 255 255 / 0.1);
-}
-.explorer__table thead th:first-child {
-  width: 10rem;
-}
-.explorer__table tbody th {
+.selector__table thead tr {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: rgb(255 255 255 / 0.4);
+  color: rgb(255 255 255 / 0.45);
 }
-.explorer__table tbody td {
+/* Columns: grade · series · shape · character. */
+.selector__table tbody th {
+  font-family: ui-monospace, monospace;
   font-size: 0.875rem;
-  line-height: 1.625;
-  color: rgb(255 255 255 / 0.7);
+  font-weight: 600;
+  white-space: nowrap;
+  color: #fff;
 }
+.selector__table tbody tr:hover {
+  background: rgb(255 255 255 / 0.03);
+}
+
+/* --- 8.6 Behaviour, for anyone redrawing this ------------------------- */
+/*
+   ARIA         the rail is a tablist; each tab has aria-controls pointing at
+                the detail region, which is role="tabpanel" and labelled by the
+                active tab. Roving tabindex — only the selected tab is in the
+                tab order. Arrow keys, Home and End walk the rail.
+
+   Deep link    #g=<series>--<grade>, e.g. #g=ns--ns-1-s. The series is in the
+                hash because a grade code alone no longer says which segment is
+                active, and codes repeat across series elsewhere in the
+                catalogue. A bare #g=<grade> is still accepted so links already
+                sent keep working. On a match the panel is scrolled into view.
+
+   View memory  one localStorage key for the whole page, read in the useState
+                initialiser rather than a mount effect, so a client-side
+                navigation into the page renders Compare with no Explore frame
+                first. On a cold server-rendered load the server has no access
+                to the preference, so it applies from hydration onward.
+*/
 
 /* -------------------------------------------------------------------------
    9 · BUTTONS
@@ -813,13 +1174,15 @@ h6 {
    -------------------------------------------------------------------------
    The page has three real states, not six:
 
-   < 640   single column. Explorer photo full-bleed square above the detail.
-           Compare table scrolls horizontally inside its own container.
-   640–1023 same single column, section padding still 4rem, explorer head
-           gains its 2rem side padding.
-   ≥ 1024  the 12-column split engages (7/5), section padding goes to 6rem,
-           explorer body splits 6/6, detail padding 3rem.
-   ≥ 1280  hero grid becomes 4 columns with the H1 spanning 3.
+   < 640    single column. Selector: segments stay horizontal but drop their
+            second line, the rail stays horizontal, the detail stacks with the
+            photo above. Compare scrolls inside its own wrapper.
+   640-1023 same single column; the selector regains the segment second line
+            and its 2rem side padding.
+   >= 1024  the 12-column split engages (7/5) for the page, and the selector
+            detail splits 5/7 with the photo on the left; section padding goes
+            to 6rem.
+   >= 1280  hero grid becomes 4 columns with the H1 spanning 3.
 
    Breakpoints are Tailwind defaults: 640 / 768 / 1024 / 1280 / 1536.
    ------------------------------------------------------------------------- */
