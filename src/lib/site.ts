@@ -45,10 +45,9 @@ export const applicationMenu = applications.map((a) => ({
 }))
 
 export const resourceMenu = [
-  { label: 'Resources & Guides', href: '/resources' },
-  { label: 'Blog', href: '/resources/blog' },
   { label: 'Datasheets', href: '/resources/datasheets' },
   { label: 'MSDS', href: '/resources/msds' },
+  { label: 'Blog', href: '/resources/blog' },
 ]
 
 // Primary header navigation. Order is the buyer's journey: catalogue first, the
@@ -61,6 +60,8 @@ export const primaryNav = [
   { label: 'Products', href: '/#products', menu: 'products' as const },
   { label: 'Applications', href: '/applications', menu: 'applications' as const },
   { label: 'Quality', href: '/quality' },
+  // href here is the active-state prefix only — a menu entry renders as a
+  // dropdown button, never a link, so it does not point at the removed index.
   { label: 'Resources', href: '/resources', menu: 'resources' as const },
   { label: 'About', href: '/about' },
   // The conversion endpoint. Rendered as a visually distinct button at the far
@@ -103,7 +104,6 @@ export const footerColumns = [
       { label: 'Quality, QC & ISO 9001', href: '/quality' },
       { label: 'Mesh QC', href: '/mesh-qc' },
       { label: 'Micron QC', href: '/micron-qc' },
-      { label: 'Resources & Guides', href: '/resources' },
       { label: 'Blog', href: '/resources/blog' },
       { label: 'Datasheets', href: '/resources/datasheets' },
       { label: 'MSDS', href: '/resources/msds' },

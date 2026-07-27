@@ -42,7 +42,6 @@ const paths: Record<string, Meta> = {
   '/micron-qc': { priority: 0.5, changeFrequency: 'monthly' },
   '/about': { priority: 0.6, changeFrequency: 'monthly' },
   '/contact': { priority: 0.7, changeFrequency: 'monthly' },
-  '/resources': { priority: 0.6, changeFrequency: 'monthly' },
   '/resources/datasheets': { priority: 0.6, changeFrequency: 'monthly' },
   '/resources/msds': { priority: 0.6, changeFrequency: 'monthly' },
   '/resources/blog': { priority: 0.5, changeFrequency: 'weekly' },

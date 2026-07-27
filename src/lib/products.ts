@@ -358,7 +358,7 @@ export const products: Product[] = [
             title: 'CBN or diamond?',
             body: [
               'Use diamond for non-ferrous and non-metallic materials: stone, glass, ceramics, carbide, composites. Use CBN for ferrous materials: hardened steel, cast iron, superalloys, high-speed steel. The deciding factor is heat and chemistry, not just hardness. Diamond is harder, but it degrades against iron at grinding temperatures, so for hardened gears, bearings, crankshafts, and camshafts, CBN is the practical choice.',
-              'For the full comparison with application charts, see the guide: [Diamond vs CBN](/resources).',
+              'For the full comparison with application charts, see the guide: [Diamond vs CBN](/resources/blog).',
             ],
           },
         ],
@@ -517,7 +517,7 @@ export const products: Product[] = [
         callouts: [
           {
             title: 'Where MCD fits among single crystals',
-            body: 'MCD, CVD single crystal, and natural diamond all give a single crystal, and each suits a different job. MCD (HPHT) offers reproducible edge geometry at a lower cost than CVD, which makes it the workhorse for single-point turning and dressing where you need consistency across many tools. [CVD single crystal](#cvd) is grown to a specified orientation for the most demanding optical and precision work. Natural stone still has a place in specific dressing applications. The guide walks through each: [CVD, HPHT (MCD), and natural diamond compared](/resources).',
+            body: 'MCD, CVD single crystal, and natural diamond all give a single crystal, and each suits a different job. MCD (HPHT) offers reproducible edge geometry at a lower cost than CVD, which makes it the workhorse for single-point turning and dressing where you need consistency across many tools. [CVD single crystal](#cvd) is grown to a specified orientation for the most demanding optical and precision work. Natural stone still has a place in specific dressing applications. The guide walks through each: [CVD, HPHT (MCD), and natural diamond compared](/resources/blog).',
           },
         ],
         applicationsTitle: 'Typical Applications',

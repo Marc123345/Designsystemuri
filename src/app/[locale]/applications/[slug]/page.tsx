@@ -61,7 +61,7 @@ const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; s
   })
 
   const productLinks = serviceItems.map((s) => ({ label: s.title, href: s.href }))
-  const guideLinks = (app.guides ?? []).map((g) => ({ label: g, href: '/resources' }))
+  const guideLinks = (app.guides ?? []).map((g) => ({ label: g, href: '/resources/blog' }))
   const relatedHubLinks = (app.relatedHubs ?? [])
     .map((h) => getApplication(locale, h))
     .filter(Boolean)

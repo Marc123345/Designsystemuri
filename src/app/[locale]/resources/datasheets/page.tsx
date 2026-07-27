@@ -29,7 +29,7 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
         eyebrow={t(locale, 'Ungated · specifications, grades & sizing')}
         title={t(locale, 'Product Datasheets')}
         desc={t(locale, "Download technical datasheets for EID's full diamond and CBN range: grades, sizes, crystal types, coatings, and packaging. Ungated, free to download.")}
-        crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Resources'), href: '/resources' }, { label: t(locale, 'Datasheets') }]}
+        crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Datasheets') }]}
         secondaryCta={{ label: t(locale, 'MSDS'), href: '/resources/msds' }}
       />
 

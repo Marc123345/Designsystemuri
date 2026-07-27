@@ -37,8 +37,8 @@ const BlogPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
         eyebrow={t(locale, 'News, application notes & technical insight')}
         title={t(locale, 'The EID Blog')}
         desc={t(locale, 'News, application notes, and technical insight on industrial diamond and CBN from EID Ltd, London-based superabrasive manufacturer.')}
-        crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Resources'), href: '/resources' }, { label: t(locale, 'Blog') }]}
-        secondaryCta={{ label: t(locale, 'Resources & Guides'), href: '/resources' }}
+        crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Blog') }]}
+        secondaryCta={{ label: t(locale, 'Datasheets'), href: '/resources/datasheets' }}
       />
 
       {/* FEATURED */}

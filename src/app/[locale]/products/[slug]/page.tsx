@@ -64,7 +64,7 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
     .map((s) => getApplication(locale, s))
     .filter(Boolean)
     .map((ca) => ({ label: ca!.name, href: `/applications/${ca!.slug}` }))
-  const guideLinks = (p.guides ?? []).map((g) => ({ label: g, href: '/resources' }))
+  const guideLinks = (p.guides ?? []).map((g) => ({ label: g, href: '/resources/blog' }))
   const hasDatasheet = p.sections.some((s) => s.datasheet)
 
   return (
