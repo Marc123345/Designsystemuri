@@ -26,7 +26,6 @@
    ├ PageHero                    breadcrumb · eyebrow · H1 · lede · 2 CTAs
    ├ JumpNav                     sticky under the header; only on split products
    ├ Overview                    12-col: 7 lede + prose / 5 sticky facts panel
-   │  └ In this range            section cards, split products only
    ├ ProductSection × n          repeated per section, background alternates
    │  ├ intro + callouts         col 7
    │  ├ enquiry CTA              col 5
@@ -314,6 +313,10 @@ h6 {
    the hero's Request a Quote about two hundred pixels below the original, and
    its right-hand column was a placeholder image sitting on an empty spec list.
    All three are gone. The lede leads; the column beside it carries facts.
+
+   A row of "In this range" section cards briefly sat under the overview. It was
+   cut: on a split product the sticky jump nav already lists every section a few
+   pixels above, so the cards restated a control the reader had just passed.
    ------------------------------------------------------------------------- */
 
 .product-grid {
@@ -403,67 +406,6 @@ h6 {
   font-weight: 600;
   text-align: right;
   color: var(--color-default-900);
-}
-
-/*
-  "In this range" — the sections as entry points, on split products only. These
-  links used to exist only inside the last sentence of the intro prose, where a
-  reader scanning the page never met them. Each card carries the section label,
-  its opening sentence clamped to three lines, and its real grade count, so the
-  row shows the shape of the range before you enter it.
-
-  Same borderless-card language as CardGrid: the grid draws the top and start
-  rules, each card draws its own end and bottom, so a row of three reads as a
-  catalogue rather than three boxes.
-*/
-.range-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  border-inline-start: 1px solid var(--color-default-200);
-}
-@media (min-width: 768px) {
-  .range-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-@media (min-width: 1024px) {
-  .range-grid--3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-.range-card {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 1.75rem;
-  border-inline-end: 1px solid var(--color-default-200);
-  border-bottom: 1px solid var(--color-default-200);
-  transition: background-color 0.2s;
-}
-@media (min-width: 1024px) {
-  .range-card {
-    padding: 2rem;
-  }
-}
-.range-card:hover {
-  background: var(--color-default-50);
-}
-.range-card__desc {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  color: var(--color-default-600);
-}
-.range-card__meta {
-  margin-top: auto;
-  padding-top: 0.5rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: ui-monospace, monospace;
-  font-size: 0.75rem;
-  color: var(--color-default-500);
 }
 
 /* Sections alternate white / slate-50 so a long page reads as distinct blocks

@@ -117,31 +117,6 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
               </div>
             </aside>
           </div>
-
-          {/* IN THIS RANGE — the sections as real entry points. These links used
-              to live buried in the last sentence of the intro prose, where a
-              reader scanning the page never saw them. */}
-          {isSplit && (
-            <div className="mt-16 lg:mt-20">
-              <h3 className="text-default-500 border-default-200 border-b pb-3 text-xs tracking-[0.2em] uppercase">{t(locale, 'In this range')}</h3>
-
-              <div className={`border-default-200 grid grid-cols-1 border-s md:grid-cols-2 ${p.sections.length >= 3 ? 'lg:grid-cols-3' : ''}`}>
-                {catalogued.map(({ section, cat }) => {
-                  const n = (cat?.series ?? []).reduce((acc, sr) => acc + sr.grades.length, 0)
-                  return (
-                    <Link key={section.id} href={`/products/${p.slug}#${section.id}`} className="group border-default-200 hover:bg-default-50 flex flex-col gap-3 border-e border-b p-7 transition-colors lg:p-8">
-                      <h4 className="group-hover:text-primary text-xl">{section.label}</h4>
-                      <p className="text-default-600 line-clamp-3 text-base">{section.intro[0]}</p>
-                      <span className="text-default-500 mt-auto inline-flex items-center gap-2 pt-2 font-mono text-xs">
-                        {n > 0 ? `${n} ${t(locale, n === 1 ? 'grade' : 'grades')}` : t(locale, 'Enquiry-led')}
-                        <Icon icon="tabler:arrow-narrow-right" className="text-primary size-5 transition-transform duration-300 group-hover:translate-x-1" />
-                      </span>
-                    </Link>
-                  )
-                })}
-              </div>
-            </div>
-          )}
         </div>
       </section>
 
