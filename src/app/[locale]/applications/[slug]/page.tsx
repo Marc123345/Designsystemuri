@@ -1,8 +1,8 @@
-import { RichParagraphs } from '@/components/RichText'
-import Wireframe from '@/components/Wireframe'
 import CardCarousel from '@/components/CardCarousel'
-import { QuoteSection, CrossLinks, DarkFeatureList, PageHero } from '@/components/sections'
+import { RichParagraphs } from '@/components/RichText'
+import { CrossLinks, DarkFeatureList, PageHero, QuoteSection } from '@/components/sections'
 import { ArrowButton, SectionHeading } from '@/components/ui'
+import Wireframe from '@/components/Wireframe'
 import type { Locale } from '@/i18n/routing'
 import { applications } from '@/lib/applications'
 import { localeAlternates } from '@/lib/hreflang'
@@ -15,11 +15,7 @@ export function generateStaticParams() {
   return applications.map((a) => ({ slug: a.slug }))
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: Locale; slug: string }>
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale; slug: string }> }): Promise<Metadata> {
   const { locale, slug } = await params
   const a = getApplication(locale, slug)
   if (!a) return {}
@@ -41,11 +37,7 @@ const familyIcon: Record<string, string> = {
   'Polycrystalline Diamond Powder': 'tabler:bolt',
 }
 
-const ApplicationPage = async ({
-  params,
-}: {
-  params: Promise<{ locale: Locale; slug: string }>
-}) => {
+const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; slug: string }> }) => {
   const { locale, slug } = await params
   setRequestLocale(locale)
 
@@ -81,31 +73,24 @@ const ApplicationPage = async ({
         eyebrow={app.eyebrow}
         title={app.h1}
         desc={app.metaDesc}
-        crumbs={[
-          { label: t(locale, 'Home'), href: '/' },
-          { label: t(locale, 'Applications'), href: '/applications' },
-          { label: app.name },
-        ]}
+        crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Applications'), href: '/applications' }, { label: app.name }]}
         primaryCta={{ label: app.cta, href: '/contact' }}
         secondaryCta={{ label: t(locale, 'All Applications'), href: '/applications' }}
       />
 
       {/* INTRO — prose + image, then the outcome as a full-width thesis band.
           The hub's core argument was previously a small label in the sidebar,
-          below the fold of the F-pattern scan; promoting it to its own band
+below the fold of the F-pattern scan; promoting it to its own band
           (heading left, argument right) gives it the weight it converts on.
           The intro CTA is dropped here: the hero one sentence up already
-          carries it, so a second identical button read as repetition. */}
-      <section className="lg:py-24 py-16">
+carries it, so a second identical button read as repetition. */}
+      <section className="py-16 lg:py-24">
         <div className="container">
           <SectionHeading eyebrow={app.eyebrow} title={headline} />
 
-          <div className="mt-12 grid lg:grid-cols-12 gap-12 items-start">
+          <div className="mt-12 grid items-start gap-12 lg:grid-cols-12">
             <div className="lg:col-span-7">
-              <RichParagraphs
-                className="text-lg leading-relaxed text-default-600"
-                paragraphs={bodyParas}
-              />
+              <RichParagraphs className="text-default-600 text-lg leading-relaxed" paragraphs={bodyParas} />
             </div>
 
             <div className="lg:col-span-5">
@@ -113,18 +98,16 @@ const ApplicationPage = async ({
             </div>
           </div>
 
-          <div className="mt-14 grid lg:grid-cols-12 gap-12 items-start border-t border-default-200 pt-12">
+          <div className="border-default-200 mt-14 grid items-start gap-12 border-t pt-12 lg:grid-cols-12">
             <div className="lg:col-span-4">
-              <div className="flex items-center gap-2.5 text-sm uppercase tracking-[0.2em] text-default-500">
-                <span aria-hidden="true" className="size-2 bg-primary" />
+              <div className="text-default-500 flex items-center gap-2.5 text-sm tracking-[0.2em] uppercase">
+                <span aria-hidden="true" className="bg-primary size-2" />
                 {t(locale, 'Why it matters')}
               </div>
-              <h3 className="mt-4 lg:text-[28px] md:text-[24px] text-2xl font-bold leading-snug text-default-900">
-                {app.outcome.title}
-              </h3>
+              <h3 className="text-default-900 mt-4 text-2xl leading-snug font-bold md:text-[24px] lg:text-[28px]">{app.outcome.title}</h3>
             </div>
             <div className="lg:col-span-8">
-              <p className="text-lg leading-relaxed text-default-600">{app.outcome.body}</p>
+              <p className="text-default-600 text-lg leading-relaxed">{app.outcome.body}</p>
               <div className="mt-8">
                 <ArrowButton href="/contact" label={app.cta} />
               </div>
@@ -175,11 +158,7 @@ const ApplicationPage = async ({
 
       {/* CTA */}
       <div className="pt-20">
-        <QuoteSection
-          eyebrow={t(locale, 'Tell us your application')}
-          title={`${app.cta}.`}
-          desc={app.ctaDesc}
-        />
+        <QuoteSection eyebrow={t(locale, 'Tell us your application')} title={`${app.cta}.`} desc={app.ctaDesc} />
       </div>
 
       {/* CROSS-LINKS */}
@@ -188,11 +167,7 @@ const ApplicationPage = async ({
           { title: t(locale, 'Products for this application'), links: productLinks },
           {
             title: t(locale, 'Quality & resources'),
-            links: [
-              { label: t(locale, 'Quality, QC & ISO 9001'), href: '/quality' },
-              { label: t(locale, 'Datasheets'), href: '/resources/datasheets' },
-              ...guideLinks,
-            ],
+            links: [{ label: t(locale, 'Quality, QC & ISO 9001'), href: '/quality' }, { label: t(locale, 'Datasheets'), href: '/resources/datasheets' }, ...guideLinks],
           },
           ...(relatedHubLinks.length ? [{ title: t(locale, 'Related hub'), links: relatedHubLinks }] : []),
           {

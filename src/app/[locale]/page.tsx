@@ -13,11 +13,7 @@ import { site, trustPoints } from '@/lib/site'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: Locale }>
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params
   return { alternates: localeAlternates(locale, '/') }
 }
@@ -25,8 +21,7 @@ export async function generateMetadata({
 // Vol 03 replaced the rotating three-slide hero with a single block.
 const hero = {
   eyebrow: 'Industrial Diamond & CBN Solutions · Precision Manufactured & QC-Controlled',
-  title:
-    'The full industrial diamond and CBN range, manufactured, processed, and graded in-house to EID standards.',
+  title: 'The full industrial diamond and CBN range, manufactured, processed, and graded in-house to EID standards.',
   desc: 'For over 50 years, EID has manufactured industrial diamond and CBN for tool makers worldwide. Every grade is processed and tested in our own laboratory, delivering consistent performance from batch to batch. One manufacturer, one specification, the complete superabrasive range.',
 }
 
@@ -38,44 +33,40 @@ const hero = {
  */
 const faqs = [
   {
-    q: 'What does EID manufacture?',
-    a: 'EID supplies the complete industrial diamond and CBN range across eight product groups: natural diamond grit and micron powder, metal bond diamond, resin bond diamond, CBN and PCBN, CVD single crystal and MCD, PCD blanks and CVD dressing logs, natural tool stones, and polycrystalline diamond powder. We supply tool makers, not end users: the material goes into your saws, wheels, burs, inserts, and dressing tools.',
+    q: 'Do you resell or manufacture the diamonds yourselves?',
+    a: 'Both, and we are specific about which is which. The natural range — grit, micron powder, rotary diamond and tool stones — is manufactured in-house: raw material is crushed, shaped, graded and QC-passed in our own factory. The synthetic ranges (metal bond, resin bond, CBN, PCD, PCBN, CVD and MCD) are produced to EID\u2019s specification by long-standing manufacturing partners, then processed, graded, coated and inspected through our facility before shipping. Across all of it, the specification and the QC pass are ours, and we will tell you which category any grade falls into before you order.',
   },
   {
-    q: 'Does EID manufacture the material, or resell it?',
-    a: 'It depends on the product, and we are specific about which is which. Natural grit and powder are manufactured entirely in-house at our own factory, from raw material through crushing, grading, and final QC. Metal bond, resin bond, and CBN grades are produced to order, then processed, graded, and coated through our facility to your specification. CVD single crystal is grown to EID’s specification and orientation through a dedicated growth partner, then finished and inspected by us. Across all three, the specification and the QC pass are ours.',
+    q: 'Where are you located, and where is the material made?',
+    a: 'EID is based in London, England, at EID House, 12 St. Cross Street, EC1N 8UB. Natural diamond is manufactured here in our own factory. Synthetic grades are made to our specification at partner plants and then finished, graded and released through our London facility. We will confirm the country of origin for any specific grade on request, in writing, and all rough diamond is supplied through legitimate conflict-free sources under the Kimberley Process Certification Scheme.',
   },
   {
-    q: 'When should I use CBN instead of diamond?',
-    a: 'Use diamond for non-ferrous and non-metallic materials such as stone, glass, ceramics, carbide, and composites. Use CBN for ferrous materials such as hardened steel, cast iron, superalloys, and high-speed steel. Diamond is the harder material, but it reacts chemically with iron at grinding temperatures and wears quickly, so for gears, bearings, crankshafts, and camshafts, CBN is the practical choice.',
+    q: 'Can you provide COAs, retention samples, ISO certificates and references?',
+    a: 'Yes to all four. A certificate of analysis is available per lot on request. A retention sample is kept from every batch, so a question raised months later can be checked against the exact material that shipped. Our ISO 9001 certificate is available on request, as is the full traceability record from incoming raw material to shipped lot. Customer references can be arranged where the customer has agreed to act as one — tell us your application and we will point you at the closest match.',
   },
   {
-    q: 'What is the difference between PCD and PCBN?',
-    a: 'Both are sintered blanks for cutting-tool inserts, and the split follows the same ferrous rule. PCD (polycrystalline diamond) machines non-ferrous and abrasive materials: aluminium, copper and brass, composites, wood-based panels, and abrasive plastics. PCBN (polycrystalline cubic boron nitride) machines hardened ferrous parts above roughly 45 HRC, cast iron, powder-metallurgy parts, and superalloys. Do not run PCD on ferrous material.',
+    q: 'Are you ISO-registered, and do you have the documentation large companies require?',
+    a: 'Yes. EID\u2019s quality management system is ISO 9001 certified, covering incoming raw material inspection, manufacturing, testing, packaging and delivery. The document set a procurement or quality department normally asks for is available: ISO 9001 certificate, certificate of analysis per lot, safety data sheets, technical datasheets, Kimberley Process compliance for natural rough, and lot-level traceability. If your supplier-approval pack asks for something not on that list, send it over and we will complete it.',
   },
   {
-    q: 'Is EID ISO 9001 certified?',
-    a: 'Yes. EID’s quality management system is ISO 9001 certified, covering the full process from incoming raw material inspection through manufacturing, testing, packaging, and delivery. A certificate of analysis is available per lot on request, and a retention sample is kept from every batch so any later question can be checked against the exact material that shipped.',
+    q: 'Do you offer electroplated / electroplating diamonds?',
+    a: 'Yes, and several grades are specified for it. In the natural range, NS-100-P and the MB series are recommended for electroplated tools. In CBN, EBN A and EBN AA are used in electroplated single-layer bonds. We also etch crystal surfaces specifically for electroplating, which improves nickel-to-diamond clamping in micro-engineering applications — that is covered on the [Surface Enhancements](/products/surface-enhancements) page and in the Polish, Etch & CRT datasheet.',
   },
   {
-    q: 'How do you keep grades consistent between orders?',
-    a: 'Every production run is tested in our own QC laboratory before it ships. We measure particle size distribution (D10, D50, D90, and span, with outliers controlled) and crystal morphology on every lot, with shape factor on mesh grades, coating weight and coverage on every coated batch, and crystal strength where the grade or the application requires it. The point is that the grade you qualify is the grade you receive, because your own production is tuned to it.',
+    q: 'Can I download product specifications as a PDF?',
+    a: 'Yes, and they are ungated: no form, no login, no email address. Eighteen technical datasheets covering the full range are published under [Resources](/resources/datasheets), each with grades, descriptions, size charts and coating options, and each product page links straight to its own sheet. Safety data sheets for natural, synthetic and CBN materials are published the same way under [MSDS](/resources/msds). If the exact specification you need is not on a published sheet, ask us and we will send it.',
   },
   {
-    q: 'Can I order a sample before committing to a production quantity?',
-    a: 'Yes. Samples are available for any grade so you can validate the material in your own process before scheduling supply. Tell us the product, grade, size, and the application, and a technical specialist will confirm what to send.',
+    q: 'What industries and applications do you serve?',
+    a: 'We supply tool makers, not end users, so the material goes into your product. The main sectors are dental, semiconductor and advanced electronics, automotive and aerospace, tool and die, construction and stone, and optics. By operation, that means grinding, cutting, sawing and drilling; polishing and lapping; dressing and truing; and precision machining with PCD, PCBN, MCD and CVD single crystal. Tell us the material you are working and the finish you need and we will specify the grade.',
   },
   {
-    q: 'Do you supply custom grades and sizes?',
-    a: 'Yes. Standard grades ship from stock and custom specifications are made to order, including custom mesh and micron sizing, coating type and weight, CVD single crystal grown to a specified orientation and face, and PCD, PCBN, and CVD log dimensions to drawing. If you are not sure of the exact grade, give us the material you are working and the finish you need and we will specify it.',
+    q: 'Can you customise products and do the finishing in-house?',
+    a: 'Yes. Standard grades ship from stock and custom specifications are made to order: custom mesh and micron sizing, shape factor to your requirement, and CVD single crystal grown to a specified orientation and face. Finishing is done in our own facility — electroless nickel and copper coating at 30%, 56%, 60% or any percentage you specify, metallic PVD coatings including Ti, TiC, TiN, TiCN, Si, Cu, Cr and Zr, surface polishing, etching for electroplating, and CRT crystal rounding for customised engineering applications.',
   },
   {
-    q: 'Are your datasheets and safety data sheets free to download?',
-    a: 'Yes, and they are ungated: no form and no login. Technical datasheets for every product and safety data sheets for every material family are published under Resources as page content with a downloadable PDF alongside. If the exact specification you need is not listed, ask us and we will send it.',
-  },
-  {
-    q: 'Where is EID based, and where do you ship?',
-    a: 'EID is based in London, England, at EID House, 12 St. Cross Street, EC1N 8UB. We supply tool makers across Europe, Asia, the Americas, and the Middle East. You can reach us by email at info@eid-ltd.com, by phone on +44 (0) 207 405 6594, or on WhatsApp, which is shared across the sales team so replies are not blocked on one person.',
+    q: 'Can you supply customers who feed into large OEMs such as Boeing or Rolls-Royce?',
+    a: 'Yes — we supply tool makers whose tooling and components feed aerospace, automotive and energy programmes, and we are set up for the documentation those supply chains run on: ISO 9001, certificate of analysis per lot, retention samples, lot traceability from raw material to delivery, and safety data sheets. To be clear about what that does and does not mean: EID is approved as your supplier, not as a direct supplier to those OEMs, and any flow-down requirement in your own approval sits with you. Send us the requirement and we will tell you plainly whether we can meet it.',
   },
 ]
 
@@ -85,7 +76,9 @@ const faqSchema = {
   mainEntity: faqs.map((f) => ({
     '@type': 'Question',
     name: f.q,
-    acceptedAnswer: { '@type': 'Answer', text: f.a },
+    // Strip the inline markdown links; the rich text is for the page, not the
+    // structured data.
+    acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') },
   })),
 }
 
@@ -113,14 +106,7 @@ const hubIcon: Record<string, string> = {
 
 // Home lists the hubs in the copy deck's order, which leads with the two
 // highest-volume buyer types rather than the lib order used elsewhere.
-const HOME_HUB_ORDER = [
-  'dental',
-  'grinding-cutting-sawing-drilling',
-  'semiconductor-electronics',
-  'automotive-aerospace',
-  'tool-and-die',
-  'polishing-lapping',
-]
+const HOME_HUB_ORDER = ['dental', 'grinding-cutting-sawing-drilling', 'semiconductor-electronics', 'automotive-aerospace', 'tool-and-die', 'polishing-lapping']
 
 const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
   const { locale } = await params
@@ -151,12 +137,12 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       <Hero eyebrow={t(locale, hero.eyebrow)} title={t(locale, hero.title)} desc={t(locale, hero.desc)} />
 
       {/* Proof points as icon plus label. No sentences — a buyer is scanning
-          here, not reading. */}
+here, not reading. */}
       <TrustBar items={trustPoints} />
 
       {/* THE PROBLEM — states the cost in the buyer's own process parameters,
-          then answers it with the graduated production model rather than a
-          fourth restatement of "we control quality". */}
+then answers it with the graduated production model rather than a
+fourth restatement of "we control quality". */}
       <TheProblem
         eyebrow={t(locale, 'Why suppliers get replaced')}
         title={t(locale, 'The cost of inconsistent diamond')}
@@ -216,7 +202,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       </div>
 
       {/* Pillar one carries the graduated production claim, which is the honesty
-          a technical buyer checks for before anything else on this page. */}
+a technical buyer checks for before anything else on this page. */}
       <WhyEid
         eyebrow={t(locale, 'Why tool makers qualify EID')}
         title={t(locale, 'One accountable manufacturer, spec to delivery.')}
@@ -257,10 +243,13 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       />
 
       <DarkFeatureList
-          bgLabel="Background image — QC laboratory, London"
+        bgLabel="Background image — QC laboratory, London"
         eyebrow={t(locale, 'Quality')}
         title={t(locale, 'Every production run is tested before it leaves.')}
-        desc={t(locale, 'Consistency is a process, and ours runs on measurement. Each lot is tested in our QC laboratory for particle size distribution and morphology, with crystal strength and coating coverage checked where the grade requires it. We test the run and record the result rather than sampling and assuming. ISO 9001 certified, with full traceability from incoming raw material to shipped lot.')}
+        desc={t(
+          locale,
+          'Consistency is a process, and ours runs on measurement. Each lot is tested in our QC laboratory for particle size distribution and morphology, with crystal strength and coating coverage checked where the grade requires it. We test the run and record the result rather than sampling and assuming. ISO 9001 certified, with full traceability from incoming raw material to shipped lot.'
+        )}
         ctaLabel={t(locale, 'See how our QC works')}
         ctaHref="/quality"
         features={[
@@ -284,8 +273,8 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       />
 
       {/* Material vocabulary rather than a logo wall — the deck names customers
-          only as buyer types, so a wall of client logos would claim
-          endorsements EID has not given us. */}
+only as buyer types, so a wall of client logos would claim
+endorsements EID has not given us. */}
       <Marquee
         items={[
           t(locale, 'ISO 9001'),
@@ -304,15 +293,15 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       />
 
       {/* REACH — the one-facility-worldwide story made visible: an animated globe
-          with London as the hub and arcs out to the markets EID ships to. */}
+with London as the hub and arcs out to the markets EID ships to. */}
       <GlobeSection />
 
       {/* The conversion block is the form itself, not a button that defers to
           /contact. A buyer who has read this far should not have to load
-          another page to ask a question. */}
-      <section className="lg:py-30 py-20">
+another page to ask a question. */}
+      <section className="py-20 lg:py-30">
         <div className="container">
-          <div className="grid lg:grid-cols-12 gap-12 items-start">
+          <div className="grid items-start gap-12 lg:grid-cols-12">
             <div className="lg:col-span-5">
               <SectionHeading
                 eyebrow={t(locale, 'Tell us what you need')}
@@ -320,7 +309,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
                 desc={t(locale, 'Request a quote, order a sample, or ask a technical question. One form, routed to someone who works with the material.')}
               />
 
-              <div className="mt-8 space-y-3 text-base text-default-600">
+              <div className="text-default-600 mt-8 space-y-3 text-base">
                 <p>
                   {t(locale, 'Email')}{' '}
                   <a href={`mailto:${site.email}`} className="text-primary underline">
@@ -337,12 +326,8 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
             </div>
 
             <div className="lg:col-span-7">
-              <div className="rounded-md border border-default-200 bg-default-50 p-6 lg:p-10">
-                <QuoteForm
-                  formTitle={t(locale, 'Request a Quote')}
-                  formDesc={t(locale, 'Tell us the product, grade, size, and quantity you need. A specialist who understands the material replies within one business day.')}
-                  productOptions={productOptions}
-                />
+              <div className="border-default-200 bg-default-50 border p-6 lg:p-10">
+                <QuoteForm formTitle={t(locale, 'Request a Quote')} formDesc={t(locale, 'Tell us the product, grade, size, and quantity you need. A specialist who understands the material replies within one business day.')} productOptions={productOptions} />
               </div>
             </div>
           </div>
@@ -350,17 +335,14 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       </section>
 
       {/* FAQ sits below the conversion CTA, per the deck: it is written for AI
-          search and rich results rather than to be read on the way down. */}
+search and rich results rather than to be read on the way down. */}
       <Faq
         eyebrow={t(locale, 'Frequently asked')}
         title={t(locale, 'Straight answers about the material.')}
         desc={t(locale, 'The questions technical buyers ask before they qualify a superabrasive supplier. If yours is not here, ask us and someone who works with the material will answer.')}
         items={faqs.map((f) => ({ q: t(locale, f.q), a: t(locale, f.a) }))}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
     </>
   )
 }

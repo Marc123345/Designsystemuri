@@ -1,76 +1,23 @@
 import { RichText } from '@/components/RichText'
-import { QuoteSection, PageHero } from '@/components/sections'
+import { PageHero, QuoteSection } from '@/components/sections'
 import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
+import { datasheets } from '@/lib/documents'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
 import { Icon } from '@iconify/react'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
+import Link from 'next/link'
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: Locale }>
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params
   return {
     title: { absolute: 'Diamond & CBN Product Datasheets | EID' },
-    description:
-      "Download technical datasheets for EID's full diamond and CBN range: grades, sizes, crystal types, coatings, and packaging. Ungated, free to download.",
+    description: "Download technical datasheets for EID's full diamond and CBN range: grades, sizes, crystal types, coatings, and packaging. Ungated, free to download.",
     alternates: localeAlternates(locale, '/resources/datasheets'),
   }
 }
-
-// Grouped by the eight locked product groups so the list mirrors the catalogue.
-const groups: { group: string; sheets: [string, string][] }[] = [
-  {
-    group: 'Natural Diamond Grit & Powder',
-    sheets: [
-      ['Natural Diamond Grit (Mesh)', 'Graded mesh sizes for grinding, sawing, and dressing.'],
-      ['Natural Diamond Micron Powder', 'Fine powders for lapping and polishing.'],
-    ],
-  },
-  {
-    group: 'Metal Bond Diamond',
-    sheets: [
-      ['Metal Bond Diamond Powder', 'Saw and wheel grades, mesh and micron, coating options.'],
-    ],
-  },
-  {
-    group: 'Resin Bond Diamond',
-    sheets: [['Resin Bond Diamond Powder', 'Friable grades, mesh and micron, coating options.']],
-  },
-  {
-    group: 'CBN',
-    sheets: [
-      ['CBN Powder (Mesh & Micron)', 'For ferrous grinding, coating options.'],
-      ['PCBN Discs & Blanks', 'CBN content grades and dimensions.'],
-    ],
-  },
-  {
-    group: 'Single Crystal Diamond',
-    sheets: [
-      ['CVD Single Crystal Diamond', 'Orientations, sizes, and faces.'],
-      ['MCD (Monocrystalline Diamond)', 'Shapes, sizes, orientations.'],
-    ],
-  },
-  {
-    group: 'Polycrystalline Diamond',
-    sheets: [
-      ['PCD Discs & Blanks', 'Grain sizes and dimensions.'],
-      ['CVD Polycrystalline Dressing Logs', 'Log sizes and shapes.'],
-    ],
-  },
-  {
-    group: 'Natural Tool Stones',
-    sheets: [['Natural Diamond Tool Stones', 'Shapes, sizes, and grades.']],
-  },
-  {
-    group: 'Polycrystalline Diamond Powder',
-    sheets: [['Polycrystalline Diamond Micron Powder', 'Sizes and formats for polishing.']],
-  },
-]
 
 const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
   const { locale } = await params
@@ -82,54 +29,43 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
         eyebrow={t(locale, 'Ungated · specifications, grades & sizing')}
         title={t(locale, 'Product Datasheets')}
         desc={t(locale, "Download technical datasheets for EID's full diamond and CBN range: grades, sizes, crystal types, coatings, and packaging. Ungated, free to download.")}
-        crumbs={[
-          { label: t(locale, 'Home'), href: '/' },
-          { label: t(locale, 'Resources'), href: '/resources' },
-          { label: t(locale, 'Datasheets') },
-        ]}
+        crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Resources'), href: '/resources' }, { label: t(locale, 'Datasheets') }]}
         secondaryCta={{ label: t(locale, 'MSDS'), href: '/resources/msds' }}
       />
 
-      <section className="lg:py-24 py-16">
+      <section className="py-16 lg:py-24">
         <div className="container">
           {/* Deliberately ungated: no form, no login, no gate on a spec sheet. */}
-          <SectionHeading
-            eyebrow={t(locale, 'No form, no login')}
-            title={t(locale, 'Product datasheets, free to download.')}
-          />
-          <p className="mt-5 max-w-3xl text-base text-default-600">
-            <RichText>
-              {t(locale, 'Technical specifications for every EID product: grades, sizes, crystal types, coating options, and packaging. No form, no login. Download what you need, and if the exact spec you are after is not here, [ask us](/contact).')}
-            </RichText>
+          <SectionHeading eyebrow={t(locale, 'No form, no login')} title={t(locale, 'Product datasheets, free to download.')} />
+          <p className="text-default-600 mt-5 max-w-3xl text-base">
+            <RichText>{t(locale, 'Technical specifications for every EID product: grades, sizes, crystal types, coating options, and packaging. No form, no login. Download what you need, and if the exact spec you are after is not here, [ask us](/contact).')}</RichText>
           </p>
-          <p className="mt-5 text-sm text-default-500">
-            {t(locale, 'Placeholder downloads. Confirm available datasheets with Uri and upload the actual PDFs.')}
-          </p>
-
           <div className="mt-14 grid gap-10">
-            {groups.map(({ group, sheets }) => (
+            {datasheets.map(({ group, sheets }) => (
               <div key={group}>
-                <div className="border-b border-default-200 pb-2.5 text-sm uppercase tracking-[0.2em] text-default-500">
-                  {t(locale, group)}
-                </div>
-                <div className="divide-y divide-default-200">
-                  {sheets.map(([name, desc]) => (
-                    <div
-                      key={name}
-                      className="flex flex-wrap items-center justify-between gap-4 py-5"
+                <div className="border-default-200 text-default-500 border-b pb-2.5 text-sm tracking-[0.2em] uppercase">{t(locale, group)}</div>
+                <div className="divide-default-200 divide-y">
+                  {sheets.map((sheet) => (
+                    <Link
+                      key={sheet.key}
+                      href={sheet.file}
+                      // Native download rather than an in-tab PDF viewer: these
+                      // are reference documents an engineer files, not reads once.
+                      download
+                      className="group flex flex-wrap items-center justify-between gap-4 py-5"
                     >
                       <div className="flex items-start gap-4">
-                        <Icon icon="tabler:file-text" className="mt-0.5 size-6 shrink-0 text-primary" />
+                        <Icon icon="tabler:file-text" className="text-primary mt-0.5 size-6 shrink-0" />
                         <div>
-                          <h3 className="text-base font-semibold text-default-900">{t(locale, name)}</h3>
-                          <p className="mt-1 text-base text-default-600">{t(locale, desc)}</p>
+                          <h3 className="text-default-900 group-hover:text-primary text-base font-semibold">{t(locale, sheet.title)}</h3>
+                          <p className="text-default-600 mt-1 text-base">{t(locale, sheet.desc)}</p>
                         </div>
                       </div>
-                      <span className="inline-flex items-center gap-2 rounded-2xl border border-default-300 px-3.5 py-1.5 text-sm font-semibold text-default-800">
-                        <Icon icon="tabler:download" className="size-5 text-primary" />
+                      <span className="border-default-300 text-default-800 group-hover:border-primary group-hover:text-primary inline-flex items-center gap-2 border px-3.5 py-1.5 text-sm font-semibold transition-colors">
+                        <Icon icon="tabler:download" className="text-primary size-5" />
                         PDF
                       </span>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>

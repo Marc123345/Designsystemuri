@@ -112,74 +112,53 @@ export default function Globe({ size = 600, className = '' }: GlobeProps) {
     Promise.all([import('globe.gl'), import('three')])
       .then(([GlobeModule, THREE]) => {
         if (destroyedRef.current || !containerRef.current) return
-      // globe.gl's default export is callable as Globe(config)(domEl); its
-      // bundled types describe only the `new` form, so cast to keep the
-      // documented functional call.
-      const GlobeGL = GlobeModule.default as any
+        // globe.gl's default export is callable as Globe(config)(domEl); its
+        // bundled types describe only the `new` form, so cast to keep the
+        // documented functional call.
+        const GlobeGL = GlobeModule.default as any
 
-      const globe = GlobeGL({ animateIn: false })(containerRef.current!)
-      globeRef.current = globe
+        const globe = GlobeGL({ animateIn: false })(containerRef.current!)
+        globeRef.current = globe
 
-      const w = containerRef.current!.clientWidth || 600
-      const h = containerRef.current!.clientHeight || 600
+        const w = containerRef.current!.clientWidth || 600
+        const h = containerRef.current!.clientHeight || 600
 
-      globe
-        .backgroundColor('rgba(0,0,0,0)')
-        .width(w)
-        .height(h)
-        .showAtmosphere(true)
-        .atmosphereColor('rgba(140,168,224,0.55)')
-        .atmosphereAltitude(0.25)
-        .globeImageUrl('/images/earth-night.jpg')
+        globe.backgroundColor('rgba(0,0,0,0)').width(w).height(h).showAtmosphere(true).atmosphereColor('rgba(140,168,224,0.55)').atmosphereAltitude(0.25).globeImageUrl('/images/earth-night.jpg')
 
-      globe
-        .pointLat('lat')
-        .pointLng('lng')
-        .pointColor('color')
-        .pointAltitude(0.01)
-        .pointRadius('size')
-        .pointsMerge(false)
-        .pointsTransitionDuration(400)
+        globe.pointLat('lat').pointLng('lng').pointColor('color').pointAltitude(0.01).pointRadius('size').pointsMerge(false).pointsTransitionDuration(400)
 
-      globe
-        .arcColor('color')
-        .arcDashLength(0.7)
-        .arcDashGap(0.15)
-        .arcDashAnimateTime(2200)
-        .arcStroke(1.1)
-        .arcAltitudeAutoScale(0.45)
-        .arcsTransitionDuration(800)
+        globe.arcColor('color').arcDashLength(0.7).arcDashGap(0.15).arcDashAnimateTime(2200).arcStroke(1.1).arcAltitudeAutoScale(0.45).arcsTransitionDuration(800)
 
-      globe.pointsData(buildPoints())
-      globe.arcsData(buildArcs())
+        globe.pointsData(buildPoints())
+        globe.arcsData(buildArcs())
 
-      const controls = globe.controls()
-      controls.autoRotate = true
-      controls.autoRotateSpeed = 0.65
-      controls.enableZoom = false
-      controls.enablePan = false
+        const controls = globe.controls()
+        controls.autoRotate = true
+        controls.autoRotateSpeed = 0.65
+        controls.enableZoom = false
+        controls.enablePan = false
 
-      // Framed on Europe/Africa so London and the bulk of the arcs read on load.
-      globe.pointOfView({ lat: 20, lng: 10, altitude: 2.1 })
+        // Framed on Europe/Africa so London and the bulk of the arcs read on load.
+        globe.pointOfView({ lat: 20, lng: 10, altitude: 2.1 })
 
-      const renderer = globe.renderer?.()
-      if (renderer) {
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
-      }
+        const renderer = globe.renderer?.()
+        if (renderer) {
+          renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
+        }
 
-      const scene = globe.scene()
-      if (scene) {
-        const sun = new THREE.DirectionalLight(0xbfdaff, 1.8)
-        sun.position.set(5, 2, 4)
-        scene.add(sun)
+        const scene = globe.scene()
+        if (scene) {
+          const sun = new THREE.DirectionalLight(0xbfdaff, 1.8)
+          sun.position.set(5, 2, 4)
+          scene.add(sun)
 
-        const rim = new THREE.PointLight(0x3d5290, 0.8, 50)
-        rim.position.set(-4, 1, -3)
-        scene.add(rim)
+          const rim = new THREE.PointLight(0x3d5290, 0.8, 50)
+          rim.position.set(-4, 1, -3)
+          scene.add(rim)
 
-        const fill = new THREE.AmbientLight(0x101528, 0.45)
-        scene.add(fill)
-      }
+          const fill = new THREE.AmbientLight(0x101528, 0.45)
+          scene.add(fill)
+        }
       })
       .catch(() => {
         // WebGL/library load failure — leave the reserved space empty rather
@@ -198,9 +177,7 @@ export default function Globe({ size = 600, className = '' }: GlobeProps) {
   useEffect(() => {
     const onResize = () => {
       if (globeRef.current && containerRef.current) {
-        globeRef.current
-          .width(containerRef.current.clientWidth)
-          .height(containerRef.current.clientHeight)
+        globeRef.current.width(containerRef.current.clientWidth).height(containerRef.current.clientHeight)
       }
     }
     window.addEventListener('resize', onResize)
@@ -208,15 +185,8 @@ export default function Globe({ size = 600, className = '' }: GlobeProps) {
   }, [])
 
   return (
-    <div
-      className={`relative mx-auto w-full ${className}`}
-      style={{ aspectRatio: '1', maxWidth: size }}
-    >
-      <div
-        ref={containerRef}
-        className="absolute inset-0 size-full"
-        style={{ contain: 'strict', background: 'transparent' }}
-      />
+    <div className={`relative mx-auto w-full ${className}`} style={{ aspectRatio: '1', maxWidth: size }}>
+      <div ref={containerRef} className="absolute inset-0 size-full" style={{ contain: 'strict', background: 'transparent' }} />
     </div>
   )
 }

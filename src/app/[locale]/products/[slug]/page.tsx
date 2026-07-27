@@ -1,18 +1,9 @@
 import { RichParagraphs, RichText } from '@/components/RichText'
 import Wireframe from '@/components/Wireframe'
-import {
-  QuoteSection,
-  CatalogSpecs,
-  CrossLinks,
-  DarkFeatureList,
-  JumpNav,
-  PageHero,
-  ProductPhoto,
-  SpecTable,
-} from '@/components/sections'
+import { CatalogSpecs, CrossLinks, DarkFeatureList, JumpNav, PageHero, ProductPhoto, QuoteSection, SpecTable } from '@/components/sections'
 import { ArrowButton, ArrowLink, SectionHeading } from '@/components/ui'
-import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
+import { getSectionDatasheet } from '@/lib/documents'
 import { localeAlternates } from '@/lib/hreflang'
 import { getApplication, getProduct, getSectionCatalog, t } from '@/lib/i18n-content'
 import { products, type ProductSection } from '@/lib/products'
@@ -25,11 +16,7 @@ export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }))
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: Locale; slug: string }>
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale; slug: string }> }): Promise<Metadata> {
   const { locale, slug } = await params
   const p = getProduct(locale, slug)
   if (!p) return {}
@@ -40,11 +27,7 @@ export async function generateMetadata({
   }
 }
 
-const ProductPage = async ({
-  params,
-}: {
-  params: Promise<{ locale: Locale; slug: string }>
-}) => {
+const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug: string }> }) => {
   const { locale, slug } = await params
   setRequestLocale(locale)
 
@@ -57,9 +40,7 @@ const ProductPage = async ({
   const isSplit = p.sections.length > 1
   const leadSpecs = p.sections.find((s) => s.specs?.length)?.specs ?? []
   // Lead image for the overview: the first catalogued section that has a photo.
-  const leadImage = p.sections
-    .map((s) => getSectionCatalog(locale, p.slug, s.id))
-    .find((c) => c?.image)
+  const leadImage = p.sections.map((s) => getSectionCatalog(locale, p.slug, s.id)).find((c) => c?.image)
 
   const crossApplicationLinks = p.crossApplications
     .map((s) => getApplication(locale, s))
@@ -74,11 +55,7 @@ const ProductPage = async ({
         eyebrow={p.eyebrow}
         title={p.h1}
         desc={p.metaDesc}
-        crumbs={[
-          { label: t(locale, 'Home'), href: '/' },
-          { label: t(locale, 'Products'), href: '/#products' },
-          { label: p.name },
-        ]}
+        crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Products'), href: '/#products' }, { label: p.name }]}
         primaryCta={{ label: p.cta, href: '/contact' }}
         secondaryCta={{ label: t(locale, 'All Products'), href: '/#products' }}
       />
@@ -86,31 +63,27 @@ const ProductPage = async ({
       {isSplit && <JumpNav items={p.sections.map((s) => ({ id: s.id, label: s.label }))} />}
 
       {/* OVERVIEW */}
-      <section className="lg:py-24 py-16">
+      <section className="py-16 lg:py-24">
         <div className="container">
           <SectionHeading eyebrow={p.family} title={headline} />
 
-          <div className="mt-12 grid lg:grid-cols-12 gap-12">
+          <div className="mt-12 grid gap-12 lg:grid-cols-12">
             <div className="lg:col-span-7">
-              <RichParagraphs className="text-base text-default-600" paragraphs={bodyParas} />
+              <RichParagraphs className="text-default-600 text-base" paragraphs={bodyParas} />
               <div className="mt-8">
                 <ArrowButton href="/contact" label={p.cta} />
               </div>
             </div>
 
-            <div className="lg:col-span-5 space-y-8">
-              {leadImage?.image ? (
-                <ProductPhoto image={leadImage.image} alt={`${p.name} — EID`} />
-              ) : (
-                <Wireframe label={`Product image — ${p.name}`} />
-              )}
+            <div className="space-y-8 lg:col-span-5">
+              {leadImage?.image ? <ProductPhoto image={leadImage.image} alt={`${p.name} — EID`} /> : <Wireframe label={`Product image — ${p.name}`} />}
 
               {leadSpecs.length > 0 && (
-                <div className="divide-y divide-default-200 border-t border-default-200">
+                <div className="divide-default-200 border-default-200 divide-y border-t">
                   {leadSpecs.slice(0, 3).map((s) => (
                     <div key={s.label} className="py-5">
-                      <h4 className="text-base font-semibold text-default-900">{s.label}</h4>
-                      <p className="mt-1 text-base text-default-600">{s.value}</p>
+                      <h4 className="text-default-900 text-base font-semibold">{s.label}</h4>
+                      <p className="text-default-600 mt-1 text-base">{s.value}</p>
                     </div>
                   ))}
                 </div>
@@ -122,24 +95,14 @@ const ProductPage = async ({
 
       {/* SECTIONS — each keeps its H2, anchor, applications, and spec table */}
       {p.sections.map((s, i) => (
-        <ProductSectionBlock
-          key={s.id}
-          locale={locale}
-          slug={p.slug}
-          section={s}
-          gray={i % 2 === 1}
-          showHeading={isSplit}
-        />
+        <ProductSectionBlock key={s.id} locale={locale} slug={p.slug} section={s} gray={i % 2 === 1} showHeading={isSplit} />
       ))}
 
       <DarkFeatureList
-          bgLabel="Background image — QC laboratory"
+        bgLabel="Background image — QC laboratory"
         eyebrow={t(locale, 'Proven on every lot')}
         title={t(locale, 'Tested in our own laboratory.')}
-        desc={
-          p.quality ??
-          t(locale, 'Every production run is tested in our in-house QC laboratory for size distribution, crystal morphology, and strength. ISO 9001 certified. Full traceability from raw material to shipped product.')
-        }
+        desc={p.quality ?? t(locale, 'Every production run is tested in our in-house QC laboratory for size distribution, crystal morphology, and strength. ISO 9001 certified. Full traceability from raw material to shipped product.')}
         ctaLabel={p.qualityCta ?? t(locale, 'See how our QC works')}
         ctaHref="/quality"
         features={[
@@ -163,11 +126,7 @@ const ProductPage = async ({
       />
 
       <div className="pt-20">
-        <QuoteSection
-          eyebrow={t(locale, 'Made to your specification')}
-          title={t(locale, 'Request a quote or a sample.')}
-          desc={t(locale, 'Give us the grade, size, format, and application, and a real person replies within one business day.')}
-        />
+        <QuoteSection eyebrow={t(locale, 'Made to your specification')} title={t(locale, 'Request a quote or a sample.')} desc={t(locale, 'Give us the grade, size, format, and application, and a real person replies within one business day.')} />
       </div>
 
       <CrossLinks
@@ -208,20 +167,11 @@ export default ProductPage
 
 /* ------------------------------------------------------------------------- */
 
-const ProductSectionBlock = ({
-  locale,
-  slug,
-  section,
-  gray,
-  showHeading,
-}: {
-  locale: Locale
-  slug: string
-  section: ProductSection
-  gray: boolean
-  showHeading: boolean
-}) => {
+const ProductSectionBlock = ({ locale, slug, section, gray, showHeading }: { locale: Locale; slug: string; section: ProductSection; gray: boolean; showHeading: boolean }) => {
   const cat = getSectionCatalog(locale, slug, section.id)
+  // EID's real PDF for this section, where one exists — the download links go
+  // straight to the file rather than bouncing through the Resources index.
+  const doc = getSectionDatasheet(slug, section.id)
   // The catalogue's real property table supersedes the copy deck's [confirm]
   // placeholder specs, so only fall back to the placeholder table where no
   // catalogue entry exists for this section.
@@ -231,22 +181,15 @@ const ProductSectionBlock = ({
   return (
     <>
       <div className={gray ? 'bg-default-50' : ''}>
-
         {/* scroll-mt clears both the fixed header (~84px) and the sticky
             JumpNav (~57px) so a jumped-to section lands below both, not under. */}
-        <section id={section.id} className="scroll-mt-40 lg:py-24 py-16">
+        <section id={section.id} className="scroll-mt-40 py-16 lg:py-24">
           <div className="container">
-            <div className="grid lg:grid-cols-12 gap-12">
+            <div className="grid gap-12 lg:grid-cols-12">
               <div className="lg:col-span-7">
-                <SectionHeading
-                  eyebrow={showHeading ? section.label : undefined}
-                  title={section.title}
-                />
+                <SectionHeading eyebrow={showHeading ? section.label : undefined} title={section.title} />
                 <div className="mt-7">
-                  <RichParagraphs
-                    className="text-base text-default-600"
-                    paragraphs={section.intro}
-                  />
+                  <RichParagraphs className="text-default-600 text-base" paragraphs={section.intro} />
                 </div>
 
                 {section.enquiryCta && (
@@ -256,68 +199,55 @@ const ProductSectionBlock = ({
                 )}
               </div>
 
-              <div className="lg:col-span-5 space-y-6">
+              <div className="space-y-6 lg:col-span-5">
                 {/* When the section has grade blocks, the photos live inside
-                    those blocks (mirroring eid-ltd.com); only show a header
-                    photo for single-image sections without a grade selector. */}
-                {!cat?.series?.length && cat?.image ? (
-                  <ProductPhoto
-                    image={cat.image}
-                    alt={`${section.title} — EID`}
-                    gallery={cat.imageGallery}
-                  />
-                ) : !cat ? (
-                  <Wireframe label={`${section.label} — material / tooling shot`} ratio="landscape" />
-                ) : null}
+those blocks (mirroring eid-ltd.com); only show a header
+photo for single-image sections without a grade selector. */}
+                {!cat?.series?.length && cat?.image ? <ProductPhoto image={cat.image} alt={`${section.title} — EID`} gallery={cat.imageGallery} /> : !cat ? <Wireframe label={`${section.label} — material / tooling shot`} ratio="landscape" /> : null}
 
                 {section.callouts?.map((c) => (
-                    <div key={c.title} className="border-t-2 border-primary pt-5">
-                      <div className="text-sm uppercase tracking-[0.2em] text-default-500">
-                        {c.title}
-                      </div>
-                      {/* Callout bodies carry the deck's in-prose links (the
+                  <div key={c.title} className="border-primary border-t-2 pt-5">
+                    <div className="text-default-500 text-sm tracking-[0.2em] uppercase">{c.title}</div>
+                    {/* Callout bodies carry the deck's in-prose links (the
                           CBN-vs-diamond guide, the PCD ↔ PCBN counterparts), so
-                          they have to go through RichText like every other
-                          copy field rather than render as literal markdown. */}
-                      {Array.isArray(c.body) ? (
-                        <ul className="mt-3 space-y-2">
-                          {c.body.map((b, i) => (
-                            <li key={i} className="flex gap-2 text-base text-default-600">
-                              <Icon
-                                icon="tabler:check"
-                                className="mt-1 size-4 shrink-0 text-primary"
-                              />
-                              <span>
-                                <RichText>{b}</RichText>
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <p className="mt-3 text-base text-default-600">
-                          <RichText>{c.body}</RichText>
-                        </p>
-                      )}
-                    </div>
-                  ))}
+they have to go through RichText like every other
+copy field rather than render as literal markdown. */}
+                    {Array.isArray(c.body) ? (
+                      <ul className="mt-3 space-y-2">
+                        {c.body.map((b, i) => (
+                          <li key={i} className="text-default-600 flex gap-2 text-base">
+                            <Icon icon="tabler:check" className="text-primary mt-1 size-4 shrink-0" />
+                            <span>
+                              <RichText>{b}</RichText>
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-default-600 mt-3 text-base">
+                        <RichText>{c.body}</RichText>
+                      </p>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
 
             {hasDetail && (
-              <div className="mt-16 grid lg:grid-cols-2 gap-12">
+              <div className="mt-16 grid gap-12 lg:grid-cols-2">
                 {section.applications?.length ? (
                   <div>
                     <h3 className="text-2xl">{section.applicationsTitle ?? t(locale, 'Typical Applications')}</h3>
                     <ul className="mt-6 space-y-3">
                       {section.applications.map((a, i) => (
-                        <li key={i} className="flex gap-2.5 text-base text-default-600">
-                          <Icon icon="tabler:check" className="mt-1 size-5 shrink-0 text-primary" />
+                        <li key={i} className="text-default-600 flex gap-2.5 text-base">
+                          <Icon icon="tabler:check" className="text-primary mt-1 size-5 shrink-0" />
                           {a}
                         </li>
                       ))}
                     </ul>
                     {section.applicationsNote && (
-                      <p className="mt-6 text-base text-default-600">
+                      <p className="text-default-600 mt-6 text-base">
                         <RichText>{section.applicationsNote}</RichText>
                       </p>
                     )}
@@ -329,18 +259,15 @@ const ProductSectionBlock = ({
                     <h3 className="mb-6 text-2xl">{section.specsTitle ?? t(locale, 'Specifications')}</h3>
                     <SpecTable specs={section.specs} />
                     {section.specsNote && (
-                      <p className="mt-5 text-base text-default-600">
+                      <p className="text-default-600 mt-5 text-base">
                         <RichText>{section.specsNote}</RichText>
                       </p>
                     )}
                     {section.datasheet && (
-                      <Link
-                        href="/resources/datasheets"
-                        className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary"
-                      >
+                      <a href={doc?.file ?? '/resources/datasheets'} download={doc ? '' : undefined} className="text-primary mt-6 inline-flex items-center gap-2 text-sm font-semibold">
                         <Icon icon="tabler:download" className="size-5" />
                         {t(locale, 'Download the')} {section.datasheet} {t(locale, '(PDF)')}
-                      </Link>
+                      </a>
                     )}
                   </div>
                 ) : null}
@@ -349,17 +276,14 @@ const ProductSectionBlock = ({
 
             {/* Real grade / size / coating / property data from eid-ltd.com */}
             {cat && (
-              <div className="mt-16 border-t border-default-200 pt-14">
+              <div className="border-default-200 mt-16 border-t pt-14">
                 <div className="mb-10 flex items-baseline gap-3">
                   <h3 className="text-2xl">{t(locale, 'Grades & specifications')}</h3>
                   {section.datasheet && (
-                    <Link
-                      href="/resources/datasheets"
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary"
-                    >
+                    <a href={doc?.file ?? '/resources/datasheets'} download={doc ? '' : undefined} className="text-primary inline-flex items-center gap-1.5 text-sm font-semibold">
                       <Icon icon="tabler:download" className="size-4" />
                       {section.datasheet}
-                    </Link>
+                    </a>
                   )}
                 </div>
                 <CatalogSpecs
@@ -371,7 +295,7 @@ const ProductSectionBlock = ({
                   }}
                 />
                 {section.specsNote && (
-                  <p className="mt-8 text-sm text-default-600">
+                  <p className="text-default-600 mt-8 text-sm">
                     <RichText>{section.specsNote}</RichText>
                   </p>
                 )}

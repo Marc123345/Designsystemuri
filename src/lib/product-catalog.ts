@@ -22,6 +22,17 @@ export type GradeSeries = {
   note?: string
   /** Default photo for the block; a grade's own `image` overrides it. */
   image?: string
+  /**
+   * End labels for the selector rail, when the grades genuinely sit on a
+   * continuum (shape: blocky→sharp, particle size: fine→coarse, quality:
+   * premium→standard). This is the one thing the legacy site never says out
+   * loud — that the grade codes encode a trade-off, not a ranking. Omit it
+   * where the grades are just alternatives; the rail then renders unlabelled.
+   */
+  axis?: { from: string; to: string }
+  /** Sizes this series specifically ships in, shown alongside the grade. */
+  sizes?: string[]
+  sizesLabel?: string
   grades: Grade[]
 }
 export type MeshGroup = { label: string; sizes: string[] }
@@ -47,21 +58,10 @@ export type SectionCatalog = {
 
 // The micron powder size range is shared across the natural, bonded, CBN, and
 // polycrystalline lines (identical size chart on every micron page).
-const MICRON_STD = [
-  '0-0.20', '0-0.25', '0-0.50', '0.25-0.75', '0-1', '0.50-1', '0.50-1.5',
-  '0.75-1.25', '0-2', '1-2', '1-3', '2-4', '3-5', '3-6', '4-6', '4-8', '5-10',
-  '6-12', '8-12', '8-16', '10-20', '12-22', '15-25', '20-30', '20-40', '30-40',
-  '30-50', '40-50', '40-60',
-]
+const MICRON_STD = ['0-0.20', '0-0.25', '0-0.50', '0.25-0.75', '0-1', '0.50-1', '0.50-1.5', '0.75-1.25', '0-2', '1-2', '1-3', '2-4', '3-5', '3-6', '4-6', '4-8', '5-10', '6-12', '8-12', '8-16', '10-20', '12-22', '15-25', '20-30', '20-40', '30-40', '30-50', '40-50', '40-60']
 
-const NS_SIZES = [
-  '16/18', '18/20', '20/25', '20/30', '25/30', '30/35', '30/40', '35/40',
-  '35/45', '40/45', '40/50', '45/50', '45/60', '50/60', '50/70',
-]
-const WHEEL_SIZES = [
-  '60/70', '60/80', '70/80', '80/100', '100/120', '120/140', '140/170',
-  '170/200', '200/230', '230/270', '270/325', '325/400', '400/500',
-]
+const NS_SIZES = ['16/18', '18/20', '20/25', '20/30', '25/30', '30/35', '30/40', '35/40', '35/45', '40/45', '40/50', '45/50', '45/60', '50/60', '50/70']
+const WHEEL_SIZES = ['60/70', '60/80', '70/80', '80/100', '100/120', '120/140', '140/170', '170/200', '200/230', '230/270', '270/325', '325/400', '400/500']
 
 export const catalog: Record<string, Record<string, SectionCatalog>> = {
   /* ============================ 1 · NATURAL ============================ */
@@ -73,27 +73,56 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
           title: 'NS Series — Saw Diamond',
           range: '12–60 Mesh',
           image: 'ns-100-p',
+          axis: { from: 'Tougher · longer life', to: 'Free-cutting · faster' },
+          sizes: NS_SIZES,
+          sizesLabel: 'Available mesh sizes',
           grades: [
-            { code: 'NS-100-P', tag: 'Blocky', image: 'ns-100-p', desc: 'A specially engineered natural diamond abrasive, consisting of super blocky well shaped crystals. Its thermal properties allow exposure to very high temperatures without affecting its crystal strength. Its sharp cutting edges make it ideal for the drilling and sawing of concrete, reinforced plastics, masonry and marble. Ideal for electroplating tools.' },
-            { code: 'NS-1-P', tag: 'Regular', image: 'ns-100-p', desc: 'Regular-shape saw diamond in the NS series, for the drilling and sawing of concrete, reinforced plastics, masonry and marble.' },
-            { code: 'NS-1-S', tag: 'Sharp', image: 'ns-100-p', desc: 'Sharper, more friable crystal in the NS series for free-cutting saw and drilling applications.' },
+            {
+              code: 'NS-100-P',
+              tag: 'Blocky',
+              image: 'ns-100-p',
+              desc: 'A specially engineered natural diamond abrasive, consisting of super blocky well shaped crystals. Its thermal properties allow exposure to very high temperatures without affecting its crystal strength. Its sharp cutting edges make it ideal for the drilling and sawing of concrete, reinforced plastics, masonry and marble. Ideal for electroplating tools.',
+            },
+            { code: 'NS-1-P', tag: 'Regular', image: 'ns-100-p', desc: 'This product with its blocky sharp cutting crystals and high thermal strength make it the perfect cost effective choice for the sawing and drilling of stone, concrete, masonry and refractories.' },
+            {
+              code: 'NS-1-S',
+              tag: 'Sharp',
+              image: 'ns-100-p',
+              desc: 'This is a strong but more irregular natural diamond grit with well defined cutting edges. More friable and irregular in shape, it possesses sharp cutting characteristics and the thermal stability of natural diamond.',
+            },
           ],
         },
         {
           title: 'MB Series — Wheel Diamond',
           range: '60–500 Mesh',
           image: 'mb-100-p',
+          axis: { from: 'Tougher · longer life', to: 'Free-cutting · faster' },
+          sizes: WHEEL_SIZES,
+          sizesLabel: 'Available mesh sizes',
           grades: [
-            { code: 'MB-100-P', tag: 'Blocky', image: 'mb-100-p', desc: 'The flagship product of the EID Natural diamond range: a strong engineered blocky natural diamond abrasive, free of all metal inclusions. Its sharp cutting edges make it ideal for use in free-cutting diamond tools and dental burs, and for the drilling and grinding of glass, ceramics, plastics and tungsten carbide. For electroplated and metal bonds.' },
-            { code: 'MB-1-P', tag: 'Regular', image: 'mb-100-p', desc: 'Regular-shape wheel diamond in the MB series for grinding of glass, ceramics, plastics and tungsten carbide.' },
-            { code: 'MB-1-S', tag: 'Sharp', image: 'mb-100-p', desc: 'Sharper, free-cutting crystal in the MB series for wheel and lapping applications on hard, brittle materials.' },
+            {
+              code: 'MB-100-P',
+              tag: 'Blocky',
+              image: 'mb-100-p',
+              desc: 'The flagship product of the EID Natural diamond range: a strong engineered blocky natural diamond abrasive, free of all metal inclusions. Its sharp cutting edges make it ideal for use in free-cutting diamond tools and dental burs, and for the drilling and grinding of glass, ceramics, plastics and tungsten carbide. For electroplated and metal bonds.',
+            },
+            {
+              code: 'MB-1-P',
+              tag: 'Regular',
+              image: 'mb-100-p',
+              desc: 'Special crushing techniques have ensured that this grit is composed of blocky, strong well shaped natural diamond crystals, with ideal wear characteristics, high thermal stability and free cutting characteristics. This MB-1-P grit features sharp cutting edges for maximum performance, for metal bond and electroplated tools.',
+            },
+            {
+              code: 'MB-1-S',
+              tag: 'Sharp',
+              image: 'mb-100-p',
+              desc: 'Irregular but blocky natural diamond, this product, with its well defined cutting edges, is the product of choice in general purpose applications where high thermal strength and the sharp cutting properties of natural diamond is required. Also recommended for electroplated diamond tools.',
+            },
           ],
         },
       ],
-      meshSizes: [
-        { label: 'NS (saw) sizes', sizes: NS_SIZES },
-        { label: 'MB (wheel) sizes', sizes: WHEEL_SIZES },
-      ],
+      // Sizes now sit with the series they belong to, so a buyer reading the
+      // NS block sees NS sizes and nothing else.
     },
     rotary: {
       image: 'wd-aaa',
@@ -102,6 +131,7 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
           title: 'WD Series — Wholestone',
           note: 'Mined diamonds in their natural state, for rotary dresser applications, surface-set drill bits and casing shoes.',
           image: 'wd-aaa',
+          axis: { from: 'Premium selection', to: 'Standard selection' },
           grades: [
             { code: 'WD-AAA', tag: 'Premium', image: 'wd-aaa' },
             { code: 'WD-AA', tag: 'Select', image: 'wd-aa' },
@@ -124,9 +154,7 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
         { label: 'Stones per carat', sizes: ['5-6 spc', '6-8 spc', '8-10 spc', '…', '500 spc'] },
         { label: 'Mesh', sizes: ['16/18', '…', '60/80'] },
       ],
-      properties: [
-        { label: 'Shape factor', value: 'Customisable per client requirement (RD series)' },
-      ],
+      properties: [{ label: 'Shape factor', value: 'Customisable per client requirement (RD series)' }],
     },
     micron: {
       image: 'mb1um-2-4',
@@ -135,6 +163,7 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
           title: 'MB-1-UM — Natural Micron Powder',
           note: 'Strong, blocky, well-shaped particles with the right mixture of smooth surfaces and sharp edges for optimal results.',
           image: 'mb1um-2-4',
+          axis: { from: 'Finer · higher finish', to: 'Coarser · faster removal' },
           grades: [
             { code: 'MB-1-UM 2-4', tag: '2–4 µm', image: 'mb1um-2-4' },
             { code: 'MB-1-UM 12-22', tag: '12–22 µm', image: 'mb1um-12-22' },
@@ -143,11 +172,6 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
         },
       ],
       micronSizes: MICRON_STD,
-      properties: [
-        { label: 'Colour', value: 'Brilliant white' },
-        { label: 'Crystal structure', value: 'Octahedral surfaces based on cubic configuration' },
-        { label: 'Insulation', value: 'Superior natural insulation' },
-      ],
     },
   },
 
@@ -161,9 +185,15 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
           image: 'esn-770',
           grades: [
             { code: 'ESN 770', tag: 'Top strength', image: 'esn-770', desc: 'Supreme strength in the ESN series — uniform cubo-octahedral crystals with ultimate thermal stability, free from visible inclusions.' },
-            { code: 'ESN 750' }, { code: 'ESN 700' }, { code: 'ESN 600' },
-            { code: 'ESN 500' }, { code: 'ESN 400' }, { code: 'ESN 300' },
-            { code: 'ESN 200' }, { code: 'ESN 75' }, { code: 'ESN 50' },
+            { code: 'ESN 750' },
+            { code: 'ESN 700' },
+            { code: 'ESN 600' },
+            { code: 'ESN 500' },
+            { code: 'ESN 400' },
+            { code: 'ESN 300' },
+            { code: 'ESN 200' },
+            { code: 'ESN 75' },
+            { code: 'ESN 50' },
           ],
         },
         {
@@ -171,8 +201,12 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
           image: 'eda-2395',
           grades: [
             { code: 'EDA 2395', tag: 'Extra tough', image: 'eda-2395', desc: 'Extra tough abrasive with well-defined cubo-octahedral crystals, free from harmful inclusions. High thermal stability and impact resistance.' },
-            { code: 'EDA 2360' }, { code: 'EDA 2300' }, { code: 'EDA 2215' },
-            { code: 'EDA 2125' }, { code: 'EDA 2050' }, { code: 'EDA 2025' },
+            { code: 'EDA 2360' },
+            { code: 'EDA 2300' },
+            { code: 'EDA 2215' },
+            { code: 'EDA 2125' },
+            { code: 'EDA 2050' },
+            { code: 'EDA 2025' },
           ],
         },
       ],
@@ -218,16 +252,19 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
           title: 'EDA Series — Friable Grit',
           image: 'resin-bond-mesh',
           grades: [
-            { code: 'EDA 2023', tag: 'Wheel', image: 'resin-bond-mesh', desc: 'Crystals of irregular shape; rough, mosaic structure for excellent bond retention and controlled micro-fracturing. The product of choice in high-quality resin and vitrified bonds for wet & dry grinding of tungsten carbide.' },
+            {
+              code: 'EDA 2023',
+              tag: 'Wheel',
+              image: 'resin-bond-mesh',
+              desc: 'Crystals of irregular shape; rough, mosaic structure for excellent bond retention and controlled micro-fracturing. The product of choice in high-quality resin and vitrified bonds for wet & dry grinding of tungsten carbide.',
+            },
             { code: 'EDA 2021' },
             { code: 'EDA 2020' },
             { code: 'EFRD-S', tag: 'Fine' },
           ],
         },
       ],
-      meshSizes: [
-        { label: 'Sizes', sizes: ['50/60', ...WHEEL_SIZES.filter((s) => s !== '60/80')] },
-      ],
+      meshSizes: [{ label: 'Sizes', sizes: ['50/60', ...WHEEL_SIZES.filter((s) => s !== '60/80')] }],
       coatings: ['Nickel 30% (EDA 2023-30n)', 'Nickel 56% (EDA 2023-56n)', 'Nickel 60%', 'Copper (EDA 2023-50c)', 'Custom %'],
     },
     micron: {
@@ -262,14 +299,15 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
           grades: [
             { code: 'EBN AA', tag: 'Amber', image: 'ebn-aa', desc: 'Amber-coloured, angular yet semi-blocky crystal. High thermal stability, medium-to-high strength, good adaptability and prolonged tool life. Ideal in single-layer, metal and vitrified bonds.' },
             { code: 'EBN A', tag: 'Amber', image: 'ebn-aa' },
-            { code: 'EBN 415' }, { code: 'EBN 8000' }, { code: 'EBN 6000' },
-            { code: 'EBN 5000' }, { code: 'EBN 2000' },
+            { code: 'EBN 415' },
+            { code: 'EBN 8000' },
+            { code: 'EBN 6000' },
+            { code: 'EBN 5000' },
+            { code: 'EBN 2000' },
           ],
         },
       ],
-      meshSizes: [
-        { label: 'Sizes', sizes: ['20/30', '30/40', '40/45', '45/50', '50/60', '60/70', '70/80', '80/100', '100/120', '120/140', '140/170', '170/200', '200/230', '230/270', '270/325', '325/400', '400/500'] },
-      ],
+      meshSizes: [{ label: 'Sizes', sizes: ['20/30', '30/40', '40/45', '45/50', '50/60', '60/70', '70/80', '80/100', '100/120', '120/140', '140/170', '170/200', '200/230', '230/270', '270/325', '325/400', '400/500'] }],
       properties: [
         { label: 'Hardness', value: 'Second only to diamond' },
         { label: 'High-temp resistance', value: '2× that of diamond' },
@@ -292,9 +330,7 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
         },
       ],
       micronSizes: MICRON_STD,
-      properties: [
-        { label: 'Suited to', value: 'Hard tool steels, alloyed steels and super-alloys' },
-      ],
+      properties: [{ label: 'Suited to', value: 'Hard tool steels, alloyed steels and super-alloys' }],
     },
     coated: {
       coatings: ['Available on mesh grades for single-layer and metal/vitrified bonds'],
@@ -379,7 +415,9 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
           note: 'Three industrial-standard grain grades for machining non-ferrous and non-metallic materials.',
           image: 'pcd',
           grades: [
-            { code: 'Fine', image: 'pcd' }, { code: 'Medium', image: 'pcd' }, { code: 'Coarse', image: 'pcd' },
+            { code: 'Fine', image: 'pcd' },
+            { code: 'Medium', image: 'pcd' },
+            { code: 'Coarse', image: 'pcd' },
           ],
         },
         {
@@ -393,9 +431,7 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
           ],
         },
       ],
-      properties: [
-        { label: 'Disc sizes', value: 'Ø 75 mm · Ø 62 mm · Ø 52 mm' },
-      ],
+      properties: [{ label: 'Disc sizes', value: 'Ø 75 mm · Ø 62 mm · Ø 52 mm' }],
     },
     'dressing-logs': {
       image: 'cvd-polycrystalline',
@@ -422,10 +458,7 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
   'tool-stones': {
     'tool-stones': {
       image: 'toolstone-1',
-      imageGallery: [
-        'toolstone-1', 'toolstone-2', 'toolstone-3', 'toolstone-4',
-        'toolstone-5', 'toolstone-6', 'toolstone-7', 'toolstone-8',
-      ],
+      imageGallery: ['toolstone-1', 'toolstone-2', 'toolstone-3', 'toolstone-4', 'toolstone-5', 'toolstone-6', 'toolstone-7', 'toolstone-8'],
       series: [
         {
           title: 'Dressers',
@@ -489,5 +522,4 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
   },
 }
 
-export const getSectionCatalog = (slug: string, sectionId: string): SectionCatalog | undefined =>
-  catalog[slug]?.[sectionId]
+export const getSectionCatalog = (slug: string, sectionId: string): SectionCatalog | undefined => catalog[slug]?.[sectionId]

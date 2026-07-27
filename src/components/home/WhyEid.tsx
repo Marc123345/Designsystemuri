@@ -29,23 +29,19 @@ export type Pillar = {
  */
 const WhyEid = ({ eyebrow, title, pillars }: { eyebrow: string; title: string; pillars: Pillar[] }) => {
   return (
-    <section className="relative size-full lg:py-30 py-20">
-      <div className="container relative z-10">
-        <div className="inline-flex items-center gap-1.5 rounded-2xl border border-default-300 bg-white px-3.5 py-1.25">
-          <span className="size-2 bg-primary"></span>
-          <span className="text-sm text-default-900">{eyebrow}</span>
+    <section className="relative size-full py-20 lg:py-30">
+      <div className="relative z-10 container">
+        <div className="border-default-300 inline-flex items-center gap-1.5 border bg-white px-3.5 py-1.25">
+          <span className="bg-primary size-2"></span>
+          <span className="text-default-900 text-sm">{eyebrow}</span>
         </div>
 
-        <div className="mt-7.5 mb-12.5 grid md:grid-cols-2 grid-cols-1 items-end gap-8">
-          <h2 className="lg:text-[42px] md:text-[36px] text-[28px] font-bold">{title}</h2>
+        <div className="mt-7.5 mb-12.5 grid grid-cols-1 items-end gap-8 md:grid-cols-2">
+          <h2 className="text-[28px] font-bold md:text-[36px] lg:text-[42px]">{title}</h2>
 
           <div className="flex md:ms-auto">
-            <button
-              type="button"
-              className="whyeid-prev static! flex"
-              aria-label="Previous"
-            >
-              <span className="group inline-flex! size-12! cursor-pointer items-center justify-center rounded rounded-es-2xl bg-default-200 text-default-900! transition-all hover:bg-default-300">
+            <button type="button" className="whyeid-prev static! flex" aria-label="Previous">
+              <span className="group bg-default-200 text-default-900! hover:bg-default-300 inline-flex! size-12! cursor-pointer items-center justify-center transition-all">
                 <span className="relative block overflow-hidden">
                   <span className="block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:-translate-x-7">
                     <Icon icon="tabler:arrow-narrow-left" className="flex size-6" />
@@ -57,8 +53,8 @@ const WhyEid = ({ eyebrow, title, pillars }: { eyebrow: string; title: string; p
               </span>
             </button>
 
-            <button type="button" className="whyeid-next static! group" aria-label="Next">
-              <span className="inline-flex! size-12! cursor-pointer items-center justify-center rounded rounded-ee-2xl bg-default-200 text-default-900! transition-all hover:bg-default-300">
+            <button type="button" className="whyeid-next group static!" aria-label="Next">
+              <span className="bg-default-200 text-default-900! hover:bg-default-300 inline-flex! size-12! cursor-pointer items-center justify-center transition-all">
                 <span className="relative block overflow-hidden">
                   <span className="block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-x-7">
                     <Icon icon="tabler:arrow-narrow-right" className="flex size-6" />
@@ -72,27 +68,15 @@ const WhyEid = ({ eyebrow, title, pillars }: { eyebrow: string; title: string; p
           </div>
         </div>
 
-        <Swiper
-          modules={[Navigation, EffectFade]}
-          loop
-          speed={800}
-          slidesPerView={1}
-          effect="fade"
-          fadeEffect={{ crossFade: true }}
-          spaceBetween={30}
-          allowTouchMove={false}
-          navigation={{ nextEl: '.whyeid-next', prevEl: '.whyeid-prev' }}
-        >
+        <Swiper modules={[Navigation, EffectFade]} loop speed={800} slidesPerView={1} effect="fade" fadeEffect={{ crossFade: true }} spaceBetween={30} allowTouchMove={false} navigation={{ nextEl: '.whyeid-next', prevEl: '.whyeid-prev' }}>
           {pillars.map((pillar) => (
             <SwiperSlide key={pillar.title}>
-              <div className="grid lg:grid-cols-5 md:grid-cols-2 grid-cols-1 gap-5">
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-5">
                 <div className="lg:col-span-2">
-                  <div className="flex h-full flex-col gap-5 rounded-md bg-default-950 bg-linear-to-tr from-default-950 via-default-950 to-primary-3 p-10">
-                    <div className="text-sm uppercase tracking-[0.2em] text-primary-1">
-                      {pillar.meta}
-                    </div>
+                  <div className="bg-default-950 from-default-950 via-default-950 to-primary-3 flex h-full flex-col gap-5 bg-linear-to-tr p-10">
+                    <div className="text-primary-1 text-sm tracking-[0.2em] uppercase">{pillar.meta}</div>
 
-                    <h3 className="lg:text-[28px] text-2xl text-white">{pillar.title}</h3>
+                    <h3 className="text-2xl text-white lg:text-[28px]">{pillar.title}</h3>
                     <p className="text-default-200">{pillar.body}</p>
 
                     <div className="mt-auto pt-4">
@@ -103,8 +87,8 @@ const WhyEid = ({ eyebrow, title, pillars }: { eyebrow: string; title: string; p
 
                 <div className="lg:col-span-3">
                   {/* group-hover scale is the template's move; the wireframe
-                      stands in until EID supplies photography. */}
-                  <div className="group relative h-full overflow-hidden rounded-md">
+stands in until EID supplies photography. */}
+                  <div className="group relative h-full overflow-hidden">
                     <div className="transition-transform duration-500 group-hover:scale-105">
                       <Wireframe label={`${pillar.meta} — supporting image`} ratio="wide" />
                     </div>

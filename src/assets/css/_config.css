@@ -26,6 +26,15 @@
     --color-default-900: var(--color-slate-900);
     --color-default-950: var(--color-slate-950);
 
+    /* Crossfade for the grade explorer photo, so switching grade reads as one
+       sample replacing another rather than a hard cut. */
+    --animate-grade-fade: grade-fade 400ms ease-out;
+
+    @keyframes grade-fade {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
     --tw-leading: 1.3em;
     --text-xs--line-height: 1.3em;
     --text-sm--line-height: 1.3em;

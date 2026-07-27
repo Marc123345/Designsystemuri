@@ -1,20 +1,15 @@
-import { QuoteSection, CardGrid, DarkFeatureList, PageHero, StatsBar } from '@/components/sections'
+import { CardGrid, DarkFeatureList, PageHero, QuoteSection, StatsBar } from '@/components/sections'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { getApplications, t } from '@/lib/i18n-content'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: Locale }>
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params
   return {
     title: { absolute: 'Applications | Diamond & CBN by the Work Your Tools Do | EID Ltd' },
-    description:
-      'EID supplies industrial diamond and CBN to tool makers across dental, semiconductor and advanced electronics, automotive and aerospace, tool and die, grinding and cutting, and polishing and lapping.',
+    description: 'EID supplies industrial diamond and CBN to tool makers across dental, semiconductor and advanced electronics, automotive and aerospace, tool and die, grinding and cutting, and polishing and lapping.',
     alternates: localeAlternates(locale, '/applications'),
   }
 }
@@ -98,11 +93,7 @@ const ApplicationsOverview = async ({ params }: { params: Promise<{ locale: Loca
       </div>
 
       <div className="pt-20">
-        <QuoteSection
-          eyebrow={t(locale, 'Not sure which grade fits?')}
-          title={t(locale, 'Tell us your application and we will recommend the right material.')}
-          desc={t(locale, 'A real person replies within one business day, with the grade, size, and lead time you need.')}
-        />
+        <QuoteSection eyebrow={t(locale, 'Not sure which grade fits?')} title={t(locale, 'Tell us your application and we will recommend the right material.')} desc={t(locale, 'A real person replies within one business day, with the grade, size, and lead time you need.')} />
       </div>
     </>
   )

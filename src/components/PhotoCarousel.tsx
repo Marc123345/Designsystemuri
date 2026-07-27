@@ -17,53 +17,21 @@ import { SectionHeading } from './ui'
  * link card. Until the photos land, the labelled wireframes read as a sequence
  * the visitor controls instead of a static wall of empty slots.
  */
-const PhotoCarousel = ({
-  eyebrow,
-  title,
-  desc,
-  items,
-}: {
-  eyebrow?: string
-  title: string
-  desc?: string
-  items: { label: string; ratio?: 'landscape' | 'wide' | 'portrait' | 'square' }[]
-}) => {
+const PhotoCarousel = ({ eyebrow, title, desc, items }: { eyebrow?: string; title: string; desc?: string; items: { label: string; ratio?: 'landscape' | 'wide' | 'portrait' | 'square' }[] }) => {
   const locale = useLocale() as Locale
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '')
   const prev = `pc-prev-${uid}`
   const next = `pc-next-${uid}`
 
   const arrow = (dir: 'prev' | 'next') => (
-    <button
-      type="button"
-      className={`${dir === 'prev' ? prev : next} static! group flex`}
-      aria-label={dir === 'prev' ? t(locale, 'Previous photos') : t(locale, 'Next photos')}
-    >
-      <span
-        className={`inline-flex! size-12! cursor-pointer items-center justify-center rounded bg-default-100 text-default-900! transition-all hover:bg-default-200 ${
-          dir === 'prev' ? 'rounded-es-2xl' : 'rounded-ee-2xl'
-        }`}
-      >
+    <button type="button" className={`${dir === 'prev' ? prev : next} group static! flex`} aria-label={dir === 'prev' ? t(locale, 'Previous photos') : t(locale, 'Next photos')}>
+      <span className={`bg-default-100 text-default-900! hover:bg-default-200 inline-flex! size-12! cursor-pointer items-center justify-center transition-all ${dir === 'prev' ? '' : ''}`}>
         <span className="relative block overflow-hidden">
-          <span
-            className={`block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] ${
-              dir === 'prev' ? 'group-hover:-translate-x-7' : 'group-hover:translate-x-7'
-            }`}
-          >
-            <Icon
-              icon={dir === 'prev' ? 'tabler:arrow-narrow-left' : 'tabler:arrow-narrow-right'}
-              className="flex size-6"
-            />
+          <span className={`block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] ${dir === 'prev' ? 'group-hover:-translate-x-7' : 'group-hover:translate-x-7'}`}>
+            <Icon icon={dir === 'prev' ? 'tabler:arrow-narrow-left' : 'tabler:arrow-narrow-right'} className="flex size-6" />
           </span>
-          <span
-            className={`absolute top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] ${
-              dir === 'prev' ? 'start-7 group-hover:start-0' : 'end-7 group-hover:end-0'
-            }`}
-          >
-            <Icon
-              icon={dir === 'prev' ? 'tabler:arrow-narrow-left' : 'tabler:arrow-narrow-right'}
-              className="flex size-6"
-            />
+          <span className={`absolute top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] ${dir === 'prev' ? 'start-7 group-hover:start-0' : 'end-7 group-hover:end-0'}`}>
+            <Icon icon={dir === 'prev' ? 'tabler:arrow-narrow-left' : 'tabler:arrow-narrow-right'} className="flex size-6" />
           </span>
         </span>
       </span>
@@ -71,7 +39,7 @@ const PhotoCarousel = ({
   )
 
   return (
-    <section className="lg:py-24 py-16">
+    <section className="py-16 lg:py-24">
       <div className="container">
         <div className="grid grid-cols-1 items-end gap-8 md:grid-cols-2">
           <SectionHeading eyebrow={eyebrow} title={title} desc={desc} />

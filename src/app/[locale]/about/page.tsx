@@ -1,6 +1,6 @@
-import GlobeSection from '@/components/GlobeSection'
 import CardCarousel from '@/components/CardCarousel'
-import { QuoteSection, DarkFeatureList, PageHero, StatsBar } from '@/components/sections'
+import GlobeSection from '@/components/GlobeSection'
+import { DarkFeatureList, PageHero, QuoteSection, StatsBar } from '@/components/sections'
 import { ArrowButton, SectionHeading } from '@/components/ui'
 import Wireframe from '@/components/Wireframe'
 import type { Locale } from '@/i18n/routing'
@@ -96,7 +96,7 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
       </section>
 
       {/* HOW WE MAKE IT — the honest, graduated production model, in the same
-          swipeable card layout the home page uses for the product range. */}
+swipeable card layout the home page uses for the product range. */}
       <CardCarousel
         eyebrow={t(locale, 'Our production model, stated straight')}
         title={t(locale, 'How we make what we sell.')}
@@ -133,7 +133,7 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
         </div>
       </section>
       <DarkFeatureList
-          bgLabel="Background image — production floor, London"
+        bgLabel="Background image — production floor, London"
         eyebrow={t(locale, 'Quality & certification')}
         title={t(locale, 'Consistency, measured on every run.')}
         desc={t(locale, 'Our QC laboratory tests every production lot for particle size distribution and morphology, with additional testing such as crystal strength and coating coverage performed where required.')}
@@ -164,7 +164,10 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
         <div className="container">
           <SectionHeading eyebrow={t(locale, 'Who we serve')} title={t(locale, 'Trusted by tool makers across industries and continents.')} />
           <p className="text-default-600 mt-8 max-w-[860px] text-base">
-            {t(locale, 'Our customers convert raw diamond and CBN into finished tools: diamond and CBN grinding and dressing tool makers, dental bur and rotary instrument producers, ultra-precision tool makers for optics and watch components, and flexible-abrasive manufacturers for glass and stone. We supply them across Europe, the Middle East, Asia, the Americas, and beyond, with the material behind dental, optics and precision components, automotive and aerospace, tool and die, stone and glass, and electronics applications.')}
+            {t(
+              locale,
+              'Our customers convert raw diamond and CBN into finished tools: diamond and CBN grinding and dressing tool makers, dental bur and rotary instrument producers, ultra-precision tool makers for optics and watch components, and flexible-abrasive manufacturers for glass and stone. We supply them across Europe, the Middle East, Asia, the Americas, and beyond, with the material behind dental, optics and precision components, automotive and aerospace, tool and die, stone and glass, and electronics applications.'
+            )}
           </p>
           <div className="mt-9">
             <ArrowButton href="/contact" label={t(locale, 'Contact Us')} />
@@ -173,7 +176,7 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
       </section>
 
       {/* REACH — the regions named above, made visible: London hub with arcs to
-          the markets EID ships to across four continents. */}
+the markets EID ships to across four continents. */}
       <GlobeSection
         eyebrow={t(locale, 'Where our material ships')}
         title={t(locale, 'From one London facility to four continents.')}
@@ -196,11 +199,7 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
       </section>
 
       <div className="pt-20">
-        <QuoteSection
-          eyebrow={t(locale, 'Trusted by tool makers across continents')}
-          title={t(locale, "Let's talk about what you manufacture.")}
-          desc={t(locale, 'Request a quote, order a sample, or ask a technical question. A real person replies within one business day.')}
-        />
+        <QuoteSection eyebrow={t(locale, 'Trusted by tool makers across continents')} title={t(locale, "Let's talk about what you manufacture.")} desc={t(locale, 'Request a quote, order a sample, or ask a technical question. A real person replies within one business day.')} />
       </div>
     </>
   )

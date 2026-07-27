@@ -1,5 +1,5 @@
 import { RichText } from '@/components/RichText'
-import { QuoteSection, PageHero, Pillars } from '@/components/sections'
+import { PageHero, Pillars, QuoteSection } from '@/components/sections'
 import { ArrowButton, ArrowLink, SectionHeading } from '@/components/ui'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
@@ -9,16 +9,11 @@ import { Icon } from '@iconify/react'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: Locale }>
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params
   return {
     title: { absolute: 'Diamond & CBN Technical Guides & Resources | EID' },
-    description:
-      "Technical guides on choosing superabrasives: diamond vs CBN, grit size charts, bond systems, and size distribution. Written by EID's technical team.",
+    description: "Technical guides on choosing superabrasives: diamond vs CBN, grit size charts, bond systems, and size distribution. Written by EID's technical team.",
     alternates: localeAlternates(locale, '/resources'),
   }
 }
@@ -37,9 +32,7 @@ const guides: { title: string; desc: string; links: { label: string; href: strin
   {
     title: 'Diamond grit and micron size chart (mesh to micron).',
     desc: 'A reference chart mapping FEPA, US mesh, and micron sizes, so you can convert between sizing systems.',
-    links: [
-      { label: 'Natural Diamond Grit & Powder', href: '/products/natural-grit-powder' },
-    ],
+    links: [{ label: 'Natural Diamond Grit & Powder', href: '/products/natural-grit-powder' }],
   },
   {
     title: 'Metal bond, resin bond, and vitrified: choosing a diamond bond system.',
@@ -66,13 +59,11 @@ const guides: { title: string; desc: string; links: { label: string; href: strin
     ],
   },
   {
-    title:
-      'Diamond and CBN by application: dental, semiconductor, automotive and aerospace, tool and die.',
+    title: 'Diamond and CBN by application: dental, semiconductor, automotive and aerospace, tool and die.',
     desc: 'Which grades serve which sector, and why, with links through to the application hubs.',
     links: [{ label: 'Application hubs', href: '/applications' }],
   },
 ]
-
 
 const ResourcesPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
   const { locale } = await params
@@ -89,38 +80,32 @@ const ResourcesPage = async ({ params }: { params: Promise<{ locale: Locale }> }
       />
 
       {/* INTRO — the research-stage entry point that feeds the product pages */}
-      <section className="lg:pt-24 pt-16">
+      <section className="pt-16 lg:pt-24">
         <div className="container">
-          <SectionHeading
-            eyebrow={t(locale, 'Where to start')}
-            title={t(locale, 'Technical guides for choosing the right superabrasive.')}
-          />
-          <p className="mt-5 max-w-3xl text-base text-default-600">
+          <SectionHeading eyebrow={t(locale, 'Where to start')} title={t(locale, 'Technical guides for choosing the right superabrasive.')} />
+          <p className="text-default-600 mt-5 max-w-3xl text-base">
             <RichText>
-              {t(locale, 'Reference charts, comparisons, and application notes to match the diamond or CBN grade to your process, written by the people who grade and test the material. Still deciding? Start here. Already know the grade? The [product pages](/products) carry the specs.')}
+              {t(
+                locale,
+                'Reference charts, comparisons, and application notes to match the diamond or CBN grade to your process, written by the people who grade and test the material. Still deciding? Start here. Already know the grade? The [product pages](/products) carry the specs.'
+              )}
             </RichText>
           </p>
         </div>
       </section>
 
       {/* GUIDES — blog-grid style cards */}
-      <section className="lg:py-24 py-16">
+      <section className="py-16 lg:py-24">
         <div className="container">
-          <SectionHeading
-            eyebrow={t(locale, 'Technical knowledge')}
-            title={t(locale, 'Guides, charts, and application notes.')}
-            align="center"
-          />
+          <SectionHeading eyebrow={t(locale, 'Technical knowledge')} title={t(locale, 'Guides, charts, and application notes.')} align="center" />
 
-          <div className="mt-14 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-x-10 gap-y-12">
+          <div className="mt-14 grid grid-cols-1 gap-x-10 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
             {guides.map((g) => (
               <article key={g.title} className="flex flex-col gap-4">
-                <span className="inline-flex w-fit items-center gap-1.5 rounded-2xl border border-default-300 px-3.5 py-1.25 text-sm text-default-900">
-                  {t(locale, 'Guide')}
-                </span>
+                <span className="border-default-300 text-default-900 inline-flex w-fit items-center gap-1.5 border px-3.5 py-1.25 text-sm">{t(locale, 'Guide')}</span>
                 <h3 className="text-xl">{t(locale, g.title)}</h3>
-                <p className="text-base text-default-600">{t(locale, g.desc)}</p>
-                <p className="text-sm text-default-500">
+                <p className="text-default-600 text-base">{t(locale, g.desc)}</p>
+                <p className="text-default-500 text-sm">
                   {t(locale, 'Links to:')}{' '}
                   {g.links.map((l, i) => (
                     <span key={l.href}>
@@ -135,22 +120,18 @@ const ResourcesPage = async ({ params }: { params: Promise<{ locale: Locale }> }
                   <ArrowLink href="/contact" label={t(locale, 'Read')} />
                 </div>
                 {/* The six guides are listed but not yet written. Each is a separate
-                    page under /resources/ and a real deliverable, drafted as a
-                    separate batch once the core pages are signed off. The note is
-                    deliberate, so nobody ships a card that promises a document that
-                    does not exist. */}
-                <p className="text-sm text-default-500">
-                  {t(locale, 'Guide not yet written; deck defers the six guides to a later batch.')}
-                </p>
+page under /resources/ and a real deliverable, drafted as a
+separate batch once the core pages are signed off. The note is
+deliberate, so nobody ships a card that promises a document that
+does not exist. */}
+                <p className="text-default-500 text-sm">{t(locale, 'Guide not yet written; deck defers the six guides to a later batch.')}</p>
               </article>
             ))}
 
-            <article className="flex flex-col justify-center gap-4 bg-default-50 p-7">
-              <Icon icon="tabler:diamond" className="size-7 text-primary" />
+            <article className="bg-default-50 flex flex-col justify-center gap-4 p-7">
+              <Icon icon="tabler:diamond" className="text-primary size-7" />
               <h3 className="text-xl">{t(locale, 'Have a technical question?')}</h3>
-              <p className="text-base text-default-600">
-                {t(locale, 'Our team answers application and specification questions directly.')}
-              </p>
+              <p className="text-default-600 text-base">{t(locale, 'Our team answers application and specification questions directly.')}</p>
               <div className="pt-2">
                 <ArrowButton href="/contact" label={t(locale, 'Contact us')} />
               </div>
@@ -160,7 +141,7 @@ const ResourcesPage = async ({ params }: { params: Promise<{ locale: Locale }> }
       </section>
 
       {/* THE REST OF RESOURCES — Phase 2 consolidates guides, the blog, the
-          datasheets, and the SDS library under this one section. */}
+datasheets, and the SDS library under this one section. */}
       <section className="pt-14">
         <Pillars
           items={[

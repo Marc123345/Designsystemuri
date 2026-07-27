@@ -35,7 +35,7 @@ export function RichText({ children }: { children: string }): ReactNode {
         <Link key={`${href}-${m.index}`} href={href} className={LINK_CLASS}>
           {label}
         </Link>
-      ),
+      )
     )
     last = m.index + m[0].length
   }
@@ -43,13 +43,7 @@ export function RichText({ children }: { children: string }): ReactNode {
   return <>{out}</>
 }
 
-export function RichParagraphs({
-  paragraphs,
-  className,
-}: {
-  paragraphs: string[]
-  className?: string
-}) {
+export function RichParagraphs({ paragraphs, className }: { paragraphs: string[]; className?: string }) {
   return (
     <div className={`space-y-4 ${className ?? ''}`}>
       {paragraphs.map((p, i) => (

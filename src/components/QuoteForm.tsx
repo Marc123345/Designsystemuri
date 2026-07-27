@@ -20,7 +20,7 @@ import { useState } from 'react'
  * product of interest, grade or size, quantity, message. Required is kept to
  * the minimum that lets a real reply happen — name, email, product, message.
  */
-const FIELD_CLASS = 'w-full rounded border border-default-200 px-4 py-3 text-base text-default-900 placeholder:text-default-500 focus:border-primary focus:outline-none'
+const FIELD_CLASS = 'w-full  border border-default-200 px-4 py-3 text-base text-default-900 placeholder:text-default-500 focus:border-primary focus:outline-none'
 
 const LABEL_CLASS = 'mb-2 block text-sm font-medium text-default-900'
 
@@ -135,7 +135,7 @@ const QuoteForm = ({ formTitle, formDesc, productOptions }: { formTitle: string;
         </div>
 
         <div className="md:col-span-2">
-          <button type="submit" className="bg-primary hover:bg-default-900 rounded-md px-6 py-3.75 text-base font-medium text-white transition-all">
+          <button type="submit" className="bg-primary hover:bg-default-900 px-6 py-3.75 text-base font-medium text-white transition-all">
             {t(locale, 'Send request')}
           </button>
           <p className="text-default-500 mt-4 text-sm" role="status">

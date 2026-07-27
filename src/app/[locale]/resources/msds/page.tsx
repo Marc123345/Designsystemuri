@@ -1,23 +1,20 @@
 import { RichText } from '@/components/RichText'
-import { QuoteSection, PageHero } from '@/components/sections'
+import { PageHero, QuoteSection } from '@/components/sections'
 import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
+import { safetySheets } from '@/lib/documents'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
 import { Icon } from '@iconify/react'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
+import Link from 'next/link'
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: Locale }>
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params
   return {
     title: { absolute: 'Diamond & CBN Safety Data Sheets (MSDS) | EID' },
-    description:
-      "Download safety data sheets for EID's industrial diamond and CBN products. Handling, storage, disposal, and regulatory information. Free, no login.",
+    description: "Download safety data sheets for EID's industrial diamond and CBN products. Handling, storage, disposal, and regulatory information. Free, no login.",
     alternates: localeAlternates(locale, '/resources/msds'),
   }
 }
@@ -29,27 +26,10 @@ export async function generateMetadata({
 // publish placeholder or out-of-date safety sheets. If Uri cannot supply a current
 // document for a material, leave that entry off rather than shipping a stale one.
 //
-// Grouped one entry per material family, not by the eight-page catalogue: safety
-// documents genuinely group by material, and coated abrasives carry different
-// handling information even though coatings are no longer a standalone product line.
-const msds: [string, string][] = [
-  [
-    'Natural Diamond (Grit & Powder)',
-    'Handling and safety for natural diamond abrasive products.',
-  ],
-  ['Synthetic Diamond (Metal Bond & Resin Bond)', 'For synthetic bonded diamond powders.'],
-  ['CBN (Cubic Boron Nitride)', 'For CBN mesh and micron products.'],
-  [
-    'CVD Diamond (Single Crystal & Polycrystalline)',
-    'For CVD single crystal and polycrystalline products.',
-  ],
-  ['MCD (Monocrystalline Diamond)', 'For HPHT monocrystalline products.'],
-  ['PCD / PCBN', 'For polycrystalline diamond and CBN discs and blanks.'],
-  [
-    'Coated Diamond & CBN Products',
-    'Handling and safety for coated (nickel, copper, titanium) abrasives.',
-  ],
-]
+// EID publishes three safety sheets, one per material family, and the registry
+// in lib/documents.ts lists exactly those three. The earlier seven-entry list
+// was speculative: per the caution above, an entry with no current document
+// behind it is left off rather than shipped stale.
 
 const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
   const { locale } = await params
@@ -61,39 +41,33 @@ const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
         eyebrow={t(locale, 'Handling, storage & regulatory information')}
         title={t(locale, 'Material Safety Data Sheets (MSDS)')}
         desc={t(locale, "Download safety data sheets for EID's industrial diamond and CBN products. Handling, storage, disposal, and regulatory information. Free, no login.")}
-        crumbs={[
-          { label: t(locale, 'Home'), href: '/' },
-          { label: t(locale, 'Resources'), href: '/resources' },
-          { label: t(locale, 'MSDS') },
-        ]}
+        crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Resources'), href: '/resources' }, { label: t(locale, 'MSDS') }]}
         secondaryCta={{ label: t(locale, 'Datasheets'), href: '/resources/datasheets' }}
       />
 
-      <section className="lg:py-24 py-16">
+      <section className="py-16 lg:py-24">
         <div className="container">
           {/* Deliberately ungated: a safety document behind a form is a liability,
-              not a lead magnet. */}
+not a lead magnet. */}
           <SectionHeading eyebrow={t(locale, 'No form, no login')} title={t(locale, 'Safety data sheets, free to download.')} />
-          <p className="mt-5 max-w-3xl text-base text-default-600">
-            <RichText>
-              {t(locale, "Safety data sheets for EID's diamond and CBN products, covering handling, storage, disposal, and regulatory information. No form, no login. If you need a document that isn't listed, or a specific regional format, [ask us](/contact).")}
-            </RichText>
+          <p className="text-default-600 mt-5 max-w-3xl text-base">
+            <RichText>{t(locale, "Safety data sheets for EID's diamond and CBN products, covering handling, storage, disposal, and regulatory information. No form, no login. If you need a document that isn't listed, or a specific regional format, [ask us](/contact).")}</RichText>
           </p>
-          <div className="mt-14 divide-y divide-default-200 border-t border-default-200">
-            {msds.map(([name, desc]) => (
-              <div key={name} className="flex flex-wrap items-center justify-between gap-4 py-5">
+          <div className="divide-default-200 border-default-200 mt-14 divide-y border-t">
+            {safetySheets.map((sheet) => (
+              <Link key={sheet.key} href={sheet.file} download className="group flex flex-wrap items-center justify-between gap-4 py-5">
                 <div className="flex items-start gap-4">
-                  <Icon icon="tabler:shield" className="mt-0.5 size-6 shrink-0 text-primary" />
+                  <Icon icon="tabler:shield" className="text-primary mt-0.5 size-6 shrink-0" />
                   <div>
-                    <h3 className="text-base font-semibold text-default-900">{t(locale, name)}</h3>
-                    <p className="mt-1 text-base text-default-600">{t(locale, desc)}</p>
+                    <h3 className="text-default-900 group-hover:text-primary text-base font-semibold">{t(locale, sheet.title)}</h3>
+                    <p className="text-default-600 mt-1 text-base">{t(locale, sheet.desc)}</p>
                   </div>
                 </div>
-                <span className="inline-flex items-center gap-2 rounded-2xl border border-default-300 px-3.5 py-1.5 text-sm font-semibold text-default-800">
-                  <Icon icon="tabler:download" className="size-5 text-primary" />
+                <span className="border-default-300 text-default-800 group-hover:border-primary group-hover:text-primary inline-flex items-center gap-2 border px-3.5 py-1.5 text-sm font-semibold transition-colors">
+                  <Icon icon="tabler:download" className="text-primary size-5" />
                   PDF
                 </span>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

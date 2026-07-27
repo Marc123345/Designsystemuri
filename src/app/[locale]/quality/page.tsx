@@ -1,13 +1,7 @@
 import CardCarousel from '@/components/CardCarousel'
 import PhotoCarousel from '@/components/PhotoCarousel'
 import { RichText } from '@/components/RichText'
-import {
-  QuoteSection,
-  CrossLinks,
-  DarkFeatureList,
-  PageHero,
-  StatsBar,
-} from '@/components/sections'
+import { CrossLinks, DarkFeatureList, PageHero, QuoteSection, StatsBar } from '@/components/sections'
 import { SectionHeading } from '@/components/ui'
 import Wireframe from '@/components/Wireframe'
 import { Link } from '@/i18n/navigation'
@@ -18,16 +12,11 @@ import { Icon } from '@iconify/react'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: Locale }>
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params
   return {
     title: { absolute: 'Quality Control & ISO 9001 | Industrial Diamond QC | EID' },
-    description:
-      "EID's in-house QC laboratory tests every batch of diamond and CBN for size distribution and morphology, with strength and coating coverage where required. ISO 9001.",
+    description: "EID's in-house QC laboratory tests every batch of diamond and CBN for size distribution and morphology, with strength and coating coverage where required. ISO 9001.",
     alternates: localeAlternates(locale, '/quality'),
   }
 }
@@ -132,31 +121,29 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
       />
 
       {/* QC PHILOSOPHY — the argument for why the laboratory exists, before any
-          list of tests. */}
-      <section className="lg:py-24 py-16">
+list of tests. */}
+      <section className="py-16 lg:py-24">
         <div className="container">
-          <div className="grid lg:grid-cols-12 gap-12">
+          <div className="grid gap-12 lg:grid-cols-12">
             <div className="lg:col-span-7">
-              <SectionHeading
-                eyebrow={t(locale, 'Quality is the product')}
-                title={t(locale, 'Quality control is what you are buying.')}
-              />
-              <div className="mt-7 space-y-4 text-base text-default-600">
+              <SectionHeading eyebrow={t(locale, 'Quality is the product')} title={t(locale, 'Quality control is what you are buying.')} />
+              <div className="text-default-600 mt-7 space-y-4 text-base">
+                <p>{t(locale, 'EID does not check quality after the fact. It is built into every stage, from raw material selection through grading, coating, and final inspection, and the in-house QC laboratory is the backbone of everything we ship.')}</p>
                 <p>
-                  {t(locale, 'EID does not check quality after the fact. It is built into every stage, from raw material selection through grading, coating, and final inspection, and the in-house QC laboratory is the backbone of everything we ship.')}
-                </p>
-                <p>
-                  {t(locale, 'The reason matters more than the badge. When a tool maker reorders a grade, they are trusting that this lot behaves like the last one, because their own production is tuned to it. Our job is to make that true every time, and to prove it with data rather than a promise.')}
+                  {t(
+                    locale,
+                    'The reason matters more than the badge. When a tool maker reorders a grade, they are trusting that this lot behaves like the last one, because their own production is tuned to it. Our job is to make that true every time, and to prove it with data rather than a promise.'
+                  )}
                 </p>
               </div>
             </div>
 
             <div className="lg:col-span-5">
-              <div className="divide-y divide-default-200 border-t border-default-200">
+              <div className="divide-default-200 border-default-200 divide-y border-t">
                 {philosophyFeatures.map((f) => (
                   <div key={f.title} className="py-5">
-                    <h4 className="text-base font-semibold text-default-900">{t(locale, f.title)}</h4>
-                    <p className="mt-1 text-base text-default-600">{t(locale, f.desc)}</p>
+                    <h4 className="text-default-900 text-base font-semibold">{t(locale, f.title)}</h4>
+                    <p className="text-default-600 mt-1 text-base">{t(locale, f.desc)}</p>
                   </div>
                 ))}
               </div>
@@ -179,7 +166,7 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
       />
 
       <DarkFeatureList
-          bgLabel="Background image — QC laboratory"
+        bgLabel="Background image — QC laboratory"
         eyebrow={t(locale, 'How our QC works')}
         title={t(locale, 'How a batch moves through our laboratory.')}
         desc={t(locale, 'Five steps from incoming inspection to shipped product, with documentation at every stage and a retention sample kept from every batch.')}
@@ -210,9 +197,9 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
       />
 
       {/* The deck asks for each QC step to be supported by a photo of the actual
-          machinery or lab. EID has not supplied those assets, so every slot is a
-          labelled wireframe rather than a stock image — presented as a swipeable
-          sequence the visitor controls. */}
+machinery or lab. EID has not supplied those assets, so every slot is a
+labelled wireframe rather than a stock image — presented as a swipeable
+sequence the visitor controls. */}
       <PhotoCarousel
         eyebrow={t(locale, 'Inside the laboratory')}
         title={t(locale, 'The QC process, step by step.')}
@@ -228,15 +215,13 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
 
       {/* MESH & MICRON QC + ISO 9001 */}
       <div className="bg-default-50">
-        <section className="lg:py-24 py-16">
+        <section className="py-16 lg:py-24">
           <div className="container">
-            <div className="grid lg:grid-cols-2 gap-10">
-              <div className="border-t-2 border-primary pt-5">
-                <div className="text-sm uppercase tracking-[0.2em] text-default-500">
-                  {t(locale, 'Mesh & micron QC in detail')}
-                </div>
+            <div className="grid gap-10 lg:grid-cols-2">
+              <div className="border-primary border-t-2 pt-5">
+                <div className="text-default-500 text-sm tracking-[0.2em] uppercase">{t(locale, 'Mesh & micron QC in detail')}</div>
                 <h3 className="mt-3 text-2xl">{t(locale, 'Mesh and micron QC in detail.')}</h3>
-                <p className="mt-3 text-base text-default-600">
+                <p className="text-default-600 mt-3 text-base">
                   {t(locale, 'Grading and testing differ between mesh grit and micron powder, so each has its own detail.')}{' '}
                   <Link href="/mesh-qc" className="text-primary underline underline-offset-2">
                     {t(locale, 'Mesh QC')}
@@ -254,9 +239,9 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
       </div>
 
       {/* QC MACHINERY — Phase 2 build-out. The equipment is shown as page
-          content because "we test everything" is a claim; naming the instrument
-          that produces the number is the proof. */}
-      <section className="lg:py-24 py-16">
+content because "we test everything" is a claim; naming the instrument
+that produces the number is the proof. */}
+      <section className="py-16 lg:py-24">
         <div className="container">
           <SectionHeading
             eyebrow={t(locale, 'The laboratory')}
@@ -265,70 +250,56 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
           />
 
           {/* Progressive disclosure: each instrument is a row (function label +
-              instrument name) that opens to what it measures, on demand. Native
-              exclusive <details> accordion (plus->cross), so the reader drills
-              into one instrument at a time instead of scanning a six-card wall. */}
-          <div className="mt-14 max-w-3xl divide-y divide-default-200 border-y border-default-200">
+instrument name) that opens to what it measures, on demand. Native
+exclusive <details> accordion (plus->cross), so the reader drills
+into one instrument at a time instead of scanning a six-card wall. */}
+          <div className="divide-default-200 border-default-200 mt-14 max-w-3xl divide-y border-y">
             {machinery.map((m, i) => (
               <details key={m.title} name="qc-instruments" open={i === 0} className="group py-5">
                 <summary className="flex cursor-pointer list-none items-center gap-4 [&::-webkit-details-marker]:hidden">
                   <div className="flex-1">
-                    <div className="text-xs uppercase tracking-[0.2em] text-default-500">{t(locale, m.meta)}</div>
-                    <h3 className="mt-1 text-xl text-default-900">{t(locale, m.title)}</h3>
+                    <div className="text-default-500 text-xs tracking-[0.2em] uppercase">{t(locale, m.meta)}</div>
+                    <h3 className="text-default-900 mt-1 text-xl">{t(locale, m.title)}</h3>
                   </div>
-                  <Icon
-                    icon="tabler:plus"
-                    className="size-5 shrink-0 text-default-400 transition-transform duration-500 group-open:rotate-45"
-                  />
+                  <Icon icon="tabler:plus" className="text-default-400 size-5 shrink-0 transition-transform duration-500 group-open:rotate-45" />
                 </summary>
-                <p className="mt-3 max-w-2xl text-base text-default-600">{t(locale, m.desc)}</p>
+                <p className="text-default-600 mt-3 max-w-2xl text-base">{t(locale, m.desc)}</p>
               </details>
             ))}
           </div>
 
-          <p className="mt-12 font-mono text-sm text-default-500">
-            Confirm exact instrument makes, models, and calibration intervals with Uri. Replace this
-            block with photographs of the actual QC laboratory before launch.
-          </p>
+          <p className="text-default-500 mt-12 font-mono text-sm">Confirm exact instrument makes, models, and calibration intervals with Uri. Replace this block with photographs of the actual QC laboratory before launch.</p>
         </div>
       </section>
 
       {/* CERTIFICATES — shown as content, offered as downloads. This replaces the
-          pattern of embedding one large PDF as the whole page. */}
+pattern of embedding one large PDF as the whole page. */}
       <div className="bg-default-50">
-        <section className="lg:py-24 py-16">
+        <section className="py-16 lg:py-24">
           <div className="container">
-            <div className="grid lg:grid-cols-12 gap-12">
+            <div className="grid gap-12 lg:grid-cols-12">
               <div className="lg:col-span-7">
-                <SectionHeading
-                  eyebrow={t(locale, 'ISO 9001 certified')}
-                  title={t(locale, 'A documented, audited, repeatable process.')}
-                />
-                <p className="mt-7 text-base text-default-600">
-                  {t(locale, "EID's quality management system is ISO 9001 certified, covering the full process from incoming raw material inspection through manufacturing, testing, packaging, and delivery. Certification means the process is documented, audited, and repeatable, which is what stands behind every certificate of analysis we issue.")}
+                <SectionHeading eyebrow={t(locale, 'ISO 9001 certified')} title={t(locale, 'A documented, audited, repeatable process.')} />
+                <p className="text-default-600 mt-7 text-base">
+                  {t(
+                    locale,
+                    "EID's quality management system is ISO 9001 certified, covering the full process from incoming raw material inspection through manufacturing, testing, packaging, and delivery. Certification means the process is documented, audited, and repeatable, which is what stands behind every certificate of analysis we issue."
+                  )}
                 </p>
-                <p className="mt-5 font-mono text-sm text-default-500">
-                  Certificate number, issuing body, and validity dates to be confirmed with Uri. The
-                  scanned certificate is displayed here as an image with the PDF offered alongside
-                  it.
-                </p>
+                <p className="text-default-500 mt-5 font-mono text-sm">Certificate number, issuing body, and validity dates to be confirmed with Uri. The scanned certificate is displayed here as an image with the PDF offered alongside it.</p>
               </div>
 
               <div className="lg:col-span-5">
                 {/* The deck is explicit that the ISO 9001 certificate is shown,
-                    not just claimed. The scan is outstanding. */}
+not just claimed. The scan is outstanding. */}
                 <Wireframe label="ISO 9001 certificate — scan pending from Uri" ratio="portrait" />
 
-                <div className="mt-10 border-t-2 border-primary pt-5">
-                  <div className="text-sm uppercase tracking-[0.2em] text-default-500">{t(locale, 'Downloads')}</div>
+                <div className="border-primary mt-10 border-t-2 pt-5">
+                  <div className="text-default-500 text-sm tracking-[0.2em] uppercase">{t(locale, 'Downloads')}</div>
                   <ul className="mt-4 space-y-3">
-                    {[
-                      'ISO 9001 certificate (PDF) — [awaiting file from Uri]',
-                      'Sample certificate of analysis (PDF) — [awaiting file from Uri]',
-                      'QC methods & test parameters summary (PDF) — [awaiting file from Uri]',
-                    ].map((item) => (
-                      <li key={item} className="flex gap-2.5 text-base text-default-600">
-                        <Icon icon="tabler:check" className="mt-1 size-5 shrink-0 text-primary" />
+                    {['ISO 9001 certificate (PDF) — [awaiting file from Uri]', 'Sample certificate of analysis (PDF) — [awaiting file from Uri]', 'QC methods & test parameters summary (PDF) — [awaiting file from Uri]'].map((item) => (
+                      <li key={item} className="text-default-600 flex gap-2.5 text-base">
+                        <Icon icon="tabler:check" className="text-primary mt-1 size-5 shrink-0" />
                         {item}
                       </li>
                     ))}

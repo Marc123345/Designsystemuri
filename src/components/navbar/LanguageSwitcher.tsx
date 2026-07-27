@@ -6,7 +6,14 @@ import { Icon } from '@iconify/react'
 import { useLocale } from 'next-intl'
 
 const LABELS: Record<string, string> = {
-  en: 'EN', de: 'DE', es: 'ES', it: 'IT', ja: 'JA', fr: 'FR', ko: 'KO', zh: 'ZH',
+  en: 'EN',
+  de: 'DE',
+  es: 'ES',
+  it: 'IT',
+  ja: 'JA',
+  fr: 'FR',
+  ko: 'KO',
+  zh: 'ZH',
 }
 
 /**
@@ -19,13 +26,7 @@ const LanguageSwitcher = () => {
 
   return (
     <div className="hs-dropdown relative inline-flex [--trigger:hover]">
-      <button
-        type="button"
-        className="hs-dropdown-toggle flex items-center gap-1.5 rounded-md border border-default-200 px-3 py-2 text-sm font-semibold text-default-800 transition-all hover:border-primary hover:text-primary"
-        aria-haspopup="menu"
-        aria-expanded="false"
-        aria-label="Language"
-      >
+      <button type="button" className="hs-dropdown-toggle border-default-200 text-default-800 hover:border-primary hover:text-primary flex items-center gap-1.5 border px-3 py-2 text-sm font-semibold transition-all" aria-haspopup="menu" aria-expanded="false" aria-label="Language">
         <Icon icon="tabler:world" className="size-4" />
         {LABELS[active]}
         <Icon icon="tabler:chevron-down" className="size-3.5 opacity-70" />
@@ -35,7 +36,7 @@ const LanguageSwitcher = () => {
         // `hidden` is the initial state Preline toggles. Without it this panel
         // renders at opacity-0 but still occupies its box, so clicks over the
         // hero landed on the invisible ES / FR links and switched locale.
-        className="hs-dropdown-menu hs-dropdown-open:opacity-100 absolute top-full end-0 z-50 hidden rounded-lg border border-default-200 bg-white p-2 opacity-0 shadow-xl transition-[opacity,margin] duration-300 before:absolute before:-top-4 before:start-0 before:h-4 before:w-full"
+        className="hs-dropdown-menu hs-dropdown-open:opacity-100 border-default-200 absolute end-0 top-full z-50 hidden border bg-white p-2 opacity-0 shadow-xl transition-[opacity,margin] duration-300 before:absolute before:start-0 before:-top-4 before:h-4 before:w-full"
         role="menu"
       >
         <div className="flex flex-col gap-0.5">
@@ -45,9 +46,7 @@ const LanguageSwitcher = () => {
               href={pathname}
               locale={l}
               aria-current={l === active ? 'true' : undefined}
-              className={`block rounded-sm px-4 py-1.5 text-sm font-medium transition-colors hover:bg-primary/10 hover:text-primary ${
-                l === active ? 'bg-primary/10 text-primary font-semibold' : 'text-default-700'
-              }`}
+              className={`hover:bg-primary/10 hover:text-primary block px-4 py-1.5 text-sm font-medium transition-colors ${l === active ? 'bg-primary/10 text-primary font-semibold' : 'text-default-700'}`}
             >
               {LABELS[l]}
             </Link>

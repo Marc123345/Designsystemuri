@@ -77,18 +77,18 @@ export const productImages: Record<string, StaticImageData> = {
   'mb1um-12-22': mb1um1222,
   'mb1um-2-4': mb1um24,
   'mb1um-30-40': mb1um3040,
-  'mcd': mcd,
+  mcd: mcd,
   'metal-bond-micron': metalBondMicron,
   'natural-micron': naturalMicron,
   'ns-100-p': ns100P,
   'pcbn-edn': pcbnEdn,
   'pcbn-esn': pcbnEsn,
-  'pcbn': pcbn,
+  pcbn: pcbn,
   'pcd-grades-chart': pcdGradesChart,
-  'pcd': pcd,
+  pcd: pcd,
   'poly-micron': polyMicron,
-  'rd10': rd10,
-  'rd90': rd90,
+  rd10: rd10,
+  rd90: rd90,
   'resin-bond-mesh': resinBondMesh,
   'toolstone-1': toolstone1,
   'toolstone-10': toolstone10,
@@ -111,5 +111,4 @@ export const productImages: Record<string, StaticImageData> = {
   'wd-aaa': wdAaa,
 }
 
-export const getProductImage = (key?: string): StaticImageData | undefined =>
-  key ? productImages[key] : undefined
+export const getProductImage = (key?: string): StaticImageData | undefined => (key ? productImages[key] : undefined)

@@ -19,21 +19,7 @@ import { ArrowButton, SectionHeading } from './ui'
  * Lives in its own file rather than in sections.tsx so Swiper is bundled only
  * on the routes that use it; sections.tsx is imported by every page.
  */
-const CardCarousel = ({
-  eyebrow,
-  title,
-  desc,
-  items,
-  ctaHref,
-  ctaLabel,
-}: {
-  eyebrow?: string
-  title: string
-  desc?: string
-  items: Card[]
-  ctaHref?: string
-  ctaLabel?: string
-}) => {
+const CardCarousel = ({ eyebrow, title, desc, items, ctaHref, ctaLabel }: { eyebrow?: string; title: string; desc?: string; items: Card[]; ctaHref?: string; ctaLabel?: string }) => {
   // Swiper binds navigation by selector, so two carousels on one page would
   // otherwise share controls — whichever mounted last would win.
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '')
@@ -41,36 +27,14 @@ const CardCarousel = ({
   const next = `cc-next-${uid}`
 
   const arrow = (dir: 'prev' | 'next') => (
-    <button
-      type="button"
-      className={`${dir === 'prev' ? prev : next} static! group flex`}
-      aria-label={dir === 'prev' ? 'Previous products' : 'Next products'}
-    >
-      <span
-        className={`inline-flex! size-12! cursor-pointer items-center justify-center rounded bg-default-100 text-default-900! transition-all hover:bg-default-200 ${
-          dir === 'prev' ? 'rounded-es-2xl' : 'rounded-ee-2xl'
-        }`}
-      >
+    <button type="button" className={`${dir === 'prev' ? prev : next} group static! flex`} aria-label={dir === 'prev' ? 'Previous products' : 'Next products'}>
+      <span className={`bg-default-100 text-default-900! hover:bg-default-200 inline-flex! size-12! cursor-pointer items-center justify-center transition-all ${dir === 'prev' ? '' : ''}`}>
         <span className="relative block overflow-hidden">
-          <span
-            className={`block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] ${
-              dir === 'prev' ? 'group-hover:-translate-x-7' : 'group-hover:translate-x-7'
-            }`}
-          >
-            <Icon
-              icon={dir === 'prev' ? 'tabler:arrow-narrow-left' : 'tabler:arrow-narrow-right'}
-              className="flex size-6"
-            />
+          <span className={`block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] ${dir === 'prev' ? 'group-hover:-translate-x-7' : 'group-hover:translate-x-7'}`}>
+            <Icon icon={dir === 'prev' ? 'tabler:arrow-narrow-left' : 'tabler:arrow-narrow-right'} className="flex size-6" />
           </span>
-          <span
-            className={`absolute top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] ${
-              dir === 'prev' ? 'start-7 group-hover:start-0' : 'end-7 group-hover:end-0'
-            }`}
-          >
-            <Icon
-              icon={dir === 'prev' ? 'tabler:arrow-narrow-left' : 'tabler:arrow-narrow-right'}
-              className="flex size-6"
-            />
+          <span className={`absolute top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] ${dir === 'prev' ? 'start-7 group-hover:start-0' : 'end-7 group-hover:end-0'}`}>
+            <Icon icon={dir === 'prev' ? 'tabler:arrow-narrow-left' : 'tabler:arrow-narrow-right'} className="flex size-6" />
           </span>
         </span>
       </span>
@@ -78,9 +42,9 @@ const CardCarousel = ({
   )
 
   return (
-    <section className="lg:py-30 py-20">
+    <section className="py-20 lg:py-30">
       <div className="container">
-        <div className="grid md:grid-cols-2 grid-cols-1 items-end gap-8">
+        <div className="grid grid-cols-1 items-end gap-8 md:grid-cols-2">
           <SectionHeading eyebrow={eyebrow} title={title} desc={desc} />
 
           <div className="flex md:ms-auto">
@@ -106,19 +70,13 @@ const CardCarousel = ({
           >
             {items.map((item) => (
               <SwiperSlide key={item.title} className="h-auto!">
-                <Link
-                  href={item.href}
-                  className="group flex h-full flex-col gap-5 rounded-md border border-default-200 p-8 transition-colors hover:border-primary hover:bg-default-50"
-                >
-                  <Icon icon={item.icon} className="size-10 text-primary" />
-                  <h3 className="text-xl group-hover:text-primary">{item.title}</h3>
-                  <p className="text-base text-default-600">{item.desc}</p>
-                  <span className="mt-auto inline-flex items-center gap-2 pt-2 text-sm font-semibold text-primary">
+                <Link href={item.href} className="group border-default-200 hover:border-primary hover:bg-default-50 flex h-full flex-col gap-5 border p-8 transition-colors">
+                  <Icon icon={item.icon} className="text-primary size-10" />
+                  <h3 className="group-hover:text-primary text-xl">{item.title}</h3>
+                  <p className="text-default-600 text-base">{item.desc}</p>
+                  <span className="text-primary mt-auto inline-flex items-center gap-2 pt-2 text-sm font-semibold">
                     Learn more
-                    <Icon
-                      icon="tabler:arrow-narrow-right"
-                      className="size-5 transition-transform duration-300 group-hover:translate-x-1"
-                    />
+                    <Icon icon="tabler:arrow-narrow-right" className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </span>
                 </Link>
               </SwiperSlide>

@@ -39,7 +39,7 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
       />
 
       {/* The panel copy sits beside the form rather than above it, so the
-          pre-qualifying instruction is readable while the fields are filled. */}
+pre-qualifying instruction is readable while the fields are filled. */}
       <section className="py-20 lg:py-30">
         <div className="container">
           <div className="grid items-start gap-14 lg:grid-cols-2">
@@ -47,7 +47,10 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
               <SectionHeading title={t(locale, 'Tell us the grade you need.')} />
               <p className="text-default-600 mt-5 text-base">{t(locale, 'Request a quote, order a sample, or ask a technical question. One form, and a specialist who understands the material replies within one business day.')}</p>
               <p className="text-default-600 mt-5 text-base">
-                {t(locale, 'The more you can tell us upfront, product, grade, size, and quantity, the faster we can give a useful answer instead of coming back with basic questions. Not sure of the exact grade? Give us the material you are working and the finish you need, and we will specify it for you.')}
+                {t(
+                  locale,
+                  'The more you can tell us upfront, product, grade, size, and quantity, the faster we can give a useful answer instead of coming back with basic questions. Not sure of the exact grade? Give us the material you are working and the finish you need, and we will specify it for you.'
+                )}
               </p>
               <p className="text-default-600 mt-5 text-base">
                 {t(locale, 'Prefer to talk first? Email')}{' '}
@@ -65,7 +68,7 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
               </div>
             </div>
 
-            <div className="border-default-200 bg-default-50 rounded-md border p-6 lg:p-10">
+            <div className="border-default-200 bg-default-50 border p-6 lg:p-10">
               <QuoteForm formTitle={t(locale, 'Request a Quote')} formDesc={t(locale, 'Tell us the product, grade, size, and quantity you need. A specialist who understands the material replies within one business day.')} productOptions={productOptions} />
             </div>
           </div>
@@ -83,7 +86,9 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
             </li>
             <li className="flex gap-3">
               <Icon icon="tabler:phone" className="text-primary mt-0.5 size-6 shrink-0" />
-              <span className="text-default-600 text-base">{t(locale, 'Tel:')} {site.phone}</span>
+              <span className="text-default-600 text-base">
+                {t(locale, 'Tel:')} {site.phone}
+              </span>
             </li>
             {/* WhatsApp is a persistent, shared channel — one tap reaches the
                 London landline, so a reply is not blocked on one person. */}
@@ -105,7 +110,7 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
           </ul>
 
           {/* A map is optional and low priority for a B2B manufacturer whose
-              buyers order remotely, so it stays small and below the form. */}
+buyers order remotely, so it stays small and below the form. */}
           <div className="mt-10 max-w-[420px]">
             <Wireframe label="Map — EID House, 12 St. Cross Street, London EC1N 8UB" ratio="square" />
           </div>

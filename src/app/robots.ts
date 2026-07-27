@@ -1,5 +1,5 @@
-import type { MetadataRoute } from "next";
-import { SITE_ORIGIN } from "./sitemap";
+import type { MetadataRoute } from 'next'
+import { SITE_ORIGIN } from './sitemap'
 
 // Origin comes from sitemap.ts so robots, canonicals, and the sitemap all
 // resolve to the same host. `host` is intentionally omitted — it is a legacy
@@ -7,9 +7,9 @@ import { SITE_ORIGIN } from "./sitemap";
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
-      userAgent: "*",
-      allow: "/",
+      userAgent: '*',
+      allow: '/',
     },
     sitemap: `${SITE_ORIGIN}/sitemap.xml`,
-  };
+  }
 }
