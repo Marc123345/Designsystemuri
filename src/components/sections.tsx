@@ -278,7 +278,7 @@ export const DarkFeatureList = ({
 }) => {
   const locale = useLocale() as Locale
   return (
-    <section className="section-angled relative size-full overflow-hidden py-20 text-white lg:py-37.5">
+    <section className="relative size-full overflow-hidden py-20 text-white lg:py-37.5">
       {/* Full-bleed background image slot. The template runs a photograph here.
         Until EID supplies one this renders as a wireframe — dashed frame,
 diagonals and a centred label — over a dark base that keeps the glass

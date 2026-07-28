@@ -40,22 +40,6 @@ textarea {
     @apply mx-auto max-w-full lg:px-12.5 md:px-7.5 px-4;
 }
 
-/* Diagonal section seam. Slants the top and bottom edges of a full-bleed dark
-   band into a parallelogram so it cuts diagonally into the light sections
-   above and below. Applied to the band's <section>; the band's own padding
-   (lg:py-37.5 / py-20) keeps content well clear of the slanted zone, so only
-   the fill is cut, never the text. --seam is the slant depth. */
-.section-angled {
-    --seam: 3.5rem;
-    clip-path: polygon(0 var(--seam), 100% 0, 100% calc(100% - var(--seam)), 0 100%);
-}
-
-@media (max-width: 768px) {
-    .section-angled {
-        --seam: 1.75rem;
-    }
-}
-
 /* Navbar Active Link */
 #navbar a.active {
     @apply text-primary;
