@@ -132,7 +132,7 @@ const AnnotationLayer = () => {
             </button>
           </div>
 
-          <div className="space-y-3 px-5 py-5">
+          <div className="space-y-3 px-5 pt-5 pb-28 sm:pb-5">
             {note.body.map((para, i) => (
               <p key={i} className="text-default-600 text-sm leading-relaxed">
                 {para}
@@ -142,12 +142,13 @@ const AnnotationLayer = () => {
         </div>
       )}
 
-      {/* Toggle. Bottom-left, opposite the WhatsApp button. */}
+      {/* Toggle. Stacked directly above the WhatsApp button, which now also
+          sits bottom-left so it stops covering the note panel. */}
       <button
         type="button"
         onClick={toggle}
         aria-pressed={on}
-        className={`fixed bottom-6 left-6 z-[140] inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold shadow-[0_10px_30px_rgba(2,6,23,0.25)] transition-colors ${
+        className={`fixed bottom-24 left-6 z-[140] inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold shadow-[0_10px_30px_rgba(2,6,23,0.25)] transition-colors md:bottom-27 md:left-8 ${
           on ? 'bg-primary text-white' : 'border-default-300 text-default-700 hover:border-primary border bg-white'
         }`}
       >
