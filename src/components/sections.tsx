@@ -5,7 +5,7 @@ import { RichText } from '@/components/RichText'
 import Wireframe from '@/components/Wireframe'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
-import { getProducts, t } from '@/lib/i18n-content'
+import { t } from '@/lib/i18n-content'
 import type { SectionCatalog } from '@/lib/product-catalog'
 import { SHOW_PHOTOS, getProductImage } from '@/lib/product-images'
 import { site } from '@/lib/site'
@@ -28,7 +28,7 @@ export type Card = {
  * breadcrumb, eyebrow, H1, lede — so depth in the site is always legible.
  */
 export const PageHero = ({ eyebrow, title, desc, crumbs, primaryCta, secondaryCta }: { eyebrow?: string; title: string; desc?: string; crumbs: { label: string; href?: string }[]; primaryCta?: { label: string; href: string }; secondaryCta?: { label: string; href: string } }) => (
-  <section className="border-default-200 relative overflow-hidden border-b pt-35 pb-14 lg:pt-50 lg:pb-20">
+  <section data-note="page-hero" className="border-default-200 relative overflow-hidden border-b pt-35 pb-14 lg:pt-50 lg:pb-20">
     <div className="relative z-10 container">
       <nav aria-label="Breadcrumb">
         <ol className="text-default-500 flex flex-wrap items-center gap-2 text-sm">
@@ -85,7 +85,9 @@ export const CardGrid = ({
   ctaHref,
   ctaLabel,
   columns = 4,
+  note,
 }: {
+  note?: string
   eyebrow?: string
   title: string
   desc?: string
@@ -101,7 +103,7 @@ export const CardGrid = ({
 }) => {
   const locale = useLocale() as Locale
   return (
-    <section className="py-20 lg:py-30">
+    <section data-note={note} className="py-20 lg:py-30">
       <div className="container">
         <SectionHeading eyebrow={eyebrow} title={title} desc={desc} />
 
@@ -207,7 +209,7 @@ export const StatsBar = ({ items }: { items: { value: string; label: string }[] 
  * scanning for credentials rather than reading.
  */
 export const TrustBar = ({ items }: { items: string[] }) => (
-  <section className="border-default-200 bg-default-50 border-y">
+  <section data-note="trust-bar" className="border-default-200 bg-default-50 border-y">
     <div className="container">
       <ul className="flex flex-wrap items-center justify-between gap-x-10 gap-y-4 py-6">
         {items.map((item) => (
@@ -278,7 +280,7 @@ export const DarkFeatureList = ({
 }) => {
   const locale = useLocale() as Locale
   return (
-    <section className="relative size-full overflow-hidden py-20 text-white lg:py-37.5">
+    <section data-note="qc" className="relative size-full overflow-hidden py-20 text-white lg:py-37.5">
       {/* Full-bleed background image slot. The template runs a photograph here.
         Until EID supplies one this renders as a wireframe — dashed frame,
 diagonals and a centred label — over a dark base that keeps the glass
@@ -348,7 +350,7 @@ as an empty list. */}
  * The first item is open by default so the block never reads as an empty list.
  */
 export const Faq = ({ eyebrow, title, desc, items }: { eyebrow: string; title: string; desc?: string; items: { q: string; a: string }[] }) => (
-  <section className="py-20 lg:py-30">
+  <section data-note="faq" className="py-20 lg:py-30">
     <div className="container">
       <SectionHeading eyebrow={eyebrow} title={title} desc={desc} />
 
@@ -386,7 +388,7 @@ export const CrossLinks = ({ groups }: { groups: { title: string; links: { label
   if (!populated.length) return null
 
   return (
-    <section className="border-default-200 border-t py-16 lg:py-24">
+    <section data-note="cross-links" className="border-default-200 border-t py-16 lg:py-24">
       <div className="container">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
           {populated.map((group) => (
@@ -615,7 +617,7 @@ export const JumpNav = ({ items }: { items: { id: string; label: string }[] }) =
   }, [items])
 
   return (
-    <nav aria-label={t(locale, 'On this page')} className="border-default-200 bg-body-bg/95 sticky top-[84px] z-40 border-b backdrop-blur-md">
+    <nav data-note="jump-nav" aria-label={t(locale, 'On this page')} className="border-default-200 bg-body-bg/95 sticky top-[84px] z-40 border-b backdrop-blur-md">
       <div className="container flex flex-wrap items-center gap-3 py-4">
         <span className="text-default-500 text-sm tracking-[0.2em] uppercase">{t(locale, 'On this page')}</span>
         {items.map((item) => {
@@ -662,10 +664,9 @@ export const QuoteSection = ({
   formDesc?: string
 }) => {
   const locale = useLocale() as Locale
-  const productOptions = [t(locale, 'Help me specify'), ...getProducts(locale).map((p) => p.name)]
 
   return (
-    <section className="py-20 lg:py-30">
+    <section data-note="quote" className="py-20 lg:py-30">
       <div className="container">
         <div className="grid items-start gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
@@ -689,7 +690,7 @@ export const QuoteSection = ({
 
           <div className="lg:col-span-7">
             <div className="border-default-200 bg-default-50 border p-6 lg:p-10">
-              <QuoteForm formTitle={t(locale, formTitle)} formDesc={t(locale, formDesc)} productOptions={productOptions} />
+              <QuoteForm formTitle={t(locale, formTitle)} formDesc={t(locale, formDesc)} />
             </div>
           </div>
         </div>

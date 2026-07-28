@@ -1,5 +1,6 @@
 import '@/assets/css/style.css'
 import favicon from '@/assets/images/favicon.svg'
+import AnnotationLayer from '@/components/AnnotationLayer'
 import WhatsAppButton from '@/components/WhatsAppButton'
 import AppProvidersWrapper from '@/components/wrappers/AppProvidersWrapper'
 import { routing } from '@/i18n/routing'
@@ -79,6 +80,7 @@ const LocaleLayout = async ({ children, params }: { children: React.ReactNode; p
         <NextIntlClientProvider>
           <AppProvidersWrapper>{children}</AppProvidersWrapper>
           {/* Outside the page wrapper so it floats above every route. */}
+          <AnnotationLayer />
           <WhatsAppButton />
         </NextIntlClientProvider>
       </body>

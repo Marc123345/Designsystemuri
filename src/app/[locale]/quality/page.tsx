@@ -122,7 +122,7 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
 
       {/* QC PHILOSOPHY — the argument for why the laboratory exists, before any
 list of tests. */}
-      <section className="py-16 lg:py-24">
+      <section data-note="quality" className="py-16 lg:py-24">
         <div className="container">
           <div className="grid gap-12 lg:grid-cols-12">
             <div className="lg:col-span-7">

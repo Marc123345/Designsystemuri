@@ -85,7 +85,7 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
           anything. No CTA either — the hero carries the same one two hundred
           pixels above. The lede leads, and the panel beside it carries facts
           instead of an empty spec list. */}
-      <section className="py-16 lg:py-24">
+      <section data-note="overview" className="py-16 lg:py-24">
         <div className="container">
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-7">
@@ -210,7 +210,7 @@ const ProductSectionBlock = ({ locale, slug, productName, section, gray, showHea
       <div className={gray ? 'bg-default-50' : ''}>
         {/* scroll-mt clears both the fixed header (~84px) and the sticky
             JumpNav (~57px) so a jumped-to section lands below both, not under. */}
-        <section id={section.id} className="scroll-mt-40 py-16 lg:py-24">
+        <section data-note="product-section" id={section.id} className="scroll-mt-40 py-16 lg:py-24">
           <div className="container">
             <div className="grid gap-12 lg:grid-cols-12">
               <div className="lg:col-span-7">

@@ -22,7 +22,7 @@ const Footer = () => {
   const locale = useLocale() as Locale
 
   return (
-    <footer id="footer" className="relative">
+    <footer data-note="footer" id="footer" className="relative">
       {/* ── SPLIT PANEL ── */}
       <div className="grid grid-cols-1 lg:grid-cols-2">
         {/* Left — the same brand blue as the header's angled block, so the top

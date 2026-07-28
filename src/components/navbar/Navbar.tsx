@@ -69,7 +69,7 @@ const Navbar = () => {
   const navItems = primaryNav.filter((item) => !('cta' in item && item.cta))
 
   return (
-    <header>
+    <header data-note="navbar">
       <div className="border-default-200 fixed inset-x-0 top-0 z-[120] h-[76px] w-full border-b bg-white lg:h-[96px]">
         {/* Angled brand block behind the logo. */}
         <div

@@ -4,7 +4,7 @@ import { ArrowButton, SectionHeading } from '@/components/ui'
 import Wireframe from '@/components/Wireframe'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
-import { getProducts, t } from '@/lib/i18n-content'
+import { t } from '@/lib/i18n-content'
 import { site } from '@/lib/site'
 import { Icon } from '@iconify/react'
 import type { Metadata } from 'next'
@@ -25,7 +25,6 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
 
   // "Help me specify" leads the list so the buyer who cannot name a grade still
   // has a first-class option instead of guessing at a product family.
-  const productOptions = [t(locale, 'Help me specify'), ...getProducts(locale).map((p) => p.name)]
 
   return (
     <>
@@ -69,7 +68,7 @@ pre-qualifying instruction is readable while the fields are filled. */}
             </div>
 
             <div className="border-default-200 bg-default-50 border p-6 lg:p-10">
-              <QuoteForm formTitle={t(locale, 'Request a Quote')} formDesc={t(locale, 'Tell us the product, grade, size, and quantity you need. A specialist who understands the material replies within one business day.')} productOptions={productOptions} />
+              <QuoteForm formTitle={t(locale, 'Request a Quote')} formDesc={t(locale, 'Tell us the product, grade, size, and quantity you need. A specialist who understands the material replies within one business day.')} />
             </div>
           </div>
         </div>

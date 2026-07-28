@@ -29,7 +29,7 @@ export type Pillar = {
  */
 const WhyEid = ({ eyebrow, title, pillars }: { eyebrow: string; title: string; pillars: Pillar[] }) => {
   return (
-    <section className="relative size-full py-20 lg:py-30">
+    <section data-note="why-eid" className="relative size-full py-20 lg:py-30">
       <div className="relative z-10 container">
         <div className="border-default-300 inline-flex items-center gap-1.5 border bg-white px-3.5 py-1.25">
           <span className="bg-primary size-2"></span>

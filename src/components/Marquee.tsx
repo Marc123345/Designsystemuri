@@ -15,7 +15,7 @@ const Marquee = ({ items, inverse = false }: { items: string[]; inverse?: boolea
   const track = inverse ? 'infinite-scroll-inverse' : 'infinite-scroll'
 
   return (
-    <section className="border-default-200 relative size-full overflow-hidden border-y py-6">
+    <section data-note="marquee" className="border-default-200 relative size-full overflow-hidden border-y py-6">
       <div className="relative z-10 flex w-full flex-nowrap gap-5 overflow-hidden">
         {[0, 1].map((copy) => (
           <ul key={copy} aria-hidden={copy === 1} className={`${track} flex shrink-0 items-center justify-start gap-5`}>

@@ -229,7 +229,7 @@ const Resolution = ({ resolutionTitle, production, resolutionClosing, primaryCta
   }
 
   return (
-    <section className="relative size-full overflow-hidden py-20 text-white lg:py-37.5">
+    <section data-note="problem" className="relative size-full overflow-hidden py-20 text-white lg:py-37.5">
       {/* Signature dark band: gradient base + noise overlay, matching
           DarkFeatureList so the register change reads as one system. */}
       <div className="from-default-950 via-default-950 to-primary-3 absolute inset-0 bg-linear-to-br"></div>

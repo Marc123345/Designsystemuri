@@ -33,7 +33,7 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
         secondaryCta={{ label: t(locale, 'MSDS'), href: '/resources/msds' }}
       />
 
-      <section className="py-16 lg:py-24">
+      <section data-note="downloads" className="py-16 lg:py-24">
         <div className="container">
           {/* Deliberately ungated: no form, no login, no gate on a spec sheet. */}
           <SectionHeading eyebrow={t(locale, 'No form, no login')} title={t(locale, 'Product datasheets, free to download.')} />

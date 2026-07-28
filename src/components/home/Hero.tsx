@@ -14,7 +14,7 @@ const Hero = ({ eyebrow, title, desc }: { eyebrow: string; title: string; desc: 
   const locale = useLocale() as Locale
 
   return (
-    <section className="relative size-full overflow-hidden pt-35 lg:pt-50">
+    <section data-note="hero" className="relative size-full overflow-hidden pt-35 lg:pt-50">
       <div className="relative z-10 container">
         <div className="grid items-end gap-12.5 xl:grid-cols-4 xl:gap-20">
           <div className="xl:col-span-3">

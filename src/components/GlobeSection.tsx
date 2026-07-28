@@ -40,7 +40,7 @@ const GlobeSection = ({ eyebrow, title, desc, ctaLabel, ctaHref = '/contact' }: 
   const locale = useLocale() as Locale
 
   return (
-    <section className="relative size-full overflow-hidden py-20 text-white lg:py-37.5">
+    <section data-note="reach" className="relative size-full overflow-hidden py-20 text-white lg:py-37.5">
       <div className="from-default-950 via-default-950 to-primary-3 absolute inset-0 bg-linear-to-br"></div>
       <div className="absolute inset-0 size-full bg-[url(../images/bg-noice.gif)] bg-auto bg-position-[50%] bg-repeat opacity-6"></div>
       {/* Soft blue bloom behind the globe. */}

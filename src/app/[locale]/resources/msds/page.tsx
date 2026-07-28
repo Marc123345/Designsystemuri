@@ -45,7 +45,7 @@ const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
         secondaryCta={{ label: t(locale, 'Datasheets'), href: '/resources/datasheets' }}
       />
 
-      <section className="py-16 lg:py-24">
+      <section data-note="downloads" className="py-16 lg:py-24">
         <div className="container">
           {/* Deliberately ungated: a safety document behind a form is a liability,
 not a lead magnet. */}

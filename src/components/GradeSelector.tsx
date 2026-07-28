@@ -199,7 +199,7 @@ const GradeSelector = ({ series, fallbackImage, sectionTitle, productName }: { s
   const sizeNoun = /mesh/i.test(current.sizesLabel ?? '') ? t(locale, 'mesh sizes') : t(locale, 'sizes')
 
   return (
-    <section ref={panelRef} aria-labelledby={baseId + '-heading'} className="scroll-mt-40">
+    <section data-note="grade-selector" ref={panelRef} aria-labelledby={baseId + '-heading'} className="scroll-mt-40">
       <div className="bg-default-950 text-white">
         {/* ---------------------------- 1 · HEADER --------------------------- */}
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 px-5 py-4 sm:px-8 sm:py-5">

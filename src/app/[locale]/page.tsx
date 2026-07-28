@@ -113,7 +113,6 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
   setRequestLocale(locale)
 
   const products = getProducts(locale)
-  const productOptions = [t(locale, 'Help me specify'), ...products.map((p) => p.name)]
   const apps = getApplications(locale)
 
   const groupCards = products.map((p) => ({
@@ -193,6 +192,7 @@ fourth restatement of "we control quality". */}
       <div id="products" className="scroll-mt-28">
         <CardGrid
           eyebrow={t(locale, 'The range · eight product groups')}
+          note="range"
           title={t(locale, 'Every industrial diamond and CBN product, from one source.')}
           desc={t(locale, 'Natural grit and powder made in our own factory, bonded and CBN grades processed and graded to your spec, and single crystal grown to your exact orientation.')}
           items={groupCards}
@@ -234,6 +234,7 @@ a technical buyer checks for before anything else on this page. */}
       {/* Six hubs → 3-across, two rows, with the larger card treatment. */}
       <CardGrid
         eyebrow={t(locale, 'Applications · six hubs')}
+        note="applications"
         title={t(locale, 'Diamond and CBN for the work your tools do.')}
         desc={t(locale, 'We supply the material. You build the tools that serve these applications.')}
         items={hubCards}
@@ -327,7 +328,7 @@ another page to ask a question. */}
 
             <div className="lg:col-span-7">
               <div className="border-default-200 bg-default-50 border p-6 lg:p-10">
-                <QuoteForm formTitle={t(locale, 'Request a Quote')} formDesc={t(locale, 'Tell us the product, grade, size, and quantity you need. A specialist who understands the material replies within one business day.')} productOptions={productOptions} />
+                <QuoteForm formTitle={t(locale, 'Request a Quote')} formDesc={t(locale, 'Tell us the product, grade, size, and quantity you need. A specialist who understands the material replies within one business day.')} />
               </div>
             </div>
           </div>

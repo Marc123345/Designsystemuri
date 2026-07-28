@@ -1,168 +1,28 @@
 'use client'
 
-import type { Locale } from '@/i18n/routing'
-import { t } from '@/lib/i18n-content'
-import { site } from '@/lib/site'
-import { useLocale } from 'next-intl'
-import { useEffect, useState } from 'react'
+import JotformEmbed from '@/components/JotformEmbed'
 
 /**
- * The quote form. Previously this was decorative markup: no <form>, no name
- * attributes, no labels, and a "Submit Request" <a href="/contact"> — so anyone
- * who filled it in lost everything they typed the moment they clicked.
+ * The quote block: heading, standfirst, and EID's Jotform embed.
  *
- * There is no backend on this build, so submission composes a mailto to the
- * sales inbox with the fields filled in. That is a real send rather than a
- * pretend one, and it matches the architecture's "both channels feed the same
- * sales inbox". Swap the handler for a POST when an endpoint exists.
+ * This used to be a hand-built form whose submit composed a mailto to the sales
+ * inbox — honest, but it depended on the visitor having a mail client
+ * configured, and nothing was ever recorded anywhere. The Jotform form is a
+ * real endpoint with real submissions behind it, so the markup here is now just
+ * the framing around it.
  *
- * Fields follow the copy deck exactly: name, company, email, phone, country,
- * product of interest, grade or size, quantity, message. Required is kept to
- * the minimum that lets a real reply happen — name, email, product, message.
+ * Prefill from the grade selector still works: /contact?product=…&grade=… is
+ * read by JotformEmbed and passed to the form.
  */
-const FIELD_CLASS = 'w-full  border border-default-200 px-4 py-3 text-base text-default-900 placeholder:text-default-500 focus:border-primary focus:outline-none'
+const QuoteForm = ({ formTitle, formDesc }: { formTitle: string; formDesc: string }) => (
+  <div>
+    <h3 className="text-2xl">{formTitle}</h3>
+    <p className="text-default-600 mt-3 text-base">{formDesc}</p>
 
-const LABEL_CLASS = 'mb-2 block text-sm font-medium text-default-900'
-
-const HELP_CLASS = 'mt-2 text-sm text-default-500'
-
-const QuoteForm = ({ formTitle, formDesc, productOptions }: { formTitle: string; formDesc: string; productOptions: string[] }) => {
-  const locale = useLocale() as Locale
-  const [sent, setSent] = useState(false)
-
-  // The grade selector links here as /contact?product=…&grade=…, so someone who
-  // has already picked a grade does not retype it. Read after mount rather than
-  // during render: these pages are statically generated, so the server has no
-  // query string and an initial value read from one would not match the markup
-  // it hydrates into. Both fields stay editable — this is a prefill, not a lock.
-  const [product, setProduct] = useState('')
-  const [grade, setGrade] = useState('')
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const p = params.get('product')
-    const g = params.get('grade')
-    // Only accept a product the select actually offers; anything else would
-    // silently select nothing and look broken.
-    if (p && productOptions.includes(p)) setProduct(p)
-    if (g) setGrade(g)
-  }, [productOptions])
-
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    const f = new FormData(e.currentTarget)
-    const get = (k: string) => String(f.get(k) ?? '').trim()
-    const body = [
-      `Name: ${get('name')}`,
-      `Company: ${get('company')}`,
-      `Email: ${get('email')}`,
-      `Phone: ${get('phone')}`,
-      `Country: ${get('country')}`,
-      `Product of interest: ${get('product')}`,
-      `Grade or size: ${get('grade')}`,
-      `Quantity: ${get('quantity')}`,
-      '',
-      'Message:',
-      get('message'),
-    ].join('\n')
-    const subject = `Quote request${get('product') ? ` — ${get('product')}` : ''}`
-    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-    setSent(true)
-  }
-
-  return (
-    <form onSubmit={handleSubmit} noValidate={false}>
-      <h3 className="text-2xl">{formTitle}</h3>
-      <p className="text-default-600 mt-3 text-base">{formDesc}</p>
-
-      <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2">
-        <div>
-          <label className={LABEL_CLASS} htmlFor="qf-name">
-            {t(locale, 'Name')}
-          </label>
-          <input id="qf-name" name="name" type="text" autoComplete="name" required className={FIELD_CLASS} />
-        </div>
-
-        <div>
-          <label className={LABEL_CLASS} htmlFor="qf-company">
-            {t(locale, 'Company')}
-          </label>
-          <input id="qf-company" name="company" type="text" autoComplete="organization" className={FIELD_CLASS} />
-        </div>
-
-        <div>
-          <label className={LABEL_CLASS} htmlFor="qf-email">
-            {t(locale, 'Email')}
-          </label>
-          <input id="qf-email" name="email" type="email" autoComplete="email" required className={FIELD_CLASS} />
-        </div>
-
-        <div>
-          <label className={LABEL_CLASS} htmlFor="qf-phone">
-            {t(locale, 'Phone')}
-          </label>
-          <input id="qf-phone" name="phone" type="tel" autoComplete="tel" className={FIELD_CLASS} />
-        </div>
-
-        <div>
-          <label className={LABEL_CLASS} htmlFor="qf-country">
-            {t(locale, 'Country')}
-          </label>
-          <input id="qf-country" name="country" type="text" autoComplete="country-name" className={FIELD_CLASS} />
-        </div>
-
-        <div>
-          <label className={LABEL_CLASS} htmlFor="qf-product">
-            {t(locale, 'Product of interest')}
-          </label>
-          <select id="qf-product" name="product" required aria-describedby="qf-product-help" className={FIELD_CLASS} value={product} onChange={(e) => setProduct(e.target.value)}>
-            <option value="" disabled>
-              {t(locale, 'Select a product')}
-            </option>
-            {productOptions.map((p) => (
-              <option key={p}>{p}</option>
-            ))}
-          </select>
-          <p id="qf-product-help" className={HELP_CLASS}>
-            {t(locale, "Pick the closest product. Not sure? Choose 'Help me specify' and describe your application below.")}
-          </p>
-        </div>
-
-        <div>
-          <label className={LABEL_CLASS} htmlFor="qf-grade">
-            {t(locale, 'Grade or size (optional)')}
-          </label>
-          <input id="qf-grade" name="grade" type="text" aria-describedby="qf-grade-help" className={FIELD_CLASS} value={grade} onChange={(e) => setGrade(e.target.value)} />
-          <p id="qf-grade-help" className={HELP_CLASS}>
-            {t(locale, 'If you know it. Mesh, micron, or FEPA all fine.')}
-          </p>
-        </div>
-
-        <div>
-          <label className={LABEL_CLASS} htmlFor="qf-quantity">
-            {t(locale, 'Quantity (optional)')}
-          </label>
-          <input id="qf-quantity" name="quantity" type="text" className={FIELD_CLASS} />
-        </div>
-
-        <div className="md:col-span-2">
-          <label className={LABEL_CLASS} htmlFor="qf-message">
-            {t(locale, 'Message')}
-          </label>
-          <textarea id="qf-message" name="message" required rows={5} className={FIELD_CLASS} />
-        </div>
-
-        <div className="md:col-span-2">
-          <button type="submit" className="bg-primary hover:bg-default-900 px-6 py-3.75 text-base font-medium text-white transition-all">
-            {t(locale, 'Send request')}
-          </button>
-          <p className="text-default-500 mt-4 text-sm" role="status">
-            {sent ? `${t(locale, 'Thanks. Your request reached our technical team, and someone will reply within one business day. Urgent? Call ')}${site.phone}${t(locale, ' or message us on WhatsApp.')}` : t(locale, 'A real person replies within one business day.')}
-          </p>
-        </div>
-      </div>
-    </form>
-  )
-}
+    <div className="mt-8">
+      <JotformEmbed title={formTitle} />
+    </div>
+  </div>
+)
 
 export default QuoteForm
