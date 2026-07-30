@@ -21,7 +21,13 @@ import { useCallback, useEffect, useState } from 'react'
  * remove it entirely — the data-note attributes it reads are inert without it.
  */
 
-type Pin = { key: string; n: number; top: number; left: number }
+type Pin = { key: string; n: number; top: number; left: number; fixed: boolean }
+
+/** Pins must clear the fixed header, which is 76px tall and 96px from lg. */
+const HEADER_CLEAR = 108
+/** Two pins this close would sit on top of each other. */
+const COLLIDE_Y = 40
+const COLLIDE_X = 60
 
 const STORAGE_KEY = 'eid:annotations'
 
@@ -50,13 +56,24 @@ const AnnotationLayer = () => {
       // A shared block can appear more than once on a page; pin the first.
       if (seen.has(key)) return
       seen.add(key)
+
+      // A fixed element (the header) needs a fixed pin, or the pin scrolls away
+      // from the thing it annotates. Everything else is pinned in document
+      // coordinates so it scrolls with its section.
+      const isFixed = getComputedStyle(el).position === 'fixed'
       const r = el.getBoundingClientRect()
-      next.push({
-        key,
-        n: next.length + 1,
-        top: r.top + window.scrollY + 12,
-        left: Math.min(r.right + window.scrollX - 44, document.documentElement.clientWidth - 52),
-      })
+
+      let top = isFixed ? r.top + 12 : Math.max(r.top + window.scrollY + 12, HEADER_CLEAR)
+      const left = Math.min((isFixed ? r.right : r.right + window.scrollX) - 44, document.documentElement.clientWidth - 52)
+
+      // Sections that start at the same place — the hero begins at the top of
+      // the document, right under the header — would otherwise stack pins
+      // exactly on top of each other. Step each collision down.
+      while (next.some((p) => p.fixed === isFixed && Math.abs(p.top - top) < COLLIDE_Y && Math.abs(p.left - left) < COLLIDE_X)) {
+        top += COLLIDE_Y
+      }
+
+      next.push({ key, n: next.length + 1, top, left, fixed: isFixed })
     })
     setPins(next)
   }, [])
@@ -68,10 +85,12 @@ const AnnotationLayer = () => {
     const ro = new ResizeObserver(measure)
     ro.observe(document.body)
     window.addEventListener('resize', measure)
+    window.addEventListener('scroll', measure, { passive: true })
     const t = setTimeout(measure, 800)
     return () => {
       ro.disconnect()
       window.removeEventListener('resize', measure)
+      window.removeEventListener('scroll', measure)
       clearTimeout(t)
     }
   }, [on, measure])
@@ -103,20 +122,26 @@ const AnnotationLayer = () => {
       {/* Pins. aria-hidden as a set: this is reviewer chrome, not page content,
           and a screen-reader user should not have to walk through it. */}
       {on && (
-        <div aria-hidden className="pointer-events-none absolute inset-0 z-[90]" style={{ height: 0 }}>
-          {pins.map((p) => (
-            <button
-              key={p.key}
-              type="button"
-              onClick={() => setActive(p.key)}
-              style={{ top: p.top, left: p.left }}
-              className={`pointer-events-auto absolute flex size-8 items-center justify-center text-xs font-bold shadow-[0_4px_14px_rgba(2,6,23,0.35)] transition-transform hover:scale-110 ${active === p.key ? 'bg-default-900 text-white' : 'bg-primary text-white'}`}
-              title={annotations[p.key]?.title}
-            >
-              {p.n}
-            </button>
+        <>
+          {(['abs', 'fix'] as const).map((space) => (
+            <div key={space} aria-hidden className={`pointer-events-none z-[125] ${space === 'fix' ? 'fixed inset-0' : 'absolute inset-0'}`} style={space === 'abs' ? { height: 0 } : undefined}>
+              {pins
+                .filter((p) => (space === 'fix' ? p.fixed : !p.fixed))
+                .map((p) => (
+                  <button
+                    key={p.key}
+                    type="button"
+                    onClick={() => setActive(p.key)}
+                    style={{ top: p.top, left: p.left }}
+                    className={`pointer-events-auto absolute flex size-8 items-center justify-center text-xs font-bold shadow-[0_4px_14px_rgba(2,6,23,0.35)] transition-transform hover:scale-110 ${active === p.key ? 'bg-default-900 text-white' : 'bg-primary text-white'}`}
+                    title={annotations[p.key]?.title}
+                  >
+                    {p.n}
+                  </button>
+                ))}
+            </div>
           ))}
-        </div>
+        </>
       )}
 
       {/* Note panel */}

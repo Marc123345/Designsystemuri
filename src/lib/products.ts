@@ -69,18 +69,18 @@ export type Product = {
 // forms within a product, not separate pages, but they do get their own
 // sections and spec tables on the bond and CBN pages. Coatings are attribute
 // sections on those pages, never a standalone page or a nav entry.
-export const PRODUCT_FAMILIES = ['Natural Diamond Grit & Powder', 'Metal Bond Diamond', 'Resin Bond Diamond', 'CBN', 'Single Crystal Diamond (CVD & MCD)', 'Polycrystalline Diamond (CVD & PCD)', 'Natural Tool Stones', 'Polycrystalline Diamond Powder'] as const
+export const PRODUCT_FAMILIES = ['Natural Diamond Grit & Powder', 'CBN', 'Single Crystal Diamond (CVD & MCD)', 'Natural Tool Stones', 'Metal Bond Diamond', 'Resin Bond Diamond', 'Polycrystalline Diamond (CVD & PCD)', 'Polycrystalline Diamond Powder'] as const
 
 // Mega-menu reading order: 2-2-2-2 grid, four columns of two pages each.
 export const MEGA_MENU_COLUMNS: string[][] = [
-  ['natural-grit-powder', 'metal-bond'],
-  ['cbn', 'resin-bond'],
-  ['single-crystal', 'polycrystalline-diamond'],
-  ['tool-stones', 'polycrystalline-powder'],
+  ['natural-grit-powder', 'cbn'],
+  ['single-crystal', 'tool-stones'],
+  ['metal-bond', 'resin-bond'],
+  ['polycrystalline-diamond', 'polycrystalline-powder'],
 ]
 
 export const products: Product[] = [
-  /* ====================== 1 · NATURAL DIAMOND GRIT & POWDER ================= */
+  /* ================== 1 · NATURAL DIAMOND GRIT & POWDER ================== */
   {
     slug: 'natural-grit-powder',
     name: 'Natural Diamond Grit & Powder',
@@ -159,179 +159,7 @@ export const products: Product[] = [
     crossApplications: ['grinding-cutting-sawing-drilling', 'polishing-lapping', 'semiconductor-electronics'],
     guides: ['Diamond grit and micron size chart', 'How size distribution affects tool performance', 'Diamond vs CBN'],
   },
-
-  /* ============================ 2 · METAL BOND =============================
-   * Mesh and micron split into their own sections with their own spec tables
-   * (Uri, 19/7). "How metal bond works" rides as a callout on the mesh section.
-   */
-  {
-    slug: 'metal-bond',
-    name: 'Metal Bond Diamond',
-    family: 'Metal Bond Diamond',
-    h1: 'Metal Bond Diamond Powder',
-    metaTitle: 'Metal Bond Diamond Powder | Saw & Wheel Grades, Mesh & Micron',
-    metaDesc: 'Metal bond synthetic diamond in saw and wheel grades, coated and graded for sintered tools. Mesh and micron, finished to your spec.',
-    eyebrow: 'Products · Group 2',
-    cardDesc: 'Saw and wheel grades for sintered and brazed tools, in mesh and micron, with in-house coating options.',
-    overviewDesc: 'Mesh and micron grades for diamond saws, grinding wheels, and sintered, brazed, and electroplated tools, with in-house coating options.',
-    intro: [
-      'Metal bond diamond powder, graded to your spec in mesh and micron.',
-      'Metal bond diamond is the workhorse for tools that cut under high pressure and heat: stone saw segments, core drill bits, grinding cups, and sintered dental burs. EID supplies it in saw grade, wheel grade, and custom formulations, coated or uncoated, produced to order and then processed and graded through our facility to meet your specification. That grading pass is what separates a grade you can build a production run around from one you re-qualify every order.',
-      'Two forms, each with its own sizing world: [mesh](#mesh) for aggressive, high-load cutting, and [micron](#micron) for finer wheels and precision tools. Jump to either, or tell us the tool and the bond and we will specify the grade.',
-    ],
-    sections: [
-      {
-        id: 'mesh',
-        label: 'Metal Bond Mesh',
-        title: 'Metal bond diamond, mesh grades for high-load cutting.',
-        intro: [
-          'Mesh grades cover the coarse-to-medium range that goes into segmented and sintered tools cutting hard, non-ferrous material at volume. Saw grade carries high impact strength for interrupted, high-load work; wheel grade runs a controlled friability for grinding cups and profile wheels.',
-        ],
-        callouts: [
-          {
-            title: 'How metal bond works',
-            body: 'Metal bond holds diamond mechanically in a hard sintered matrix. The bond wears slowly and exposes fresh diamond as it goes, which suits aggressive cutting of stone, concrete, glass, ceramics, and composites. Retention depends on matching crystal strength and shape to the bond, which is where grade selection and [coating](#coated) do the work.',
-          },
-        ],
-        applicationsTitle: 'Typical Applications',
-        applications: ['Stone and concrete saw blades, segments, and wire saw beads.', 'Core drill bits for construction and mining.', 'Diamond grinding cups and profile wheels for stone and glass.', 'Sintered dental burs and rotary instruments.'],
-        applicationsNote: 'High-load work where the tool has to keep cutting predictably run after run.',
-        specsTitle: 'Metal bond mesh specifications',
-        specs: [
-          {
-            label: 'Grades',
-            value: 'Saw grade (high impact strength), wheel grade (controlled friability)',
-          },
-        ],
-        datasheet: 'Metal Bond datasheet',
-      },
-      {
-        id: 'micron',
-        label: 'Metal Bond Micron',
-        title: 'Metal bond diamond, micron grades for fine and precision tools.',
-        intro: [
-          'Micron grades cover the fine end of metal bond, for precision grinding wheels, small sintered tools, and fine dental and rotary work where sizing is measured rather than sieved. Mesh and micron are separate sizing systems and do not correlate, so specify by the one your process uses.',
-        ],
-        applicationsTitle: 'Typical Applications',
-        applications: ['Precision metal-bond grinding wheels.', 'Fine sintered segments and cups.', 'Small-diameter and profile tools.', 'Fine dental instruments.'],
-        applicationsNote: 'Where the finish and the wheel form matter as much as stock removal.',
-        specsTitle: 'Metal bond micron specifications',
-        specs: [],
-        datasheet: 'Metal Bond datasheet',
-      },
-      {
-        id: 'coated',
-        label: 'Coated Metal Bond',
-        title: 'Coated metal bond diamond.',
-        intro: [
-          'Coating a particle before it goes into the bond gives the matrix more to hold. The coating adds surface area and a metallurgical bond between the diamond and the sintered metal, so the crystal stays anchored under load instead of pulling out early. The result is longer tool life from the same diamond.',
-          'EID coats in-house, so the grit and the coating come from one supplier rather than a shipment out to a second vendor and back. Electroless nickel is the standard for sintered metal bond tools, applied at your target weight percentage; PVD and copper options are available where the bond calls for them.',
-          'Tell us your bond and we will recommend the coating and weight. [Ask our technical team](/contact).',
-        ],
-      },
-    ],
-    quality:
-      'The quality system is ISO 9001 certified, and every lot is traceable from incoming material through QC to delivery, with a certificate of analysis on request. Our lab measures particle size distribution and morphology on every lot, with coating weight and coverage checked on coated grades, and crystal strength where the grade calls for it. For a sintered tool, consistent sizing and coating weight are what keep your sinter results repeatable.',
-    qualityCta: 'See how our QC works',
-    cta: 'Request a Quote',
-    crossLinks: [
-      {
-        title: 'Within the range',
-        links: [
-          { label: 'Resin Bond Diamond (finer, friable work)', href: '/products/resin-bond' },
-          { label: 'Natural Diamond Grit & Powder', href: '/products/natural-grit-powder' },
-        ],
-      },
-    ],
-    crossApplications: ['dental', 'grinding-cutting-sawing-drilling'],
-    guides: ['Metal bond vs resin bond vs vitrified'],
-  },
-
-  /* ============================ 3 · RESIN BOND =============================
-   * Mesh and micron split into their own sections with their own spec tables
-   * (Uri, 19/7). The friability explainer rides as a callout on the mesh section.
-   */
-  {
-    slug: 'resin-bond',
-    name: 'Resin Bond Diamond',
-    family: 'Resin Bond Diamond',
-    h1: 'Resin Bond Diamond Powder',
-    metaTitle: 'Resin Bond Diamond Powder | Friable Mesh & Micron | EID',
-    metaDesc: 'Friable, multi-crystalline resin bond diamond in mesh and micron for fine grinding and polishing. Consistent, QC-controlled grades, coatings available.',
-    eyebrow: 'Products · Group 3',
-    cardDesc: 'Friable, multi-crystalline grades for fine grinding and polishing, in mesh and micron, with in-house coating options.',
-    overviewDesc: 'Friable, multi-crystalline grades in mesh and micron for fine grinding and polishing, coatings available.',
-    intro: [
-      'Resin bond diamond powder, friable grades in mesh and micron.',
-      'Resin bond diamond is built to fracture in a controlled way as it cuts, exposing fresh edges rather than dulling. That makes it the grade for fine grinding, polishing, and finishing, where surface quality outweighs aggressive stock removal. EID supplies it in mesh and micron, monocrystalline and polycrystalline, coated or uncoated, each grade processed and graded to your specification.',
-      '[Mesh](#mesh) and [micron](#micron) sit in separate sizing systems; specify by the one your process runs on.',
-    ],
-    sections: [
-      {
-        id: 'mesh',
-        label: 'Resin Bond Mesh',
-        title: 'Resin bond mesh, for resin-bonded wheels and flexible abrasives.',
-        intro: ['Mesh grades cover the coarser friable range for resin-bonded grinding wheels and flexible abrasive products, where the bond releases grit steadily and the crystal renews its own edges.'],
-        callouts: [
-          {
-            title: 'Why friability matters in a resin bond',
-            body: 'A resin bond is softer than a metal bond and releases the diamond more readily. Pair it with a friable, multi-crystalline crystal and the diamond breaks down in a governed way, presenting new cutting points instead of glazing over. The tool stays sharp and cuts cool, which protects the finish on carbide, ceramic, and glass. The grade sets how fast that breakdown runs, so matching friability to the operation is the decision that matters.',
-          },
-        ],
-        applicationsTitle: 'Typical Applications',
-        applications: ['Resin-bonded grinding wheels for carbide, ceramic, and glass.', 'Flexible abrasive sheets, belts, and pads for glass and stone.', 'Fine grinding ahead of a polishing stage.'],
-        specsTitle: 'Resin bond mesh specifications',
-        specs: [
-          {
-            label: 'Crystal type',
-            value: 'Monocrystalline (blocky to irregular), polycrystalline (self-sharpening)',
-          },
-        ],
-        datasheet: 'Resin Bond datasheet',
-      },
-      {
-        id: 'micron',
-        label: 'Resin Bond Micron',
-        title: 'Resin bond micron, for polishing and fine finishing.',
-        intro: ['Micron grades take the friable structure down to the fine and sub-micron sizing used in polishing, honing, and final finishing, where the last few microns and the surface are the point.'],
-        applicationsTitle: 'Typical Applications',
-        applications: ['Polishing and fine finishing of precision components.', 'Lapping and honing of technical ceramics and other hard, brittle materials.', 'Fixed-abrasive finishing where a controlled, self-renewing edge protects the surface.'],
-        specsTitle: 'Resin bond micron specifications',
-        specs: [],
-        datasheet: 'Resin Bond datasheet',
-      },
-      {
-        id: 'coated',
-        label: 'Coated Resin Bond',
-        title: 'Coated resin bond diamond.',
-        intro: [
-          'In a resin system the coating does two jobs. It improves how the resin grips the diamond, so the crystal holds until it has done its work, and on metallic coatings it carries heat away from the cutting zone, which protects both the bond and the workpiece finish. Copper is a common choice for its thermal behaviour; nickel is used where retention is the priority.',
-          'EID coats in-house, so a single order covers the grit and the coating. Tell us the resin system and we will recommend the coating. [Ask our technical team](/contact).',
-        ],
-      },
-    ],
-    quality:
-      'The quality system is ISO 9001 certified, with a certificate of analysis per lot on request. Our lab measures particle size distribution and morphology on every lot, with coating checked on coated grades. For fine grinding and polishing, a grade that breaks down the same way each order is what keeps your finish predictable.',
-    qualityCta: 'See how our QC works',
-    cta: 'Request a Quote',
-    crossLinks: [
-      {
-        title: 'Within the range',
-        links: [
-          { label: 'Metal Bond Diamond (high-load cutting)', href: '/products/metal-bond' },
-          { label: 'Natural Diamond Grit & Powder', href: '/products/natural-grit-powder' },
-        ],
-      },
-    ],
-    crossApplications: ['semiconductor-electronics', 'polishing-lapping'],
-    guides: ['Metal bond vs resin bond vs vitrified'],
-  },
-
-  /* ================================ 4 · CBN ===============================
-   * Four sections: mesh, micron, coated, PCBN (Uri, 19/7). "CBN or diamond?"
-   * rides as a callout on the mesh section. PCBN keeps its own H2, spec table,
-   * and #pcbn anchor — the old /products/pcbn URL 301s to it.
-   */
+  /* =============================== 2 · CBN =============================== */
   {
     slug: 'cbn',
     name: 'CBN',
@@ -339,7 +167,7 @@ export const products: Product[] = [
     h1: 'CBN — Cubic Boron Nitride',
     metaTitle: 'CBN Powder | Mesh, Micron & PCBN Blanks | EID',
     metaDesc: 'Cubic boron nitride (CBN) powder in mesh and micron for grinding hardened and ferrous steels, plus PCBN discs and blanks for hard-turning. QC-controlled.',
-    eyebrow: 'Products · Group 4',
+    eyebrow: 'Products · Group 2',
     cardDesc: 'The superabrasive for hardened and ferrous steels, in mesh and micron, plus PCBN for finished cutting forms.',
     overviewDesc: 'CBN powder in mesh and micron for hardened and ferrous steels, coated options, plus PCBN discs and blanks for hard-turning inserts.',
     intro: [
@@ -452,8 +280,7 @@ export const products: Product[] = [
     crossApplications: ['automotive-aerospace', 'tool-and-die', 'grinding-cutting-sawing-drilling'],
     guides: ['Diamond vs CBN'],
   },
-
-  /* ========================= 5 · SINGLE CRYSTAL =========================== */
+  /* ================ 3 · SINGLE CRYSTAL DIAMOND (CVD & MCD) ================ */
   {
     slug: 'single-crystal',
     name: 'Single Crystal Diamond (CVD & MCD)',
@@ -461,7 +288,7 @@ export const products: Product[] = [
     h1: 'Single Crystal Diamond — CVD & MCD',
     metaTitle: 'CVD Single Crystal & MCD Monocrystalline Diamond | EID',
     metaDesc: 'White CVD single crystal grown to your orientation, and HPHT MCD monocrystalline diamond, for single-point and precision tooling. Made to spec, QC-tested.',
-    eyebrow: 'Products · Group 5',
+    eyebrow: 'Products · Group 3',
     cardDesc: 'Made to spec for precision tooling, thermal, optical, and advanced applications.',
     overviewDesc: 'White CVD single crystal grown to your orientation, and HPHT MCD for single-point and precision tooling.',
     intro: [
@@ -563,8 +390,232 @@ export const products: Product[] = [
     crossApplications: ['tool-and-die', 'semiconductor-electronics', 'polishing-lapping'],
     guides: ['CVD, HPHT (MCD), and natural diamond compared'],
   },
-
-  /* ==================== 6 · POLYCRYSTALLINE DIAMOND ======================= */
+  /* ======================= 4 · NATURAL TOOL STONES ======================= */
+  {
+    slug: 'tool-stones',
+    name: 'Natural Tool Stones',
+    family: 'Natural Tool Stones',
+    h1: 'Natural Diamond Tool Stones',
+    metaTitle: 'Natural Diamond Tool Stones | Dressing & Single-Point | EID',
+    metaDesc: 'Rough and shaped natural diamond tool stones for single-point dressing and set tools. Selected in-house for crystal quality and orientation.',
+    eyebrow: 'Products · Group 4',
+    cardDesc: 'Rough and shaped natural diamond for single-point dressing and set tools.',
+    overviewDesc: 'Rough and shaped natural diamond for single-point dressing and set tools.',
+    intro: [
+      'Natural diamond tool stones, selected for precision dressing and single-point applications.',
+      'EID supplies natural diamond tool stones for dressing, turning, and single-point applications. Each stone is inspected and selected in-house for crystal quality, orientation, and freedom from inclusions, because those directly affect the performance and life of a single-point tool.',
+      'Available as rough stones for setting by the tool maker, or shaped to your specification. This is enquiry-led material, so the conversation usually starts with your application rather than a fixed catalogue.',
+    ],
+    sections: [
+      {
+        id: 'tool-stones',
+        label: 'Natural Tool Stones',
+        title: 'Natural diamond tool stones.',
+        intro: ['Selected stone by stone rather than graded to a catalogue line, so the recommendation starts from your dressing or single-point operation.'],
+        callouts: [
+          {
+            title: 'Natural stone or a synthetic?',
+            body: 'Natural tool stones are tough and well suited to specific dressing and single-point jobs, and every stone is individual, which is both their character and their variability. Where you need reproducibility across many identical tools, [MCD](/products/single-crystal#mcd) gives a defect-controlled, repeatable edge, and [CVD polycrystalline logs](/products/polycrystalline-diamond#dressing-logs) give uniform hardness for rotary and form dressing. We supply all three, so the recommendation follows your operation rather than what we happen to stock.',
+          },
+        ],
+        applicationsTitle: 'Typical Applications',
+        applications: [
+          'Single-point dressing of conventional grinding wheels in aluminium oxide and silicon carbide.',
+          'Turning and profiling of non-ferrous and non-metallic materials.',
+          "Specialty tooling where natural diamond's edge retention and thermal conductivity are the reason to choose it over a synthetic.",
+        ],
+        applicationsNote: 'Natural stone still holds its place in dressing operations that suit its toughness.',
+        specsTitle: 'Specifications',
+        specs: [
+          { label: 'Shapes', value: 'Rough, octahedral, macle, or shaped to drawing' },
+          { label: 'Setting', value: 'Supplied loose for setting, or shaped to spec' },
+        ],
+        enquiryCta: { label: 'Enquire about tool stones', href: '/contact' },
+      },
+    ],
+    quality:
+      'Because each stone is individual, selection is the quality step: every stone is inspected for crystal quality, orientation, and inclusions before it is matched to your application. The quality system is ISO 9001 certified. Where you need documented consistency across a batch, we will tell you honestly whether natural stone or a synthetic alternative is the better fit.',
+    qualityCta: 'See how our QC works',
+    cta: 'Request a Quote',
+    crossLinks: [
+      {
+        title: 'Alternatives',
+        links: [
+          { label: 'MCD', href: '/products/single-crystal#mcd' },
+          {
+            label: 'CVD Polycrystalline dressing logs',
+            href: '/products/polycrystalline-diamond#dressing-logs',
+          },
+        ],
+      },
+      {
+        title: 'Related',
+        links: [{ label: 'Natural Diamond Grit & Powder', href: '/products/natural-grit-powder' }],
+      },
+    ],
+    crossApplications: ['tool-and-die'],
+    guides: ['CVD, HPHT (MCD), and natural diamond compared'],
+  },
+  /* ======================== 5 · METAL BOND DIAMOND ======================== */
+  {
+    slug: 'metal-bond',
+    name: 'Metal Bond Diamond',
+    family: 'Metal Bond Diamond',
+    h1: 'Metal Bond Diamond Powder',
+    metaTitle: 'Metal Bond Diamond Powder | Saw & Wheel Grades, Mesh & Micron',
+    metaDesc: 'Metal bond synthetic diamond in saw and wheel grades, coated and graded for sintered tools. Mesh and micron, finished to your spec.',
+    eyebrow: 'Products · Group 5',
+    cardDesc: 'Saw and wheel grades for sintered and brazed tools, in mesh and micron, with in-house coating options.',
+    overviewDesc: 'Mesh and micron grades for diamond saws, grinding wheels, and sintered, brazed, and electroplated tools, with in-house coating options.',
+    intro: [
+      'Metal bond diamond powder, graded to your spec in mesh and micron.',
+      'Metal bond diamond is the workhorse for tools that cut under high pressure and heat: stone saw segments, core drill bits, grinding cups, and sintered dental burs. EID supplies it in saw grade, wheel grade, and custom formulations, coated or uncoated, produced to order and then processed and graded through our facility to meet your specification. That grading pass is what separates a grade you can build a production run around from one you re-qualify every order.',
+      'Two forms, each with its own sizing world: [mesh](#mesh) for aggressive, high-load cutting, and [micron](#micron) for finer wheels and precision tools. Jump to either, or tell us the tool and the bond and we will specify the grade.',
+    ],
+    sections: [
+      {
+        id: 'mesh',
+        label: 'Metal Bond Mesh',
+        title: 'Metal bond diamond, mesh grades for high-load cutting.',
+        intro: [
+          'Mesh grades cover the coarse-to-medium range that goes into segmented and sintered tools cutting hard, non-ferrous material at volume. Saw grade carries high impact strength for interrupted, high-load work; wheel grade runs a controlled friability for grinding cups and profile wheels.',
+        ],
+        callouts: [
+          {
+            title: 'How metal bond works',
+            body: 'Metal bond holds diamond mechanically in a hard sintered matrix. The bond wears slowly and exposes fresh diamond as it goes, which suits aggressive cutting of stone, concrete, glass, ceramics, and composites. Retention depends on matching crystal strength and shape to the bond, which is where grade selection and [coating](#coated) do the work.',
+          },
+        ],
+        applicationsTitle: 'Typical Applications',
+        applications: ['Stone and concrete saw blades, segments, and wire saw beads.', 'Core drill bits for construction and mining.', 'Diamond grinding cups and profile wheels for stone and glass.', 'Sintered dental burs and rotary instruments.'],
+        applicationsNote: 'High-load work where the tool has to keep cutting predictably run after run.',
+        specsTitle: 'Metal bond mesh specifications',
+        specs: [
+          {
+            label: 'Grades',
+            value: 'Saw grade (high impact strength), wheel grade (controlled friability)',
+          },
+        ],
+        datasheet: 'Metal Bond datasheet',
+      },
+      {
+        id: 'micron',
+        label: 'Metal Bond Micron',
+        title: 'Metal bond diamond, micron grades for fine and precision tools.',
+        intro: [
+          'Micron grades cover the fine end of metal bond, for precision grinding wheels, small sintered tools, and fine dental and rotary work where sizing is measured rather than sieved. Mesh and micron are separate sizing systems and do not correlate, so specify by the one your process uses.',
+        ],
+        applicationsTitle: 'Typical Applications',
+        applications: ['Precision metal-bond grinding wheels.', 'Fine sintered segments and cups.', 'Small-diameter and profile tools.', 'Fine dental instruments.'],
+        applicationsNote: 'Where the finish and the wheel form matter as much as stock removal.',
+        specsTitle: 'Metal bond micron specifications',
+        specs: [],
+        datasheet: 'Metal Bond datasheet',
+      },
+      {
+        id: 'coated',
+        label: 'Coated Metal Bond',
+        title: 'Coated metal bond diamond.',
+        intro: [
+          'Coating a particle before it goes into the bond gives the matrix more to hold. The coating adds surface area and a metallurgical bond between the diamond and the sintered metal, so the crystal stays anchored under load instead of pulling out early. The result is longer tool life from the same diamond.',
+          'EID coats in-house, so the grit and the coating come from one supplier rather than a shipment out to a second vendor and back. Electroless nickel is the standard for sintered metal bond tools, applied at your target weight percentage; PVD and copper options are available where the bond calls for them.',
+          'Tell us your bond and we will recommend the coating and weight. [Ask our technical team](/contact).',
+        ],
+      },
+    ],
+    quality:
+      'The quality system is ISO 9001 certified, and every lot is traceable from incoming material through QC to delivery, with a certificate of analysis on request. Our lab measures particle size distribution and morphology on every lot, with coating weight and coverage checked on coated grades, and crystal strength where the grade calls for it. For a sintered tool, consistent sizing and coating weight are what keep your sinter results repeatable.',
+    qualityCta: 'See how our QC works',
+    cta: 'Request a Quote',
+    crossLinks: [
+      {
+        title: 'Within the range',
+        links: [
+          { label: 'Resin Bond Diamond (finer, friable work)', href: '/products/resin-bond' },
+          { label: 'Natural Diamond Grit & Powder', href: '/products/natural-grit-powder' },
+        ],
+      },
+    ],
+    crossApplications: ['dental', 'grinding-cutting-sawing-drilling'],
+    guides: ['Metal bond vs resin bond vs vitrified'],
+  },
+  /* ======================== 6 · RESIN BOND DIAMOND ======================== */
+  {
+    slug: 'resin-bond',
+    name: 'Resin Bond Diamond',
+    family: 'Resin Bond Diamond',
+    h1: 'Resin Bond Diamond Powder',
+    metaTitle: 'Resin Bond Diamond Powder | Friable Mesh & Micron | EID',
+    metaDesc: 'Friable, multi-crystalline resin bond diamond in mesh and micron for fine grinding and polishing. Consistent, QC-controlled grades, coatings available.',
+    eyebrow: 'Products · Group 6',
+    cardDesc: 'Friable, multi-crystalline grades for fine grinding and polishing, in mesh and micron, with in-house coating options.',
+    overviewDesc: 'Friable, multi-crystalline grades in mesh and micron for fine grinding and polishing, coatings available.',
+    intro: [
+      'Resin bond diamond powder, friable grades in mesh and micron.',
+      'Resin bond diamond is built to fracture in a controlled way as it cuts, exposing fresh edges rather than dulling. That makes it the grade for fine grinding, polishing, and finishing, where surface quality outweighs aggressive stock removal. EID supplies it in mesh and micron, monocrystalline and polycrystalline, coated or uncoated, each grade processed and graded to your specification.',
+      '[Mesh](#mesh) and [micron](#micron) sit in separate sizing systems; specify by the one your process runs on.',
+    ],
+    sections: [
+      {
+        id: 'mesh',
+        label: 'Resin Bond Mesh',
+        title: 'Resin bond mesh, for resin-bonded wheels and flexible abrasives.',
+        intro: ['Mesh grades cover the coarser friable range for resin-bonded grinding wheels and flexible abrasive products, where the bond releases grit steadily and the crystal renews its own edges.'],
+        callouts: [
+          {
+            title: 'Why friability matters in a resin bond',
+            body: 'A resin bond is softer than a metal bond and releases the diamond more readily. Pair it with a friable, multi-crystalline crystal and the diamond breaks down in a governed way, presenting new cutting points instead of glazing over. The tool stays sharp and cuts cool, which protects the finish on carbide, ceramic, and glass. The grade sets how fast that breakdown runs, so matching friability to the operation is the decision that matters.',
+          },
+        ],
+        applicationsTitle: 'Typical Applications',
+        applications: ['Resin-bonded grinding wheels for carbide, ceramic, and glass.', 'Flexible abrasive sheets, belts, and pads for glass and stone.', 'Fine grinding ahead of a polishing stage.'],
+        specsTitle: 'Resin bond mesh specifications',
+        specs: [
+          {
+            label: 'Crystal type',
+            value: 'Monocrystalline (blocky to irregular), polycrystalline (self-sharpening)',
+          },
+        ],
+        datasheet: 'Resin Bond datasheet',
+      },
+      {
+        id: 'micron',
+        label: 'Resin Bond Micron',
+        title: 'Resin bond micron, for polishing and fine finishing.',
+        intro: ['Micron grades take the friable structure down to the fine and sub-micron sizing used in polishing, honing, and final finishing, where the last few microns and the surface are the point.'],
+        applicationsTitle: 'Typical Applications',
+        applications: ['Polishing and fine finishing of precision components.', 'Lapping and honing of technical ceramics and other hard, brittle materials.', 'Fixed-abrasive finishing where a controlled, self-renewing edge protects the surface.'],
+        specsTitle: 'Resin bond micron specifications',
+        specs: [],
+        datasheet: 'Resin Bond datasheet',
+      },
+      {
+        id: 'coated',
+        label: 'Coated Resin Bond',
+        title: 'Coated resin bond diamond.',
+        intro: [
+          'In a resin system the coating does two jobs. It improves how the resin grips the diamond, so the crystal holds until it has done its work, and on metallic coatings it carries heat away from the cutting zone, which protects both the bond and the workpiece finish. Copper is a common choice for its thermal behaviour; nickel is used where retention is the priority.',
+          'EID coats in-house, so a single order covers the grit and the coating. Tell us the resin system and we will recommend the coating. [Ask our technical team](/contact).',
+        ],
+      },
+    ],
+    quality:
+      'The quality system is ISO 9001 certified, with a certificate of analysis per lot on request. Our lab measures particle size distribution and morphology on every lot, with coating checked on coated grades. For fine grinding and polishing, a grade that breaks down the same way each order is what keeps your finish predictable.',
+    qualityCta: 'See how our QC works',
+    cta: 'Request a Quote',
+    crossLinks: [
+      {
+        title: 'Within the range',
+        links: [
+          { label: 'Metal Bond Diamond (high-load cutting)', href: '/products/metal-bond' },
+          { label: 'Natural Diamond Grit & Powder', href: '/products/natural-grit-powder' },
+        ],
+      },
+    ],
+    crossApplications: ['semiconductor-electronics', 'polishing-lapping'],
+    guides: ['Metal bond vs resin bond vs vitrified'],
+  },
+  /* =============== 7 · POLYCRYSTALLINE DIAMOND (CVD & PCD) =============== */
   {
     slug: 'polycrystalline-diamond',
     name: 'Polycrystalline Diamond (CVD & PCD)',
@@ -572,7 +623,7 @@ export const products: Product[] = [
     h1: 'Polycrystalline Diamond — PCD Blanks & CVD Dressing Logs',
     metaTitle: 'CVD Polycrystalline Diamond & PCD Blanks | EID',
     metaDesc: 'PCD discs and blanks for non-ferrous cutting-tool inserts, and CVD polycrystalline dressing logs for truing grinding wheels. Made to spec, QC-tested.',
-    eyebrow: 'Products · Group 6',
+    eyebrow: 'Products · Group 7',
     cardDesc: 'PCD blanks for cutting inserts and CVD dressing logs for truing wheels.',
     overviewDesc: 'CVD polycrystalline logs for dressing and truing, and PCD discs and blanks for cutting tools.',
     intro: [
@@ -667,74 +718,6 @@ export const products: Product[] = [
     crossApplications: ['tool-and-die', 'automotive-aerospace', 'grinding-cutting-sawing-drilling'],
     guides: ['CVD, HPHT (MCD), and natural diamond compared'],
   },
-
-  /* ========================= 7 · NATURAL TOOL STONES ====================== */
-  {
-    slug: 'tool-stones',
-    name: 'Natural Tool Stones',
-    family: 'Natural Tool Stones',
-    h1: 'Natural Diamond Tool Stones',
-    metaTitle: 'Natural Diamond Tool Stones | Dressing & Single-Point | EID',
-    metaDesc: 'Rough and shaped natural diamond tool stones for single-point dressing and set tools. Selected in-house for crystal quality and orientation.',
-    eyebrow: 'Products · Group 7',
-    cardDesc: 'Rough and shaped natural diamond for single-point dressing and set tools.',
-    overviewDesc: 'Rough and shaped natural diamond for single-point dressing and set tools.',
-    intro: [
-      'Natural diamond tool stones, selected for precision dressing and single-point applications.',
-      'EID supplies natural diamond tool stones for dressing, turning, and single-point applications. Each stone is inspected and selected in-house for crystal quality, orientation, and freedom from inclusions, because those directly affect the performance and life of a single-point tool.',
-      'Available as rough stones for setting by the tool maker, or shaped to your specification. This is enquiry-led material, so the conversation usually starts with your application rather than a fixed catalogue.',
-    ],
-    sections: [
-      {
-        id: 'tool-stones',
-        label: 'Natural Tool Stones',
-        title: 'Natural diamond tool stones.',
-        intro: ['Selected stone by stone rather than graded to a catalogue line, so the recommendation starts from your dressing or single-point operation.'],
-        callouts: [
-          {
-            title: 'Natural stone or a synthetic?',
-            body: 'Natural tool stones are tough and well suited to specific dressing and single-point jobs, and every stone is individual, which is both their character and their variability. Where you need reproducibility across many identical tools, [MCD](/products/single-crystal#mcd) gives a defect-controlled, repeatable edge, and [CVD polycrystalline logs](/products/polycrystalline-diamond#dressing-logs) give uniform hardness for rotary and form dressing. We supply all three, so the recommendation follows your operation rather than what we happen to stock.',
-          },
-        ],
-        applicationsTitle: 'Typical Applications',
-        applications: [
-          'Single-point dressing of conventional grinding wheels in aluminium oxide and silicon carbide.',
-          'Turning and profiling of non-ferrous and non-metallic materials.',
-          "Specialty tooling where natural diamond's edge retention and thermal conductivity are the reason to choose it over a synthetic.",
-        ],
-        applicationsNote: 'Natural stone still holds its place in dressing operations that suit its toughness.',
-        specsTitle: 'Specifications',
-        specs: [
-          { label: 'Shapes', value: 'Rough, octahedral, macle, or shaped to drawing' },
-          { label: 'Setting', value: 'Supplied loose for setting, or shaped to spec' },
-        ],
-        enquiryCta: { label: 'Enquire about tool stones', href: '/contact' },
-      },
-    ],
-    quality:
-      'Because each stone is individual, selection is the quality step: every stone is inspected for crystal quality, orientation, and inclusions before it is matched to your application. The quality system is ISO 9001 certified. Where you need documented consistency across a batch, we will tell you honestly whether natural stone or a synthetic alternative is the better fit.',
-    qualityCta: 'See how our QC works',
-    cta: 'Request a Quote',
-    crossLinks: [
-      {
-        title: 'Alternatives',
-        links: [
-          { label: 'MCD', href: '/products/single-crystal#mcd' },
-          {
-            label: 'CVD Polycrystalline dressing logs',
-            href: '/products/polycrystalline-diamond#dressing-logs',
-          },
-        ],
-      },
-      {
-        title: 'Related',
-        links: [{ label: 'Natural Diamond Grit & Powder', href: '/products/natural-grit-powder' }],
-      },
-    ],
-    crossApplications: ['tool-and-die'],
-    guides: ['CVD, HPHT (MCD), and natural diamond compared'],
-  },
-
   /* ================== 8 · POLYCRYSTALLINE DIAMOND POWDER ================== */
   {
     slug: 'polycrystalline-powder',

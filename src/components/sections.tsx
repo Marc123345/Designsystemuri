@@ -85,6 +85,7 @@ export const CardGrid = ({
   ctaHref,
   ctaLabel,
   columns = 4,
+  ctaCard = false,
   note,
 }: {
   note?: string
@@ -95,13 +96,35 @@ export const CardGrid = ({
   ctaHref?: string
   ctaLabel?: string
   /**
-   * Only 4 or 3. Eight product groups sit 4-across (two clean rows of four);
-   * six application hubs sit 3-across (two rows of three) and get a larger
-   * card, since three across leaves room for it and the hubs carry more weight.
+   * Only 4 or 3. Three-across gets the larger card treatment — more padding, a
+   * bigger icon and a step up in type — because the wider column has room for
+   * it and it gives the group more weight on the page.
    */
   columns?: 4 | 3
+  /**
+   * Renders the CTA as the final cell of the grid instead of a button beneath it.
+   *
+   * This exists because 3-across only divides cleanly into multiples of three.
+   * Eight product groups leave one empty cell, and since the cards draw their own
+   * right and bottom borders, an empty cell shows as an unclosed corner. The CTA
+   * tile fills exactly the leftover cells at each breakpoint, so the grid closes
+   * — and the action ends up inside the grid, which reads better than a button
+   * floating below it.
+   *
+   * Leave this off where the item count already divides evenly (the six
+   * application hubs), or the tile would add a whole redundant row.
+   */
+  ctaCard?: boolean
 }) => {
   const locale = useLocale() as Locale
+
+  // Cells left over on the final row, per breakpoint. A remainder of 0 means the
+  // items already close the row, so the tile takes a full row of its own.
+  const span = (cols: number) => cols - (items.length % cols) || cols
+  const lgSpanClass = { 1: 'lg:col-span-1', 2: 'lg:col-span-2', 3: 'lg:col-span-3', 4: 'lg:col-span-4' }[span(columns)]
+  const mdSpanClass = span(2) === 2 ? 'md:col-span-2' : 'md:col-span-1'
+  const showCtaCard = ctaCard && ctaHref && ctaLabel
+
   return (
     <section data-note={note} className="py-20 lg:py-30">
       <div className="container">
@@ -119,9 +142,19 @@ export const CardGrid = ({
               </span>
             </Link>
           ))}
+
+          {showCtaCard && (
+            <Link
+              href={ctaHref}
+              className={`group bg-default-900 border-default-900 hover:bg-primary flex flex-col justify-end border-e border-b transition-colors ${mdSpanClass} ${lgSpanClass} ${columns === 3 ? 'gap-5 p-10' : 'gap-4 p-8'}`}
+            >
+              <Icon icon="tabler:arrow-narrow-right" className={`text-white/40 transition-transform duration-300 group-hover:translate-x-2 ${columns === 3 ? 'size-11' : 'size-9'}`} />
+              <h3 className={`text-white ${columns === 3 ? 'text-2xl' : 'text-xl'}`}>{ctaLabel}</h3>
+            </Link>
+          )}
         </div>
 
-        {ctaHref && ctaLabel && (
+        {ctaHref && ctaLabel && !showCtaCard && (
           <div className="mt-12">
             <ArrowButton href={ctaHref} label={ctaLabel} variant="dark" />
           </div>

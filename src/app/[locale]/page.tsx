@@ -50,7 +50,7 @@ const faqs = [
   },
   {
     q: 'Do you offer electroplated / electroplating diamonds?',
-    a: 'Yes, and several grades are specified for it. In the natural range, NS-100-P and the MB series are recommended for electroplated tools. In CBN, EBN A and EBN AA are used in electroplated single-layer bonds. We also etch crystal surfaces specifically for electroplating, which improves nickel-to-diamond clamping in micro-engineering applications — that is covered on the [Surface Enhancements](/products/surface-enhancements) page and in the Polish, Etch & CRT datasheet.',
+    a: 'Yes, and several grades are specified for it. In the natural range, NS-100-P and the MB series are recommended for electroplated tools. In CBN, EBN A and EBN AA are used in electroplated single-layer bonds. We also etch crystal surfaces specifically for electroplating, which improves nickel-to-diamond clamping in micro-engineering applications — that is covered in the coated sections of the [metal bond](/products/metal-bond#coated) and [CBN](/products/cbn#coated) pages, and in the Polish, Etch & CRT datasheet.',
   },
   {
     q: 'Can I download product specifications as a PDF?',
@@ -196,8 +196,13 @@ fourth restatement of "we control quality". */}
           title={t(locale, 'Every industrial diamond and CBN product, from one source.')}
           desc={t(locale, 'Natural grit and powder made in our own factory, bonded and CBN grades processed and graded to your spec, and single crystal grown to your exact orientation.')}
           items={groupCards}
-          ctaHref="/#products"
-          ctaLabel={t(locale, 'Browse the Full Range')}
+          // The grid already IS the full range, so a ninth "browse the range"
+          // tile would point at itself. The terminal cell carries the next step
+          // instead — and there is no /products index route to link to anyway.
+          ctaHref="/contact"
+          ctaLabel={t(locale, 'Tell us the tool. We will specify the grade.')}
+          columns={3}
+          ctaCard
         />
       </div>
 
