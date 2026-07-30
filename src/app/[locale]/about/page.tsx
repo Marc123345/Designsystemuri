@@ -4,7 +4,6 @@ import { DarkFeatureList, PageHero, QuoteSection, StatsBar } from '@/components/
 import { ArrowButton, SectionHeading } from '@/components/ui'
 import Wireframe from '@/components/Wireframe'
 import type { Locale } from '@/i18n/routing'
-import { PRODUCT_LEAD_IMAGE } from '@/lib/product-images'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
 import { site } from '@/lib/site'
@@ -107,21 +106,18 @@ swipeable card layout the home page uses for the product range. */}
             title: t(locale, 'Natural grit & powder'),
             desc: t(locale, 'Natural grit and powder are manufactured entirely in-house at our own factory, from raw material through crushing, grading, and final QC.'),
             href: '/products/natural-grit-powder#grit',
-            image: PRODUCT_LEAD_IMAGE['natural-grit-powder'],
           },
           {
             icon: 'tabler:cube',
             title: t(locale, 'CVD single crystal'),
             desc: t(locale, "CVD single crystal diamond is grown to EID's exact specification, orientation, and quality standard through a dedicated growth partner, then finished and inspected by us."),
             href: '/products/single-crystal#cvd',
-            image: PRODUCT_LEAD_IMAGE['single-crystal'],
           },
           {
             icon: 'tabler:blade',
             title: t(locale, 'Metal bond, resin bond & CBN'),
             desc: t(locale, 'Metal bond, resin bond, and CBN grades are produced to order, then processed and graded through our facility to your specification before shipping. Coating, where you need it, is applied in-house rather than sourced from a second vendor.'),
             href: '/products/metal-bond',
-            image: PRODUCT_LEAD_IMAGE['metal-bond'],
           },
         ]}
         variant="image"

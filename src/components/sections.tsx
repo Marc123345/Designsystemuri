@@ -21,8 +21,6 @@ export type Card = {
   title: string
   desc: string
   href: string
-  /** Registry key for the tile's photograph. Falls back to the wireframe slot. */
-  image?: string
 }
 
 /**
@@ -95,32 +93,19 @@ export const PageHero = ({ eyebrow, title, desc, crumbs, primaryCta, secondaryCt
 export const ImageCard = ({ item, size = 'sm', className = '' }: { item: Card; size?: 'sm' | 'lg'; className?: string }) => {
   const locale = useLocale() as Locale
   const large = size === 'lg'
-  const photo = SHOW_PHOTOS ? getProductImage(item.image) : undefined
 
   return (
     <Link href={item.href} className={`group border-default-200 focus-visible:outline-primary relative flex flex-col justify-end overflow-hidden focus-visible:outline-2 focus-visible:-outline-offset-2 ${large ? 'aspect-square' : 'aspect-[4/5]'} ${className}`}>
-      {/* Photograph where one is mapped for this card, the labelled slot where
-          not — so a group without a chosen shot degrades to a visible gap
-          rather than an empty frame. */}
-      {photo ? (
-        <Image src={photo} alt={item.title} fill sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw" className="absolute inset-0 size-full object-cover transition-transform duration-700 group-hover:scale-105" />
-      ) : (
-        <Wireframe label={item.title} ratio="portrait" className="absolute inset-0 !aspect-auto size-full !border-0" />
-      )}
+      {/* The slot the real photograph will occupy. */}
+      <Wireframe label={item.title} ratio="portrait" className="absolute inset-0 !aspect-auto size-full !border-0" />
 
-      {/* Scrim. Over a photograph it stays on at all times, deepening on hover:
-          the title is always visible on a photo tile, so it always needs
-          something behind it. Over the wireframe there is nothing to obscure at
-          rest, so it fades in with the reveal instead. */}
-      {photo ? (
-        <div className="from-default-950 via-default-950/55 absolute inset-0 bg-gradient-to-t to-transparent transition-all duration-500 lg:via-default-950/35 lg:group-hover:via-default-950/80 lg:group-focus-visible:via-default-950/80" />
-      ) : (
-        <div className="from-default-950 via-default-950/80 absolute inset-0 bg-gradient-to-t to-transparent transition-opacity duration-500 lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-visible:opacity-100" />
-      )}
+      {/* Scrim. Always present below lg so the copy on top of it stays legible;
+          on lg it fades in with the reveal. */}
+      <div className="from-default-950 via-default-950/80 absolute inset-0 bg-gradient-to-t to-transparent transition-opacity duration-500 lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-visible:opacity-100" />
 
       <div className={`relative ${large ? 'p-9' : 'p-7'}`}>
         <Icon icon={item.icon} className={`mb-4 text-white/70 transition duration-500 lg:translate-y-3 lg:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100 lg:group-focus-visible:translate-y-0 lg:group-focus-visible:opacity-100 ${large ? 'size-11' : 'size-9'}`} />
-        <h3 className={`text-white transition duration-500 ${photo ? '' : 'lg:translate-y-3 lg:group-hover:translate-y-0 lg:group-focus-visible:translate-y-0'} ${large ? 'text-2xl' : 'text-xl'}`}>{item.title}</h3>
+        <h3 className={`text-white transition duration-500 lg:translate-y-3 lg:group-hover:translate-y-0 lg:group-focus-visible:translate-y-0 ${large ? 'text-2xl' : 'text-xl'}`}>{item.title}</h3>
         <p className={`mt-3 text-white/75 transition duration-500 lg:translate-y-4 lg:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100 lg:group-focus-visible:translate-y-0 lg:group-focus-visible:opacity-100 ${large ? 'text-lg' : 'text-base'}`}>{item.desc}</p>
         <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-white transition duration-500 lg:translate-y-4 lg:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100 lg:group-focus-visible:translate-y-0 lg:group-focus-visible:opacity-100">
           {t(locale, 'Learn more')}

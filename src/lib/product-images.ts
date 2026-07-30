@@ -116,40 +116,28 @@ export const getProductImage = (key?: string): StaticImageData | undefined => (k
 /**
  * Master switch for product photography.
  *
- * On: the registry above renders in every slot that has an image mapped to it —
- * the product page overview and section photos, and the per-grade shots in the
- * grade explorer. Slots with no image mapped still fall back to the labelled
- * wireframe, so turning this on cannot leave an empty frame.
- *
- * This is the one place the decision lives — it used to be duplicated as a
- * local const in both ProductPhoto and the grade explorer, where flipping one
- * and missing the other would have shipped a half-illustrated page.
+ * The registry above and the per-grade image keys in product-catalog.ts are
+ * complete; the imagery itself is being reconsidered, so every slot across the
+ * products area renders the labelled wireframe instead. This is the one place
+ * that decision lives — it used to be duplicated as a local const in both
+ * ProductPhoto and the grade explorer, where flipping one and missing the other
+ * would have shipped a half-illustrated page.
  */
-export const SHOW_PHOTOS = true
-
 /**
- * Lead image per product group, for the card tiles.
+ * ⚠ Before turning this on: two files in the registry above are not
+ * photographs, and both were nearly published as product tiles.
  *
- * The product pages pull their photo from the catalogue entry for the section
- * being shown, but a card has no section — it stands for the whole group — so
- * the representative shot is chosen here. Seven are the first image the
- * catalogue lists for that product; CBN has no catalogue entry at all, so its
- * shot is picked from the registry directly.
+ *   'cvd-single-crystal' — a scanned sales flyer carrying a partner's branding
+ *                          and an "exclusive global sales partner" line. Use
+ *                          'mcd' for single crystal instead.
+ *   'pcd'                — a grade-selection table. Illegible at card size.
+ *                          Use 'cvd-polycrystalline' instead.
  *
- * One editable list rather than logic, because which photograph represents a
- * product group is a curation decision, not something to derive.
+ * The rest are genuine, but they are not one photographic set: two sit on deep
+ * purple, three on white or grey, two are microscope views with a black
+ * circular vignette that crops to dark corners, and 'poly-micron' has
+ * instrument text burned into the bottom edge. A grid of them reads as several
+ * different sessions. There is also no application photography here at all, so
+ * the six application hubs have nothing to map.
  */
-export const PRODUCT_LEAD_IMAGE: Record<string, string> = {
-  'natural-grit-powder': 'ns-100-p',
-  cbn: 'ebn-aa',
-  // Not 'cvd-single-crystal': that file is a scanned sales flyer carrying a
-  // partner's branding and an "exclusive global sales partner" line, not a
-  // product shot. mcd is the actual material.
-  'single-crystal': 'mcd',
-  'tool-stones': 'toolstone-1',
-  'metal-bond': 'esn-770',
-  'resin-bond': 'resin-bond-mesh',
-  // Not 'pcd': that file is a grade-selection table, illegible at card size.
-  'polycrystalline-diamond': 'cvd-polycrystalline',
-  'polycrystalline-powder': 'poly-micron',
-}
+export const SHOW_PHOTOS = false
