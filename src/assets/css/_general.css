@@ -114,3 +114,81 @@ textarea {
     scroll-behavior: auto !important;
   }
 }
+
+/* Loader (see components/Loader).
+   Keyframes live here rather than in the component because styled-jsx is not
+   installed — a <style jsx> block in this App Router setup renders an invalid
+   `jsx` prop and the CSS does not scope. This is where the site's other
+   keyframes already are. */
+@keyframes eid-loader-ring {
+  0% {
+    transform: rotate(90deg);
+    box-shadow:
+      0 6px 12px 0 #3d5290 inset,
+      0 12px 18px 0 #2c3c6c inset,
+      0 36px 36px 0 #1c2749 inset,
+      0 0 3px 1.2px rgba(61, 82, 144, 0.3),
+      0 0 6px 1.8px rgba(44, 60, 108, 0.2);
+  }
+  50% {
+    transform: rotate(270deg);
+    box-shadow:
+      0 6px 12px 0 #5570b8 inset,
+      0 12px 6px 0 #3d5290 inset,
+      0 24px 36px 0 #2c3c6c inset,
+      0 0 3px 1.2px rgba(85, 112, 184, 0.35),
+      0 0 6px 1.8px rgba(61, 82, 144, 0.25);
+  }
+  100% {
+    transform: rotate(450deg);
+    box-shadow:
+      0 6px 12px 0 #3d5290 inset,
+      0 12px 18px 0 #2c3c6c inset,
+      0 36px 36px 0 #1c2749 inset,
+      0 0 3px 1.2px rgba(61, 82, 144, 0.3),
+      0 0 6px 1.8px rgba(44, 60, 108, 0.2);
+  }
+}
+
+/* One transform property across every keyframe, so the letter does not jump
+   between translate and scale mid-cycle. */
+@keyframes eid-loader-letter {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0) scale(1);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.12);
+  }
+  40% {
+    opacity: 0.65;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.eid-loader-ring {
+  animation: eid-loader-ring 5s linear infinite;
+  will-change: transform;
+}
+
+.eid-loader-letter {
+  display: inline-block;
+  animation: eid-loader-letter 3s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eid-loader-ring {
+    animation: none;
+    box-shadow:
+      0 6px 12px 0 #3d5290 inset,
+      0 12px 18px 0 #2c3c6c inset,
+      0 36px 36px 0 #1c2749 inset;
+  }
+
+  .eid-loader-letter {
+    animation: none;
+    opacity: 0.8;
+  }
+}
