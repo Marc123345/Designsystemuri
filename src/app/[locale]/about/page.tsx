@@ -7,7 +7,6 @@ import Wireframe from '@/components/Wireframe'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
-import { site } from '@/lib/site'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
@@ -240,21 +239,6 @@ the markets EID ships to across four continents. */}
         title={t(locale, 'From one London facility to four continents.')}
         desc={t(locale, 'We supply tool makers across Europe, the Middle East, Asia, the Americas, and beyond — every grade manufactured and quality-controlled in London before it ships.')}
       />
-
-      {/* COMPANY DETAILS — reinforce that EID is a physical manufacturer */}
-      <section className="border-default-200 border-t py-16 lg:py-24">
-        <div className="container">
-          <SectionHeading eyebrow={t(locale, 'Company details')} title={site.name} />
-          <p className="text-default-600 mt-8 text-base">
-            EID House, 12 St. Cross Street, London, EC1N 8UB, England
-            <br />
-            {t(locale, 'Tel:')} {site.phone} ·{' '}
-            <a href={`mailto:${site.email}`} className="text-primary underline">
-              {site.email}
-            </a>
-          </p>
-        </div>
-      </section>
 
       <div className="pt-20">
         <QuoteSection eyebrow={t(locale, 'Trusted by tool makers across continents')} title={t(locale, "Let's talk about what you manufacture.")} desc={t(locale, 'Request a quote, order a sample, or ask a technical question. A real person replies within one business day.')} />
