@@ -1,6 +1,7 @@
 import '@/assets/css/style.css'
 import favicon from '@/assets/images/favicon.svg'
 import AnnotationLayer from '@/components/AnnotationLayer'
+import SiteLoader from '@/components/SiteLoader'
 import WhatsAppButton from '@/components/WhatsAppButton'
 import AppProvidersWrapper from '@/components/wrappers/AppProvidersWrapper'
 import { routing } from '@/i18n/routing'
@@ -75,11 +76,20 @@ const LocaleLayout = async ({ children, params }: { children: React.ReactNode; p
     <html lang={locale} className={`${geist.variable} ${monaSans.variable} antialiased`}>
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
+        {/* The loader is dismissed by script. Without script it would cover the
+            site permanently, so hide it outright in that case. */}
+        <noscript dangerouslySetInnerHTML={{ __html: '<style>.site-loader{display:none!important}</style>' }} />
       </head>
       <body suppressHydrationWarning>
         <NextIntlClientProvider>
           <AppProvidersWrapper>{children}</AppProvidersWrapper>
           {/* Outside the page wrapper so it floats above every route. */}
+          {/* Mounted here rather than as a loading.tsx boundary: a Suspense
+              boundary lasts only as long as the server render, and these routes
+              are prerendered, so it was invisible. Because the layout is not
+              remounted on client navigation, this shows on a full page load and
+              not again as you move around the site. */}
+          <SiteLoader />
           <AnnotationLayer />
           <WhatsAppButton />
         </NextIntlClientProvider>
