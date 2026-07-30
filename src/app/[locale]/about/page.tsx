@@ -44,6 +44,44 @@ const companyFeatures = [
   },
 ]
 
+/**
+ * The company story as three balanced frames for the pinned run.
+ *
+ * The first pass put all three paragraphs on frame one and a single sentence on
+ * each of the rest, which made the opening a wall of text and the others feel
+ * empty. Every frame now carries the same weight: a heading, one paragraph, and
+ * one claim on a rule.
+ *
+ * The headings for frames two and three are the opening sentence of their own
+ * paragraph, with the remainder as the body. That is a presentation split rather
+ * than a rewrite — no word is added or removed, they are just distributed — and
+ * both sentences happen to be the strongest line in their paragraph. The three
+ * short claims become the eyebrows and the accent lines, which is the job they
+ * were already doing in the old two-column block.
+ */
+const companyFrames = [
+  {
+    eyebrow: 'London-based superabrasive manufacturer',
+    heading: "Over 50 years making the material that goes into the world's diamond tools.",
+    body: [companyParagraphs[0]],
+    accent: companyFeatures[2].desc,
+  },
+  {
+    eyebrow: companyFeatures[1].title,
+    heading: 'We make the material inside the tools, not the finished tools.',
+    body: [
+      'A dental bur maker who needs metal bond powder that sinters the same way each run, an optics company that needs a CVD single crystal grown to a set orientation, a grinding wheel maker who needs CBN that matches the last order: they come to EID. Decades of supporting the same customers have built the consistency and technical understanding a production environment needs.',
+    ],
+    accent: companyFeatures[1].desc,
+  },
+  {
+    eyebrow: companyFeatures[0].title,
+    heading: 'That record is what separates us from a distributor.',
+    body: ['We control production and the quality decision, and we cover the whole range from one facility, so our customers manage one relationship instead of five.'],
+    accent: companyFeatures[0].desc,
+  },
+]
+
 const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
   const { locale } = await params
   setRequestLocale(locale)
@@ -75,18 +113,12 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
           reduced motion. */}
       <ChapterRun
         note="about-run"
-        frames={[
-          {
-            eyebrow: t(locale, 'London-based superabrasive manufacturer'),
-            title: t(locale, "Over 50 years making the material that goes into the world's diamond tools."),
-            body: companyParagraphs.map((para) => t(locale, para)),
-          },
-          ...companyFeatures.map((feature, i) => ({
-            eyebrow: `${t(locale, 'Why us')} 0${i + 1}`,
-            title: t(locale, feature.title),
-            body: [t(locale, feature.desc)],
-          })),
-        ].map(({ eyebrow, title, body }) => ({ eyebrow, heading: title, body }))}
+        frames={companyFrames.map((f) => ({
+          eyebrow: t(locale, f.eyebrow),
+          heading: t(locale, f.heading),
+          body: f.body.map((para) => t(locale, para)),
+          accent: t(locale, f.accent),
+        }))}
       />
 
       {/* Flat fallback — a pinned sequence with no motion is four screens of
