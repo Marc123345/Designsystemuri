@@ -1,12 +1,10 @@
 import QuoteForm from '@/components/QuoteForm'
-import { PageHero, TrustBar } from '@/components/sections'
+import { PageHero } from '@/components/sections'
 import { ArrowButton, SectionHeading } from '@/components/ui'
-import Wireframe from '@/components/Wireframe'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
 import { site } from '@/lib/site'
-import { Icon } from '@iconify/react'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
@@ -74,49 +72,6 @@ pre-qualifying instruction is readable while the fields are filled. */}
         </div>
       </section>
 
-      {/* COMPANY DETAILS + MAP */}
-      <section className="py-16 pt-14 lg:py-24">
-        <div className="container">
-          <SectionHeading eyebrow={t(locale, 'Company details')} title={site.name} />
-          <ul className="mt-8 grid gap-4">
-            <li className="flex gap-3">
-              <Icon icon="tabler:map-pin" className="text-primary mt-0.5 size-6 shrink-0" />
-              <span className="text-default-600 text-base">EID House, 12 St. Cross Street, London, EC1N 8UB, England</span>
-            </li>
-            <li className="flex gap-3">
-              <Icon icon="tabler:phone" className="text-primary mt-0.5 size-6 shrink-0" />
-              <span className="text-default-600 text-base">
-                {t(locale, 'Tel:')} {site.phone}
-              </span>
-            </li>
-            {/* WhatsApp is a persistent, shared channel — one tap reaches the
-                London landline, so a reply is not blocked on one person. */}
-            <li className="flex gap-3">
-              <Icon icon="tabler:brand-whatsapp" className="mt-0.5 size-6 shrink-0 text-[#25d366]" />
-              <span className="text-default-600 text-base">
-                {t(locale, 'WhatsApp:')}{' '}
-                <a href={site.whatsappHref} target="_blank" rel="noopener noreferrer" className="text-primary underline">
-                  {site.whatsapp}
-                </a>
-              </span>
-            </li>
-            <li className="flex gap-3">
-              <Icon icon="tabler:mail" className="text-primary mt-0.5 size-6 shrink-0" />
-              <a href={`mailto:${site.email}`} className="text-primary text-base underline">
-                {site.email}
-              </a>
-            </li>
-          </ul>
-
-          {/* A map is optional and low priority for a B2B manufacturer whose
-buyers order remotely, so it stays small and below the form. */}
-          <div className="mt-10 max-w-[420px]">
-            <Wireframe label="Map — EID House, 12 St. Cross Street, London EC1N 8UB" ratio="square" />
-          </div>
-        </div>
-      </section>
-
-      <TrustBar items={[t(locale, 'ISO 9001 Certified'), t(locale, 'In-House QC Laboratory'), t(locale, "50+ Years' Experience"), t(locale, 'Complete Superabrasive Range')]} />
     </>
   )
 }
