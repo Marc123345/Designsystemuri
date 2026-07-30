@@ -3,6 +3,7 @@ import { RichParagraphs } from '@/components/RichText'
 import { CrossLinks, DarkFeatureList, PageHero, QuoteSection } from '@/components/sections'
 import { ArrowButton, SectionHeading } from '@/components/ui'
 import Wireframe from '@/components/Wireframe'
+import { PRODUCT_LEAD_IMAGE } from '@/lib/product-images'
 import type { Locale } from '@/i18n/routing'
 import { applications } from '@/lib/applications'
 import { localeAlternates } from '@/lib/hreflang'
@@ -57,6 +58,9 @@ const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; s
       title: ap.label,
       desc: ap.note,
       href: ap.href,
+      // The hub links to a section within a product, so the tile takes the
+      // parent group's lead shot.
+      image: PRODUCT_LEAD_IMAGE[parentSlug],
     }
   })
 

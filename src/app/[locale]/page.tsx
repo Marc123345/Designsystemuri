@@ -9,6 +9,7 @@ import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { getApplications, getProducts, t } from '@/lib/i18n-content'
+import { PRODUCT_LEAD_IMAGE } from '@/lib/product-images'
 import { site, trustPoints } from '@/lib/site'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
@@ -120,6 +121,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
     title: p.name,
     desc: p.cardDesc,
     href: `/products/${p.slug}`,
+    image: PRODUCT_LEAD_IMAGE[p.slug],
   }))
 
   const hubCards = HOME_HUB_ORDER.map((slug) => apps.find((a) => a.slug === slug))
