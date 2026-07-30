@@ -1,4 +1,5 @@
 import CardCarousel from '@/components/CardCarousel'
+import ChapterRun from '@/components/ChapterRun'
 import GlobeSection from '@/components/GlobeSection'
 import { DarkFeatureList, PageHero, QuoteSection, StatsBar } from '@/components/sections'
 import { ArrowButton, SectionHeading } from '@/components/ui'
@@ -67,15 +68,39 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
         ]}
       />
 
-      <section className="py-20 pt-14 lg:py-30">
+      {/* THE COMPANY — the same pinned run the home page uses below the hero.
+          The story opens the sequence, then each of the three claims that
+          separate EID from a distributor holds its own frame. Desktop and motion
+          only; the flat version below carries the same content for mobile and
+          reduced motion. */}
+      <ChapterRun
+        note="about-run"
+        frames={[
+          {
+            eyebrow: t(locale, 'London-based superabrasive manufacturer'),
+            title: t(locale, "Over 50 years making the material that goes into the world's diamond tools."),
+            body: companyParagraphs.map((para) => t(locale, para)),
+          },
+          ...companyFeatures.map((feature, i) => ({
+            eyebrow: `${t(locale, 'Why us')} 0${i + 1}`,
+            title: t(locale, feature.title),
+            body: [t(locale, feature.desc)],
+          })),
+        ].map(({ eyebrow, title, body }) => ({ eyebrow, heading: title, body }))}
+      />
+
+      {/* Flat fallback — a pinned sequence with no motion is four screens of
+          nothing happening, so mobile and reduced-motion get the original
+          two-column layout instead. */}
+      <section className="py-20 pt-14 lg:hidden lg:py-30">
         <div className="container">
           <SectionHeading eyebrow={t(locale, 'London-based superabrasive manufacturer')} title={t(locale, "Over 50 years making the material that goes into the world's diamond tools.")} />
 
           <div className="mt-14 grid gap-10 lg:grid-cols-12">
             <div className="space-y-5 lg:col-span-7">
-              {companyParagraphs.map((p) => (
-                <p key={p} className="text-default-600 text-base">
-                  {t(locale, p)}
+              {companyParagraphs.map((para) => (
+                <p key={para} className="text-default-600 text-base">
+                  {t(locale, para)}
                 </p>
               ))}
             </div>
