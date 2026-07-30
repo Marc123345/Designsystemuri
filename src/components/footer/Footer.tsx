@@ -92,28 +92,14 @@ const Footer = () => {
             ))}
           </div>
 
-          {/* Tagline */}
-          <div className="border-default-200 mt-12 border-t pt-10">
-            <p className="text-default-900 text-[clamp(28px,3vw,42px)] leading-[1.08] font-bold tracking-tight">
-              {t(locale, 'Graded in-house.')}
-              <br />
-              <span className="text-primary">{t(locale, 'Proven before it ships.')}</span>
-            </p>
-
-            <Link href="/contact" className="text-primary group mt-7 inline-flex items-center gap-2.5 text-[0.92rem] font-bold">
-              {t(locale, 'Request a Quote')}
-              <Icon icon="tabler:arrow-narrow-right" className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
-          </div>
         </div>
       </div>
 
       {/* ── BOTTOM BAR ── */}
-      <div className="bg-primary-3 flex flex-col items-start justify-between gap-3 border-t border-white/15 px-4 py-5 sm:flex-row sm:items-center md:px-7.5 lg:px-12.5">
-        <p className="text-[0.82rem] text-white/85">
-          © {site.name}. {site.location}.
-        </p>
-
+      {/* Only the legal links remain here, so the row is end-aligned rather than
+          a two-end split — justify-between with a single child would have parked
+          it on the left, under the column of links above it. */}
+      <div className="bg-primary-3 flex flex-col items-start justify-end gap-3 border-t border-white/15 px-4 py-5 sm:flex-row sm:items-center md:px-7.5 lg:px-12.5">
         <div className="flex items-center gap-6">
           {/* Terms and Privacy need real content before launch, so they are not
               linked to placeholder pages that would rank or mislead. */}
