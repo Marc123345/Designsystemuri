@@ -12,12 +12,22 @@ const Wireframe = ({
   ratio = 'landscape',
   tone = 'light',
   className = '',
+  hideLabel = false,
 }: {
   label: string
   ratio?: 'landscape' | 'portrait' | 'square' | 'wide' | 'panorama'
   /** `dark` for slots that sit inside a dark band, where the light frame vanishes. */
   tone?: 'light' | 'dark'
   className?: string
+  /**
+   * Drops the centred label chip, keeping the frame and diagonals.
+   *
+   * For full-bleed background slots only, where the chip would land in the
+   * middle of the viewport across whatever copy sits on top of it, and the
+   * caption is already written out elsewhere in the layout. The label is still
+   * passed and still used for `aria-label`, so the slot remains announced.
+   */
+  hideLabel?: boolean
 }) => {
   const aspect = {
     landscape: 'aspect-[4/3]',
@@ -40,9 +50,11 @@ const Wireframe = ({
         <line x1="100" y1="0" x2="0" y2="100" stroke="currentColor" strokeWidth="0.4" vectorEffect="non-scaling-stroke" />
       </svg>
 
-      <div className="absolute inset-0 flex items-center justify-center p-6">
-        <span className={`px-3 py-2 text-center text-xs tracking-[0.15em] uppercase ${chip}`}>{label}</span>
-      </div>
+      {!hideLabel && (
+        <div className="absolute inset-0 flex items-center justify-center p-6">
+          <span className={`px-3 py-2 text-center text-xs tracking-[0.15em] uppercase ${chip}`}>{label}</span>
+        </div>
+      )}
     </div>
   )
 }

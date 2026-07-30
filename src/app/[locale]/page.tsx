@@ -168,6 +168,10 @@ fourth restatement of "we control quality". */}
             evidence: t(locale, 'Certificate of analysis — sample lot'),
           },
         ]}
+        // Chapter eyebrows for the pinned run. Passed in rather than hardcoded
+        // in the component so they translate with the other seven locales.
+        variableLabel={t(locale, 'Variable')}
+        resolutionEyebrow={t(locale, 'What EID does about it')}
         resolutionTitle={t(locale, 'EID removes the variable, and is specific about how.')}
         production={[
           {
@@ -196,13 +200,13 @@ fourth restatement of "we control quality". */}
           title={t(locale, 'Every industrial diamond and CBN product, from one source.')}
           desc={t(locale, 'Natural grit and powder made in our own factory, bonded and CBN grades processed and graded to your spec, and single crystal grown to your exact orientation.')}
           items={groupCards}
-          // The grid already IS the full range, so a ninth "browse the range"
-          // tile would point at itself. The terminal cell carries the next step
-          // instead — and there is no /products index route to link to anyway.
+          // Eight groups over four columns is two clean rows, so no ctaCard is
+          // needed to close the grid here — the CTA sits below as a button.
+          // There is no /products index route, so it goes to the next step.
           ctaHref="/contact"
           ctaLabel={t(locale, 'Tell us the tool. We will specify the grade.')}
-          columns={3}
-          ctaCard
+          columns={4}
+          variant="image"
         />
       </div>
 
@@ -246,6 +250,7 @@ a technical buyer checks for before anything else on this page. */}
         ctaHref="/applications"
         ctaLabel={t(locale, 'View All Applications')}
         columns={3}
+        variant="image"
       />
 
       <DarkFeatureList
