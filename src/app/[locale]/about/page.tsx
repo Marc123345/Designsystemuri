@@ -120,6 +120,7 @@ swipeable card layout the home page uses for the product range. */}
             href: '/products/metal-bond',
           },
         ]}
+        variant="image"
       />
       <section className="py-16 lg:py-24">
         <div className="container">

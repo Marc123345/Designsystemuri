@@ -124,6 +124,7 @@ carries it, so a second identical button read as repetition. */}
         items={serviceItems}
         ctaHref="/contact"
         ctaLabel={app.cta}
+        variant="image"
       />
 
       {/* WHY EID */}

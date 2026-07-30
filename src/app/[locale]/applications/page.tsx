@@ -62,6 +62,7 @@ const ApplicationsOverview = async ({ params }: { params: Promise<{ locale: Loca
         ctaHref="/contact"
         ctaLabel={t(locale, 'Request a Quote')}
         columns={3}
+        variant="image"
       />
       <div className="pt-14">
         <DarkFeatureList

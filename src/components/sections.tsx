@@ -73,6 +73,50 @@ export const PageHero = ({ eyebrow, title, desc, crumbs, primaryCta, secondaryCt
 )
 
 /**
+ * The image tile used by every product and application card on the site — the
+ * home grids, the /applications grid, and the carousels on the application and
+ * about pages. Defined once and shared, because "the same card everywhere" is
+ * a promise that breaks the moment there are two copies of it.
+ *
+ * `size` maps to how wide the cell is: `lg` for a 3-across cell or a carousel
+ * slide (~427px, so a square lands ~427 tall), `sm` for a 4-across cell
+ * (~320px, so 4:5 lands ~400 tall). Both end up roughly the same height, which
+ * is what makes the grids read as one system.
+ *
+ * Two things this has to get right, because a hover-only card gets them wrong
+ * by default: the reveal is bound to focus-visible as well as hover so it is
+ * reachable by keyboard, and below `lg` — where there is no hover at all — the
+ * copy is simply always visible, since a touch user would otherwise be handed a
+ * grid of unlabelled boxes. The text stays in the DOM throughout, translated and
+ * faded rather than `hidden`, so crawlers and screen readers still read it.
+ */
+export const ImageCard = ({ item, size = 'sm', className = '' }: { item: Card; size?: 'sm' | 'lg'; className?: string }) => {
+  const locale = useLocale() as Locale
+  const large = size === 'lg'
+
+  return (
+    <Link href={item.href} className={`group border-default-200 focus-visible:outline-primary relative flex flex-col justify-end overflow-hidden focus-visible:outline-2 focus-visible:-outline-offset-2 ${large ? 'aspect-square' : 'aspect-[4/5]'} ${className}`}>
+      {/* The slot the real photograph will occupy. */}
+      <Wireframe label={item.title} ratio="portrait" className="absolute inset-0 !aspect-auto size-full !border-0" />
+
+      {/* Scrim. Always present below lg so the copy on top of it stays legible;
+          on lg it fades in with the reveal. */}
+      <div className="from-default-950 via-default-950/80 absolute inset-0 bg-gradient-to-t to-transparent transition-opacity duration-500 lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-visible:opacity-100" />
+
+      <div className={`relative ${large ? 'p-9' : 'p-7'}`}>
+        <Icon icon={item.icon} className={`mb-4 text-white/70 transition duration-500 lg:translate-y-3 lg:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100 lg:group-focus-visible:translate-y-0 lg:group-focus-visible:opacity-100 ${large ? 'size-11' : 'size-9'}`} />
+        <h3 className={`text-white transition duration-500 lg:translate-y-3 lg:group-hover:translate-y-0 lg:group-focus-visible:translate-y-0 ${large ? 'text-2xl' : 'text-xl'}`}>{item.title}</h3>
+        <p className={`mt-3 text-white/75 transition duration-500 lg:translate-y-4 lg:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100 lg:group-focus-visible:translate-y-0 lg:group-focus-visible:opacity-100 ${large ? 'text-lg' : 'text-base'}`}>{item.desc}</p>
+        <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-white transition duration-500 lg:translate-y-4 lg:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100 lg:group-focus-visible:translate-y-0 lg:group-focus-visible:opacity-100">
+          {t(locale, 'Learn more')}
+          <Icon icon="tabler:arrow-narrow-right" className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
+        </span>
+      </div>
+    </Link>
+  )
+}
+
+/**
  * The workhorse grid: product groups on home and /products, application hubs on
  * home and /applications. Borderless cards separated by rules rather than boxes,
  * so a long list of eight or more reads as a catalogue and not as clutter.
@@ -146,29 +190,7 @@ export const CardGrid = ({
         <div className={`border-default-200 mt-14 grid grid-cols-1 border-s border-t md:grid-cols-2 ${columns === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-4'}`}>
           {items.map((item) =>
             variant === 'image' ? (
-              /* Aspect is set against the column count so both image grids land
-                 on roughly the same tile height and read as one system: at 3
-                 across the cell is ~427px wide, so a square is ~427 tall; at 4
-                 across it is ~320 wide, so 4:5 is ~400 tall. Matching the ratio
-                 instead would make the 3-across tiles a third taller. */
-              <Link key={item.href} href={item.href} className={`group border-default-200 focus-visible:outline-primary relative flex flex-col justify-end overflow-hidden border-e border-b focus-visible:outline-2 focus-visible:-outline-offset-2 ${columns === 3 ? 'aspect-square' : 'aspect-[4/5]'}`}>
-                {/* The slot the real photograph will occupy. */}
-                <Wireframe label={item.title} ratio="portrait" className="absolute inset-0 !aspect-auto !border-0 size-full" />
-
-                {/* Scrim. Always present below lg so the copy on top of it stays
-                    legible; on lg it fades in with the reveal. */}
-                <div className="from-default-950 via-default-950/80 absolute inset-0 bg-gradient-to-t to-transparent transition-opacity duration-500 lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-visible:opacity-100" />
-
-                <div className={`relative ${columns === 3 ? 'p-9' : 'p-7'}`}>
-                  <Icon icon={item.icon} className={`mb-4 text-white/70 transition duration-500 lg:translate-y-3 lg:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100 lg:group-focus-visible:translate-y-0 lg:group-focus-visible:opacity-100 ${columns === 3 ? 'size-11' : 'size-9'}`} />
-                  <h3 className={`text-white transition duration-500 lg:translate-y-3 lg:group-hover:translate-y-0 lg:group-focus-visible:translate-y-0 ${columns === 3 ? 'text-2xl' : 'text-xl'}`}>{item.title}</h3>
-                  <p className={`mt-3 text-white/75 transition duration-500 lg:translate-y-4 lg:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100 lg:group-focus-visible:translate-y-0 lg:group-focus-visible:opacity-100 ${columns === 3 ? 'text-lg' : 'text-base'}`}>{item.desc}</p>
-                  <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-white transition duration-500 lg:translate-y-4 lg:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100 lg:group-focus-visible:translate-y-0 lg:group-focus-visible:opacity-100">
-                    {t(locale, 'Learn more')}
-                    <Icon icon="tabler:arrow-narrow-right" className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
-                  </span>
-                </div>
-              </Link>
+              <ImageCard key={item.href} item={item} size={columns === 3 ? 'lg' : 'sm'} className="border-e border-b" />
             ) : (
               <Link key={item.href} href={item.href} className={`group border-default-200 hover:bg-default-50 flex flex-col border-e border-b transition-colors ${columns === 3 ? 'gap-5 p-10' : 'gap-4 p-8'}`}>
                 <Icon icon={item.icon} className={`text-primary ${columns === 3 ? 'size-11' : 'size-9'}`} />
