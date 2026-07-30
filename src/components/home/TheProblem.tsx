@@ -224,35 +224,18 @@ const ChapterStage = ({ intro, drivers, resolution, variableLabel }: { intro: Pi
                         </div>
                       </div>
 
-                      <div className="mt-6 overflow-hidden">
-                        <h3
-                          className="font-heading transition-transform duration-1000 ease-out"
-                          style={{
-                            ...line('200ms'),
-                            // Every frame is outlined, so the run reads as one
-                            // sequence. Size differs only because the strings do:
-                            // the variable labels are two or three words and take
-                            // the full display size, while the intro and the
-                            // resolution are whole sentences — at 7vw the intro
-                            // wrapped to three lines and pushed its own lede off
-                            // the bottom of the screen.
-                            fontSize: chapter.kind === 'driver' ? 'clamp(2rem, 7vw, 5.5rem)' : 'clamp(2rem, 4.4vw, 3.5rem)',
-                            fontWeight: 900,
-                            lineHeight: 0.95,
-                            letterSpacing: '-0.03em',
-                            maxWidth: chapter.kind === 'driver' ? '70%' : '80%',
-                            color: 'transparent',
-                            WebkitTextStroke: '2px #ffffff',
-                            // A sub-1 line-height puts descenders below the text
-                            // box, and the mask driving the slide-up reveal is
-                            // overflow-hidden — so without this the tail of a
-                            // trailing "y" or "g" is cut off at rest, not just
-                            // mid-transition. Padding grows the mask with the glyph.
-                            paddingBottom: '0.14em',
-                          }}
-                        >
+                      <div className="mt-4 overflow-hidden">
+                        {/* Every frame in this section uses the site's h2 —
+                            28/36/42px, font-bold, Mona Sans, line-height 1.3
+                            from the base rule — in white for the dark band. The
+                            outlined weight-900 display type this used to carry
+                            was a treatment the site uses nowhere else, so the
+                            section spoke in a voice of its own. Motion is what
+                            makes the sequence feel like a sequence; the type
+                            does not need to. */}
+                        <h2 className="max-w-3xl text-[28px] font-bold text-white transition-transform duration-1000 ease-out md:text-[36px] lg:text-[42px]" style={line('200ms')}>
                           {chapter.heading}
-                        </h3>
+                        </h2>
                       </div>
 
                       {chapter.kind === 'resolution' ? (
@@ -267,7 +250,12 @@ const ChapterStage = ({ intro, drivers, resolution, variableLabel }: { intro: Pi
                           <div className="col-span-7">
                             <div className="overflow-hidden">
                               <div className="transition-transform duration-1000 ease-out" style={line('400ms')}>
-                                <p className="border-primary-1 text-primary-1 border-s-[3px] ps-4 text-base font-medium" style={{ maxWidth: '32rem' }}>
+                                {/* Was text-primary-1, which is #3d5290 on a
+                                    near-black band — 1.96:1, under half the 4.5:1
+                                    minimum and genuinely unreadable. The blue rule
+                                    keeps the accent; the words go white, since this
+                                    line is the section's actual argument. */}
+                                <p className="border-primary-1 border-s-[3px] ps-4 text-base font-medium text-white" style={{ maxWidth: '32rem' }}>
                                   {chapter.resolution.resolutionClosing}
                                 </p>
                               </div>
@@ -299,7 +287,7 @@ const ChapterStage = ({ intro, drivers, resolution, variableLabel }: { intro: Pi
                         <>
                           <div className="mt-6 overflow-hidden">
                             <div className="transition-transform duration-1000 ease-out" style={line('400ms')}>
-                              <p className="text-default-200 text-lg leading-relaxed" style={{ maxWidth: '36rem' }}>
+                              <p className="text-default-200 text-lg leading-relaxed" style={{ maxWidth: chapter.kind === 'intro' ? '42rem' : '36rem' }}>
                                 {chapter.body}
                               </p>
                             </div>
@@ -308,7 +296,11 @@ const ChapterStage = ({ intro, drivers, resolution, variableLabel }: { intro: Pi
                           {chapter.kind === 'driver' && (
                             <div className="mt-5 overflow-hidden">
                               <div className="transition-transform duration-1000 ease-out" style={line('500ms')}>
-                                <p className="border-primary-1 text-primary-1 border-s-[3px] ps-4 text-base font-medium" style={{ maxWidth: '32rem' }}>
+                                {/* Same contrast problem as the closing line. This
+                                    one is a figure caption for the record opposite
+                                    it, so it lands at default-300 (~8:1) rather than
+                                    white — legible without competing with the h2. */}
+                                <p className="border-primary-1 text-default-300 border-s-[3px] ps-4 text-base font-medium" style={{ maxWidth: '32rem' }}>
                                   {chapter.accent}
                                 </p>
                               </div>
