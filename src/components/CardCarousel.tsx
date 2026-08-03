@@ -1,8 +1,9 @@
 'use client'
 
+import CarouselCounter from '@/components/CarouselCounter'
 import { Link } from '@/i18n/navigation'
 import { Icon } from '@iconify/react'
-import { useId } from 'react'
+import { useId, useState } from 'react'
 import { A11y, Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { ImageCard, type Card } from './sections'
@@ -19,12 +20,38 @@ import { ArrowButton, SectionHeading } from './ui'
  * Lives in its own file rather than in sections.tsx so Swiper is bundled only
  * on the routes that use it; sections.tsx is imported by every page.
  */
-const CardCarousel = ({ eyebrow, title, desc, items, ctaHref, ctaLabel, variant = 'text' }: { eyebrow?: string; title: string; desc?: string; items: Card[]; ctaHref?: string; ctaLabel?: string; /** `image` uses the same hover-reveal tile as the card grids. */ variant?: 'text' | 'image' }) => {
+const CardCarousel = ({
+  eyebrow,
+  title,
+  desc,
+  items,
+  ctaHref,
+  ctaLabel,
+  variant = 'text',
+}: {
+  eyebrow?: string
+  title: string
+  desc?: string
+  items: Card[]
+  ctaHref?: string
+  ctaLabel?: string
+  /** `image` uses the same hover-reveal tile as the card grids. */ variant?: 'text' | 'image'
+}) => {
   // Swiper binds navigation by selector, so two carousels on one page would
   // otherwise share controls — whichever mounted last would win.
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '')
   const prev = `cc-prev-${uid}`
   const next = `cc-next-${uid}`
+  // snapIndex / snapGrid, not activeIndex / items.length: at three slides per
+  // view the carousel has fewer stops than slides, so counting slides would
+  // show a total the counter can never reach. snapGrid is Swiper's own list of
+  // stop positions and re-derives itself on breakpoint change.
+  const [index, setIndex] = useState(0)
+  const [steps, setSteps] = useState(1)
+  const track = (s: { snapIndex: number; snapGrid: number[] }) => {
+    setIndex(s.snapIndex)
+    setSteps(Math.max(1, s.snapGrid.length))
+  }
 
   const arrow = (dir: 'prev' | 'next') => (
     <button type="button" className={`${dir === 'prev' ? prev : next} group static! flex`} aria-label={dir === 'prev' ? 'Previous products' : 'Next products'}>
@@ -47,9 +74,12 @@ const CardCarousel = ({ eyebrow, title, desc, items, ctaHref, ctaLabel, variant 
         <div className="grid grid-cols-1 items-end gap-8 md:grid-cols-2">
           <SectionHeading eyebrow={eyebrow} title={title} desc={desc} />
 
-          <div className="flex md:ms-auto">
-            {arrow('prev')}
-            {arrow('next')}
+          <div className="flex items-center gap-6 md:ms-auto">
+            <div className="flex">
+              {arrow('prev')}
+              {arrow('next')}
+            </div>
+            <CarouselCounter index={index} total={steps} />
           </div>
         </div>
 
@@ -67,6 +97,10 @@ const CardCarousel = ({ eyebrow, title, desc, items, ctaHref, ctaLabel, variant 
             }}
             navigation={{ nextEl: `.${next}`, prevEl: `.${prev}` }}
             a11y={{ enabled: true }}
+            onSlideChange={track}
+            onSnapIndexChange={track}
+            onResize={track}
+            onAfterInit={track}
           >
             {items.map((item) => (
               <SwiperSlide key={item.title} className="h-auto!">

@@ -201,14 +201,11 @@ export const CardGrid = ({
                   <Icon icon="tabler:arrow-narrow-right" className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
                 </span>
               </Link>
-            ),
+            )
           )}
 
           {showCtaCard && (
-            <Link
-              href={ctaHref}
-              className={`group bg-default-900 border-default-900 hover:bg-primary flex flex-col justify-end border-e border-b transition-colors ${mdSpanClass} ${lgSpanClass} ${columns === 3 ? 'gap-5 p-10' : 'gap-4 p-8'}`}
-            >
+            <Link href={ctaHref} className={`group bg-default-900 border-default-900 hover:bg-primary flex flex-col justify-end border-e border-b transition-colors ${mdSpanClass} ${lgSpanClass} ${columns === 3 ? 'gap-5 p-10' : 'gap-4 p-8'}`}>
               <Icon icon="tabler:arrow-narrow-right" className={`text-white/40 transition-transform duration-300 group-hover:translate-x-2 ${columns === 3 ? 'size-11' : 'size-9'}`} />
               <h3 className={`text-white ${columns === 3 ? 'text-2xl' : 'text-xl'}`}>{ctaLabel}</h3>
             </Link>
@@ -443,30 +440,50 @@ as an empty list. */}
  *
  * The first item is open by default so the block never reads as an empty list.
  */
+/**
+ * Nine questions is a long list, and it used to render as nine bordered, filled
+ * boxes stacked down the full page width — the wall this grid already rejected
+ * everywhere else. CardGrid's rule applies here unchanged: rules, not boxes, so
+ * a long list reads as a catalogue rather than as clutter.
+ *
+ * Two columns from lg, with the heading pinned. A single column meant the title
+ * scrolled away five questions in, leaving the reader in an unlabelled stack of
+ * accordions, and it stretched every question to the full container width.
+ *
+ * Still `<details>`: it opens without JavaScript, is keyboard-operable and
+ * announces its own expanded state, none of which a div-and-state accordion
+ * gets for free.
+ */
 export const Faq = ({ eyebrow, title, desc, items }: { eyebrow: string; title: string; desc?: string; items: { q: string; a: string }[] }) => (
   <section data-note="faq" className="py-20 lg:py-30">
     <div className="container">
-      <SectionHeading eyebrow={eyebrow} title={title} desc={desc} />
+      <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <div className="lg:sticky lg:top-32 lg:col-span-4 lg:self-start">
+          <SectionHeading eyebrow={eyebrow} title={title} desc={desc} />
+        </div>
 
-      <div className="mt-14 space-y-4">
-        {items.map((item, i) => (
-          <details key={item.q} open={i === 0} className="group border-default-200 bg-default-50 border p-6 transition-colors open:bg-white">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-6 [&::-webkit-details-marker]:hidden">
-              <div className="flex items-start gap-5">
-                <span className="text-primary mt-1 text-sm font-semibold">{String(i + 1).padStart(2, '0')}</span>
-                <h3 className="text-lg">{item.q}</h3>
-              </div>
+        <div className="border-default-200 divide-default-200 divide-y border-t lg:col-span-8">
+          {items.map((item, i) => (
+            <details key={item.q} open={i === 0} className="group">
+              <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-6 [&::-webkit-details-marker]:hidden">
+                <div className="flex items-start gap-5">
+                  <span className="text-default-400 group-open:text-primary mt-1 text-sm font-semibold tabular-nums transition-colors">{String(i + 1).padStart(2, '0')}</span>
+                  <h3 className="group-hover:text-primary group-open:text-primary text-lg transition-colors">{item.q}</h3>
+                </div>
 
-              <span className="bg-primary flex size-8 shrink-0 items-center justify-center rounded-full text-white">
-                <Icon icon="tabler:plus" className="size-5 transition-transform duration-500 group-open:rotate-45" />
-              </span>
-            </summary>
+                {/* Square, like every other control in the system — this badge
+                    was the one rounded-full element on the page. */}
+                <span className="border-default-300 text-default-600 group-open:border-primary group-open:bg-primary flex size-8 shrink-0 items-center justify-center border transition-colors group-open:text-white">
+                  <Icon icon="tabler:plus" className="size-4 transition-transform duration-500 group-open:rotate-45" />
+                </span>
+              </summary>
 
-            <p className="text-default-600 mt-5 ps-10 text-base">
-              <RichText>{item.a}</RichText>
-            </p>
-          </details>
-        ))}
+              <p className="text-default-600 ps-10 pb-7 text-base">
+                <RichText>{item.a}</RichText>
+              </p>
+            </details>
+          ))}
+        </div>
       </div>
     </div>
   </section>

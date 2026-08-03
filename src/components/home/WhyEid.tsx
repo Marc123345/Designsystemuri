@@ -1,8 +1,10 @@
 'use client'
 
+import CarouselCounter from '@/components/CarouselCounter'
 import Wireframe from '@/components/Wireframe'
 import { ArrowButton } from '@/components/ui'
 import { Icon } from '@iconify/react'
+import { useState } from 'react'
 import { EffectFade, Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
@@ -28,6 +30,8 @@ export type Pillar = {
  * would bind whichever instance mounted last if another slider is ever added.
  */
 const WhyEid = ({ eyebrow, title, pillars }: { eyebrow: string; title: string; pillars: Pillar[] }) => {
+  const [index, setIndex] = useState(0)
+
   return (
     <section data-note="why-eid" className="relative size-full py-20 lg:py-30">
       <div className="relative z-10 container">
@@ -39,36 +43,52 @@ const WhyEid = ({ eyebrow, title, pillars }: { eyebrow: string; title: string; p
         <div className="mt-7.5 mb-12.5 grid grid-cols-1 items-end gap-8 md:grid-cols-2">
           <h2 className="text-[28px] font-bold md:text-[36px] lg:text-[42px]">{title}</h2>
 
-          <div className="flex md:ms-auto">
-            <button type="button" className="whyeid-prev static! flex" aria-label="Previous">
-              <span className="group bg-default-200 text-default-900! hover:bg-default-300 inline-flex! size-12! cursor-pointer items-center justify-center transition-all">
-                <span className="relative block overflow-hidden">
-                  <span className="block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:-translate-x-7">
-                    <Icon icon="tabler:arrow-narrow-left" className="flex size-6" />
-                  </span>
-                  <span className="absolute start-7 top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:start-0">
-                    <Icon icon="tabler:arrow-narrow-left" className="flex size-6" />
+          <div className="flex items-center gap-6 md:ms-auto">
+            <div className="flex">
+              <button type="button" className="whyeid-prev static! flex" aria-label="Previous">
+                <span className="group bg-default-200 text-default-900! hover:bg-default-300 inline-flex! size-12! cursor-pointer items-center justify-center transition-all">
+                  <span className="relative block overflow-hidden">
+                    <span className="block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:-translate-x-7">
+                      <Icon icon="tabler:arrow-narrow-left" className="flex size-6" />
+                    </span>
+                    <span className="absolute start-7 top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:start-0">
+                      <Icon icon="tabler:arrow-narrow-left" className="flex size-6" />
+                    </span>
                   </span>
                 </span>
-              </span>
-            </button>
+              </button>
 
-            <button type="button" className="whyeid-next group static!" aria-label="Next">
-              <span className="bg-default-200 text-default-900! hover:bg-default-300 inline-flex! size-12! cursor-pointer items-center justify-center transition-all">
-                <span className="relative block overflow-hidden">
-                  <span className="block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-x-7">
-                    <Icon icon="tabler:arrow-narrow-right" className="flex size-6" />
-                  </span>
-                  <span className="absolute end-7 top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:end-0">
-                    <Icon icon="tabler:arrow-narrow-right" className="flex size-6" />
+              <button type="button" className="whyeid-next group static!" aria-label="Next">
+                <span className="bg-default-200 text-default-900! hover:bg-default-300 inline-flex! size-12! cursor-pointer items-center justify-center transition-all">
+                  <span className="relative block overflow-hidden">
+                    <span className="block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-x-7">
+                      <Icon icon="tabler:arrow-narrow-right" className="flex size-6" />
+                    </span>
+                    <span className="absolute end-7 top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:end-0">
+                      <Icon icon="tabler:arrow-narrow-right" className="flex size-6" />
+                    </span>
                   </span>
                 </span>
-              </span>
-            </button>
+              </button>
+            </div>
+            {/* `realIndex`, not `activeIndex`: the loop clones slides, so
+                activeIndex counts the clones and the number jumps. */}
+            <CarouselCounter index={index} total={pillars.length} />
           </div>
         </div>
 
-        <Swiper modules={[Navigation, EffectFade]} loop speed={800} slidesPerView={1} effect="fade" fadeEffect={{ crossFade: true }} spaceBetween={30} allowTouchMove={false} navigation={{ nextEl: '.whyeid-next', prevEl: '.whyeid-prev' }}>
+        <Swiper
+          modules={[Navigation, EffectFade]}
+          loop
+          speed={800}
+          slidesPerView={1}
+          effect="fade"
+          fadeEffect={{ crossFade: true }}
+          spaceBetween={30}
+          allowTouchMove={false}
+          navigation={{ nextEl: '.whyeid-next', prevEl: '.whyeid-prev' }}
+          onSlideChange={(s) => setIndex(s.realIndex)}
+        >
           {pillars.map((pillar) => (
             <SwiperSlide key={pillar.title}>
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-5">

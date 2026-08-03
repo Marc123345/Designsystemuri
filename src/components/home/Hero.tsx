@@ -4,8 +4,8 @@ import type { Locale } from '@/i18n/routing'
 import { applications } from '@/lib/applications'
 import { t } from '@/lib/i18n-content'
 import { products } from '@/lib/products'
-import Link from 'next/link'
 import { useLocale } from 'next-intl'
+import Link from 'next/link'
 
 /**
  * One hero, one message. The Vol 03 deck replaced the rotating three-slide
@@ -60,43 +60,45 @@ const Hero = ({ title, desc }: { title: string; desc: string }) => {
           used to be pinned under the header with the rail far below it, which
           left a dead band across the middle of the screen and made the two
           halves read as two unrelated sections rather than one hero. */}
-      <div className="relative z-10 flex min-h-svh flex-col justify-end px-6 pt-32 pb-10 md:px-10 md:pt-36 lg:px-14 lg:pb-14">
-        <div className="flex flex-col gap-12 xl:flex-row xl:items-end xl:justify-between xl:gap-16">
-          {/* Left — the statement, with the industries it serves under it. The
-              lede is stepped in narrower than the headline so the stack tapers
-              rather than sitting as one square slab.
+      {/* `container`, not the hero's own padding. It was on px-6/10/14, which put
+          the headline 20px to the left of every other section on the page — the
+          one element on the site that did not line up with the rest of it. */}
+      <div className="relative z-10 flex min-h-svh flex-col justify-end pt-32 pb-10 md:pt-36 lg:pb-14">
+        <div className="container">
+          <div className="flex flex-col gap-12 xl:flex-row xl:items-end xl:justify-between xl:gap-16">
+            {/* Left — the statement and the industries it serves. The lede used
+                to sit here too, which stacked three blocks down one column
+                against a single block in the other. It now heads the right
+                column, so each side carries two things and the two columns are
+                closer in height.
 
-              No buttons. The rail alongside is the "browse the range" action,
-              and the header already carries the contact route, so a pair of
-              CTAs here was a third copy of the same two destinations. */}
-          <div className="max-w-[34rem]">
-            <h1 className="text-[32px] leading-[1.05] font-bold tracking-tight text-white md:text-[44px] lg:text-[52px] xl:text-[56px]">{title}</h1>
+                No buttons. The rail alongside is the "browse the range" action,
+                and the header already carries the contact route, so a pair of
+                CTAs here was a third copy of the same two destinations. */}
+            <div className="max-w-[34rem]">
+              <h1 className="text-[32px] leading-[1.05] font-bold tracking-tight text-white md:text-[44px] lg:text-[52px] xl:text-[56px]">{title}</h1>
 
-            <p className="text-default-200 mt-6 max-w-[28rem] text-base leading-relaxed md:text-lg">{desc}</p>
-
-            <div className="mt-9 border-t border-white/15 pt-6">
-              <p className="text-default-400 text-xs tracking-[0.22em] uppercase">{t(locale, 'Industries we supply')}</p>
-              <div className="mt-4 flex flex-wrap gap-x-6 gap-y-3">
-                {applications.map((application) => (
-                  <Link
-                    key={application.slug}
-                    href={`/applications/${application.slug}`}
-                    className="text-default-200 focus-visible:outline-primary border-b border-transparent pb-0.5 text-sm transition-colors hover:border-white/60 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2"
-                  >
-                    {application.name}
-                  </Link>
-                ))}
+              <div className="mt-9 border-t border-white/15 pt-6">
+                <p className="text-default-400 text-xs tracking-[0.22em] uppercase">{t(locale, 'Industries we supply')}</p>
+                <div className="mt-4 flex flex-wrap gap-x-6 gap-y-3">
+                  {applications.map((application) => (
+                    <Link
+                      key={application.slug}
+                      href={`/applications/${application.slug}`}
+                      className="text-default-200 focus-visible:outline-primary border-b border-transparent pb-0.5 text-sm transition-colors hover:border-white/60 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2"
+                    >
+                      {application.name}
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="w-full xl:max-w-[43rem]">
-            <HeroRail
-              items={groups}
-              prevLabel={t(locale, 'Previous product group')}
-              nextLabel={t(locale, 'Next product group')}
-              railLabel={t(locale, 'Product groups')}
-            />
+            <div className="w-full xl:max-w-[43rem]">
+              <p className="text-default-200 mb-8 max-w-[34rem] text-base leading-relaxed md:text-lg">{desc}</p>
+
+              <HeroRail items={groups} prevLabel={t(locale, 'Previous product group')} nextLabel={t(locale, 'Next product group')} railLabel={t(locale, 'Product groups')} />
+            </div>
           </div>
         </div>
       </div>

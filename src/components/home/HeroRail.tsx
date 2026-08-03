@@ -1,5 +1,6 @@
 'use client'
 
+import CarouselCounter from '@/components/CarouselCounter'
 import Wireframe from '@/components/Wireframe'
 import { Icon } from '@iconify/react'
 import Link from 'next/link'
@@ -24,44 +25,58 @@ export type RailItem = { slug: string; name: string }
 const HeroRail = ({ items, prevLabel, nextLabel, railLabel }: { items: RailItem[]; prevLabel: string; nextLabel: string; railLabel: string }) => {
   const railRef = useRef<HTMLDivElement>(null)
   const [index, setIndex] = useState(0)
-
-  // Card width plus the gap between two cards. Measured rather than hard-coded
-  // so one arrow press always advances exactly one card at every breakpoint.
-  const step = () => {
+  const [steps, setSteps] = useState(1)
+  /**
+   * Card pitch and the number of stops the rail actually has.
+   *
+   * `steps` is not the card count. With three cards visible out of eight the
+   * rail runs out of scroll after six stops, so counting items would promise
+   * two more presses than exist and the counter would never reach its own
+   * total. Measured from scrollWidth, so it stays right at every breakpoint.
+   */
+  const measure = () => {
     const rail = railRef.current
-    if (!rail) return 0
+    if (!rail) return null
     const [a, b] = Array.from(rail.children) as HTMLElement[]
-    if (!a) return 0
-    return b ? b.offsetLeft - a.offsetLeft : a.offsetWidth
+    if (!a) return null
+    const pitch = b ? b.offsetLeft - a.offsetLeft : a.offsetWidth
+    if (!pitch) return null
+    return { rail, pitch, max: Math.max(0, Math.round((rail.scrollWidth - rail.clientWidth) / pitch)) }
   }
 
   const sync = useCallback(() => {
-    const rail = railRef.current
-    const width = step()
-    if (!rail || !width) return
-    setIndex(Math.round(rail.scrollLeft / width))
+    const m = measure()
+    if (!m) return
+    setIndex(Math.round(m.rail.scrollLeft / m.pitch))
+    setSteps(m.max + 1)
   }, [])
 
   // Card widths are in rem, so a breakpoint change moves the snap points
-  // without firing a scroll event. Re-read on resize or the counter drifts.
+  // without firing a scroll event. Also runs once on mount, since `steps` is
+  // unknown until the rail has been laid out.
   useEffect(() => {
+    sync()
     window.addEventListener('resize', sync)
     return () => window.removeEventListener('resize', sync)
   }, [sync])
 
-  const scroll = (direction: -1 | 1) => railRef.current?.scrollBy({ left: direction * step(), behavior: 'smooth' })
+  // Relative `scrollBy`. An absolute `scrollTo` was tried here to make a burst
+  // of presses accumulate exactly, and it stopped the rail moving at all under
+  // `scroll-snap-type: x mandatory` — so this stays relative. The cost is that
+  // presses landing inside an in-flight smooth scroll can be swallowed; the
+  // rail is still swipeable and the counter stays truthful either way.
+  const scroll = (direction: -1 | 1) => {
+    const m = measure()
+    if (!m) return
+    m.rail.scrollBy({ left: direction * m.pitch, behavior: 'smooth' })
+  }
 
   const atStart = index <= 0
-  const atEnd = index >= items.length - 1
+  const atEnd = index >= steps - 1
 
   return (
     <div className="w-full">
-      <div
-        ref={railRef}
-        onScroll={sync}
-        aria-label={railLabel}
-        className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
+      <div ref={railRef} onScroll={sync} aria-label={railLabel} className="flex snap-x snap-mandatory [scrollbar-width:none] gap-4 overflow-x-auto pb-1 [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         {items.map((item, i) => (
           <Link
             key={item.slug}
@@ -87,7 +102,7 @@ const HeroRail = ({ items, prevLabel, nextLabel, railLabel }: { items: RailItem[
             onClick={() => scroll(-1)}
             disabled={atStart}
             aria-label={prevLabel}
-            className="focus-visible:outline-primary flex size-11 items-center justify-center border border-white/30 text-white transition disabled:opacity-30 enabled:hover:bg-white enabled:hover:text-default-950 focus-visible:outline-2 focus-visible:outline-offset-2"
+            className="focus-visible:outline-primary enabled:hover:text-default-950 flex size-11 items-center justify-center border border-white/30 text-white transition focus-visible:outline-2 focus-visible:outline-offset-2 enabled:hover:bg-white disabled:opacity-30"
           >
             <Icon icon="tabler:arrow-narrow-left" className="size-5" />
           </button>
@@ -96,17 +111,13 @@ const HeroRail = ({ items, prevLabel, nextLabel, railLabel }: { items: RailItem[
             onClick={() => scroll(1)}
             disabled={atEnd}
             aria-label={nextLabel}
-            className="focus-visible:outline-primary flex size-11 items-center justify-center border border-white/30 text-white transition disabled:opacity-30 enabled:hover:bg-white enabled:hover:text-default-950 focus-visible:outline-2 focus-visible:outline-offset-2"
+            className="focus-visible:outline-primary enabled:hover:text-default-950 flex size-11 items-center justify-center border border-white/30 text-white transition focus-visible:outline-2 focus-visible:outline-offset-2 enabled:hover:bg-white disabled:opacity-30"
           >
             <Icon icon="tabler:arrow-narrow-right" className="size-5" />
           </button>
         </div>
 
-        <div className="flex items-center gap-3 text-white tabular-nums" aria-hidden="true">
-          <span className="text-lg">{String(Math.min(index + 1, items.length)).padStart(2, '0')}</span>
-          <span className="h-px w-10 bg-white/40" />
-          <span className="text-default-300 text-lg">{String(items.length).padStart(2, '0')}</span>
-        </div>
+        <CarouselCounter index={index} total={steps} tone="onDark" />
       </div>
     </div>
   )

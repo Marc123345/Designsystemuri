@@ -1,11 +1,12 @@
 'use client'
 
+import CarouselCounter from '@/components/CarouselCounter'
 import Wireframe from '@/components/Wireframe'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
 import { Icon } from '@iconify/react'
 import { useLocale } from 'next-intl'
-import { useId } from 'react'
+import { useId, useState } from 'react'
 import { A11y, Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { SectionHeading } from './ui'
@@ -22,6 +23,16 @@ const PhotoCarousel = ({ eyebrow, title, desc, items }: { eyebrow?: string; titl
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '')
   const prev = `pc-prev-${uid}`
   const next = `pc-next-${uid}`
+  // snapIndex / snapGrid, not activeIndex / items.length: at three slides per
+  // view the carousel has fewer stops than slides, so counting slides would
+  // show a total the counter can never reach. snapGrid is Swiper's own list of
+  // stop positions and re-derives itself on breakpoint change.
+  const [index, setIndex] = useState(0)
+  const [steps, setSteps] = useState(1)
+  const track = (s: { snapIndex: number; snapGrid: number[] }) => {
+    setIndex(s.snapIndex)
+    setSteps(Math.max(1, s.snapGrid.length))
+  }
 
   const arrow = (dir: 'prev' | 'next') => (
     <button type="button" className={`${dir === 'prev' ? prev : next} group static! flex`} aria-label={dir === 'prev' ? t(locale, 'Previous photos') : t(locale, 'Next photos')}>
@@ -43,9 +54,12 @@ const PhotoCarousel = ({ eyebrow, title, desc, items }: { eyebrow?: string; titl
       <div className="container">
         <div className="grid grid-cols-1 items-end gap-8 md:grid-cols-2">
           <SectionHeading eyebrow={eyebrow} title={title} desc={desc} />
-          <div className="flex md:ms-auto">
-            {arrow('prev')}
-            {arrow('next')}
+          <div className="flex items-center gap-6 md:ms-auto">
+            <div className="flex">
+              {arrow('prev')}
+              {arrow('next')}
+            </div>
+            <CarouselCounter index={index} total={steps} />
           </div>
         </div>
 
@@ -61,6 +75,10 @@ const PhotoCarousel = ({ eyebrow, title, desc, items }: { eyebrow?: string; titl
             }}
             navigation={{ nextEl: `.${next}`, prevEl: `.${prev}` }}
             a11y={{ enabled: true }}
+            onSlideChange={track}
+            onSnapIndexChange={track}
+            onResize={track}
+            onAfterInit={track}
           >
             {items.map((item) => (
               <SwiperSlide key={item.label} className="h-auto!">
