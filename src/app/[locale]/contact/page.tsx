@@ -29,7 +29,7 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
     <>
       <PageHero
         eyebrow={t(locale, 'A real person replies within one business day')}
-        title={t(locale, 'Contact Us / Request a Quote')}
+        title={t(locale, 'Request a Quote')}
         desc={t(locale, 'Request a quote, order a sample, or ask a technical question. One form, and a specialist who understands the material replies within one business day.')}
         crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Contact') }]}
       />
