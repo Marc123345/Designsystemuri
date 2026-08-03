@@ -55,15 +55,23 @@ const Hero = ({ title, desc }: { title: string; desc: string }) => {
       <div className="from-default-950/95 via-default-950/70 absolute inset-0 bg-linear-to-t to-transparent" />
       <div className="from-default-950/85 absolute inset-0 bg-linear-to-r to-transparent lg:to-60%" />
 
-      {/* Everything sits on the bottom edge of the image, in two columns that
-          share one baseline: the statement left, the rail right. The statement
-          used to be pinned under the header with the rail far below it, which
-          left a dead band across the middle of the screen and made the two
-          halves read as two unrelated sections rather than one hero. */}
-      {/* `container`, not the hero's own padding. It was on px-6/10/14, which put
-          the headline 20px to the left of every other section on the page — the
-          one element on the site that did not line up with the rest of it. */}
-      <div className="relative z-10 flex min-h-svh flex-col justify-end pt-32 pb-10 md:pt-36 lg:pb-14">
+      {/* Two columns sharing one baseline: the statement left, the rail right.
+          The statement used to be pinned under the header with the rail far
+          below it, which left a dead band across the middle of the screen and
+          made the two halves read as two unrelated sections rather than one
+          hero.
+
+          Centred, not bottom-anchored. Anchored to the bottom it sat 331px
+          below the top of the image and 56px above the bottom — the block read
+          as having slipped down the screen rather than as being placed on it.
+          The vertical padding is symmetric so the centring is not pulled off by
+          the box it centres in; pt-32 is also the header's clearance, so on a
+          short viewport the copy still cannot slide under the nav.
+
+          `container`, not the hero's own padding: it was on px-6/10/14, which
+          put the headline 50px inside every other section on the page — the one
+          block on the site that did not line up with the rest of it. */}
+      <div className="relative z-10 flex min-h-svh flex-col justify-center pt-32 pb-32 md:pt-36">
         <div className="container">
           <div className="flex flex-col gap-12 xl:flex-row xl:items-end xl:justify-between xl:gap-16">
             {/* Left — the statement and the industries it serves. The lede used
@@ -78,14 +86,19 @@ const Hero = ({ title, desc }: { title: string; desc: string }) => {
             <div className="max-w-[34rem]">
               <h1 className="text-[32px] leading-[1.05] font-bold tracking-tight text-white md:text-[44px] lg:text-[52px] xl:text-[56px]">{title}</h1>
 
-              <div className="mt-9 border-t border-white/15 pt-6">
+              {/* Two fixed columns, not a wrapping row. Wrapped, the six names
+                  packed into two rows of uneven length (486px against 420px)
+                  that ended wherever the words happened to run out. On a
+                  three-by-two grid every name starts on one of two rules, and
+                  the block reads as a list instead of as spilled text. */}
+              <div className="mt-8 border-t border-white/15 pt-6">
                 <p className="text-default-400 text-xs tracking-[0.22em] uppercase">{t(locale, 'Industries we supply')}</p>
-                <div className="mt-4 flex flex-wrap gap-x-6 gap-y-3">
+                <div className="mt-4 grid gap-x-6 gap-y-3 sm:grid-cols-2">
                   {applications.map((application) => (
                     <Link
                       key={application.slug}
                       href={`/applications/${application.slug}`}
-                      className="text-default-200 focus-visible:outline-primary border-b border-transparent pb-0.5 text-sm transition-colors hover:border-white/60 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2"
+                      className="text-default-200 focus-visible:outline-primary w-fit border-b border-transparent pb-0.5 text-sm transition-colors hover:border-white/60 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2"
                     >
                       {application.name}
                     </Link>
@@ -95,7 +108,12 @@ const Hero = ({ title, desc }: { title: string; desc: string }) => {
             </div>
 
             <div className="w-full xl:max-w-[43rem]">
-              <p className="text-default-200 mb-8 max-w-[34rem] text-base leading-relaxed md:text-lg">{desc}</p>
+              {/* 39rem, not 34: at 34 the lede stopped 144px short of the rail
+                  below it, so the column had two different right edges. 39rem
+                  is as close to the rail's edge as the copy can go and still
+                  hold a sane measure — past about 75 characters a line the eye
+                  loses its place on the return sweep. */}
+              <p className="text-default-200 mb-8 max-w-[39rem] text-base leading-relaxed md:text-lg">{desc}</p>
 
               <HeroRail items={groups} prevLabel={t(locale, 'Previous product group')} nextLabel={t(locale, 'Next product group')} railLabel={t(locale, 'Product groups')} />
             </div>

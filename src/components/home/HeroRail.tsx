@@ -81,7 +81,11 @@ const HeroRail = ({ items, prevLabel, nextLabel, railLabel }: { items: RailItem[
           <Link
             key={item.slug}
             href={`/products/${item.slug}`}
-            className="group focus-visible:outline-primary relative flex h-64 w-[13rem] shrink-0 snap-start flex-col justify-end overflow-hidden border border-white/25 p-5 transition-colors duration-300 hover:border-white/60 focus-visible:outline-2 focus-visible:-outline-offset-2"
+            /* 12rem x 16rem — a 3:4 card. The old 13x16 was an arbitrary
+               ratio, and at that width three cards plus the gaps left a 32px
+               sliver of the fourth, which read as a card clipped by accident
+               rather than as more to come. At 3:4 the peek is 80px. */
+            className="group focus-visible:outline-primary relative flex h-64 w-48 shrink-0 snap-start flex-col justify-end overflow-hidden border border-white/25 p-5 transition-colors duration-300 hover:border-white/60 focus-visible:outline-2 focus-visible:-outline-offset-2"
           >
             <Wireframe label={item.name} ratio="portrait" tone="dark" hideLabel className="absolute inset-0 !aspect-auto size-full !border-0" />
             {/* Bottom-weighted, matching ImageCard elsewhere in the system, so
