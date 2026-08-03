@@ -1,3 +1,4 @@
+import GlobeSection from '@/components/GlobeSection'
 import QuoteForm from '@/components/QuoteForm'
 import { PageHero } from '@/components/sections'
 import { ArrowButton, SectionHeading } from '@/components/ui'
@@ -31,8 +32,6 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
         title={t(locale, 'Contact Us / Request a Quote')}
         desc={t(locale, 'Request a quote, order a sample, or ask a technical question. One form, and a specialist who understands the material replies within one business day.')}
         crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Contact') }]}
-        primaryCta={{ label: t(locale, 'Request a Quote'), href: '/contact' }}
-        secondaryCta={{ label: t(locale, 'View Products'), href: '/#products' }}
       />
 
       {/* The panel copy sits beside the form rather than above it, so the
@@ -72,6 +71,11 @@ pre-qualifying instruction is readable while the fields are filled. */}
         </div>
       </section>
 
+      {/* "Do you ship to me?" is the question that follows the form, so the
+          reach section answers it here as well as on the home page. Its CTA is
+          repointed at the range — the default sends people to /contact, which
+          on this page is a link back to where they already are. */}
+      <GlobeSection ctaLabel={t(locale, 'See the full range')} ctaHref="/products" />
     </>
   )
 }

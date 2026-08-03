@@ -1,5 +1,6 @@
 'use client'
 
+import Backdrop from '@/components/Backdrop'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
@@ -29,7 +30,14 @@ const Footer = () => {
             and bottom of the page close on one colour. The supplied logo
             artwork is white-on-transparent, which is exactly what this panel
             wants; used without correction. */}
-        <div className="bg-primary relative px-4 py-14 md:px-7.5 lg:px-12.5 lg:py-20">
+        {/* Was a flat `bg-primary` sheet. Same shared backdrop as every other
+            dark band now, so the footer belongs to the page rather than sitting
+            on it as a printed block of colour. */}
+        {/* `isolate` + a negative z on the backdrop, so it drops behind the
+            panel's static children without every one of them needing its own
+            `relative`. */}
+        <div className="relative isolate overflow-hidden px-4 py-14 md:px-7.5 lg:px-12.5 lg:py-20">
+          <Backdrop className="-z-10" />
           <Image src="/eid/logo-white.png" alt={site.name} width={650} height={221} className="mb-8 w-44" />
 
           <p className="mb-10 max-w-md text-[0.95rem] leading-[1.75] text-white/85">{t(locale, 'footerAbout')}</p>

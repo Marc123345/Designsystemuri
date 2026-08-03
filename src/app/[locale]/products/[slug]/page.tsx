@@ -73,8 +73,6 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
         title={p.h1}
         desc={p.metaDesc}
         crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Products'), href: '/#products' }, { label: p.name }]}
-        primaryCta={{ label: p.cta, href: '/contact' }}
-        secondaryCta={{ label: t(locale, 'All Products'), href: '/#products' }}
       />
 
       {isSplit && <JumpNav items={p.sections.map((s) => ({ id: s.id, label: s.label }))} />}

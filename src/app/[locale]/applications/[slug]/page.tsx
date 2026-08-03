@@ -74,8 +74,6 @@ const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; s
         title={app.h1}
         desc={app.metaDesc}
         crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Applications'), href: '/applications' }, { label: app.name }]}
-        primaryCta={{ label: app.cta, href: '/contact' }}
-        secondaryCta={{ label: t(locale, 'All Applications'), href: '/applications' }}
       />
 
       {/* INTRO — prose + image, then the outcome as a full-width thesis band.

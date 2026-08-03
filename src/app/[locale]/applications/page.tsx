@@ -42,7 +42,6 @@ const ApplicationsOverview = async ({ params }: { params: Promise<{ locale: Loca
         title={t(locale, 'Diamond and CBN for the work your tools do')}
         desc={t(locale, 'EID supplies industrial diamond and CBN to tool makers across dental, semiconductor and advanced electronics, automotive and aerospace, tool and die, grinding and cutting, and polishing and lapping.')}
         crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Applications') }]}
-        secondaryCta={{ label: t(locale, 'View Products'), href: '/#products' }}
       />
 
       <StatsBar

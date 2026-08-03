@@ -1,66 +1,105 @@
+import HeroRail, { type RailItem } from '@/components/home/HeroRail'
 import Wireframe from '@/components/Wireframe'
-import { ArrowButton } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
+import { applications } from '@/lib/applications'
 import { t } from '@/lib/i18n-content'
-import { site } from '@/lib/site'
+import { products } from '@/lib/products'
+import Link from 'next/link'
 import { useLocale } from 'next-intl'
 
 /**
  * One hero, one message. The Vol 03 deck replaced the rotating three-slide
  * version with a single block: the positioning has to land in one read, and a
  * technical buyer scanning for credentials should not have to wait for a slide.
+ *
+ * Layout: one full-bleed image with the statement top-left, an industry row on
+ * the bottom-left, and a rail of the eight product groups bottom-right. The
+ * rail is the reason this shape earns its keep, and the reason the hero needs
+ * no buttons: the range used to be a link a buyer had to take on trust, and it
+ * is now visible above the fold with each group one click away.
+ *
+ * What is deliberately not borrowed from the reference:
+ *  - Rounded 24px cards and translucent outlines. Everything in this system is
+ *    hard-cornered, so a rounded card here would be the only curve on the page.
+ *  - The italic serif headline. The site's type is bold sans throughout, and
+ *    an editorial serif would reposition an industrial supplier as a lifestyle
+ *    brand in the first thing anyone reads.
+ *  - The social row. It sits bottom-left in the reference; that slot carries
+ *    the six application hubs instead, which is what a technical buyer is
+ *    actually scanning for — whether this supplier serves their industry.
+ *
+ * There is no eyebrow above the headline. The reference has one, but the three
+ * label lines that used to sit there were cut deliberately: they diluted the
+ * one thing the reader is meant to take away, and the headline carries it.
  */
-const Hero = ({ eyebrow, title, desc }: { eyebrow: string; title: string; desc: string }) => {
+const Hero = ({ title, desc }: { title: string; desc: string }) => {
   const locale = useLocale() as Locale
 
+  // Only the fields the rail renders cross into the client bundle. Importing
+  // `products` there would ship the whole 780-line catalogue to the browser.
+  const groups: RailItem[] = products.map((product) => ({ slug: product.slug, name: product.name }))
+
   return (
-    <section data-note="hero" className="relative size-full overflow-hidden pt-35 lg:pt-50">
-      <div className="relative z-10 container">
-        <div className="grid items-end gap-12.5 xl:grid-cols-4 xl:gap-20">
-          <div className="xl:col-span-3">
-            <div className="border-default-300 inline-flex items-center gap-1.5 border bg-white px-3.5 py-1.25">
-              <span className="bg-primary size-2"></span>
-              <span className="text-default-900 text-sm">{eyebrow}</span>
-            </div>
-
-            <h1 className="mt-4 text-[34px] font-bold md:text-[48px] lg:text-6xl">{title}</h1>
-          </div>
-
-          <div>
-            <p className="mb-7.5 text-base">{desc}</p>
-            <div className="flex flex-wrap gap-4">
-              <ArrowButton href="#products" label={t(locale, 'Browse the Full Range')} external />
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-16">
-          <Wireframe label="Hero image — diamond grit / production floor, London" ratio="wide" />
-        </div>
-
-        {/* No stats row and no ISO line here: the trust bar sits immediately
-below the hero and already carries ISO 9001, the QC laboratory, the
-range and the 50-year record. Repeating them one screen apart made
-"ISO 9001 Certified" appear three times before the fold. */}
-        <div className="border-default-200 mt-16 mb-10 flex items-center justify-between border-t pt-6">
-          <div className="text-default-900 text-sm">
-            {t(locale, 'Based in:')} {site.location}
-          </div>
-          <a href="#products" className="hover:text-primary text-center text-sm uppercase transition-colors">
-            {t(locale, 'Scroll Down')}
-          </a>
-        </div>
+    // svh rather than vh: on mobile browsers vh counts the retracting chrome, so
+    // a 100vh hero is clipped on first paint and only fits after a scroll.
+    // min- rather than fixed, because the rail and the industry row together are
+    // taller than a short laptop viewport once they stack.
+    <section data-note="hero" className="relative min-h-svh w-full overflow-hidden">
+      {/* The image is the hero. Everything else sits on top of it. */}
+      <div className="absolute inset-0">
+        <Wireframe label="Hero image — diamond grit / production floor, London" ratio="wide" tone="dark" hideLabel className="!aspect-auto size-full !border-0" />
       </div>
 
-      <div className="absolute inset-0 flex items-stretch justify-between gap-0 md:justify-center md:gap-45 lg:gap-75 xl:gap-80.5">
-        <div className="border-default-900 h-full w-0.5 border border-dashed opacity-7"></div>
-        <div className="border-default-900 h-full w-0.5 border border-dashed opacity-7"></div>
-        <div className="border-default-900 h-full w-0.5 border border-dashed opacity-7"></div>
-        <div className="border-default-900 h-full w-0.5 border border-dashed opacity-7"></div>
-        <div className="border-default-900 h-full w-0.5 border border-dashed opacity-7"></div>
-      </div>
+      {/* Legibility. Weighted to the bottom and the left, because that is where
+          the copy is, and kept off the top so the image still reads as an image. */}
+      <div className="from-default-950/95 via-default-950/70 absolute inset-0 bg-linear-to-t to-transparent" />
+      <div className="from-default-950/85 absolute inset-0 bg-linear-to-r to-transparent lg:to-60%" />
 
-      <div className="absolute inset-0 size-full bg-[url(../images/bg-noice.gif)] bg-auto bg-position-[50%] bg-repeat object-cover opacity-4"></div>
+      {/* Everything sits on the bottom edge of the image, in two columns that
+          share one baseline: the statement left, the rail right. The statement
+          used to be pinned under the header with the rail far below it, which
+          left a dead band across the middle of the screen and made the two
+          halves read as two unrelated sections rather than one hero. */}
+      <div className="relative z-10 flex min-h-svh flex-col justify-end px-6 pt-32 pb-10 md:px-10 md:pt-36 lg:px-14 lg:pb-14">
+        <div className="flex flex-col gap-12 xl:flex-row xl:items-end xl:justify-between xl:gap-16">
+          {/* Left — the statement, with the industries it serves under it. The
+              lede is stepped in narrower than the headline so the stack tapers
+              rather than sitting as one square slab.
+
+              No buttons. The rail alongside is the "browse the range" action,
+              and the header already carries the contact route, so a pair of
+              CTAs here was a third copy of the same two destinations. */}
+          <div className="max-w-[34rem]">
+            <h1 className="text-[32px] leading-[1.05] font-bold tracking-tight text-white md:text-[44px] lg:text-[52px] xl:text-[56px]">{title}</h1>
+
+            <p className="text-default-200 mt-6 max-w-[28rem] text-base leading-relaxed md:text-lg">{desc}</p>
+
+            <div className="mt-9 border-t border-white/15 pt-6">
+              <p className="text-default-400 text-xs tracking-[0.22em] uppercase">{t(locale, 'Industries we supply')}</p>
+              <div className="mt-4 flex flex-wrap gap-x-6 gap-y-3">
+                {applications.map((application) => (
+                  <Link
+                    key={application.slug}
+                    href={`/applications/${application.slug}`}
+                    className="text-default-200 focus-visible:outline-primary border-b border-transparent pb-0.5 text-sm transition-colors hover:border-white/60 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2"
+                  >
+                    {application.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full xl:max-w-[43rem]">
+            <HeroRail
+              items={groups}
+              prevLabel={t(locale, 'Previous product group')}
+              nextLabel={t(locale, 'Next product group')}
+              railLabel={t(locale, 'Product groups')}
+            />
+          </div>
+        </div>
+      </div>
     </section>
   )
 }

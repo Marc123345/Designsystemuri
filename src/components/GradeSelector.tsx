@@ -1,5 +1,6 @@
 'use client'
 
+import Backdrop from '@/components/Backdrop'
 import Wireframe from '@/components/Wireframe'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
@@ -200,7 +201,8 @@ const GradeSelector = ({ series, fallbackImage, sectionTitle, productName }: { s
 
   return (
     <section data-note="grade-selector" ref={panelRef} aria-labelledby={baseId + '-heading'} className="scroll-mt-40">
-      <div className="bg-default-950 text-white">
+      <div className="relative isolate overflow-hidden text-white">
+        <Backdrop className="-z-10" />
         {/* ---------------------------- 1 · HEADER --------------------------- */}
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 px-5 py-4 sm:px-8 sm:py-5">
           <div>

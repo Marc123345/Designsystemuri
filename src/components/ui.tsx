@@ -18,13 +18,19 @@ export const ArrowButton = ({ href, label, variant = 'primary', external = false
       {/* The label slides up on hover and a duplicate rides in behind it. The
 wrapper must stay exactly one line tall with no padding — any vertical
 padding grows the box past the duplicate's top-7 offset and it stops
-being clipped, showing both copies at rest. Pad the shell instead. */}
+being clipped, showing both copies at rest. Pad the shell instead.
+
+The second copy is purely the animation's other half, so it is hidden
+from assistive tech. Without that, every CTA on the site announced and
+copy-pasted as "Request a Quote Request a Quote". */}
       <span className="relative block overflow-hidden">
         <span className="block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:-translate-y-7">{label}</span>
-        <span className="absolute start-0 top-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:top-0">{label}</span>
+        <span aria-hidden="true" className="absolute start-0 top-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:top-0">
+          {label}
+        </span>
       </span>
 
-      <span className={`flex size-10 shrink-0 items-center justify-center ${badge}`}>
+      <span aria-hidden="true" className={`flex size-10 shrink-0 items-center justify-center ${badge}`}>
         <span className="relative block overflow-hidden">
           <span className="block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-x-7">
             <Icon icon="tabler:arrow-narrow-right" className="flex size-6" />

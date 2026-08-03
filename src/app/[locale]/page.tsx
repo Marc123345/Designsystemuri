@@ -19,10 +19,21 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 }
 
 // Vol 03 replaced the rotating three-slide hero with a single block.
+//
+// Cut down for the full-bleed hero. The eyebrow went entirely: it restated the
+// headline in different words directly above it. The headline lost its list of
+// verbs — "manufactured, processed, and graded" is three words for one idea, and
+// at 76px a hundred-character sentence is five lines, which is a paragraph
+// rather than a statement. The lede lost its closing slogan, which the trust bar
+// one screen below already makes.
+//
+// ⚠ This is Uri's positioning line. Needs his sign-off before launch.
+// "&" rather than "and" between the two material names, matching how the
+// product families are already written throughout the catalogue — "Natural
+// Diamond Grit & Powder", "Automotive & Aerospace".
 const hero = {
-  eyebrow: 'Industrial Diamond & CBN Solutions · Precision Manufactured & QC-Controlled',
-  title: 'The full industrial diamond and CBN range, manufactured, processed, and graded in-house to EID standards.',
-  desc: 'For over 50 years, EID has manufactured industrial diamond and CBN for tool makers worldwide. Every grade is processed and tested in our own laboratory, delivering consistent performance from batch to batch. One manufacturer, one specification, the complete superabrasive range.',
+  title: 'The full industrial diamond & CBN range, made and graded in-house.',
+  desc: 'Fifty years supplying tool makers worldwide. Every grade is processed and tested in our own laboratory, so it performs the same from lot to lot.',
 }
 
 /**
@@ -133,7 +144,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 
   return (
     <>
-      <Hero eyebrow={t(locale, hero.eyebrow)} title={t(locale, hero.title)} desc={t(locale, hero.desc)} />
+      <Hero title={t(locale, hero.title)} desc={t(locale, hero.desc)} />
 
       {/* Proof points as icon plus label. No sentences — a buyer is scanning
 here, not reading. */}
@@ -189,7 +200,6 @@ fourth restatement of "we control quality". */}
         ]}
         resolutionClosing={t(locale, 'Across all three, the specification and the QC pass are ours. That is the part a tool maker is actually buying.')}
         primaryCta={{ label: t(locale, 'See how our QC works'), href: '/quality' }}
-        secondaryCta={{ label: t(locale, 'Browse the Full Range'), href: '/#products' }}
       />
 
       {/* THE RANGE — anchor target for the hero's "Browse the Full Range". */}

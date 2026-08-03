@@ -61,7 +61,6 @@ type TheProblemProps = {
   production: ProductionItem[]
   resolutionClosing: string
   primaryCta: Cta
-  secondaryCta: Cta
 }
 
 /* ------------------------------------------------------------------ */
@@ -79,7 +78,7 @@ const Eyebrow = ({ label, dark = false }: { label: string; dark?: boolean }) => 
 /* Frames for the pinned run                                           */
 /* ------------------------------------------------------------------ */
 
-type ResolutionProps = Pick<TheProblemProps, 'resolutionEyebrow' | 'resolutionTitle' | 'production' | 'resolutionClosing' | 'primaryCta' | 'secondaryCta'>
+type ResolutionProps = Pick<TheProblemProps, 'resolutionEyebrow' | 'resolutionTitle' | 'production' | 'resolutionClosing' | 'primaryCta'>
 
 /**
  * One sequence: the section opens itself, the four variables build the problem,
@@ -106,7 +105,6 @@ const buildFrames = ({ intro, drivers, resolution, variableLabel }: { intro: Pic
     footer: (
       <div className="flex flex-wrap gap-4">
         <ArrowButton href={resolution.primaryCta.href} label={resolution.primaryCta.label} variant="primary" />
-        <ArrowButton href={resolution.secondaryCta.href} label={resolution.secondaryCta.label} variant="light" />
       </div>
     ),
     // The three production modes take the right column at full opacity: stacking
@@ -172,7 +170,7 @@ const AccordionStage = ({ drivers, className = '' }: { drivers: Driver[]; classN
 /* Resolution band — the site's full-bleed dark band                   */
 /* ------------------------------------------------------------------ */
 
-const Resolution = ({ resolutionEyebrow, resolutionTitle, production, resolutionClosing, primaryCta, secondaryCta }: ResolutionProps) => {
+const Resolution = ({ resolutionEyebrow, resolutionTitle, production, resolutionClosing, primaryCta }: ResolutionProps) => {
   const reduced = useReducedMotion()
 
   const parent = {
@@ -233,7 +231,6 @@ so it never reads as an empty list. */}
 
         <motion.div variants={child} className="mt-8 flex flex-wrap gap-4">
           <ArrowButton href={primaryCta.href} label={primaryCta.label} variant="primary" />
-          <ArrowButton href={secondaryCta.href} label={secondaryCta.label} variant="light" />
         </motion.div>
       </motion.div>
     </section>
@@ -244,10 +241,10 @@ so it never reads as an empty list. */}
 /* Section                                                             */
 /* ------------------------------------------------------------------ */
 
-const TheProblem = ({ eyebrow, title, lede, drivers, variableLabel, resolutionEyebrow, resolutionTitle, production, resolutionClosing, primaryCta, secondaryCta }: TheProblemProps) => {
+const TheProblem = ({ eyebrow, title, lede, drivers, variableLabel, resolutionEyebrow, resolutionTitle, production, resolutionClosing, primaryCta }: TheProblemProps) => {
   const reduced = useReducedMotion()
 
-  const resolution = { resolutionEyebrow, resolutionTitle, production, resolutionClosing, primaryCta, secondaryCta }
+  const resolution = { resolutionEyebrow, resolutionTitle, production, resolutionClosing, primaryCta }
 
   // Desktop with motion gets the whole section as one pinned run: intro, the
   // four variables, then the resolution. Mobile and reduced-motion get the

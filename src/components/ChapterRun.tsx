@@ -162,8 +162,21 @@ const ChapterRun = ({ frames, note }: { frames: Frame[]; note?: string }) => {
           return (
             <div key={frame.heading} className="absolute inset-0 transition-opacity duration-1000" style={{ opacity: isActive ? 1 : 0, pointerEvents: isActive ? 'auto' : 'none' }}>
               <div className="relative size-full">
-                <div className="absolute inset-0 transition-transform duration-1000 ease-out" style={{ backgroundColor: tint, opacity: 0.75, transform: `scale(${1 + seg * 0.05})` }} />
-                <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse at 70% 50%, rgba(61, 82, 144, ${0.1 + seg * 0.06}) 0%, transparent 70%)` }} />
+                {/* The tint was a flat fill, which read as printed colour laid
+                    over the frame rather than as depth. It is now the same
+                    diagonal ramp the rest of the site's dark bands use — the
+                    frame's own tone into the deep blue — so the panel has a
+                    near and a far side. */}
+                <div
+                  className="absolute inset-0 transition-transform duration-1000 ease-out"
+                  style={{ background: `linear-gradient(to bottom right, ${tint} 0%, ${tint} 45%, var(--color-primary-3) 100%)`, opacity: 0.75, transform: `scale(${1 + seg * 0.05})` }}
+                />
+                {/* Two blooms rather than one, at opposite corners and different
+                    scales, so the surface does not settle into a flat sheet. */}
+                <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse at 70% 45%, rgba(61, 82, 144, ${0.14 + seg * 0.1}) 0%, transparent 68%)` }} />
+                <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse at 12% 88%, rgba(28, 40, 82, ${0.24 + seg * 0.1}) 0%, transparent 60%)` }} />
+                {/* Vignette — holds the centre forward of the edges. */}
+                <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 50% 45%, transparent 32%, rgba(0,0,0,0.45) 100%)' }} />
 
                 {/* The frame's own record, held faint, opposite the copy. Only
                     where the frame names one — inventing a caption for a

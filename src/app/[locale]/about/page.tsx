@@ -93,7 +93,6 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
         desc={t(locale, 'EID has manufactured and quality-controlled the full industrial diamond and CBN range from London for over 50 years, supplying tool makers worldwide.')}
         crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'About') }]}
         primaryCta={{ label: t(locale, 'Request a Quote'), href: '/contact' }}
-        secondaryCta={{ label: t(locale, 'View Products'), href: '/#products' }}
       />
 
       <StatsBar
