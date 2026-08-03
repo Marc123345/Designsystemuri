@@ -1,6 +1,7 @@
 'use client'
 
 import { annotations } from '@/lib/annotations'
+import { PRIORITY_LABEL, getImageSpec, type ImageSpec } from '@/lib/image-specs'
 import { Icon } from '@iconify/react'
 import { useCallback, useEffect, useState } from 'react'
 
@@ -52,7 +53,9 @@ const AnnotationLayer = () => {
     const next: Pin[] = []
     els.forEach((el) => {
       const key = el.dataset.note
-      if (!key || !annotations[key]) return
+      // Image slots resolve through image-specs rather than the annotations
+      // registry, so they are valid keys even though nothing names them here.
+      if (!key || (!annotations[key] && !key.startsWith('image:'))) return
       // A shared block can appear more than once on a page; pin the first.
       if (seen.has(key)) return
       seen.add(key)
@@ -114,7 +117,13 @@ const AnnotationLayer = () => {
     }
   }
 
-  const note = active ? annotations[active] : null
+  // An image slot's key is `image:<label>`; everything else is a design note.
+  // Both end up as { title, body } so the panel does not care which it got.
+  const imageLabel = active?.startsWith('image:') ? active.slice('image:'.length) : null
+  const spec: ImageSpec | null = imageLabel ? getImageSpec(imageLabel) : null
+
+  const note = spec ? { title: imageLabel!, body: [] as string[] } : active ? annotations[active] : null
+
   const activePin = pins.find((p) => p.key === active)
 
   return (
@@ -134,7 +143,7 @@ const AnnotationLayer = () => {
                     onClick={() => setActive(p.key)}
                     style={{ top: p.top, left: p.left }}
                     className={`pointer-events-auto absolute flex size-8 items-center justify-center text-xs font-bold shadow-[0_4px_14px_rgba(2,6,23,0.35)] transition-transform hover:scale-110 ${active === p.key ? 'bg-default-900 text-white' : 'bg-primary text-white'}`}
-                    title={annotations[p.key]?.title}
+                    title={p.key.startsWith('image:') ? p.key.slice('image:'.length) : annotations[p.key]?.title}
                   >
                     {p.n}
                   </button>
@@ -157,12 +166,47 @@ const AnnotationLayer = () => {
             </button>
           </div>
 
-          <div className="space-y-3 px-5 pt-5 pb-28 sm:pb-5">
-            {note.body.map((para, i) => (
-              <p key={i} className="text-default-600 text-sm leading-relaxed">
-                {para}
-              </p>
-            ))}
+          <div className="space-y-4 px-5 pt-5 pb-28 sm:pb-5">
+            {spec ? (
+              <>
+                <div className="flex flex-wrap gap-2">
+                  <span className={`px-2 py-1 text-[11px] font-bold tracking-wide uppercase ${spec.priority === 1 ? 'bg-primary text-white' : spec.priority === 2 ? 'bg-default-200 text-default-900' : 'bg-default-100 text-default-600'}`}>{PRIORITY_LABEL[spec.priority]}</span>
+                  <span className="border-default-300 text-default-700 border px-2 py-1 text-[11px] font-bold tracking-wide uppercase">{spec.orientation}</span>
+                </div>
+
+                <p className="text-default-900 text-sm leading-relaxed font-semibold">{spec.shot}</p>
+
+                <div>
+                  <p className="text-default-500 mb-1.5 text-[11px] font-bold tracking-[0.15em] uppercase">Must be in frame</p>
+                  <ul className="space-y-1.5">
+                    {spec.inFrame.map((item) => (
+                      <li key={item} className="text-default-600 flex gap-2 text-sm leading-relaxed">
+                        <span aria-hidden className="bg-primary mt-2 size-1.5 shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <p className="text-default-500 mb-1.5 text-[11px] font-bold tracking-[0.15em] uppercase">Avoid</p>
+                  <p className="text-default-600 text-sm leading-relaxed">{spec.avoid}</p>
+                </div>
+
+                <div className="border-default-200 border-t pt-3">
+                  <p className="text-default-500 mb-1.5 text-[11px] font-bold tracking-[0.15em] uppercase">Why it matters</p>
+                  <p className="text-default-600 text-sm leading-relaxed">{spec.why}</p>
+                </div>
+
+                <p className="text-default-500 border-default-200 border-t pt-3 text-xs leading-relaxed">Send at original resolution, straight off the camera. Shoot wider than the slot looks — this crops to several shapes and a tight frame cannot be widened.</p>
+              </>
+            ) : (
+              note.body.map((para, i) => (
+                <p key={i} className="text-default-600 text-sm leading-relaxed">
+                  {para}
+                </p>
+              ))
+            )}
           </div>
         </div>
       )}

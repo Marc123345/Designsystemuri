@@ -1,6 +1,11 @@
 /**
  * Wireframe image placeholder.
  *
+ * Each slot carries its own `data-note` key, so the annotation layer gives every
+ * empty image its own numbered pin and shows the photography spec for that exact
+ * slot. A single shared key would dedupe to one pin for the whole page — which
+ * is what it used to do, and why the review build only ever showed one.
+ *
  * The copy deck calls for photography EID has not supplied yet (factory floor,
  * QC laboratory, product shots, application imagery). Rather than ship stock
  * images that would misrepresent the business, each slot renders as a labelled
@@ -43,7 +48,7 @@ const Wireframe = ({
   const chip = dark ? 'border border-white/15 bg-default-950/70 text-white/50' : 'bg-white/90 text-default-500'
 
   return (
-    <div data-note="wireframe" role="img" aria-label={`Placeholder image: ${label}`} className={`relative w-full overflow-hidden border border-dashed ${frame} ${aspect} ${className}`}>
+    <div data-note={`image:${label}`} role="img" aria-label={`Placeholder image: ${label}`} className={`relative w-full overflow-hidden border border-dashed ${frame} ${aspect} ${className}`}>
       {/* Diagonals mark the slot as deliberately empty rather than a failed load. */}
       <svg className={`absolute inset-0 size-full ${diagonals}`} preserveAspectRatio="none" viewBox="0 0 100 100" aria-hidden="true">
         <line x1="0" y1="0" x2="100" y2="100" stroke="currentColor" strokeWidth="0.4" vectorEffect="non-scaling-stroke" />
