@@ -261,7 +261,9 @@ into one instrument at a time instead of scanning a six-card wall. */}
                     <div className="text-default-500 text-xs tracking-[0.2em] uppercase">{t(locale, m.meta)}</div>
                     <h3 className="text-default-900 mt-1 text-xl">{t(locale, m.title)}</h3>
                   </div>
-                  <Icon icon="tabler:plus" className="text-default-400 size-5 shrink-0 transition-transform duration-500 group-open:rotate-45" />
+                  {/* The open/closed affordance is a UI component, so it needs
+                      3:1 under 1.4.11. slate-400 on white is 2.56:1. */}
+                  <Icon icon="tabler:plus" className="text-default-500 size-5 shrink-0 transition-transform duration-500 group-open:rotate-45" />
                 </summary>
                 <p className="text-default-600 mt-3 max-w-2xl text-base">{t(locale, m.desc)}</p>
               </details>

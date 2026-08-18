@@ -467,7 +467,9 @@ export const Faq = ({ eyebrow, title, desc, items }: { eyebrow: string; title: s
             <details key={item.q} open={i === 0} className="group">
               <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-6 [&::-webkit-details-marker]:hidden">
                 <div className="flex items-start gap-5">
-                  <span className="text-default-400 group-open:text-primary mt-1 text-sm font-semibold tabular-nums transition-colors">{String(i + 1).padStart(2, '0')}</span>
+                  {/* default-500, not 400: on white, slate-400 is 2.56:1 and
+                      fails 1.4.3 outright. slate-500 is 4.76:1. */}
+                  <span className="text-default-500 group-open:text-primary mt-1 text-sm font-semibold tabular-nums transition-colors">{String(i + 1).padStart(2, '0')}</span>
                   <h3 className="group-hover:text-primary group-open:text-primary text-lg transition-colors">{item.q}</h3>
                 </div>
 
@@ -610,7 +612,7 @@ export const CatalogSpecs = ({ cat, sectionTitle, productName }: { cat: SectionC
       {cat.micronSizes?.length ? (
         <div>
           <h4 className="text-default-500 text-sm tracking-wider uppercase">
-            {t(locale, 'Micron size ranges')} <span className="text-default-400 normal-case">(µm)</span>
+            {t(locale, 'Micron size ranges')} <span className="text-default-500 normal-case">(µm)</span>
           </h4>
           <div className="mt-4 flex flex-wrap gap-1.5">
             {cat.micronSizes.map((s, i) => (

@@ -145,7 +145,7 @@ const AccordionStage = ({ drivers, className = '' }: { drivers: Driver[]; classN
                   <span aria-hidden="true" className={`block size-2 shrink-0 transition-colors duration-300 motion-reduce:transition-none ${isOpen ? 'bg-primary' : 'bg-default-300'}`} />
                   <span className={`text-lg font-bold ${isOpen ? 'text-default-900' : 'text-default-500'}`}>{driver.variable}</span>
                 </span>
-                <span aria-hidden="true" className={`text-default-400 transition-transform duration-300 motion-reduce:transition-none ${isOpen ? 'rotate-45' : ''}`}>
+                <span aria-hidden="true" className={`text-default-500 transition-transform duration-300 motion-reduce:transition-none ${isOpen ? 'rotate-45' : ''}`}>
                   +
                 </span>
               </button>
