@@ -25,6 +25,23 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
     title: { absolute: p.metaTitle },
     description: p.metaDesc,
     alternates: localeAlternates(locale, `/products/${slug}`),
+    // The image has to be restated. Declaring openGraph in a child does not
+    // deep-merge with the root's — the keys not named here are dropped, so
+    // omitting images left these eight pages with no card image at all while
+    // every other route had one. Verified by re-running the metadata audit
+    // over the built HTML rather than by assuming inheritance.
+    openGraph: {
+      title: p.metaTitle,
+      description: p.metaDesc,
+      url: `/products/${slug}`,
+      type: 'website',
+      siteName: 'EID Ltd',
+      images: [{ url: '/eid/hero.png', width: 1200, height: 630, alt: `${p.name} — EID Ltd` }],
+    },
+    twitter: {
+      title: p.metaTitle,
+      description: p.metaDesc,
+    },
   }
 }
 
@@ -67,8 +84,40 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
   const guideLinks = (p.guides ?? []).map((g) => ({ label: g, href: '/resources/blog' }))
   const hasDatasheet = p.sections.some((s) => s.datasheet)
 
+  // Product structured data. The layout already emits Organization for the
+  // site; this is the per-product half the QA list asks for, and it is what
+  // lets a search result show the range as a product rather than as a page.
+  //
+  // No `offers`: EID quotes per enquiry and publishes no prices, and inventing
+  // an offer with no price would be describing a commercial reality that does
+  // not exist. hasVariant carries the grades instead, which is the honest
+  // structure — a family of graded materials rather than a priced SKU.
+  const productSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: p.h1,
+    description: p.metaDesc,
+    category: p.family,
+    brand: { '@type': 'Brand', name: 'EID Ltd' },
+    manufacturer: { '@type': 'Organization', name: 'EID Ltd', url: 'https://www.eid-ltd.com' },
+    url: `https://www.eid-ltd.com/products/${slug}`,
+    ...(allSeries.length
+      ? {
+          hasVariant: allSeries.flatMap((s) =>
+            s.grades.map((g) => ({
+              '@type': 'Product',
+              name: g.code,
+              ...(g.desc ? { description: g.desc } : {}),
+            })),
+          ),
+        }
+      : {}),
+  }
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
+
       <PageHero
         title={p.h1}
         desc={p.metaDesc}

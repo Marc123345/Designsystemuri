@@ -58,6 +58,9 @@ export function generateStaticParams() {
 }
 
 export const metadata: Metadata = {
+  // Absolute URLs for Open Graph and canonicals are built from this. Without
+  // it, next/metadata emits relative og:image paths, which no scraper resolves.
+  metadataBase: new URL('https://www.eid-ltd.com'),
   title: {
     default: 'Industrial Diamond & CBN Manufacturer | EID Ltd',
     template: '%s | EID Ltd',
@@ -65,6 +68,27 @@ export const metadata: Metadata = {
   icons: { icon: favicon.src },
   description: 'EID manufactures the full industrial diamond and CBN range: grit, powder, CVD single crystal, MCD, PCD and PCBN, graded and QC-tested in-house. ISO 9001.',
   robots: 'index, follow',
+  // The site had no Open Graph or Twitter tags of any kind, so every page
+  // shared into LinkedIn, WhatsApp or Slack arrived as a bare URL with no
+  // title, description or image. For a supplier whose buyers pass links around
+  // internally, that is the first impression a lot of people get.
+  //
+  // Declared here so every route inherits it; pages with their own
+  // generateMetadata override the parts they care about.
+  openGraph: {
+    type: 'website',
+    siteName: 'EID Ltd',
+    locale: 'en_GB',
+    title: 'Industrial Diamond & CBN Manufacturer | EID Ltd',
+    description: 'EID manufactures the full industrial diamond and CBN range: grit, powder, CVD single crystal, MCD, PCD and PCBN, graded and QC-tested in-house. ISO 9001.',
+    images: [{ url: '/eid/hero.png', width: 1200, height: 630, alt: 'EID Ltd — industrial diamond and CBN manufacturer, London' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Industrial Diamond & CBN Manufacturer | EID Ltd',
+    description: 'EID manufactures the full industrial diamond and CBN range, graded and QC-tested in-house. ISO 9001.',
+    images: ['/eid/hero.png'],
+  },
 }
 
 const LocaleLayout = async ({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) => {
