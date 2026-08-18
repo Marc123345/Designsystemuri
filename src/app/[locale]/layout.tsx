@@ -1,4 +1,5 @@
 import '@/assets/css/style.css'
+import { SITE_ORIGIN } from '@/app/sitemap'
 import favicon from '@/assets/images/favicon.svg'
 import AnnotationLayer from '@/components/AnnotationLayer'
 import SiteLoader from '@/components/SiteLoader'
@@ -58,9 +59,19 @@ export function generateStaticParams() {
 }
 
 export const metadata: Metadata = {
-  // Absolute URLs for Open Graph and canonicals are built from this. Without
-  // it, next/metadata emits relative og:image paths, which no scraper resolves.
-  metadataBase: new URL('https://www.eid-ltd.com'),
+  // Absolute URLs for Open Graph are built from this. Without it, next/metadata
+  // emits relative og:image paths, which no scraper resolves.
+  //
+  // It has to be SITE_ORIGIN rather than a literal, because that is what
+  // canonicals and hreflang already use. Hardcoding the real domain here while
+  // those still resolved to the Vercel URL had the same page claiming two
+  // different origins — og:url on eid-ltd.com, rel=canonical on
+  // designsystemuri.vercel.app.
+  //
+  // AT LAUNCH: set NEXT_PUBLIC_SITE_URL to https://www.eid-ltd.com in the
+  // Vercel project. Until then everything consistently points at the review
+  // deployment, which is correct for a build that is not the real site yet.
+  metadataBase: new URL(SITE_ORIGIN),
   title: {
     default: 'Industrial Diamond & CBN Manufacturer | EID Ltd',
     template: '%s | EID Ltd',
