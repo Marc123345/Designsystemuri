@@ -534,7 +534,11 @@ export const CrossLinks = ({ groups }: { groups: { title: string; links: { label
 export const SpecTable = ({ specs }: { specs: { label: string; value: string }[] }) => {
   const locale = useLocale() as Locale
   return (
-    <div className="overflow-x-auto">
+    // tabIndex and role make the scroll region reachable by keyboard. Chrome
+    // focuses an overflowing container on its own; Firefox and Safari do not,
+    // so without this a keyboard user cannot scroll to the columns that sit
+    // off-screen at narrow widths (WCAG 2.1.1).
+    <div className="overflow-x-auto" tabIndex={0} role="region" aria-label={t(locale, 'Specifications')}>
       <table className="w-full border-collapse text-base">
         <thead>
           <tr className="border-default-300 border-b">

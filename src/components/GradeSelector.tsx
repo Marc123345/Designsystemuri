@@ -424,7 +424,11 @@ const CompareTable = ({ series }: { series: GradeSeries[] }) => {
   const cell = 'border-b border-white/10 px-4 py-3.5 sm:px-6 sm:py-4 align-top'
 
   return (
-    <div className="overflow-x-auto">
+    // min-w-[40rem] means this always scrolls on a phone rather than crushing
+    // the columns, which is the right trade for a grade table — but a scroll
+    // region has to be keyboard-reachable to be usable, and only Chrome
+    // focuses one automatically (WCAG 2.1.1).
+    <div className="overflow-x-auto" tabIndex={0} role="region" aria-label={t(locale, 'All grades in this section')}>
       <table className="w-full min-w-[40rem] border-collapse text-left">
         <caption className="sr-only">{t(locale, 'All grades in this section')}</caption>
         <thead>
