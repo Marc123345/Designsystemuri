@@ -28,6 +28,22 @@ const NotFound = () => (
               Browse products
             </Link>
           </div>
+
+          {/* Products and applications are the site's two entry axes, and
+              someone who landed here from a stale link may simply want to
+              reach a person. A 404 that only offers "home" makes the visitor
+              start their search over. */}
+          <p className="text-default-600 mt-7 text-sm">
+            Or go to{' '}
+            <Link href="/applications" className="text-primary underline underline-offset-2">
+              applications
+            </Link>{' '}
+            or{' '}
+            <Link href="/contact" className="text-primary underline underline-offset-2">
+              contact us
+            </Link>
+            .
+          </p>
         </div>
       </main>
     </body>

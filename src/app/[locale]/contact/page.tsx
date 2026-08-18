@@ -75,7 +75,11 @@ pre-qualifying instruction is readable while the fields are filled. */}
           reach section answers it here as well as on the home page. Its CTA is
           repointed at the range — the default sends people to /contact, which
           on this page is a link back to where they already are. */}
-      <GlobeSection ctaLabel={t(locale, 'See the full range')} ctaHref="/products" />
+      {/* /#products, not /products. There is no products hub route — the
+          product pages are products/[slug] only — so /products 404s in every
+          locale. The navbar's Products entry already points at the home page
+          anchor for the same reason; this was the one place that did not. */}
+      <GlobeSection ctaLabel={t(locale, 'See the full range')} ctaHref="/#products" />
     </>
   )
 }
