@@ -75,7 +75,7 @@ const GlobeSection = ({ eyebrow, title, desc, ctaLabel, ctaHref = '/contact' }: 
                 >
                   {/* Scrim: heavy enough that 10px mono clears contrast over the
                       brightest lights, lifting on hover to let the city through. */}
-                  <span aria-hidden className="bg-primary-3/72 group-hover:bg-primary-3/45 absolute inset-0 transition-colors duration-500" />
+                  <span aria-hidden className="bg-primary-3/72 group-hover:bg-primary-3/45 absolute inset-0 transition-colors" />
                   <div className="relative z-10 px-3 py-2.5">
                     <div className="text-base leading-tight text-white">{m.city}</div>
                     <div className="mt-1 font-mono text-[10px] tracking-[0.2em] text-white/60 uppercase">{t(locale, m.region)}</div>
