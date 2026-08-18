@@ -4,6 +4,27 @@
 @layer base {
     html {
         @apply w-full scroll-smooth;
+
+        /* WCAG 2.4.11 (Focus Not Obscured), and every in-page anchor.
+         *
+         * The navbar is `fixed` at 76px, 96px from lg up, so anything the
+         * browser scrolls to lands underneath it. scroll-margin-top on
+         * individual targets only covers the anchors someone remembered to put
+         * it on — and it does nothing for focus, which is the accessibility
+         * failure: tab to a control below the fold and the browser scrolls it
+         * to the very top of the viewport, i.e. behind the bar.
+         *
+         * scroll-padding-top on the scroll container fixes both at once and for
+         * everything, because it applies to any scroll-into-view the browser
+         * performs, whoever triggered it. The values clear the bar plus a
+         * little breathing room. */
+        scroll-padding-top: 92px;
+    }
+
+    @media (min-width: 1024px) {
+        html {
+            scroll-padding-top: 112px;
+        }
     }
 
     body {
@@ -28,7 +49,36 @@
 select,
 input,
 textarea {
-    @apply transition-all duration-200 focus:border-primary focus:ring-0 focus:outline-0;
+    @apply transition-all duration-200 focus:border-primary;
+}
+
+/* Focus visibility (WCAG 2.4.7, and 1.4.11 for the indicator's own contrast).
+ *
+ * The form rule above used to end `focus:ring-0 focus:outline-0`, which removed
+ * the indicator outright and left a border colour change as the only cue that a
+ * field was focused — colour alone, and easy to miss. Nothing else on the site
+ * defined a focus style at all, so links, buttons, nav items and carousel
+ * controls fell back to the browser default. On the dark sections (Backdrop,
+ * DarkFeatureList, the footer) a default dark outline is close to invisible.
+ *
+ * One indicator, defined once, for everything focusable. :focus-visible rather
+ * than :focus so it appears for keyboard and programmatic focus without ringing
+ * every mouse click.
+ *
+ * The offset is what makes it legible on both grounds: the ring sits in the
+ * page background rather than tight against the element, so it reads against
+ * light and dark alike without needing a second dark-mode rule. */
+:where(a, button, input, select, textarea, summary, [tabindex]:not([tabindex="-1"])):focus-visible {
+    outline: 2px solid var(--color-primary-1);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* On the dark bands the brand blue is too close to the background to carry the
+   ring on its own, so it goes white there. Scoped to the wrappers that actually
+   paint a dark ground. */
+:where(.bg-default-950, .bg-default-900, .bg-primary-3, .eid-dark) :where(a, button, input, select, textarea, summary, [tabindex]:not([tabindex="-1"])):focus-visible {
+    outline-color: #ffffff;
 }
 
 
