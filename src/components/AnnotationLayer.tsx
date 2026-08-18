@@ -18,8 +18,21 @@ import { useCallback, useEffect, useState } from 'react'
  * layer is on or off. The overlay is pointer-events-none; only the pins
  * themselves take clicks.
  *
- * REVIEW ONLY. Delete <AnnotationLayer /> from app/[locale]/layout.tsx to
- * remove it entirely — the data-note attributes it reads are inert without it.
+ * REVIEW ONLY — AND CURRENTLY LIVE.
+ *
+ * This is design commentary written for Uri and Phil, and it renders for
+ * anyone who opens the site. That is right for now, while the deployment is
+ * the review build and the layer is how the photography brief gets walked, but
+ * it must be off before the site is a public EID site.
+ *
+ * Switching it off is deliberately not a code change, so nobody has to
+ * remember to delete a line under launch pressure: set
+ * NEXT_PUBLIC_REVIEW_MODE=off in the Vercel project and redeploy. Unset — the
+ * state today — means on, so the current review build is unaffected.
+ *
+ * Removing it permanently is still just deleting <AnnotationLayer /> from
+ * app/[locale]/layout.tsx; the data-note attributes it reads are inert on
+ * their own.
  */
 
 type Pin = { key: string; n: number; top: number; left: number; fixed: boolean }
@@ -32,6 +45,13 @@ const COLLIDE_X = 60
 
 const STORAGE_KEY = 'eid:annotations'
 
+/**
+ * The launch switch. Read at build time, so setting it to 'off' drops the
+ * layer for every visitor without touching a component. Unset means on, which
+ * keeps the review build exactly as it is today.
+ */
+const REVIEW_MODE = process.env.NEXT_PUBLIC_REVIEW_MODE !== 'off'
+
 const AnnotationLayer = () => {
   const [on, setOn] = useState(false)
   const [pins, setPins] = useState<Pin[]>([])
@@ -40,6 +60,7 @@ const AnnotationLayer = () => {
   // Default to on for a first-time reviewer — the layer is the point of this
   // build — then respect whatever they chose after that.
   useEffect(() => {
+    if (!REVIEW_MODE) return
     try {
       setOn(window.localStorage.getItem(STORAGE_KEY) !== 'off')
     } catch {
@@ -125,6 +146,10 @@ const AnnotationLayer = () => {
   const note = spec ? { title: imageLabel!, body: [] as string[] } : active ? annotations[active] : null
 
   const activePin = pins.find((p) => p.key === active)
+
+  // After every hook, not before them — an early return above the useCallback
+  // and useEffects would change the hook order between renders.
+  if (!REVIEW_MODE) return null
 
   return (
     <>
