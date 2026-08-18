@@ -49,7 +49,29 @@ const JotformEmbed = ({ title, minHeight = 539 }: { title: string; minHeight?: n
 
   return (
     <>
-      <iframe id={`JotFormIFrame-${FORM_ID}`} title={title} src={src} allow="geolocation; microphone; camera; fullscreen; payment" allowTransparency scrolling="no" className="w-full border-0" style={{ minWidth: '100%', maxWidth: '100%', height: minHeight, border: 'none' }} />
+      <iframe
+        id={`JotFormIFrame-${FORM_ID}`}
+        title={title}
+        src={src}
+        // Jotform's copy-paste snippet grants geolocation, microphone and
+        // payment as well. A quote form asks for a product, grade, size and
+        // quantity — it has no business being handed the visitor's location or
+        // microphone, and `payment` on a form that takes no payment is a
+        // capability to withhold rather than pass along by default. Narrowed to
+        // what a form plausibly uses: camera and fullscreen are kept because a
+        // file-upload or photo widget can want them, and breaking a working
+        // field is a worse trade than leaving those two in place. If the form
+        // has no upload field, drop them too.
+        allow="camera; fullscreen"
+        allowTransparency
+        scrolling="no"
+        // Third-party iframe. On the home page it sits near the bottom, so
+        // eager loading meant every visitor fetched Jotform whether or not they
+        // ever scrolled to it.
+        loading="lazy"
+        className="w-full border-0"
+        style={{ minWidth: '100%', maxWidth: '100%', height: minHeight, border: 'none' }}
+      />
       <Script
         src={EMBED_HANDLER}
         strategy="afterInteractive"
