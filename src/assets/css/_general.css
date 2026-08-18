@@ -90,6 +90,16 @@ textarea {
     animation: infinite-scroll-inverse 100s linear infinite;
     will-change: transform;
 }
+
+/* Pausable, per NN/g #3 (user control) — the strip stops on hover and on
+   keyboard focus anywhere inside it, so anyone trying to read a keyword or tab
+   through can hold it still. */
+.infinite-scroll:hover,
+.infinite-scroll-inverse:hover,
+.infinite-scroll:focus-within,
+.infinite-scroll-inverse:focus-within {
+    animation-play-state: paused;
+}
 /* Step transition for scroll-driven sections (see home/TheProblem).
    Deliberately small: the design system's motion is short and eased, not
    theatrical. Anything relying on this must still read with motion disabled. */
@@ -112,6 +122,16 @@ textarea {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* The blanket rule above is wrong for a looping translation. Collapsing the
+     duration and running a single iteration lands the element on the animation's
+     END state — for the marquee that is translateX(-100%), i.e. the track shoved
+     a full width off screen, so the strip reads as empty rather than as stopped.
+     Cancel the animation outright so both copies sit where they start. */
+  .infinite-scroll,
+  .infinite-scroll-inverse {
+    animation: none !important;
   }
 }
 

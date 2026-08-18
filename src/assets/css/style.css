@@ -1,10 +1,9 @@
 /*
-Template Name: Manufactt - Manufacturing Services Website TailwindCSS 4 Template
-Version: 1.0.0
-Author: Unifato
-Website: https://unifato.com/
-Email: unifato.themes@gmail.com
-File: Style CSS File
+EID Ltd — site stylesheet.
+
+Built on the Manufactt template (Unifato, https://unifato.com/), recoloured and
+restructured for EID. Kept as the origin note for anyone tracing a rule back to
+the template it came from.
 */
 
 /* TailwindCSS */
@@ -15,11 +14,14 @@ File: Style CSS File
 @import "preline/variants.css";
 @source "preline/dist/*.js";
 
-/* Plugin CSS */
-@import 'lightgallery/css/lightgallery-bundle.css';
-@import 'lightgallery/css/lg-video.css';
+/* Plugin CSS
+   Only what the site actually uses. lightGallery and AOS were imported here by
+   the template and shipped their stylesheets to every visitor, but neither
+   library is used anywhere in src/ — no lightGallery instance is ever created
+   and there is not a single data-aos attribute in the codebase. Both are gone
+   from package.json too; put the import back at the same time as the code that
+   needs it, not before. */
 @import "swiper/swiper-bundle.css";
-@import "aos/dist/aos.css";
 
 /* Tailwind Plugin */
 @plugin "@tailwindcss/typography";
