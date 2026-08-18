@@ -104,68 +104,125 @@ export default function Globe({ size = 600, className = '' }: GlobeProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const globeRef = useRef<any>(null)
   const destroyedRef = useRef(false)
+  const startedRef = useRef(false)
 
   useEffect(() => {
-    if (!containerRef.current) return
+    const el = containerRef.current
+    if (!el) return
     destroyedRef.current = false
 
-    Promise.all([import('globe.gl'), import('three')])
-      .then(([GlobeModule, THREE]) => {
-        if (destroyedRef.current || !containerRef.current) return
-        // globe.gl's default export is callable as Globe(config)(domEl); its
-        // bundled types describe only the `new` form, so cast to keep the
-        // documented functional call.
-        const GlobeGL = GlobeModule.default as any
+    // three.js and globe.gl are ~1.2MB of the client bundle between them. The
+    // imports below are dynamic, so they were already split out of the initial
+    // payload — but this effect used to run the moment the component mounted,
+    // which meant the download and the WebGL setup started immediately on page
+    // load. GlobeSection sits near the bottom of the home, about and contact
+    // pages, so that was the single heaviest thing on the site competing with
+    // the hero for bandwidth and blocking the main thread while the user was
+    // still looking at content above the fold.
+    //
+    // Gating on the viewport keeps the split honest: nothing is fetched until
+    // the globe is close to being seen. rootMargin starts the work a screen
+    // early so it is normally ready by the time it scrolls into view, rather
+    // than popping in blank and filling late.
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
 
-        const globe = GlobeGL({ animateIn: false })(containerRef.current!)
-        globeRef.current = globe
+    const init = () => {
+      if (startedRef.current || destroyedRef.current) return
+      startedRef.current = true
 
-        const w = containerRef.current!.clientWidth || 600
-        const h = containerRef.current!.clientHeight || 600
+      Promise.all([import('globe.gl'), import('three')])
+        .then(([GlobeModule, THREE]) => {
+          if (destroyedRef.current || !containerRef.current) return
+          // globe.gl's default export is callable as Globe(config)(domEl); its
+          // bundled types describe only the `new` form, so cast to keep the
+          // documented functional call.
+          const GlobeGL = GlobeModule.default as any
 
-        globe.backgroundColor('rgba(0,0,0,0)').width(w).height(h).showAtmosphere(true).atmosphereColor('rgba(140,168,224,0.55)').atmosphereAltitude(0.25).globeImageUrl('/images/earth-night.jpg')
+          const globe = GlobeGL({ animateIn: false })(containerRef.current!)
+          globeRef.current = globe
 
-        globe.pointLat('lat').pointLng('lng').pointColor('color').pointAltitude(0.01).pointRadius('size').pointsMerge(false).pointsTransitionDuration(400)
+          const w = containerRef.current!.clientWidth || 600
+          const h = containerRef.current!.clientHeight || 600
 
-        globe.arcColor('color').arcDashLength(0.7).arcDashGap(0.15).arcDashAnimateTime(2200).arcStroke(1.1).arcAltitudeAutoScale(0.45).arcsTransitionDuration(800)
+          globe.backgroundColor('rgba(0,0,0,0)').width(w).height(h).showAtmosphere(true).atmosphereColor('rgba(140,168,224,0.55)').atmosphereAltitude(0.25).globeImageUrl('/images/earth-night.jpg')
 
-        globe.pointsData(buildPoints())
-        globe.arcsData(buildArcs())
+          globe.pointLat('lat').pointLng('lng').pointColor('color').pointAltitude(0.01).pointRadius('size').pointsMerge(false).pointsTransitionDuration(400)
 
-        const controls = globe.controls()
-        controls.autoRotate = true
-        controls.autoRotateSpeed = 0.65
-        controls.enableZoom = false
-        controls.enablePan = false
+          // Dashed arcs animate continuously. Under reduced motion they are
+          // drawn solid and still, so the trade routes still read as lines
+          // without anything moving.
+          globe
+            .arcColor('color')
+            .arcDashLength(reduceMotion ? 1 : 0.7)
+            .arcDashGap(reduceMotion ? 0 : 0.15)
+            .arcDashAnimateTime(reduceMotion ? 0 : 2200)
+            .arcStroke(1.1)
+            .arcAltitudeAutoScale(0.45)
+            .arcsTransitionDuration(reduceMotion ? 0 : 800)
 
-        // Framed on Europe/Africa so London and the bulk of the arcs read on load.
-        globe.pointOfView({ lat: 20, lng: 10, altitude: 2.1 })
+          globe.pointsData(buildPoints())
+          globe.arcsData(buildArcs())
 
-        const renderer = globe.renderer?.()
-        if (renderer) {
-          renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
+          const controls = globe.controls()
+          controls.autoRotate = !reduceMotion
+          controls.autoRotateSpeed = 0.65
+          controls.enableZoom = false
+          controls.enablePan = false
+
+          // Framed on Europe/Africa so London and the bulk of the arcs read on load.
+          globe.pointOfView({ lat: 20, lng: 10, altitude: 2.1 })
+
+          const renderer = globe.renderer?.()
+          if (renderer) {
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
+          }
+
+          const scene = globe.scene()
+          if (scene) {
+            const sun = new THREE.DirectionalLight(0xbfdaff, 1.8)
+            sun.position.set(5, 2, 4)
+            scene.add(sun)
+
+            const rim = new THREE.PointLight(0x3d5290, 0.8, 50)
+            rim.position.set(-4, 1, -3)
+            scene.add(rim)
+
+            const fill = new THREE.AmbientLight(0x101528, 0.45)
+            scene.add(fill)
+          }
+        })
+        .catch(() => {
+          // WebGL/library load failure — leave the reserved space empty rather
+          // than break the section.
+        })
+    }
+
+    // No IntersectionObserver (very old browser): fall back to initialising
+    // straight away rather than never showing the globe at all.
+    if (typeof IntersectionObserver === 'undefined') {
+      init()
+      return () => {
+        destroyedRef.current = true
+        if (globeRef.current) {
+          disposeGlobe(globeRef.current)
+          globeRef.current = null
         }
+      }
+    }
 
-        const scene = globe.scene()
-        if (scene) {
-          const sun = new THREE.DirectionalLight(0xbfdaff, 1.8)
-          sun.position.set(5, 2, 4)
-          scene.add(sun)
-
-          const rim = new THREE.PointLight(0x3d5290, 0.8, 50)
-          rim.position.set(-4, 1, -3)
-          scene.add(rim)
-
-          const fill = new THREE.AmbientLight(0x101528, 0.45)
-          scene.add(fill)
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          io.disconnect()
+          init()
         }
-      })
-      .catch(() => {
-        // WebGL/library load failure — leave the reserved space empty rather
-        // than break the section.
-      })
+      },
+      { rootMargin: '400px 0px' },
+    )
+    io.observe(el)
 
     return () => {
+      io.disconnect()
       destroyedRef.current = true
       if (globeRef.current) {
         disposeGlobe(globeRef.current)
