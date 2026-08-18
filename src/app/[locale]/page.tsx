@@ -203,7 +203,9 @@ fourth restatement of "we control quality". */}
       />
 
       {/* THE RANGE — anchor target for the hero's "Browse the Full Range". */}
-      <div id="products" className="scroll-mt-28">
+      {/* Offset comes from html's scroll-padding-top (see _general.css), not a
+          scroll-mt here — the two would add up. */}
+      <div id="products">
         <CardGrid
           eyebrow={t(locale, 'The range · eight product groups')}
           note="range"

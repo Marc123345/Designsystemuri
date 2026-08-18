@@ -206,9 +206,12 @@ const ProductSectionBlock = ({ locale, slug, productName, section, gray, showHea
   return (
     <>
       <div className={gray ? 'bg-default-50' : ''}>
-        {/* scroll-mt clears both the fixed header (~84px) and the sticky
-            JumpNav (~57px) so a jumped-to section lands below both, not under. */}
-        <section data-note="product-section" id={section.id} className="scroll-mt-40 py-16 lg:py-24">
+        {/* No scroll-mt here. The offset that clears the fixed header and the
+            sticky JumpNav comes from html's scroll-padding-top, which JumpNav
+            grows by its own measured height while it is mounted. Carrying both
+            would add them together and drop the section a third of the way
+            down the viewport. */}
+        <section data-note="product-section" id={section.id} className="py-16 lg:py-24">
           <div className="container">
             <div className="grid gap-12 lg:grid-cols-12">
               <div className="lg:col-span-7">

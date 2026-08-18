@@ -164,6 +164,9 @@ const GradeSelector = ({ series, fallbackImage, sectionTitle, productName }: { s
     setActiveSeries(si)
     setActiveGrade(gi)
     // After paint, so the panel has its final height before we scroll to it.
+    // A container scroll like any other, so it respects html's
+    // scroll-padding-top and lands below the fixed chrome on its own. The
+    // section carries no scroll-mt — the two offsets would stack.
     requestAnimationFrame(() => panelRef.current?.scrollIntoView({ block: 'start', behavior: 'smooth' }))
   }, [series])
 
@@ -200,7 +203,7 @@ const GradeSelector = ({ series, fallbackImage, sectionTitle, productName }: { s
   const sizeNoun = /mesh/i.test(current.sizesLabel ?? '') ? t(locale, 'mesh sizes') : t(locale, 'sizes')
 
   return (
-    <section data-note="grade-selector" ref={panelRef} aria-labelledby={baseId + '-heading'} className="scroll-mt-40">
+    <section data-note="grade-selector" ref={panelRef} aria-labelledby={baseId + '-heading'}>
       <div className="relative isolate overflow-hidden text-white">
         <Backdrop className="-z-10" />
         {/* ---------------------------- 1 · HEADER --------------------------- */}

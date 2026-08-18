@@ -12,7 +12,7 @@ import { site } from '@/lib/site'
 import { Icon } from '@iconify/react'
 import { useLocale } from 'next-intl'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import QuoteForm from './QuoteForm'
 import { ArrowButton, ArrowLink, SectionHeading } from './ui'
 
@@ -709,6 +709,34 @@ export const SpecCards = ({
 export const JumpNav = ({ items }: { items: { id: string; label: string }[] }) => {
   const locale = useLocale() as Locale
   const [active, setActive] = useState(items[0]?.id ?? '')
+  const navRef = useRef<HTMLElement>(null)
+
+  // This bar sticks below the fixed header, so on the pages that carry it there
+  // are two layers of chrome for an anchor or a focused element to land behind.
+  // The base offset in _general.css only accounts for the header, so JumpNav
+  // adds its own measured height to it while mounted and puts it back on the
+  // way out. Measured rather than hardcoded: the bar wraps to two rows on
+  // narrow screens and on the products with the most sections.
+  useEffect(() => {
+    const root = document.documentElement
+    const base = window.matchMedia('(min-width: 1024px)').matches ? 112 : 92
+
+    const apply = () => {
+      const h = navRef.current?.offsetHeight ?? 0
+      root.style.setProperty('--eid-scroll-offset', `${base + h}px`)
+    }
+
+    apply()
+    const ro = new ResizeObserver(apply)
+    if (navRef.current) ro.observe(navRef.current)
+    window.addEventListener('resize', apply)
+
+    return () => {
+      ro.disconnect()
+      window.removeEventListener('resize', apply)
+      root.style.removeProperty('--eid-scroll-offset')
+    }
+  }, [])
 
   useEffect(() => {
     const sections = items.map((it) => document.getElementById(it.id)).filter((el): el is HTMLElement => Boolean(el))
@@ -730,7 +758,7 @@ export const JumpNav = ({ items }: { items: { id: string; label: string }[] }) =
   }, [items])
 
   return (
-    <nav data-note="jump-nav" aria-label={t(locale, 'On this page')} className="border-default-200 bg-body-bg/95 sticky top-[84px] z-40 border-b backdrop-blur-md">
+    <nav ref={navRef} data-note="jump-nav" aria-label={t(locale, 'On this page')} className="border-default-200 bg-body-bg/95 sticky top-[84px] z-40 border-b backdrop-blur-md">
       <div className="container flex flex-wrap items-center gap-3 py-4">
         <span className="text-default-500 text-sm tracking-[0.2em] uppercase">{t(locale, 'On this page')}</span>
         {items.map((item) => {

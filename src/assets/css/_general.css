@@ -16,14 +16,26 @@
          *
          * scroll-padding-top on the scroll container fixes both at once and for
          * everything, because it applies to any scroll-into-view the browser
-         * performs, whoever triggered it. The values clear the bar plus a
-         * little breathing room. */
-        scroll-padding-top: 92px;
+         * performs, whoever triggered it.
+         *
+         * It goes through a variable because the amount of fixed chrome is not
+         * constant: product pages stack JumpNav underneath the header, so they
+         * need a bigger offset. JumpNav measures itself and updates this while
+         * it is mounted (see sections.tsx) rather than anything here hardcoding
+         * a second bar's height.
+         *
+         * Do not pair this with scroll-mt-* on the targets. The two add up —
+         * scroll-margin grows the element's box, scroll-padding insets the
+         * scrollport — so an element carrying both lands roughly a third of the
+         * way down the viewport instead of just below the chrome. */
+        --eid-scroll-offset: 92px;
+
+        scroll-padding-top: var(--eid-scroll-offset);
     }
 
     @media (min-width: 1024px) {
         html {
-            scroll-padding-top: 112px;
+            --eid-scroll-offset: 112px;
         }
     }
 
