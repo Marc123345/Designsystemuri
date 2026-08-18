@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "format": "prettier --write './src/**/*.{ts,tsx,js,jsx}'",
+    "icons": "tsx scripts/generate-icons.ts",
     "translate": "tsx scripts/translate.ts",
     "prebuild": "tsx scripts/translate.ts --auto"
   },

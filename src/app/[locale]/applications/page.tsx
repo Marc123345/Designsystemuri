@@ -21,7 +21,11 @@ const hubIcon: Record<string, string> = {
   'automotive-aerospace': 'tabler:engine',
   'tool-and-die': 'tabler:tools',
   'grinding-cutting-sawing-drilling': 'tabler:blade',
-  'polishing-lapping': 'tabler:lens',
+  // Was a `lens` name, which does not exist in the tabler set and so rendered
+  // nothing at all. A polished sphere is the closer read for this application
+  // anyway. (Naming the dead icon in full here would keep it alive: the
+  // generator scans this file for tabler:* and does not skip comments.)
+  'polishing-lapping': 'tabler:sphere',
 }
 
 const ApplicationsOverview = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
