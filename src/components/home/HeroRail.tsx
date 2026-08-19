@@ -92,7 +92,11 @@ const HeroRail = ({ items, prevLabel, nextLabel, railLabel }: { items: RailItem[
                 the name reads against the dark end of the photograph. */}
             <div className="from-default-950 via-default-950/70 absolute inset-0 bg-linear-to-t to-transparent" />
 
-            <h3 className="relative text-lg leading-tight font-semibold text-white">{item.name}</h3>
+            {/* h2, not h3. These cards sit directly under the page h1 with no
+                heading between, so h3 skipped a level — the one heading-order
+                failure on the page. The level is structural; the size comes
+                from the class either way. */}
+            <h2 className="relative text-lg leading-tight font-semibold text-white">{item.name}</h2>
 
             <span className="sr-only">{`${i + 1} of ${items.length}`}</span>
           </Link>

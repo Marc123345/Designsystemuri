@@ -111,7 +111,13 @@ const Navbar = () => {
             })}
           </nav>
 
-          <div className="flex shrink-0 items-center gap-3 lg:gap-4">
+          {/* ms-auto matters below lg. The nav above carries mx-auto and is what
+              pushes this cluster to the right edge — but it is `hidden` until
+              lg, so on a phone there was nothing holding the cluster over and it
+              sat flush against the logo, on top of the angled brand block. That
+              put the language switcher's slate text on the brand blue at 1.37:1
+              — unreadable, and the one contrast failure left on mobile. */}
+          <div className="ms-auto flex shrink-0 items-center gap-3 lg:ms-0 lg:gap-4">
             <LanguageSwitcher />
 
             {/* Square solid CTA */}
@@ -139,6 +145,11 @@ const Navbar = () => {
         id="mobile-menu"
         className="hs-overlay hs-overlay-open:translate-y-0 hs-overlay-open:top-[76px] absolute top-0 z-[110] max-h-[80vh] w-full -translate-y-full transform overflow-y-auto bg-white shadow-xl transition-all duration-300 lg:hidden"
         role="dialog"
+        // Preline gives this role; a dialog with no accessible name is
+        // announced as just "dialog", so a screen reader user has no idea what
+        // opened.
+        aria-label={t(locale, 'Menu')}
+        aria-modal="true"
         tabIndex={-1}
       >
         <div className="divide-default-200 flex flex-col divide-y">

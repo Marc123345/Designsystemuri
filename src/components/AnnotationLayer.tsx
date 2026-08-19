@@ -166,6 +166,13 @@ const AnnotationLayer = () => {
                     key={p.key}
                     type="button"
                     onClick={() => setActive(p.key)}
+                    // Out of the tab order to match the aria-hidden wrapper.
+                    // Focusable content inside an aria-hidden container is a
+                    // straight contradiction — a keyboard user could tab onto a
+                    // pin that assistive tech has been told is not there, and
+                    // hear nothing. The layer is deliberately invisible to AT,
+                    // so the pins follow it out.
+                    tabIndex={-1}
                     style={{ top: p.top, left: p.left }}
                     className={`pointer-events-auto absolute flex size-8 items-center justify-center text-xs font-bold shadow-[0_4px_14px_rgba(2,6,23,0.35)] transition-transform hover:scale-110 ${active === p.key ? 'bg-default-900 text-white' : 'bg-primary text-white'}`}
                     title={p.key.startsWith('image:') ? p.key.slice('image:'.length) : annotations[p.key]?.title}

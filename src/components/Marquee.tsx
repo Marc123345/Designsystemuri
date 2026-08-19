@@ -20,7 +20,12 @@ const Marquee = ({ items, inverse = false }: { items: string[]; inverse?: boolea
         {[0, 1].map((copy) => (
           <ul key={copy} aria-hidden={copy === 1} className={`${track} flex shrink-0 items-center justify-start gap-5`}>
             {items.map((item, i) => (
-              <li key={`${copy}-${i}`} className="text-default-500 flex shrink-0 items-center gap-5 text-lg whitespace-nowrap">
+              // default-600, not 500. The strip does not sit on white — the
+              // section behind it is a tinted #dce0eb, where slate-500 is
+              // 3.6:1 and fails 1.4.3. slate-600 is 5.74:1 on the same ground.
+              // A token that passes on white can still fail wherever it is
+              // actually used.
+              <li key={`${copy}-${i}`} className="text-default-600 flex shrink-0 items-center gap-5 text-lg whitespace-nowrap">
                 <span className="bg-primary size-1.5 shrink-0" />
                 {item}
               </li>
