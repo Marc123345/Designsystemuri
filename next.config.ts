@@ -7,6 +7,47 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
+  // Next advertises itself in an X-Powered-By header by default. It tells an
+  // attacker which framework to look up known issues for and tells a visitor
+  // nothing.
+  poweredByHeader: false,
+  /**
+   * Security headers. The site was sending none at all.
+   *
+   * These are the ones that are safe to set without knowing every asset the
+   * site will ever load. Deliberately no Content-Security-Policy: this page
+   * loads Jotform's embed script from their CDN and frames form.jotform.com,
+   * and a CSP written from a list of what is loaded today is a policy that
+   * silently breaks the quote form the first time Jotform changes a hostname.
+   * That is worth doing properly, with report-only and a reporting endpoint
+   * first, rather than guessed at here.
+   *
+   * HSTS is not set either — Vercel already sends it on production domains, and
+   * a second one from the app would only be a chance to disagree.
+   */
+  headers: async () => [
+    {
+      source: '/:path*',
+      headers: [
+        // Stop the browser second-guessing a declared Content-Type.
+        { key: 'X-Content-Type-Options', value: 'nosniff' },
+        // Send the full URL within the site and only the origin off-site, so
+        // internal paths do not leak to third parties through the referer.
+        { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+        // Nothing here is meant to be framed by anyone else.
+        { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+        // Powerful features this site has no use for, denied to the page and to
+        // everything it frames. Camera is the exception and is scoped rather
+        // than denied: the Jotform embed may carry a photo or upload widget, and
+        // a blanket camera=() here would override the iframe's own allow
+        // attribute and break it.
+        {
+          key: 'Permissions-Policy',
+          value: 'geolocation=(), microphone=(), payment=(), usb=(), magnetometer=(), camera=(self "https://form.jotform.com")',
+        },
+      ],
+    },
+  ],
   images: {
     // Next serves WebP by default and stops there. AVIF is listed first so it
     // is preferred where the browser accepts it — typically 20-30% smaller than
