@@ -1,5 +1,12 @@
 'use client'
 
+/* eslint-disable @next/next/no-html-link-for-pages --
+ * A plain anchor is the only option here. This boundary catches a throw in the
+ * root layout, so it deliberately imports nothing the layout provides — and
+ * next/link is exactly the kind of thing that would drag the broken tree back
+ * in. A full document load is also what recovery means at this level.
+ */
+
 /**
  * Last-resort boundary, for a throw in the root layout itself.
  *

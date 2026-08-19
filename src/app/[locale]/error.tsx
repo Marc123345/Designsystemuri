@@ -1,5 +1,18 @@
 'use client'
 
+/* eslint-disable @next/next/no-html-link-for-pages --
+ * Plain anchors here on purpose. The rule wants next/link for internal routes so
+ * navigation stays client-side, which is right everywhere except an error
+ * boundary: the tree has already thrown, and a client-side transition out of a
+ * broken tree keeps the broken tree. A full document load is the recovery.
+ *
+ * It also avoids importing the i18n navigation helpers. If the failure was in
+ * the i18n layer, pulling it back in here is how an error page becomes a second
+ * error. The unprefixed paths are still locale-correct in practice — next-intl's
+ * middleware reads the NEXT_LOCALE cookie and redirects a German visitor from
+ * /contact to /de/contact.
+ */
+
 import { ArrowButton } from '@/components/ui'
 import { useEffect } from 'react'
 
