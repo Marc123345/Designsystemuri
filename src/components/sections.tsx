@@ -83,12 +83,18 @@ export const PageHero = ({ eyebrow, title, desc, crumbs, primaryCta, secondaryCt
  * (~320px, so 4:5 lands ~400 tall). Both end up roughly the same height, which
  * is what makes the grids read as one system.
  *
- * Two things this has to get right, because a hover-only card gets them wrong
- * by default: the reveal is bound to focus-visible as well as hover so it is
- * reachable by keyboard, and below `lg` — where there is no hover at all — the
- * copy is simply always visible, since a touch user would otherwise be handed a
- * grid of unlabelled boxes. The text stays in the DOM throughout, translated and
- * faded rather than `hidden`, so crawlers and screen readers still read it.
+ * Three things this has to get right, because a hover-only card gets them wrong
+ * by default. The reveal is bound to focus-visible as well as hover, so it is
+ * reachable by keyboard. The text stays in the DOM throughout, translated and
+ * faded rather than `hidden`, so crawlers and screen readers still read it. And
+ * the copy is always visible wherever there is no hover to reveal it with.
+ *
+ * That last one is gated on `@media (hover: hover)` rather than on `lg:`. The
+ * intent was always "no hover means show everything", but width was standing in
+ * for it — and width is not the same question. An iPad in landscape, a Surface
+ * and a touchscreen laptop are all `lg` with no pointer, so on those the card
+ * kept its hover behaviour and simply never revealed: no scrim, no description,
+ * no affordance, just a title on a picture.
  */
 export const ImageCard = ({ item, size = 'sm', className = '' }: { item: Card; size?: 'sm' | 'lg'; className?: string }) => {
   const locale = useLocale() as Locale
@@ -99,15 +105,26 @@ export const ImageCard = ({ item, size = 'sm', className = '' }: { item: Card; s
       {/* The slot the real photograph will occupy. */}
       <Wireframe label={item.title} ratio="portrait" className="absolute inset-0 !aspect-auto size-full !border-0" />
 
-      {/* Scrim. Always present below lg so the copy on top of it stays legible;
-          on lg it fades in with the reveal. */}
-      <div className="from-default-950 via-default-950/80 absolute inset-0 bg-gradient-to-t to-transparent transition-opacity duration-500 lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-visible:opacity-100" />
+      {/* Scrim. Present by default; on a large screen that can actually hover it
+          fades in with the reveal instead.
+
+          The hover-capability check is what matters here. This used to be gated
+          on `lg:` alone, which assumes width implies a mouse — but an iPad in
+          landscape, a Surface and a touchscreen laptop are all lg with no hover,
+          and focus-visible only fires for the keyboard. On those the scrim never
+          appeared at all, leaving white text sitting directly on the picture.
+          Harmless today because every image is still a dark Wireframe
+          placeholder, and a legibility failure the day real photography lands —
+          by which point nobody would connect it to this line. */}
+      <div className="from-default-950 via-default-950/80 absolute inset-0 bg-gradient-to-t to-transparent transition-opacity duration-500 lg:[@media(hover:hover)]:opacity-0 lg:group-hover:opacity-100 lg:group-focus-visible:opacity-100" />
 
       <div className={`relative ${large ? 'p-9' : 'p-7'}`}>
-        <Icon icon={item.icon} className={`mb-4 text-white/70 transition duration-500 lg:translate-y-3 lg:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100 lg:group-focus-visible:translate-y-0 lg:group-focus-visible:opacity-100 ${large ? 'size-11' : 'size-9'}`} />
+        {/* Same reasoning as the scrim: hidden only where there is a pointer
+            that can reveal it again. On touch these simply stay visible. */}
+        <Icon icon={item.icon} className={`mb-4 text-white/70 transition duration-500 lg:translate-y-3 lg:[@media(hover:hover)]:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100 lg:group-focus-visible:translate-y-0 lg:group-focus-visible:opacity-100 ${large ? 'size-11' : 'size-9'}`} />
         <h3 className={`text-white transition duration-500 lg:translate-y-3 lg:group-hover:translate-y-0 lg:group-focus-visible:translate-y-0 ${large ? 'text-2xl' : 'text-xl'}`}>{item.title}</h3>
-        <p className={`mt-3 text-white/75 transition duration-500 lg:translate-y-4 lg:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100 lg:group-focus-visible:translate-y-0 lg:group-focus-visible:opacity-100 ${large ? 'text-lg' : 'text-base'}`}>{item.desc}</p>
-        <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-white transition duration-500 lg:translate-y-4 lg:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100 lg:group-focus-visible:translate-y-0 lg:group-focus-visible:opacity-100">
+        <p className={`mt-3 text-white/75 transition duration-500 lg:translate-y-4 lg:[@media(hover:hover)]:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100 lg:group-focus-visible:translate-y-0 lg:group-focus-visible:opacity-100 ${large ? 'text-lg' : 'text-base'}`}>{item.desc}</p>
+        <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-white transition duration-500 lg:translate-y-4 lg:[@media(hover:hover)]:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100 lg:group-focus-visible:translate-y-0 lg:group-focus-visible:opacity-100">
           {t(locale, 'Learn more')}
           <Icon icon="tabler:arrow-narrow-right" className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
         </span>
