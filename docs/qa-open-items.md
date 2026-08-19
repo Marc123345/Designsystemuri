@@ -21,6 +21,39 @@ left on the accessibility and responsive sections.
 | WhatsApp button vs the Jotform submit | The form is a cross-origin iframe. Its buttons cannot be measured from outside it, so whether the floating button covers one on a phone can only be seen by looking. |
 | Form submissions reach the right inbox | Has to be a real submission against production. |
 
+## 1a · The launch sequence — read this before attaching a domain
+
+Three separate things are currently held shut by the same lock, and attaching a
+custom domain releases all three at once. Only one of them is obvious.
+
+The Vercel project is protected with Vercel Authentication set to
+`all_except_custom_domains`. So today nothing is reachable without a Vercel
+login, which is why none of the following matters yet:
+
+1. **`robots.txt` says `Allow: /`** and the layout's metadata says
+   `index, follow`. Correct for the real site. On the review deployment it means
+   the only thing standing between a crawler and this build is the login.
+2. **The annotation layer renders for everyone** — design commentary written for
+   Uri and Phil. Off via `NEXT_PUBLIC_REVIEW_MODE=off`, but that has to be set
+   deliberately; nothing does it automatically.
+3. **`SITE_ORIGIN` still points at the Vercel URL**, so every canonical,
+   hreflang, `og:url` and `og:image` names `designsystemuri.vercel.app`. Fixed
+   by setting `NEXT_PUBLIC_SITE_URL`, which again nothing does on its own.
+
+The failure mode is attaching a domain — even briefly, even to test — before
+those two variables are set. At that moment the site becomes publicly reachable,
+invites indexing, serves internal design notes to anyone who looks, and names
+the wrong canonical host on every page. Search engines are considerably more
+eager than the people who would notice.
+
+So the order is: set `NEXT_PUBLIC_SITE_URL`, set `NEXT_PUBLIC_REVIEW_MODE=off`,
+redeploy, confirm both on the deployment, and only then point the domain.
+
+Two things that are already fine and need nothing: the sitemap is correct — 192
+URLs, 24 routes across 8 locales, with hreflang alternates, and it resolves
+through `SITE_ORIGIN` so it follows the variable above. And `robots.txt`
+correctly points at it.
+
 ## 2 · Needs a decision
 
 **The seven non-English locales serve English.** `lib/i18n-generated/index.ts`
