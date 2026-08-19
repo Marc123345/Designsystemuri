@@ -144,7 +144,13 @@ export default function Globe({ size = 600, className = '' }: GlobeProps) {
           const w = containerRef.current!.clientWidth || 600
           const h = containerRef.current!.clientHeight || 600
 
-          globe.backgroundColor('rgba(0,0,0,0)').width(w).height(h).showAtmosphere(true).atmosphereColor('rgba(140,168,224,0.55)').atmosphereAltitude(0.25).globeImageUrl('/images/earth-night.jpg')
+          // atmosphereColor goes to THREE.Color, which has no alpha channel.
+          // The 0.55 in the rgba() this used to carry was silently dropped —
+          // three.js warned about it on the console on every page with a globe,
+          // and the atmosphere has been rendering at full strength all along.
+          // Stated as rgb so the code says what actually happens; the softness
+          // comes from the atmosphere shader's own falloff, not from this.
+          globe.backgroundColor('rgba(0,0,0,0)').width(w).height(h).showAtmosphere(true).atmosphereColor('rgb(140,168,224)').atmosphereAltitude(0.25).globeImageUrl('/images/earth-night.jpg')
 
           globe.pointLat('lat').pointLng('lng').pointColor('color').pointAltitude(0.01).pointRadius('size').pointsMerge(false).pointsTransitionDuration(400)
 

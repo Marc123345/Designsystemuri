@@ -41,7 +41,20 @@ import { useEffect, useState } from 'react'
  * page load.
  */
 const MIN_VISIBLE = 450
-const MAX_WAIT = 8000
+/**
+ * Hard ceiling on how long the panel can stay up.
+ *
+ * This started at 8000, which was a mistake: it was reasoned about as a safety
+ * valve against a hung asset rather than as what a real visitor might sit
+ * through. Watching an actual load showed the contact page holding for most of
+ * it, because `window.load` waits on the Jotform embed — so the worst case of
+ * the honest loader was nearly three times the fixed 3s delay it replaced.
+ *
+ * 2200ms instead. The content is prerendered and already painted underneath, so
+ * nothing is gained by holding longer; past this point the overlay is not
+ * covering a wait, it is being one.
+ */
+const MAX_WAIT = 2200
 const LOADING_CEILING = 92
 /** How long the opacity transition on the wrapper runs, in ms. */
 const FADE = 520
@@ -68,17 +81,16 @@ const SiteLoader = ({ text = 'Loading' }: { text?: string }) => {
     let loaded = false
     let raf = 0
     let fadeTimer = 0
+    let minTimer = 0
     let finished = false
 
-    const onLoad = () => {
-      loaded = true
-    }
-    window.addEventListener('load', onLoad, { once: true })
-
-    /** Release the page. Idempotent — MAX_WAIT and a real load can both fire. */
+    /** Release the page. Idempotent — the deadline and a real load can both fire. */
     const finish = () => {
       if (finished) return
       finished = true
+      window.clearTimeout(deadline)
+      window.clearTimeout(minTimer)
+      cancelAnimationFrame(raf)
       setProgress(100)
       setFading(true)
       fadeTimer = window.setTimeout(() => {
@@ -87,21 +99,37 @@ const SiteLoader = ({ text = 'Loading' }: { text?: string }) => {
       }, FADE)
     }
 
+    /**
+     * The deadline is a timer, not a frame callback.
+     *
+     * Both the dismissal and the scroll unlock used to live inside the
+     * requestAnimationFrame loop below, and rAF does not run while a tab is in
+     * the background. Open the site in a background tab — a link opened into
+     * one, or switching away while it loads — and rAF pauses, so nothing ever
+     * reached the code that takes the panel down. Coming back meant finding a
+     * full-screen overlay with the page scroll still locked behind it, for as
+     * long as the tab stayed unfocused. Caught by watching the DOM six seconds
+     * into a load that should have released at 2.2.
+     *
+     * Timers are throttled in background tabs but they do fire, so the panel
+     * always comes down. rAF now only animates the number, which is the one
+     * thing that genuinely does not matter when nobody is looking.
+     */
+    const deadline = window.setTimeout(finish, MAX_WAIT)
+
+    const onLoad = () => {
+      loaded = true
+      const elapsed = performance.now() - start
+      // MIN_VISIBLE stops a loader that did appear from strobing, but it must
+      // not be enforced by the frame loop either.
+      if (elapsed >= MIN_VISIBLE) finish()
+      else minTimer = window.setTimeout(finish, MIN_VISIBLE - elapsed)
+    }
+    window.addEventListener('load', onLoad, { once: true })
+
     const tick = (now: number) => {
       const elapsed = now - start
-
-      if (elapsed >= MAX_WAIT) {
-        finish()
-        return
-      }
-
-      // While assets are outstanding the count eases toward the ceiling and
-      // waits there — it must not claim 100 before the page is ready. Once
-      // load has fired it is free to arrive.
-      if (loaded && elapsed >= MIN_VISIBLE) {
-        finish()
-        return
-      }
+      if (finished) return
 
       // easeOutCubic against MAX_WAIT: quick off the mark, settles as it goes.
       const t = Math.min(1, elapsed / MAX_WAIT)
@@ -116,6 +144,8 @@ const SiteLoader = ({ text = 'Loading' }: { text?: string }) => {
     return () => {
       cancelAnimationFrame(raf)
       window.clearTimeout(fadeTimer)
+      window.clearTimeout(deadline)
+      window.clearTimeout(minTimer)
       window.removeEventListener('load', onLoad)
       root.style.overflow = prevOverflow
     }
