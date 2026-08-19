@@ -97,6 +97,17 @@ so it is deliberately not being optimised beforehand.
 
 ## What passed and needed nothing
 
+**Reachability**, measured off the built link graph rather than estimated. Every
+one of the eight products and six applications is **one click** from the home
+page, against a limit of three. Every one of the 21 datasheet and MSDS PDFs is
+reachable within **two**. Nothing in the graph is orphaned.
+
+The stricter NN/g #7 test — datasheets, MSDS and the quote form within two
+clicks *from anywhere*, not just from home — also passes: worst case is two
+clicks to a specific PDF and one click to the datasheets index, the MSDS index
+or the quote form, from any page on the site. The mega-menu and footer are
+doing their job.
+
 Recorded so it is not re-audited: one `h1` per page with no skipped levels;
 every rendered `img` carries an `alt`; carousel arrows are 44–48px against a
 24px minimum; radii, shadows and transition timings are one consistent scale;
