@@ -76,6 +76,32 @@ answer about custom work. Either it is a capability that deserves a page, or the
 datasheet group needs to say where it belongs. That is Uri's call, and it
 overlaps with the product-page rule still to come.
 
+**There is no analytics on the site at all.** No gtag, no GTM, no Vercel Web
+Analytics, no Plausible or anything else — nothing in `package.json`, nothing in
+the source, nothing in the built HTML, and Web Analytics is not enabled on the
+Vercel project either. So the checklist's "analytics events firing — quote form
+submit, datasheet download, WhatsApp click" cannot pass, because there is
+nothing for them to fire into. For a site whose entire job is producing quote
+requests, launching without measurement means nobody will be able to say whether
+it worked.
+
+Worth deciding before launch rather than after, because the choice has a
+knock-on: GA4 sets cookies, and with eight locales and a European audience that
+drags in consent handling and a banner the site does not currently have. Vercel
+Web Analytics is cookieless and is one line in the layout, which sidesteps that
+entirely. Not installed either way — it needs a property and a decision, and
+neither is mine to make. Note that the two GA4 IDs already in circulation belong
+to other sites; EID needs its own.
+
+**Slides 2+ of WhyEid are only reachable by interacting.** The checklist's rule
+is that nothing important should live only inside a carousel, since most people
+never swipe past the first slide. Products are fine — all eight are linked
+directly on the home page and are one click away through the mega-menu — but the
+WhyEid pillars are carousel-only, so most of that argument goes unseen. Left
+alone deliberately: WhyEid is one of the two sections the checklist already
+marks as a merge candidate, so it is Uri's restructuring to make rather than
+something to rebuild first and then undo.
+
 **One datasheet is 11.5MB.** `eid-cvd-single-crystal-datasheet.pdf`, against
 48.3MB across all 21 files. All 21 are valid PDFs, all present, none empty, and
 they download natively rather than opening in a tab — but a buyer pulling 11.5MB
