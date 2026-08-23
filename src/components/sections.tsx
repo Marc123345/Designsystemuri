@@ -1,5 +1,6 @@
 'use client'
 
+import Counter from '@/components/Counter'
 import GradeSelector from '@/components/GradeSelector'
 import { RichText } from '@/components/RichText'
 import Wireframe from '@/components/Wireframe'
@@ -394,7 +395,7 @@ export const StatsBar = ({ items }: { items: { value: string; label: string }[] 
       <div className="divide-default-200 grid grid-cols-1 divide-x divide-y md:grid-cols-2 lg:grid-cols-4 lg:divide-y-0">
         {items.map((item) => (
           <div key={item.label} className="px-8 py-10">
-            <div className="text-default-900 text-4xl font-bold">{item.value}</div>
+            <Counter value={item.value} className="text-default-900 text-4xl font-bold tabular-nums" />
             <div className="text-default-500 mt-2 text-sm">{item.label}</div>
           </div>
         ))}

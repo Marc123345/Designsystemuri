@@ -198,7 +198,18 @@ export default function Globe({ size = 600, className = '' }: GlobeProps) {
 
           const renderer = globe.renderer?.()
           if (renderer) {
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
+            /* The globe was briefly kept off phones entirely for performance,
+               and Marc wanted it back — so the saving has to come from how it
+               renders rather than whether it renders.
+            
+               A phone is drawing this at roughly half the width of a desktop on
+               a screen whose device pixel ratio is often 3, so an uncapped
+               buffer is around nine times the pixels per CSS pixel for a globe
+               a third of the size. 1.25 on small screens is the point where the
+               coastlines still read and the fragment count stops being the
+               reason the section stutters. Desktop keeps 1.5. */
+            const small = window.matchMedia?.('(max-width: 1023px)').matches ?? false
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, small ? 1.25 : 1.5))
           }
 
           const scene = globe.scene()

@@ -1,5 +1,5 @@
 import GlobeSection from '@/components/GlobeSection'
-import SectionBanner from '@/components/SectionBanner'
+import CurtainGrid from '@/components/CurtainGrid'
 import { PageHero, StatsBar } from '@/components/sections'
 import TeamGrid from '@/components/TeamGrid'
 import Wireframe from '@/components/Wireframe'
@@ -28,18 +28,32 @@ const companyParagraphs = [
   'That record is what separates us from a distributor. We control production and the quality decision, and we cover the whole range from one facility, so our customers manage one relationship instead of five.',
 ]
 
-const companyFeatures = [
+/**
+ * The three points that separate EID from a distributor, as curtain tiles.
+ *
+ * The images are the two electron micrographs that the home page stopped using
+ * when the supplied laboratory set arrived, plus the laboratory frame. Both
+ * SEMs are EID's own and carry their instrument scale bars, which is the right
+ * material for a page arguing that the quality decision is theirs.
+ */
+const aboutPillars = [
   {
-    title: 'Manufacturer, not distributor',
-    desc: 'We control the production and the quality decision. The specification and the QC pass are ours.',
+    meta: 'Manufacturer, not distributor',
+    title: 'We control the production and the quality decision.',
+    href: '/quality',
+    image: { src: '/eid/qc-lab.jpg', alt: 'A technician at an optical inspection system in a quality laboratory, examining a diamond crystal shown magnified on the instrument screen' },
   },
   {
-    title: 'Full range, one facility',
-    desc: 'Grit, powder, and crystal, all quality-controlled in-house.',
+    meta: 'Full range, one facility',
+    title: 'Grit, powder and crystal, quality-controlled in-house.',
+    href: '/#products',
+    image: { src: '/eid/surface-enhancements.jpg', alt: 'Scanning electron micrograph of surface-enhanced diamond crystal, coated and CRT-rounded, at 33× magnification', position: 'object-bottom' },
   },
   {
-    title: 'Over 50 years',
-    desc: 'Half a century supplying the same kinds of tool makers, order after order.',
+    meta: 'Over 50 years',
+    title: 'Half a century supplying the same kinds of tool makers.',
+    href: '/about',
+    image: { src: '/eid/qc-micron-sem.jpg', alt: 'Scanning electron micrograph of polycrystalline diamond micron powder at 4000× magnification, showing uniform particle size and morphology across the field', position: 'object-bottom' },
   },
 ]
 
@@ -122,34 +136,32 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
           The closing sentence is from EID's previous site, which Uri asked to
           bring across — it says the global-reach part better than anything
           written for this build did. */}
-      <SectionBanner
-        tone="tint"
-        label={t(locale, 'Manufacturer, not distributor')}
-        body={t(
-          locale,
-          'EID Ltd is a London-based manufacturer and finisher of industrial diamond and superabrasives. For over fifty years we have supplied the full diamond and CBN range — grit, powder and crystal products — to tool manufacturers and precision-parts producers worldwide. That record is what separates us from a distributor: we control production and the quality decision, and we cover the whole range from one facility, so our customers manage one relationship instead of five.'
-        )}
-      />
+      {/* MANUFACTURER, NOT DISTRIBUTOR — the same shape as the three pillars
+          on the home page, and the same component behind it.
 
-      <section className="py-16 lg:py-20">
+          It was a pale banner with two paragraphs beside a rule-separated list
+          of three. The three points are exactly the kind of parallel claim the
+          curtain tiles were built for, so they use them: one card, three
+          places on the site, and About stops being the page with its own
+          layout vocabulary.
+
+          The lede keeps the paragraph, because this is the page where someone
+          reads rather than scans. */}
+      <section data-note="about-pillars" className="bg-default-50 py-20 lg:py-30">
         <div className="container">
-          <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+          <div className="grid items-end gap-8 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-7">
-              {/* Paragraph two only. One and three are the banner directly
-                  above — merged into it per Uri's note — and running all three
-                  here as well printed the same two paragraphs twice in a row,
-                  which is the congestion this pass was meant to remove. */}
-              <p className="text-default-600 text-base">{t(locale, companyParagraphs[1])}</p>
+              <div className="border-default-300 inline-flex items-center gap-1.5 border bg-white px-3.5 py-1.25">
+                <span className="bg-primary size-2"></span>
+                <span className="text-default-900 text-sm">{t(locale, 'Manufacturer, not distributor')}</span>
+              </div>
+              <h2 className="mt-4 text-[28px] font-bold md:text-[36px] lg:text-[42px]">{t(locale, 'We make the material inside the tools, not the finished tools.')}</h2>
             </div>
+            <p className="text-default-600 lg:col-span-5">{t(locale, companyParagraphs[1])}</p>
+          </div>
 
-            <div className="divide-default-200 border-default-200 divide-y border-t lg:col-span-5">
-              {companyFeatures.map((feature) => (
-                <div key={feature.title} className="py-6">
-                  <h3 className="text-lg">{t(locale, feature.title)}</h3>
-                  <p className="text-default-600 mt-1.5 text-base">{t(locale, feature.desc)}</p>
-                </div>
-              ))}
-            </div>
+          <div className="mt-14 lg:mt-18">
+            <CurtainGrid items={aboutPillars.map((p) => ({ ...p, title: t(locale, p.title), meta: t(locale, p.meta), image: { ...p.image, alt: t(locale, p.image.alt) } }))} numbered />
           </div>
         </div>
       </section>

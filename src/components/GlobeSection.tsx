@@ -7,7 +7,6 @@ import { ArrowButton } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
 import { useLocale } from 'next-intl'
-import { useSyncExternalStore } from 'react'
 
 // Globe renders only two <div>s on the server; all WebGL/three.js work runs
 // lazily inside its useEffect (client-only), so a plain static import hydrates
@@ -48,36 +47,8 @@ const MARKETS: { city: string; region: string; x: number; y: number }[] = [
 /** Background zoom on the world texture — roughly 36° of longitude per tile. */
 const TILE_ZOOM = '1000%'
 
-/**
- * `(min-width: 1024px)` as an external store, so the globe can be kept off
- * phones entirely.
- *
- * Gating inside Globe's own effect was tried first and broke it: the effect
- * observes its container with an IntersectionObserver, and hiding that
- * container with `display: none` until `lg` left the observer watching an
- * element with no box. Verified against the deployed build — canvas present
- * there, absent locally — which is why the decision moved out here.
- *
- * Not mounting the component at all is also the stronger version of the same
- * idea. The dynamic import never runs, so three.js and globe.gl are never
- * fetched, compiled or given a WebGL context on a device that was going to
- * spend ~1.2MB of JavaScript and an autorotate loop on a decorative globe.
- *
- * The server snapshot is `false`: SSR has no viewport, and the phone
- * arrangement is the one that needs no JavaScript to be correct.
- */
-const LG = '(min-width: 1024px)'
-const subscribeLg = (onChange: () => void) => {
-  const mq = window.matchMedia(LG)
-  mq.addEventListener('change', onChange)
-  return () => mq.removeEventListener('change', onChange)
-}
-const getLgSnapshot = () => window.matchMedia(LG).matches
-const getLgServerSnapshot = () => false
-
 const GlobeSection = ({ eyebrow, title, desc, ctaLabel, ctaHref = '/contact' }: { eyebrow?: string; title?: string; desc?: string; ctaLabel?: string; ctaHref?: string }) => {
   const locale = useLocale() as Locale
-  const lg = useSyncExternalStore(subscribeLg, getLgSnapshot, getLgServerSnapshot)
 
   return (
     <section data-note="reach" className="relative isolate size-full overflow-hidden py-20 text-white lg:py-37.5">
@@ -180,10 +151,8 @@ const GlobeSection = ({ eyebrow, title, desc, ctaLabel, ctaHref = '/contact' }: 
 
           {/* Globe */}
           <div className="relative">
-            {lg && <Globe size={600} />}
-            {/* Hidden with the globe it describes — there is nothing to spin
-                or drag below lg. */}
-            <p className="mt-6 hidden text-center font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase lg:block">{t(locale, 'Spins on its own · drag to explore')}</p>
+            <Globe size={600} />
+            <p className="mt-6 text-center font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase">{t(locale, 'Spins on its own · drag to explore')}</p>
           </div>
         </div>
       </div>
