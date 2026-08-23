@@ -19,41 +19,52 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   }
 }
 
-// The company story, told in the same four-paragraph order as the copy deck:
-// what EID is, what customers buy, the experience behind it, and why that is
-// different from a distributor.
-const companyParagraphs = [
-  'EID Ltd is a London-based manufacturer and finisher of industrial diamond and superabrasives. For over fifty years we have supplied the full diamond and CBN range, covering grit, powder, and crystal products, to tool manufacturers and precision-parts producers worldwide.',
-  'We make the material inside the tools, not the finished tools. A dental bur maker who needs metal bond powder that sinters the same way each run, an optics company that needs a CVD single crystal grown to a set orientation, a grinding wheel maker who needs CBN that matches the last order: they come to EID. Decades of supporting the same customers have built the consistency and technical understanding a production environment needs.',
-  'That record is what separates us from a distributor. We control production and the quality decision, and we cover the whole range from one facility, so our customers manage one relationship instead of five.',
-]
-
 /**
  * The three points that separate EID from a distributor, as curtain tiles.
  *
- * The images are the two electron micrographs that the home page stopped using
- * when the supplied laboratory set arrived, plus the laboratory frame. Both
- * SEMs are EID's own and carry their instrument scale bars, which is the right
- * material for a page arguing that the quality decision is theirs.
+ * Each picture has to be the thing its card claims, and two of the three were
+ * not:
+ *
+ *  - 01 carried the wide shot of the metrology room. That frame is measurement
+ *    benches, which is neither production nor a decision, and it is already the
+ *    plate beside the home-page FAQ. It is now the instrument with EID material
+ *    on the stage and a hand on the control — the quality decision being taken,
+ *    which is what the card says.
+ *  - 02 carried a single micrograph of one coated crystal to illustrate "grit,
+ *    powder and crystal". One of three is not a range. The sample rack is the
+ *    only frame in the library that shows one: coarse stock at the front
+ *    graduating to fine powder down the shelf, on one set of shelves.
+ *
+ * ⚠ 03 is the one that cannot be made accurate from what we hold. Nothing here
+ * depicts fifty years — no photograph does. It keeps a genuine EID micrograph
+ * with the instrument's own stamp in it (magnification, scale bar, date and lot
+ * reference), which is at least the kind of record half a century of the same
+ * practice leaves behind, and the alt text describes the picture rather than
+ * the claim. What would actually fix it is an archive frame: the London
+ * building, an early grading ledger, or a part from a customer who has been
+ * buying since the seventies.
+ *
+ * /eid/surface-enhancements.jpg is no longer used anywhere after this change.
+ * It is a real EID SEM and worth keeping on disk for /quality.
  */
 const aboutPillars = [
   {
     meta: 'Manufacturer, not distributor',
     title: 'We control the production and the quality decision.',
     href: '/quality',
-    image: { src: '/eid/qc-lab.jpg', alt: 'A technician at an optical inspection system in a quality laboratory, examining a diamond crystal shown magnified on the instrument screen' },
+    image: { src: '/eid/qc-inspection.jpg', alt: 'A gloved hand at the control of a digital measuring microscope, a dish of diamond grit on its stage and the crystals shown magnified and being measured on the screen above' },
   },
   {
     meta: 'Full range, one facility',
     title: 'Grit, powder and crystal, quality-controlled in-house.',
     href: '/#products',
-    image: { src: '/eid/surface-enhancements.jpg', alt: 'Scanning electron micrograph of surface-enhanced diamond crystal, coated and CRT-rounded, at 33× magnification', position: 'object-bottom' },
+    image: { src: '/eid/qc-samples.jpg', alt: 'A laboratory rack of sample jars receding down a shelf, the nearest holding coarse grey diamond stock and the furthest holding fine powder' },
   },
   {
     meta: 'Over 50 years',
     title: 'Half a century supplying the same kinds of tool makers.',
     href: '/about',
-    image: { src: '/eid/qc-micron-sem.jpg', alt: 'Scanning electron micrograph of polycrystalline diamond micron powder at 4000× magnification, showing uniform particle size and morphology across the field', position: 'object-bottom' },
+    image: { src: '/eid/qc-micron-sem.jpg', alt: 'Scanning electron micrograph of polycrystalline diamond micron powder at 4000x magnification, the particles uniform across the field, with the instrument’s 20 micrometre scale bar, date and lot reference along the bottom edge', position: 'object-bottom' },
   },
 ]
 
@@ -124,9 +135,8 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
            - The QC section and the QC laboratory photograph. Both belong on
              /quality, which is linked from here, the header and the footer.
 
-          The closing sentence is from EID's previous site, which Uri asked to
-          bring across — it says the global-reach part better than anything
-          written for this build did. */}
+          The global-reach wording Uri asked to bring across from the previous
+          site now sits on the reach band at the foot of the page. */}
       {/* MANUFACTURER, NOT DISTRIBUTOR — the same shape as the three pillars
           on the home page, and the same component behind it.
 
@@ -136,8 +146,13 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
           places on the site, and About stops being the page with its own
           layout vocabulary.
 
-          The lede keeps the paragraph, because this is the page where someone
-          reads rather than scans. */}
+          No lede paragraph. The one that ran beside the heading opened "EID
+          Ltd is a London-based manufacturer and finisher of industrial diamond
+          and superabrasives" and closed on the distributor line — both of
+          which are already said on this page: the first by the hero's own
+          standfirst directly above, the second by these three cards, which is
+          the whole point of them. Printing it a third time in the middle was
+          the congestion Uri asked to take off this page. */}
       <section data-note="about-pillars" className="bg-default-50 py-20 lg:py-30">
         <div className="container">
           <div className="grid items-end gap-8 lg:grid-cols-12 lg:gap-14">
@@ -148,20 +163,6 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
               </div>
               <h2 className="mt-4 text-[28px] font-bold md:text-[36px] lg:text-[42px]">{t(locale, 'We make the material inside the tools, not the finished tools.')}</h2>
             </div>
-
-            {/* Paragraphs one and three, merged — what EID is, and the thing
-                that separates it from a distributor. That merge is Uri's, from
-                the banner this section replaced.
-
-                Paragraph two is not here. Its opening sentence is now the
-                heading directly above, and running it as the lede as well
-                printed the same sentence twice; the rest of it is a list of
-                buyer types, which is exactly what "Who we serve" does one
-                section below. Losing it is the congestion Uri asked to remove,
-                not a gap. */}
-            <p className="text-default-600 lg:col-span-5">
-              {t(locale, companyParagraphs[0])} {t(locale, companyParagraphs[2])}
-            </p>
           </div>
 
           <div className="mt-14 lg:mt-18">
