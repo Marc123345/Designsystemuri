@@ -3,10 +3,11 @@ import CurtainGrid from '@/components/CurtainGrid'
 import { PageHero } from '@/components/sections'
 import TeamGrid from '@/components/TeamGrid'
 import Wireframe from '@/components/Wireframe'
-import { ArrowButton, SectionHeading } from '@/components/ui'
+import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
+import Image from 'next/image'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
@@ -181,54 +182,100 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
               'Our customers convert raw diamond and CBN into finished tools: diamond and CBN grinding and dressing tool makers, dental bur and rotary instrument producers, ultra-precision tool makers for optics and watch components, and flexible-abrasive manufacturers for glass and stone. We supply them across Europe, the Middle East, Asia, the Americas, and beyond, with the material behind dental, optics and precision components, automotive and aerospace, tool and die, stone and glass, and electronics applications.'
             )}
           </p>
-          <div className="mt-9">
-            <ArrowButton href="/contact" label={t(locale, 'Contact Us')} />
-          </div>
         </div>
       </section>
 
-      {/* INSIDE THE FACILITY — dawork's `skill-area`: a dark band with a media
-          panel on one side and a heading, a paragraph and a list on the other.
+      {/* INSIDE THE FACILITY — a bento grid.
 
-          Its list is a row of animated percentage bars — "Manufacturing 80%",
-          "Metallurgy 90%". Those numbers are the one thing from that section
-          that cannot come across. They are decoration in the reference and
-          nobody checks them; on a page whose entire argument is that EID's
-          figures are real and documented, an invented competence score is
-          exactly the claim a quality department pulls on. The bars are replaced
-          by the operations EID actually performs in-house, which is the true
-          version of the same idea and reads better for it.
+          It was dawork's `skill-area`: a media panel on one side, a heading, a
+          paragraph and a list of six on the other. Two columns, and the six
+          operations reading as a bulleted afterthought beside the picture.
+          They are the substance of the section — they are what "everything
+          happens here" actually means — so they now get a tile each, at the
+          same weight as the copy and the photography.
 
-          The media panel is a Wireframe until EID supplies footage or a
-          photograph of the floor. */}
+          The tile sizes come from what each thing needs rather than from a
+          pattern: the copy block is the widest, the two portrait slots are one
+          column by two rows because both images are portrait, the six
+          operations are single squares because each is four words, and the
+          micrograph runs as a wide band because it is a repeating field and
+          crops to any strip without losing what it shows.
+
+          Hairlines are gaps, not borders. `p-px gap-px` over a translucent
+          white ground paints one uniform 1px line around and between every
+          tile whatever it spans — which a per-tile border cannot do on a grid
+          where cells span different numbers of tracks without doubling up on
+          some edges and missing others.
+
+          The percentage skill bars from the reference are still deliberately
+          absent. They are decoration there and nobody checks them; on a page
+          whose argument is that EID's figures are real and documented, an
+          invented competence score is exactly what a quality department pulls
+          on. These are the operations EID actually performs in-house. */}
       <section data-note="facility" className="bg-primary-3 relative isolate overflow-hidden py-20 text-white lg:py-30">
         <div className="container">
-          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-            <Wireframe label={t(locale, 'Facility — production floor or process footage')} ratio="landscape" tone="dark" />
-
-            <div>
-              <div className="inline-flex items-center gap-1.5 border border-white/20 px-3.5 py-1.25">
+          <div className="grid auto-rows-[minmax(8rem,auto)] grid-cols-2 gap-px bg-white/12 p-px lg:auto-rows-[minmax(11.5rem,auto)] lg:grid-cols-4">
+            {/* Copy — two columns wide, two rows deep. */}
+            <div className="bg-primary-3 col-span-2 row-span-3 flex flex-col justify-center p-7 lg:row-span-2 lg:p-9">
+              <div className="inline-flex w-fit items-center gap-1.5 border border-white/20 px-3.5 py-1.25">
                 <span className="bg-primary-1 size-2"></span>
                 <span className="text-sm text-white">{t(locale, 'Inside the facility')}</span>
               </div>
 
               <h2 className="mt-4 text-2xl font-bold text-white md:text-[28px] lg:text-[32px]">{t(locale, 'Everything that happens to the material happens here.')}</h2>
 
-              <p className="mt-5 text-base leading-relaxed text-white/70">
+              <p className="mt-5 max-w-[46ch] text-base leading-relaxed text-white/70">
                 {t(
                   locale,
                   'Raw material comes in, finished grades go out, and every step between them is under one roof and one quality system. That is what lets us answer a question about a lot shipped months ago.'
                 )}
               </p>
+            </div>
 
-              <ul className="mt-9 grid gap-x-8 gap-y-4 border-t border-white/15 pt-8 sm:grid-cols-2">
-                {facilityOperations.map((op) => (
-                  <li key={op} className="flex items-start gap-3 text-[0.95rem] text-white/85">
-                    <span aria-hidden className="bg-primary-1 mt-2 size-1.5 shrink-0" />
-                    {t(locale, op)}
-                  </li>
-                ))}
-              </ul>
+            {/* Grading in progress. The one frame we hold of a facility
+                operation being carried out that is not already on this page. */}
+            <div className="bg-primary-3 relative row-span-2 overflow-hidden">
+              <Image
+                src="/eid/qc-sieve.jpg"
+                alt={t(locale, 'A technician operating a stack of laboratory test sieves beside a tray of graded grey diamond grit')}
+                fill
+                sizes="(min-width: 1024px) 25vw, 50vw"
+                className="object-cover object-center"
+              />
+              <span aria-hidden className="from-primary-3/60 absolute inset-0 bg-linear-to-t to-transparent to-55%" />
+            </div>
+
+            {/* ⚠ PLACEHOLDER. The production floor itself, which EID has not
+                supplied. Swap this tile for an <Image> when footage or a
+                photograph lands; the cell already has its shape. */}
+            <div className="bg-primary-3 row-span-2">
+              <Wireframe label={t(locale, 'Facility — production floor or process footage')} tone="dark" className="h-full !aspect-auto border-0" />
+            </div>
+
+            {/* `contents` keeps these six as one list to a screen reader while
+                letting each <li> be a grid cell in its own right. A wrapping
+                <ul> would otherwise take a single cell and put the six back
+                inside it, which is the layout this section came from. */}
+            <ul className="contents">
+              {facilityOperations.map((op) => (
+                <li key={op} className="bg-primary-3 flex flex-col justify-end p-5 lg:p-6">
+                  <span aria-hidden className="bg-primary-1 mb-4 size-2 shrink-0" />
+                  <span className="text-[0.95rem] leading-snug text-white/85">{t(locale, op)}</span>
+                </li>
+              ))}
+            </ul>
+
+            {/* The material itself, closing the row: coated and CRT-rounded
+                crystal, which is two of the six operations above in one frame.
+                A repeating field, so the wide crop costs nothing. */}
+            <div className="bg-primary-3 relative col-span-2 overflow-hidden">
+              <Image
+                src="/eid/surface-enhancements.jpg"
+                alt={t(locale, 'Scanning electron micrograph of surface-enhanced diamond crystal, coated and CRT-rounded, at 33x magnification')}
+                fill
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-cover object-center"
+              />
             </div>
           </div>
         </div>
