@@ -69,9 +69,15 @@ export const primaryNav = [
   { label: 'Contact', href: '/contact', cta: true as const },
 ]
 
-// Footer = the complete index. A mega-menu cannot expose every page and section
-// without clutter, so the footer carries the full link set for power users and
-// gives crawlers a complete internal-link map from every page.
+// Footer index: Products, Applications, and Company & Resources.
+//
+// There used to be a fourth column, "Sections", listing the eleven in-page
+// anchors — Diamond Grit (Mesh), Micron Powder, Coated CBN, PCD Discs & Blanks
+// and so on. It came out on Uri's pass, and it should have: to a visitor those
+// eleven entries look like eleven more pages, and clicking one lands them
+// part-way down a product page they have not seen the top of. The anchors are
+// still reachable from the product pages themselves and from the cross-link
+// blocks, which is where they read as sections rather than as destinations.
 export const footerColumns = [
   {
     title: 'Products',
@@ -80,22 +86,6 @@ export const footerColumns = [
   {
     title: 'Applications',
     links: applications.map((a) => ({ label: a.name, href: `/applications/${a.slug}` })),
-  },
-  {
-    title: 'Sections',
-    links: [
-      { label: 'Diamond Grit (Mesh)', href: '/products/natural-grit-powder#grit' },
-      { label: 'Micron Powder', href: '/products/natural-grit-powder#micron' },
-      { label: 'Rotary Diamonds', href: '/products/natural-grit-powder#rotary' },
-      { label: 'Coated Metal Bond', href: '/products/metal-bond#coated' },
-      { label: 'Coated Resin Bond', href: '/products/resin-bond#coated' },
-      { label: 'Coated CBN', href: '/products/cbn#coated' },
-      { label: 'PCBN Discs & Blanks', href: '/products/cbn#pcbn' },
-      { label: 'CVD Single Crystal', href: '/products/single-crystal#cvd' },
-      { label: 'MCD', href: '/products/single-crystal#mcd' },
-      { label: 'PCD Discs & Blanks', href: '/products/polycrystalline-diamond#pcd-blanks' },
-      { label: 'CVD Dressing Logs', href: '/products/polycrystalline-diamond#dressing-logs' },
-    ],
   },
   {
     title: 'Company & Resources',

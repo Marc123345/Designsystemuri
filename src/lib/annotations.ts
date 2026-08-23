@@ -73,6 +73,15 @@ export const annotations: Record<string, Annotation> = {
       'Saying which is which is the credibility. Flattening it into “we manufacture everything” is the one claim a serious buyer would catch, and losing that argument loses the account.',
     ],
   },
+  'core-values': {
+    title: 'Why tool makers qualify EID — claims with their evidence',
+    body: [
+      'Three pillars, all three fully readable at once. The carousel that used to sit here is gone for good: parallel claims are read by comparison, and a slider hid two thirds of the argument behind a control most readers never touched.',
+      'What three plain columns could not do is demonstrate anything. Each claim now sits beside a photographic plate that shows what the sentence says — surface-enhanced crystal for accountability, a field of micron powder measured at 4000× for consistency, and all eight groups as one materials board for breadth. The pane follows whichever pillar you are reading, by scroll, hover or keyboard focus.',
+      'Every image here is EID’s own material photography, two plates still carrying the electron microscope’s data bar. That bar is the point: it is a photograph of a measurement taken on EID’s material, which is what a stock image can never be.',
+      'There is deliberately no factory-floor photograph behind “we control production”. EID has supplied none of its own premises, and a stock factory standing in for EID’s on the one block about accountability is the single claim a quality department would catch. If Uri sends real premises photography, that slot is a one-line swap.',
+    ],
+  },
   applications: {
     title: 'Applications — the second entry axis',
     body: [

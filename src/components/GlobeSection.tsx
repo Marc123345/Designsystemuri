@@ -2,6 +2,7 @@
 
 import Backdrop from '@/components/Backdrop'
 import Globe from '@/components/Globe'
+import Image from 'next/image'
 import { ArrowButton } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
@@ -11,27 +12,36 @@ import { useLocale } from 'next-intl'
 // lazily inside its useEffect (client-only), so a plain static import hydrates
 // cleanly — no next/dynamic bailout needed.
 
-// London is the manufacturing hub; the rest are markets EID ships to, grouped by
-// the four regions named in the copy deck. Cities, not offices.
-//
-// x / y place the tile's background crop. The card art is the same
-// equirectangular earth-night texture the globe itself is wrapped in, so each
-// tile shows the actual patch of night lights at that city:
-//   x = (lon + 180) / 360      y = (90 - lat) / 180
-// Zoomed to TILE_ZOOM, that reads as a city-lights crop rather than a map.
+/**
+ * Continents supplied, not cities.
+ *
+ * This grid used to name twelve cities — Frankfurt, Milan, Paris, Tel Aviv,
+ * Dubai, Shanghai, Tokyo, Seoul, Mumbai, New York, Chicago — as EID's markets.
+ * Uri's note on it was blunt: "the countries are wrong", and "we supply 5
+ * continents". A named city reads as a claim about where EID has customers, and
+ * a wrong one is a claim a buyer can catch. The continent is the thing that is
+ * actually true and actually useful to someone deciding whether EID ships to
+ * them.
+ *
+ * So: London as the manufacturing base, then the five continents, each tile
+ * cropped to a representative patch of the night-lights texture the globe
+ * itself is wrapped in.
+ *
+ * ⚠ Which five continents needs Uri's confirmation before launch. The list
+ * below is the common reading of "five continents" for a supplier with no
+ * stated Oceania presence; if Australia is in and one of these is out, it is a
+ * one-line change here.
+ *
+ * x / y place the tile's background crop:
+ *   x = (lon + 180) / 360      y = (90 - lat) / 180
+ */
 const MARKETS: { city: string; region: string; x: number; y: number }[] = [
   { city: 'London', region: 'Manufacturing · UK', x: 50.0, y: 21.4 },
-  { city: 'Frankfurt', region: 'Europe', x: 52.4, y: 22.2 },
-  { city: 'Milan', region: 'Europe', x: 52.6, y: 24.7 },
-  { city: 'Paris', region: 'Europe', x: 50.7, y: 22.9 },
-  { city: 'Tel Aviv', region: 'Middle East', x: 59.7, y: 32.2 },
-  { city: 'Dubai', region: 'Middle East', x: 65.4, y: 36.0 },
-  { city: 'Shanghai', region: 'Asia', x: 83.7, y: 32.6 },
-  { city: 'Tokyo', region: 'Asia', x: 88.8, y: 30.2 },
-  { city: 'Seoul', region: 'Asia', x: 85.3, y: 29.1 },
-  { city: 'Mumbai', region: 'Asia', x: 70.2, y: 39.4 },
-  { city: 'New York', region: 'Americas', x: 29.4, y: 27.4 },
-  { city: 'Chicago', region: 'Americas', x: 25.7, y: 26.7 },
+  { city: 'Europe', region: 'Supplied', x: 52.4, y: 22.2 },
+  { city: 'Asia', region: 'Supplied', x: 83.7, y: 32.6 },
+  { city: 'Africa', region: 'Supplied', x: 55.0, y: 45.0 },
+  { city: 'North America', region: 'Supplied', x: 29.4, y: 27.4 },
+  { city: 'South America', region: 'Supplied', x: 37.1, y: 63.1 },
 ]
 
 /** Background zoom on the world texture — roughly 36° of longitude per tile. */
@@ -41,8 +51,46 @@ const GlobeSection = ({ eyebrow, title, desc, ctaLabel, ctaHref = '/contact' }: 
   const locale = useLocale() as Locale
 
   return (
-    <section data-note="reach" className="relative size-full overflow-hidden py-20 text-white lg:py-37.5">
+    <section data-note="reach" className="relative isolate size-full overflow-hidden py-20 text-white lg:py-37.5">
       <Backdrop />
+
+      {/* The world at night, behind the whole band.
+          
+          Not a new asset: this is the same night-lights texture the globe is
+          wrapped in and the six market tiles are each cropped from, now shown at
+          map scale behind all of it. Nothing extra is downloaded — the tiles
+          already pull this file — and the three treatments stop reading as three
+          separate devices that happen to share a section.
+
+          `mix-blend-screen` rather than a plain opacity fade, which is why the
+          section keeps `isolate`: screen only ever lightens, so the ocean
+          contributes almost nothing and it is the city lights and coastlines
+          that come up out of Backdrop's gradient. A flat opacity would have
+          greyed the whole band toward the map's mid-tone and flattened the
+          gradient underneath it. `isolate` confines the blend to this section;
+          without it the image would blend against whatever is painted behind
+          the section too.
+
+          Two scrims over the top, each with one job. The horizontal one keeps
+          the copy column dark enough for white text over the bright European
+          and Asian light clusters. The vertical one feathers the band into the
+          sections above and below, so a full-bleed map does not read as a
+          rectangle pasted onto the page. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <Image src="/images/earth-night.jpg" alt="" fill sizes="100vw" className="object-cover object-[50%_38%] opacity-60 mix-blend-screen" />
+        <div className="from-default-950 via-default-950/72 absolute inset-0 bg-linear-to-r via-34% to-transparent to-72%" />
+        {/* Four stops rather than Tailwind's from/via/to, because the middle
+            needs a transparent plateau and not a transparent point: the copy and
+            the globe both sit in that band, and a single mid-point stop starts
+            darkening the map again immediately either side of it. Inline for the
+            same reason Backdrop's vignette is inline — Tailwind has no syntax
+            for it, and faking it with two stacked half-height scrims is more
+            elements to keep in step, not fewer. */}
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(to bottom, var(--color-default-950) 0%, transparent 42%, transparent 58%, var(--color-default-950) 100%)' }}
+        />
+      </div>
 
       <div className="relative z-10 container">
         <div className="grid items-center gap-12 lg:grid-cols-2">
@@ -53,15 +101,14 @@ const GlobeSection = ({ eyebrow, title, desc, ctaLabel, ctaHref = '/contact' }: 
               <span className="text-sm text-white">{eyebrow ?? t(locale, 'Reach · supplied worldwide')}</span>
             </div>
 
-            <h2 className="mt-4 text-2xl font-bold text-white md:text-[28px] lg:text-[32px]">{title ?? t(locale, 'Made in-house, supplied globally.')}</h2>
+            <h2 className="mt-4 text-2xl font-bold text-white md:text-[28px] lg:text-[32px]">{title ?? t(locale, 'Made in London. Supplied across five continents.')}</h2>
 
             <p className="text-default-200 mt-5 max-w-xl">
-              {desc ?? t(locale, 'One facility manufactures and quality-controls the full diamond and CBN range, then ships it to tool makers across Europe, the Middle East, Asia, and the Americas. One specification, wherever you are.')}
+              {desc ?? t(locale, 'One facility manufactures and quality-controls the full diamond and CBN range, then ships it to tool makers on five continents. One specification, one QC standard, wherever you are.')}
             </p>
 
-            {/* Same grid and same type as before — each cell is now an image
-                tile with the text over it, cropped to that city's own patch of
-                the night-lights texture. */}
+            {/* Each cell is an image tile with the label over it, cropped to
+                its own patch of the night-lights texture. */}
             <ul className="mt-8 grid max-w-xl grid-cols-2 gap-3 border-t border-white/10 pt-8 sm:grid-cols-3">
               {MARKETS.map((m) => (
                 <li

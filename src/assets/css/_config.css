@@ -35,6 +35,26 @@
         to { opacity: 1; }
     }
 
+    /* Proof panel (components/home/ProofPanel).
+     *
+     * `proof-rise` brings one swatch tile in. Same 12px lift and the same
+     * easing as the site's other entrances, so the panel does not introduce a
+     * second motion vocabulary — the tiles just arrive on a stagger instead of
+     * all at once.
+     *
+     * It is `both`-filled and single-iteration, which is what makes the global
+     * prefers-reduced-motion rule in _general.css correct here rather than
+     * destructive: collapsing the duration lands each tile on its END state,
+     * i.e. fully visible. Nothing needs a second reduced-motion rule, and
+     * nothing disappears when motion is off.
+     */
+    --animate-proof-rise: proof-rise 520ms cubic-bezier(0.19, 1, 0.22, 1) both;
+
+    @keyframes proof-rise {
+        from { opacity: 0; transform: translateY(12px); }
+        to { opacity: 1; transform: none; }
+    }
+
     --tw-leading: 1.3em;
     --text-xs--line-height: 1.3em;
     --text-sm--line-height: 1.3em;

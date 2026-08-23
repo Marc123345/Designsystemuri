@@ -21,25 +21,67 @@ export type Card = {
   title: string
   desc: string
   href: string
+  /**
+   * Public path to the card's photograph. Where it is absent the tile falls
+   * back to the labelled Wireframe, so a half-illustrated grid degrades to the
+   * placeholder rather than to an empty box.
+   */
+  image?: string
 }
 
 /**
  * Interior page hero. Every page below home opens with the same block —
- * breadcrumb, eyebrow, H1, lede — so depth in the site is always legible.
+ * breadcrumb, eyebrow, H1 — so depth in the site is always legible.
+ *
+ * What used to sit to the right of the H1: a narrow column carrying the page
+ * lede at 16px and a "Request a Quote" button. Uri's note was to "remove that
+ * top right banner from all pages", and looking at it, he is right about why —
+ * a 60px headline on the left and a 300px column of small grey text pinned to
+ * its baseline on the right read as two unrelated blocks, and the CTA repeated
+ * the header's own conversion button about 80px below it.
+ *
+ * The lede is kept and moved under the headline at a proper measure, because
+ * it is the page's summary line and does real work for search; it just is not a
+ * sidebar. The `primaryCta`/`secondaryCta` props are gone rather than accepted
+ * and ignored, so nothing can quietly pass a button that never renders.
+ *
+ * `bgImage` is the optional wide, short photograph Uri asked for on About: a
+ * full-bleed image behind the block, with the band going dark so the type
+ * inverts cleanly.
  */
-export const PageHero = ({ eyebrow, title, desc, crumbs, primaryCta, secondaryCta }: { eyebrow?: string; title: string; desc?: string; crumbs: { label: string; href?: string }[]; primaryCta?: { label: string; href: string }; secondaryCta?: { label: string; href: string } }) => (
-  <section data-note="page-hero" className="border-default-200 relative overflow-hidden border-b pt-35 pb-14 lg:pt-50 lg:pb-20">
+export const PageHero = ({
+  eyebrow,
+  title,
+  desc,
+  crumbs,
+  bgImage,
+}: {
+  eyebrow?: string
+  title: string
+  desc?: string
+  crumbs: { label: string; href?: string }[]
+  bgImage?: string
+}) => (
+  <section data-note="page-hero" className={`relative isolate overflow-hidden pt-35 pb-14 lg:pt-46 lg:pb-18 ${bgImage ? 'text-white' : 'border-default-200 border-b'}`}>
+    {bgImage && (
+      <>
+        <Image src={bgImage} alt="" fill priority sizes="100vw" className="-z-20 object-cover object-center" />
+        <div aria-hidden className="bg-primary-3/85 absolute inset-0 -z-10" />
+        <div aria-hidden className="from-default-950 absolute inset-0 -z-10 bg-linear-to-r to-transparent to-75%" />
+      </>
+    )}
+
     <div className="relative z-10 container">
       <nav aria-label="Breadcrumb">
-        <ol className="text-default-500 flex flex-wrap items-center gap-2 text-sm">
+        <ol className={`flex flex-wrap items-center gap-2 text-sm ${bgImage ? 'text-white/60' : 'text-default-500'}`}>
           {crumbs.map((crumb, i) => (
             <li key={crumb.label} className="flex items-center gap-2">
               {crumb.href ? (
-                <Link href={crumb.href} className="hover:text-primary">
+                <Link href={crumb.href} className={bgImage ? 'hover:text-white' : 'hover:text-primary'}>
                   {crumb.label}
                 </Link>
               ) : (
-                <span className="text-default-900">{crumb.label}</span>
+                <span className={bgImage ? 'text-white' : 'text-default-900'}>{crumb.label}</span>
               )}
               {i < crumbs.length - 1 && <Icon icon="tabler:chevron-right" className="size-4" />}
             </li>
@@ -47,28 +89,19 @@ export const PageHero = ({ eyebrow, title, desc, crumbs, primaryCta, secondaryCt
         </ol>
       </nav>
 
-      <div className="mt-7 grid items-end gap-10 xl:grid-cols-4 xl:gap-20">
-        <div className="xl:col-span-3">
-          {eyebrow && (
-            <div className="border-default-300 mb-4 inline-flex items-center gap-1.5 border bg-white px-3.5 py-1.25">
-              <span className="bg-primary size-2"></span>
-              <span className="text-default-900 text-sm">{eyebrow}</span>
-            </div>
-          )}
-          <h1 className="text-[34px] font-bold md:text-[48px] lg:text-6xl">{title}</h1>
-        </div>
-
-        <div>
-          {desc && <p className="mb-7.5 text-base">{desc}</p>}
-          <div className="flex flex-wrap gap-4">
-            {primaryCta && <ArrowButton href={primaryCta.href} label={primaryCta.label} />}
-            {secondaryCta && <ArrowButton href={secondaryCta.href} label={secondaryCta.label} variant="light" />}
+      <div className="mt-7 max-w-4xl">
+        {eyebrow && (
+          <div className={`mb-4 inline-flex items-center gap-1.5 border px-3.5 py-1.25 ${bgImage ? 'border-white/20' : 'border-default-300 bg-white'}`}>
+            <span className={`size-2 ${bgImage ? 'bg-primary-1' : 'bg-primary'}`}></span>
+            <span className={`text-sm ${bgImage ? 'text-white' : 'text-default-900'}`}>{eyebrow}</span>
           </div>
-        </div>
+        )}
+        <h1 className={`text-[34px] font-bold md:text-[48px] lg:text-6xl ${bgImage ? 'text-white' : ''}`}>{title}</h1>
+        {desc && <p className={`mt-6 max-w-2xl text-base ${bgImage ? 'text-white/80' : ''}`}>{desc}</p>}
       </div>
     </div>
 
-    <div className="absolute inset-0 size-full bg-[url(../images/bg-noice.gif)] bg-auto bg-position-[50%] bg-repeat opacity-4"></div>
+    {!bgImage && <div className="absolute inset-0 size-full bg-[url(../images/bg-noice.gif)] bg-auto bg-position-[50%] bg-repeat opacity-4"></div>}
   </section>
 )
 
@@ -96,14 +129,33 @@ export const PageHero = ({ eyebrow, title, desc, crumbs, primaryCta, secondaryCt
  * kept its hover behaviour and simply never revealed: no scrim, no description,
  * no affordance, just a title on a picture.
  */
-export const ImageCard = ({ item, size = 'sm', className = '' }: { item: Card; size?: 'sm' | 'lg'; className?: string }) => {
+export const ImageCard = ({ item, size = 'sm', className = '' }: { item: Card; size?: 'sm' | 'lg' | 'wide'; className?: string }) => {
   const locale = useLocale() as Locale
   const large = size === 'lg'
+  // `wide` is the short landscape tile. It exists for the applications band,
+  // which Uri asked to sit below the product grid in weight — a 16:10 cell in a
+  // three-column row is roughly 240px tall against the product tiles' 400, so
+  // the whole section reads as secondary without shrinking the type.
+  const aspect = size === 'wide' ? 'aspect-[16/10]' : large ? 'aspect-square' : 'aspect-[4/5]'
 
   return (
-    <Link href={item.href} className={`group border-default-200 focus-visible:outline-primary relative flex flex-col justify-end overflow-hidden focus-visible:outline-2 focus-visible:-outline-offset-2 ${large ? 'aspect-square' : 'aspect-[4/5]'} ${className}`}>
-      {/* The slot the real photograph will occupy. */}
-      <Wireframe label={item.title} ratio="portrait" className="absolute inset-0 !aspect-auto size-full !border-0" />
+    <Link href={item.href} className={`group border-default-200 focus-visible:outline-primary relative flex flex-col justify-end overflow-hidden focus-visible:outline-2 focus-visible:-outline-offset-2 ${aspect} ${className}`}>
+      {/* The photograph, or the labelled slot it will occupy.
+
+          `sizes` is what stops a 4-across 320px tile downloading the 1200px
+          source: at lg the cell is a quarter of a 1400px container, at md a
+          half, and below that the full viewport. */}
+      {item.image ? (
+        <Image
+          src={item.image}
+          alt=""
+          fill
+          sizes={large ? '(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw' : '(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw'}
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+      ) : (
+        <Wireframe label={item.title} ratio="portrait" className="absolute inset-0 !aspect-auto size-full !border-0" />
+      )}
 
       {/* Scrim. Present by default; on a large screen that can actually hover it
           fades in with the reveal instead.
@@ -116,9 +168,16 @@ export const ImageCard = ({ item, size = 'sm', className = '' }: { item: Card; s
           Harmless today because every image is still a dark Wireframe
           placeholder, and a legibility failure the day real photography lands —
           by which point nobody would connect it to this line. */}
+      {/* Base scrim, always on where there is a photograph underneath. The
+          reveal scrim below it fades in and out; this one does not, because a
+          bright photo (a wafer, a cleanroom) would otherwise leave the white
+          title sitting on white at rest. Costs nothing on a Wireframe, where
+          the slot is already dark. */}
+      {item.image && <div className="from-default-950/85 via-default-950/25 absolute inset-0 bg-gradient-to-t to-transparent" />}
+
       <div className="from-default-950 via-default-950/80 absolute inset-0 bg-gradient-to-t to-transparent transition-opacity duration-500 lg:[@media(hover:hover)]:opacity-0 lg:group-hover:opacity-100 lg:group-focus-visible:opacity-100" />
 
-      <div className={`relative ${large ? 'p-9' : 'p-7'}`}>
+      <div className={`relative ${large ? 'p-9' : size === 'wide' ? 'p-6' : 'p-7'}`}>
         {/* Same reasoning as the scrim: hidden only where there is a pointer
             that can reveal it again. On touch these simply stay visible. */}
         <Icon icon={item.icon} className={`mb-4 text-white/70 transition duration-500 lg:translate-y-3 lg:[@media(hover:hover)]:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100 lg:group-focus-visible:translate-y-0 lg:group-focus-visible:opacity-100 ${large ? 'size-11' : 'size-9'}`} />
@@ -139,6 +198,7 @@ export const ImageCard = ({ item, size = 'sm', className = '' }: { item: Card; s
  * so a long list of eight or more reads as a catalogue and not as clutter.
  */
 export const CardGrid = ({
+  id,
   eyebrow,
   title,
   desc,
@@ -149,10 +209,28 @@ export const CardGrid = ({
   ctaCard = false,
   variant = 'text',
   note,
+  pad = 'lg',
+  cardSize,
 }: {
+  /**
+   * Anchor target. The home range grid carries `products`, which nine places
+   * across the site link to — the header nav, the footer index, the hero CTA,
+   * the 404 and error pages, every product page's breadcrumb, the Quality
+   * cross-links and the Contact globe. It used to sit on the SectionBanner
+   * above; when that band was removed the id had to land here rather than
+   * disappear. The fixed-header offset is handled globally by
+   * scroll-padding-top (see _general.css), so nothing extra is needed here.
+   */
+  id?: string
   note?: string
   eyebrow?: string
-  title: string
+  /**
+   * Optional. Where a `SectionBanner` already carries the heading — which is
+   * how both home grids are introduced since Uri's Van Moppes note — passing no
+   * title drops the `SectionHeading` block entirely rather than repeating it
+   * eighty pixels below the band.
+   */
+  title?: string
   desc?: string
   items: Card[]
   ctaHref?: string
@@ -189,6 +267,20 @@ export const CardGrid = ({
    * application hubs), or the tile would add a whole redundant row.
    */
   ctaCard?: boolean
+  /**
+   * Vertical rhythm. `lg` is the standalone section spacing used everywhere;
+   * `sm` is the tighter variant for a grid that something else has already
+   * introduced.
+   *
+   * There was briefly a `flush` mode that stripped the top padding so the cards
+   * butted straight onto a `SectionBanner`. It is gone with the bands: welding
+   * two blocks together to stop them reading as two was treating the symptom.
+   * The grid now carries its own heading in its own section, which is one
+   * block because it is one block.
+   */
+  pad?: 'lg' | 'sm'
+  /** Overrides the tile shape the column count would otherwise pick. */
+  cardSize?: 'sm' | 'lg' | 'wide'
 }) => {
   const locale = useLocale() as Locale
 
@@ -200,14 +292,14 @@ export const CardGrid = ({
   const showCtaCard = ctaCard && ctaHref && ctaLabel
 
   return (
-    <section data-note={note} className="py-20 lg:py-30">
+    <section id={id} data-note={note} className={pad === 'sm' ? 'py-10 lg:py-14' : 'py-20 lg:py-30'}>
       <div className="container">
-        <SectionHeading eyebrow={eyebrow} title={title} desc={desc} />
+        {title && <SectionHeading eyebrow={eyebrow} title={title} desc={desc} />}
 
-        <div className={`border-default-200 mt-14 grid grid-cols-1 border-s border-t md:grid-cols-2 ${columns === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-4'}`}>
+        <div className={`border-default-200 grid grid-cols-1 border-s border-t md:grid-cols-2 ${title ? 'mt-14' : ''} ${columns === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-4'}`}>
           {items.map((item) =>
             variant === 'image' ? (
-              <ImageCard key={item.href} item={item} size={columns === 3 ? 'lg' : 'sm'} className="border-e border-b" />
+              <ImageCard key={item.href} item={item} size={cardSize ?? (columns === 3 ? 'lg' : 'sm')} className="border-e border-b" />
             ) : (
               <Link key={item.href} href={item.href} className={`group border-default-200 hover:bg-default-50 flex flex-col border-e border-b transition-colors ${columns === 3 ? 'gap-5 p-10' : 'gap-4 p-8'}`}>
                 <Icon icon={item.icon} className={`text-primary ${columns === 3 ? 'size-11' : 'size-9'}`} />
@@ -471,15 +563,57 @@ as an empty list. */}
  * announces its own expanded state, none of which a div-and-state accordion
  * gets for free.
  */
-export const Faq = ({ eyebrow, title, desc, items }: { eyebrow: string; title: string; desc?: string; items: { q: string; a: string }[] }) => (
+export const Faq = ({
+  eyebrow,
+  title,
+  desc,
+  items,
+  plate,
+}: {
+  eyebrow: string
+  title: string
+  desc?: string
+  items: { q: string; a: string }[]
+  /**
+   * A picture pinned beside the questions.
+   *
+   * The heading column already sticks, so this rides along with it: the plate
+   * holds still while all seven answers scroll past, which is the movement in
+   * the section rather than anything that animates.
+   *
+   * `aspect-16/9`, and that is measured rather than chosen. A sticky element
+   * taller than the viewport pins at its top and hides its own bottom edge, so
+   * the reader never sees the end of the picture — and at 4:3 this column came
+   * to 733px against a 767px laptop window, which is exactly that failure.
+   *
+   * Measured on the real column: heading 259px, a 40px gap, then the figure.
+   * A 16:9 plate at this width is 281px plus a 57px caption, which brings the
+   * column to 639px. Against a 112px offset that leaves 16px of slack on the
+   * shortest window worth designing for. It also happens to be the least crop:
+   * the photograph is 1376×768, which is 16:9 to within a hair.
+   */
+  plate?: { src: string; alt: string; position?: string; caption?: string }
+}) => (
   <section data-note="faq" className="py-20 lg:py-30">
     <div className="container">
+      {/* 5/7 rather than 4/8. The picture has to read as a half of the section
+          to be worth having, and the answers still get the wider column because
+          several of them run to a full paragraph. */}
       <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
-        <div className="lg:sticky lg:top-32 lg:col-span-4 lg:self-start">
+        <div className="lg:sticky lg:top-28 lg:col-span-5 lg:self-start">
           <SectionHeading eyebrow={eyebrow} title={title} desc={desc} />
+
+          {plate && (
+            <figure className="border-default-200 bg-default-50 mt-10 border">
+              <div className="relative aspect-16/9 w-full overflow-hidden">
+                <Image src={plate.src} alt={plate.alt} fill sizes="(min-width: 1024px) 38vw, 100vw" className={`object-cover ${plate.position ?? 'object-center'}`} />
+              </div>
+              {plate.caption && <figcaption className="border-default-200 text-default-500 border-t px-5 py-4 text-xs leading-[1.5]">{plate.caption}</figcaption>}
+            </figure>
+          )}
         </div>
 
-        <div className="border-default-200 divide-default-200 divide-y border-t lg:col-span-8">
+        <div className="border-default-200 divide-default-200 divide-y border-t lg:col-span-7">
           {items.map((item, i) => (
             <details key={item.q} open={i === 0} className="group">
               <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-6 [&::-webkit-details-marker]:hidden">

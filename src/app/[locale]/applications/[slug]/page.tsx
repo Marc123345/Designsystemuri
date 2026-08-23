@@ -5,6 +5,7 @@ import { ArrowButton, SectionHeading } from '@/components/ui'
 import Wireframe from '@/components/Wireframe'
 import type { Locale } from '@/i18n/routing'
 import { applications } from '@/lib/applications'
+import { productImage } from '@/lib/card-media'
 import { localeAlternates } from '@/lib/hreflang'
 import { getApplication, getApplications, getProduct, t } from '@/lib/i18n-content'
 import type { Metadata } from 'next'
@@ -54,6 +55,7 @@ const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; s
     const prod = getProduct(locale, parentSlug)
     return {
       icon: (prod ? familyIcon[prod.family] : undefined) || 'tabler:diamond',
+      image: productImage(parentSlug),
       title: ap.label,
       desc: ap.note,
       href: ap.href,

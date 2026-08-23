@@ -1,15 +1,16 @@
 import GlobeSection from '@/components/GlobeSection'
 import Marquee from '@/components/Marquee'
-import QuoteForm from '@/components/QuoteForm'
+import ContactStrip from '@/components/home/ContactStrip'
 import Hero from '@/components/home/Hero'
-import TheProblem from '@/components/home/TheProblem'
-import WhyEid from '@/components/home/WhyEid'
-import { CardGrid, DarkFeatureList, Faq, TrustBar } from '@/components/sections'
-import { SectionHeading } from '@/components/ui'
+import ProofPanel from '@/components/home/ProofPanel'
+import QcBanner from '@/components/home/QcBanner'
+import CurtainGrid from '@/components/CurtainGrid'
+import { ArrowButton } from '@/components/ui'
+import { Faq } from '@/components/sections'
 import type { Locale } from '@/i18n/routing'
+import { applicationImage, productImage } from '@/lib/card-media'
 import { localeAlternates } from '@/lib/hreflang'
 import { getApplications, getProducts, t } from '@/lib/i18n-content'
-import { site, trustPoints } from '@/lib/site'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
@@ -18,46 +19,65 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   return { alternates: localeAlternates(locale, '/') }
 }
 
-// Vol 03 replaced the rotating three-slide hero with a single block.
-//
-// Cut down for the full-bleed hero. The eyebrow went entirely: it restated the
-// headline in different words directly above it. The headline lost its list of
-// verbs — "manufactured, processed, and graded" is three words for one idea, and
-// at 76px a hundred-character sentence is five lines, which is a paragraph
-// rather than a statement. The lede lost its closing slogan, which the trust bar
-// one screen below already makes.
-//
-// ⚠ This is Uri's positioning line. Needs his sign-off before launch.
-// "&" rather than "and" between the two material names, matching how the
-// product families are already written throughout the catalogue — "Natural
-// Diamond Grit & Powder", "Automotive & Aerospace".
+/**
+ * The hero line.
+ *
+ * The headline is Uri's, verbatim from the feedback document, and stays that
+ * way: it leads with the manufacturing and the date, which is what a buyer
+ * qualifying a superabrasive supplier is actually checking for. (The line
+ * before it — "The full industrial diamond & CBN range, made and graded
+ * in-house." — led with the range instead.)
+ *
+ * ⚠ The supporting line is NOT verbatim any more, and needs Uri's sign-off
+ * before launch, same as the two open FAQ answers. Two things changed:
+ *
+ *  1. Sentence case. His line was Title Cased On Every Word — "A Complete Range
+ *     of Diamond & CBN Products. Precision Engineered and QC-Controlled to Your
+ *     Specification." Every other line on the site is sentence case, so the
+ *     hero was the one place the writing changed voice, and Title Case reads as
+ *     brochure caption rather than as something a person said. All three of his
+ *     substantive claims survive intact: the complete range, precision
+ *     engineered, QC-controlled to your specification.
+ *
+ *  2. Who it is for. "We supply tool makers, not end users" is the sharpest
+ *     qualifier EID has and it was buried in the fifth FAQ answer. In the hero
+ *     it turns away the wrong enquiries in one second and tells the right buyer
+ *     the site is aimed at them. The words are lifted from that FAQ answer
+ *     rather than newly written, so nothing here is a claim EID has not already
+ *     made in its own voice.
+ */
 const hero = {
-  title: 'The full industrial diamond & CBN range, made and graded in-house.',
-  desc: 'Fifty years supplying tool makers worldwide. Every grade is processed and tested in our own laboratory, so it performs the same from lot to lot.',
+  title: 'Industrial Diamond — Manufactured In-House Since 1970',
+  desc: 'The complete range of diamond and CBN products, precision engineered and QC-controlled to your specification. We supply tool makers, not end users.',
 }
 
 /**
- * FAQ — written for AI search and FAQPage rich results. Every answer is grounded
- * in the Vol 03 copy deck, and deliberately repeats the graduated production
- * claim rather than implying EID grows its own CVD or makes bonded powder from
- * raw. Needs Uri's sign-off before launch.
+ * FAQ — written for AI search and FAQPage rich results.
+ *
+ * Two questions came out on Uri's pass, for the same commercial reason. The
+ * first ("do you resell or manufacture") and the second ("where is the material
+ * made") both answered by naming the synthetic ranges as made at partner
+ * plants — which hands a buyer the idea of skipping EID and sourcing direct.
+ * That framing is now gone from this page and from every other page on the
+ * site; what remains is what EID does to the material and stands behind: the
+ * specification, the processing, the coating, the grading and the QC pass.
+ *
+ * The two ISO/documentation questions were near-duplicates of each other —
+ * "can you provide COAs, retention samples, ISO certificates and references"
+ * and "are you ISO-registered, and do you have the documentation large
+ * companies require" are the same question asked twice — so they are merged
+ * into one answer that covers the whole document set.
+ *
+ * ⚠ Still needs Uri's sign-off before launch.
  */
 const faqs = [
   {
-    q: 'Do you resell or manufacture the diamonds yourselves?',
-    a: 'Both, and we are specific about which is which. The natural range — grit, micron powder, rotary diamond and tool stones — is manufactured in-house: raw material is crushed, shaped, graded and QC-passed in our own factory. The synthetic ranges (metal bond, resin bond, CBN, PCD, PCBN, CVD and MCD) are produced to EID\u2019s specification by long-standing manufacturing partners, then processed, graded, coated and inspected through our facility before shipping. Across all of it, the specification and the QC pass are ours, and we will tell you which category any grade falls into before you order.',
+    q: 'Where are you based, and what does EID do to the material?',
+    a: 'EID is based in London, England, at EID House, 12 St. Cross Street, EC1N 8UB, and has manufactured industrial diamond since 1970. Natural diamond grit, micron powder, rotary diamond and tool stones are manufactured in our own factory: raw material is crushed, shaped, graded and QC-passed here. Across the rest of the range — metal bond, resin bond, CBN, PCD, PCBN, CVD and MCD — the specification is ours, and the material is processed, coated, graded and inspected through our facility before it ships. All rough diamond is supplied through legitimate conflict-free sources under the Kimberley Process Certification Scheme.',
   },
   {
-    q: 'Where are you located, and where is the material made?',
-    a: 'EID is based in London, England, at EID House, 12 St. Cross Street, EC1N 8UB. Natural diamond is manufactured here in our own factory. Synthetic grades are made to our specification at partner plants and then finished, graded and released through our London facility. We will confirm the country of origin for any specific grade on request, in writing, and all rough diamond is supplied through legitimate conflict-free sources under the Kimberley Process Certification Scheme.',
-  },
-  {
-    q: 'Can you provide COAs, retention samples, ISO certificates and references?',
-    a: 'Yes to all four. A certificate of analysis is available per lot on request. A retention sample is kept from every batch, so a question raised months later can be checked against the exact material that shipped. Our ISO 9001 certificate is available on request, as is the full traceability record from incoming raw material to shipped lot. Customer references can be arranged where the customer has agreed to act as one — tell us your application and we will point you at the closest match.',
-  },
-  {
-    q: 'Are you ISO-registered, and do you have the documentation large companies require?',
-    a: 'Yes. EID\u2019s quality management system is ISO 9001 certified, covering incoming raw material inspection, manufacturing, testing, packaging and delivery. The document set a procurement or quality department normally asks for is available: ISO 9001 certificate, certificate of analysis per lot, safety data sheets, technical datasheets, Kimberley Process compliance for natural rough, and lot-level traceability. If your supplier-approval pack asks for something not on that list, send it over and we will complete it.',
+    q: 'Are you ISO-registered, and can you supply COAs, retention samples and references?',
+    a: 'Yes to all of it. EID’s quality management system is ISO 9001 certified, covering incoming raw material inspection, manufacturing, testing, packaging and delivery. A certificate of analysis is available per lot on request, and a retention sample is kept from every batch, so a question raised months later can be checked against the exact material that shipped. The document set a procurement or quality department normally asks for is available: ISO 9001 certificate, COA per lot, safety data sheets, technical datasheets, Kimberley Process compliance for natural rough, and lot-level traceability from incoming raw material to shipped lot. Customer references can be arranged where the customer has agreed to act as one — tell us your application and we will point you at the closest match. If your supplier-approval pack asks for something not on that list, send it over and we will complete it.',
   },
   {
     q: 'Do you offer electroplated / electroplating diamonds?',
@@ -93,28 +113,6 @@ const faqSchema = {
   })),
 }
 
-// The eight locked product groups as home cards.
-const familyIcon: Record<string, string> = {
-  'Natural Diamond Grit & Powder': 'tabler:diamond',
-  'Metal Bond Diamond': 'tabler:blade',
-  'Resin Bond Diamond': 'tabler:stack-2',
-  CBN: 'tabler:gauge',
-  'Single Crystal Diamond (CVD & MCD)': 'tabler:cube',
-  'Polycrystalline Diamond (CVD & PCD)': 'tabler:grid-dots',
-  'Natural Tool Stones': 'tabler:mountain',
-  'Polycrystalline Diamond Powder': 'tabler:bolt',
-}
-
-// The six application hubs as home cards.
-const hubIcon: Record<string, string> = {
-  dental: 'tabler:dental',
-  'semiconductor-electronics': 'tabler:cpu',
-  'automotive-aerospace': 'tabler:engine',
-  'tool-and-die': 'tabler:tools',
-  'grinding-cutting-sawing-drilling': 'tabler:blade',
-  'polishing-lapping': 'tabler:aperture',
-}
-
 // Home lists the hubs in the copy deck's order, which leads with the two
 // highest-volume buyer types rather than the lib order used elsewhere.
 const HOME_HUB_ORDER = ['dental', 'grinding-cutting-sawing-drilling', 'semiconductor-electronics', 'automotive-aerospace', 'tool-and-die', 'polishing-lapping']
@@ -126,178 +124,193 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
   const products = getProducts(locale)
   const apps = getApplications(locale)
 
-  const groupCards = products.map((p) => ({
-    icon: familyIcon[p.family] || 'tabler:diamond',
+  // The eight groups as curtain tiles. The card carries no description, so the
+  // group's own page opens with the same sentence its card used to show.
+  const groupTiles = products.map((p) => ({
     title: p.name,
-    desc: p.cardDesc,
     href: `/products/${p.slug}`,
+    image: { src: productImage(p.slug) ?? '', alt: p.name },
   }))
 
-  const hubCards = HOME_HUB_ORDER.map((slug) => apps.find((a) => a.slug === slug))
+  // The same six hubs as curtain tiles: no description, because the card has
+  // nowhere to put one.
+  const hubTiles = HOME_HUB_ORDER.map((slug) => apps.find((a) => a.slug === slug))
     .filter((a): a is NonNullable<typeof a> => Boolean(a))
     .map((a) => ({
-      icon: hubIcon[a.slug] || 'tabler:diamond',
       title: a.name,
-      desc: a.cardDesc,
       href: `/applications/${a.slug}`,
+      image: { src: applicationImage(a.slug) ?? '', alt: a.name },
     }))
 
   return (
     <>
       <Hero title={t(locale, hero.title)} desc={t(locale, hero.desc)} />
 
-      {/* Proof points as icon plus label. No sentences — a buyer is scanning
-here, not reading. */}
-      <TrustBar items={trustPoints} />
+      {/* THE RANGE. One section: its own heading, its own grid, its own padding.
+          Anchor target for the header's "Products" and the hero's own CTA — the
+          offset comes from html's scroll-padding-top (see _general.css), so no
+          scroll-mt here or the two would add up.
 
-      {/* THE PROBLEM — states the cost in the buyer's own process parameters,
-then answers it with the graduated production model rather than a
-fourth restatement of "we control quality". */}
-      <TheProblem
-        eyebrow={t(locale, 'Why suppliers get replaced')}
-        title={t(locale, 'The cost of inconsistent diamond')}
-        lede={t(locale, 'When diamond varies between lots, tools vary with it, and the customer notices. Sourcing across several suppliers multiplies it: several specifications, several lead times, several definitions of acceptable.')}
-        drivers={[
-          {
-            variable: t(locale, 'Particle size distribution'),
-            effect: t(locale, 'Wheel wear rate and dressing interval shift, so a line tuned to the last lot stops running to the same cycle.'),
-            evidence: t(locale, 'Particle size distribution — D50 and span curve'),
-          },
-          {
-            variable: t(locale, 'Crystal shape and friability'),
-            effect: t(locale, 'Cutting action changes. Grades that break down too slowly glaze; too quickly and tool life drops.'),
-            evidence: t(locale, 'Crystal morphology — microscopy against the grade spec'),
-          },
-          {
-            variable: t(locale, 'Coating weight and coverage'),
-            effect: t(locale, 'Retention in the bond changes. In a sintered tool that shows up as pull-out and shortened instrument life.'),
-            evidence: t(locale, 'Coating weight assay — target percentage per batch'),
-          },
-          {
-            variable: t(locale, 'Lot-to-lot variance'),
-            effect: t(locale, 'Every delivery has to be re-qualified before it goes near production, which is hours you had not planned.'),
-            evidence: t(locale, 'Certificate of analysis — sample lot'),
-          },
-        ]}
-        // Chapter eyebrows for the pinned run. Passed in rather than hardcoded
-        // in the component so they translate with the other seven locales.
-        variableLabel={t(locale, 'Variable')}
-        resolutionEyebrow={t(locale, 'What EID does about it')}
-        resolutionTitle={t(locale, 'EID removes the variable, and is specific about how.')}
-        production={[
-          {
-            title: t(locale, 'Natural grit and powder'),
-            body: t(locale, 'Manufactured entirely in-house at our own factory, from raw material through crushing, grading, and final QC.'),
-          },
-          {
-            title: t(locale, 'Metal bond, resin bond and CBN'),
-            body: t(locale, 'Produced to order, then processed and graded through our facility to your specification. Coating applied in-house rather than sourced from a second vendor.'),
-          },
-          {
-            title: t(locale, 'CVD single crystal'),
-            body: t(locale, "Grown to EID's exact specification, orientation, and quality standard through a dedicated growth partner, then finished and inspected by us."),
-          },
-        ]}
-        resolutionClosing={t(locale, 'Across all three, the specification and the QC pass are ours. That is the part a tool maker is actually buying.')}
-        primaryCta={{ label: t(locale, 'See how our QC works'), href: '/quality' }}
-      />
+          This used to be a full-bleed navy SectionBanner sitting on top of the
+          grid, per Uri's Van Moppes markup. Two separate blocks introducing one
+          idea read as two sections; welding them together with a flush grid then
+          read as the cards spilling out of the band. Both were symptoms of the
+          same thing — the heading was in a different section from the content it
+          headed. It is now in the same one, which is what every other section on
+          the page already does, and the page gets its normal py-20/py-30 of air
+          under the hero back.
 
-      {/* THE RANGE — anchor target for the hero's "Browse the Full Range". */}
-      {/* Offset comes from html's scroll-padding-top (see _general.css), not a
-          scroll-mt here — the two would add up. */}
-      <div id="products">
-        <CardGrid
-          eyebrow={t(locale, 'The range · eight product groups')}
-          note="range"
-          title={t(locale, 'Every industrial diamond and CBN product, from one source.')}
-          desc={t(locale, 'Natural grit and powder made in our own factory, bonded and CBN grades processed and graded to your spec, and single crystal grown to your exact orientation.')}
-          items={groupCards}
-          // Eight groups over four columns is two clean rows, so no ctaCard is
-          // needed to close the grid here — the CTA sits below as a button.
-          // There is no /products index route, so it goes to the next step.
-          ctaHref="/contact"
-          ctaLabel={t(locale, 'Tell us the tool. We will specify the grade.')}
-          columns={4}
-          variant="image"
-        />
-      </div>
+          No copy was rewritten: the band's single paragraph splits at its own
+          full stop into the heading sentence and the lede, which is the
+          eyebrow-plus-sentence shape ProofPanel and the FAQ already use.
 
-      {/* Pillar one carries the graduated production claim, which is the honesty
-a technical buyer checks for before anything else on this page. */}
-      <WhyEid
+          The trust bar that used to sit in this slot is gone. Its four points
+          (ISO 9001, in-house QC, complete range, 50+ years) are each made
+          properly further down — by the QC banner, the values row and the
+          footer's own trust line — and as a strip of four ticks directly under
+          the hero it was a row of assertions before the reader knew what EID
+          sells. */}
+      {/* THE RANGE. The heading lives in the same section as the grid it
+          heads, rather than in a separate full-bleed banner above it.
+
+          Uri's V1 note asked for a thin "Our Products" banner in the Van Moppes
+          shape, and that was built — twice. It reads as a separate block from
+          the grid it introduces, which is the fault Marc kept landing on. This
+          is his call over the note; worth knowing it is a deliberate departure
+          rather than an oversight.
+
+          Anchor target for the header's "Products" and the hero's own CTA —
+          nine things across the site link to /#products. The offset comes from
+          html's scroll-padding-top, so no scroll-mt here or the two would add
+          up. */}
+      <section id="products" data-note="range" className="py-20 lg:py-30">
+        <div className="container">
+          <div className="grid items-end gap-8 lg:grid-cols-12 lg:gap-14">
+            <div className="lg:col-span-7">
+              <div className="border-default-300 inline-flex items-center gap-1.5 border bg-white px-3.5 py-1.25">
+                <span className="bg-primary size-2"></span>
+                <span className="text-default-900 text-sm">{t(locale, 'Our Products')}</span>
+              </div>
+              <h2 className="mt-4 text-[28px] font-bold md:text-[36px] lg:text-[42px]">{t(locale, 'Every industrial diamond and CBN product, from one source.')}</h2>
+            </div>
+            <p className="text-default-600 lg:col-span-5">
+              {t(locale, 'Natural grit and powder made in our own factory, bonded and CBN grades processed, coated and graded to your specification, and single crystal made to your exact orientation.')}
+            </p>
+          </div>
+
+          {/* Four across, revealed. The eight groups are a catalogue — the
+              thing a buyer scans to find their material — so every photograph
+              shows at rest. The curtain stays on the three pillars, where the
+              point is to read one claim at a time. */}
+          <div className="mt-14 lg:mt-18">
+            <CurtainGrid items={groupTiles} columns={4} revealed />
+          </div>
+
+          <div className="mt-12">
+            <ArrowButton href="/contact" label={t(locale, 'Tell us the tool. We will specify the grade.')} variant="dark" />
+          </div>
+        </div>
+      </section>
+
+      <ProofPanel
         eyebrow={t(locale, 'Why tool makers qualify EID')}
         title={t(locale, 'One accountable manufacturer, spec to delivery.')}
+        desc={t(locale, 'Fifty years of supplying tool makers has narrowed down to three things they buy us for.')}
+        ghost={t(locale, 'Industrial diamond')}
+        /* ⚠ The three paragraphs that used to sit here are gone, and that is
+           the change rather than the layout. Six previous arrangements each
+           tried to carry a three-to-four sentence body per claim and each read
+           as a wall; the reference gives a tile a kicker and a headline and
+           nothing else. Every claim still links to the page where it is made in
+           full, and the lede above still frames all three — but this needs
+           Uri's sign-off with the hero lede and the two open FAQ answers.
+
+           This is the one grid that keeps the curtain. The products and
+           applications rows below run revealed, because a catalogue is scanned;
+           three claims are read one at a time, which is what the curtain is
+           for. */
         pillars={[
           {
             meta: t(locale, 'Accountability'),
             title: t(locale, 'We control production, not just supply.'),
-            body: t(locale, 'Natural grit and powder made in our own factory. Bonded and CBN grades processed and graded to your spec. CVD grown to order through a dedicated partner. The quality decision is always ours: one accountable manufacturer, spec to delivery.'),
             href: '/about',
-            cta: t(locale, 'How we make it'),
+            image: {
+              src: '/eid/qc-sieve.jpg',
+              alt: t(locale, 'A technician operating a stack of laboratory test sieves beside a tray of graded grey diamond grit'),
+            },
           },
           {
             meta: t(locale, 'Consistency'),
             title: t(locale, 'The same material, every reorder.'),
-            body: t(locale, 'Every run is measured for particle size distribution and morphology, with crystal strength and coating coverage checked where the grade calls for it. ISO 9001, certificate of analysis per lot. Order the same grade twice, get the same grade twice.'),
             href: '/quality',
-            cta: t(locale, 'See how our QC works'),
+            image: {
+              src: '/eid/qc-batch-to-batch.jpg',
+              alt: t(locale, 'Side-by-side scanning electron micrographs of two production lots of the same diamond grade, showing matching crystal size and octahedral morphology, each panel with a 1 micrometre scale bar'),
+            },
           },
           {
             meta: t(locale, 'Breadth'),
             title: t(locale, 'The full range, one relationship.'),
-            body: t(locale, 'Every diamond and CBN product from one supplier: one contact, one quality standard. Standard grades from stock, specials to your lead time.'),
             href: '/#products',
-            cta: t(locale, 'Browse the range'),
+            image: {
+              src: '/eid/qc-samples.jpg',
+              alt: t(locale, 'A laboratory shelf of sample jars, each holding a different grade of grey and translucent diamond material, coarse through to fine'),
+            },
           },
         ]}
       />
 
-      {/* Six hubs → 3-across, two rows, with the larger card treatment. */}
-      <CardGrid
-        eyebrow={t(locale, 'Applications · six hubs')}
-        note="applications"
-        title={t(locale, 'Diamond and CBN for the work your tools do.')}
-        desc={t(locale, 'We supply the material. You build the tools that serve these applications.')}
-        items={hubCards}
-        ctaHref="/applications"
-        ctaLabel={t(locale, 'View All Applications')}
-        columns={3}
-        variant="image"
-      />
+      {/* APPLICATIONS. The same card as the range above, in every respect —
+          same shape, same treatment, same grid.
 
-      <DarkFeatureList
-        bgLabel="Background image — QC laboratory, London"
+          Uri's V1 note asks for this section to sit below the products in
+          weight ("even smaller than products ... because it's not so
+          important"), and a landscape tile did exactly that: six of them came
+          out shorter than the eight product tiles. But it also made the two
+          rows read as two different components on one page, which is the fault
+          Marc called. One card, used twice, wins.
+
+          The weight difference now has to come from somewhere else — three
+          columns against four already makes these the bigger tiles, so if the
+          hierarchy matters it needs a lighter ground or tighter padding rather
+          than a different card. */}
+      <section data-note="applications" className="py-20 lg:py-30">
+        <div className="container">
+          <div className="grid items-end gap-8 lg:grid-cols-12 lg:gap-14">
+            <div className="lg:col-span-7">
+              <div className="border-default-300 inline-flex items-center gap-1.5 border bg-white px-3.5 py-1.25">
+                <span className="bg-primary size-2"></span>
+                <span className="text-default-900 text-sm">{t(locale, 'Applications')}</span>
+              </div>
+              <h2 className="mt-4 text-[28px] font-bold md:text-[36px] lg:text-[42px]">{t(locale, 'Diamond and CBN for the work your tools do.')}</h2>
+            </div>
+            <p className="text-default-600 lg:col-span-5">{t(locale, 'We supply the material; you build the tools that serve these applications.')}</p>
+          </div>
+
+          <div className="mt-14 lg:mt-18">
+            <CurtainGrid items={hubTiles} revealed />
+          </div>
+
+          <div className="mt-12">
+            <ArrowButton href="/applications" label={t(locale, 'View all applications')} variant="dark" />
+          </div>
+        </div>
+      </section>
+
+      {/* QUALITY, as a band. The long-form version of this block still runs on
+          /quality, where the sentences belong. */}
+      <QcBanner
         eyebrow={t(locale, 'Quality')}
         title={t(locale, 'Every production run is tested before it leaves.')}
-        desc={t(
-          locale,
-          'Consistency is a process, and ours runs on measurement. Each lot is tested in our QC laboratory for particle size distribution and morphology, with crystal strength and coating coverage checked where the grade requires it. We test the run and record the result rather than sampling and assuming. ISO 9001 certified, with full traceability from incoming raw material to shipped lot.'
-        )}
+        desc={t(locale, 'Consistency is a process, and ours runs on measurement. We test the run and record the result rather than sampling and assuming — ISO 9001 certified, with full traceability from incoming raw material to shipped lot.')}
+        checks={[t(locale, 'Particle size distribution'), t(locale, 'Crystal morphology'), t(locale, 'Coating weight & coverage'), t(locale, 'ISO 9001 & traceability')]}
         ctaLabel={t(locale, 'See how our QC works')}
         ctaHref="/quality"
-        features={[
-          {
-            title: t(locale, 'Particle size distribution'),
-            desc: t(locale, 'Graded and verified for tight D50 and span, with outliers controlled, on every lot.'),
-          },
-          {
-            title: t(locale, 'Crystal morphology'),
-            desc: t(locale, 'Inspected on every lot, with shape factor on mesh grades.'),
-          },
-          {
-            title: t(locale, 'Coating weight & coverage'),
-            desc: t(locale, 'Every coated batch checked for target weight and uniform coverage.'),
-          },
-          {
-            title: t(locale, 'ISO 9001 & traceability'),
-            desc: t(locale, 'Certificate of analysis and retention samples available for every lot.'),
-          },
-        ]}
       />
 
       {/* Material vocabulary rather than a logo wall — the deck names customers
-only as buyer types, so a wall of client logos would claim
-endorsements EID has not given us. */}
+          only as buyer types, so a wall of client logos would claim
+          endorsements EID has not given us. */}
       <Marquee
         items={[
           t(locale, 'ISO 9001'),
@@ -315,51 +328,31 @@ endorsements EID has not given us. */}
         ]}
       />
 
-      {/* REACH — the one-facility-worldwide story made visible: an animated globe
-with London as the hub and arcs out to the markets EID ships to. */}
+      {/* REACH — the one-facility-worldwide story made visible. */}
       <GlobeSection />
 
-      {/* The conversion block is the form itself, not a button that defers to
-          /contact. A buyer who has read this far should not have to load
-another page to ask a question. */}
-      <section className="py-20 lg:py-30">
-        <div className="container">
-          <div className="grid items-start gap-12 lg:grid-cols-12">
-            <div className="lg:col-span-5">
-              <SectionHeading
-                eyebrow={t(locale, 'Tell us what you need')}
-                title={t(locale, 'Tell us the grade you need. A real person replies within one business day.')}
-                desc={t(locale, 'Request a quote, order a sample, or ask a technical question. One form, routed to someone who works with the material.')}
-              />
+      {/* The ask, and the two direct channels. The form itself lives on
+          /contact rather than being rendered a second time here. */}
+      <ContactStrip title={t(locale, 'Tell us what you need')} desc={t(locale, 'Request a quote, order a sample, or ask a technical question. One form, routed to someone who works with the material.')} />
 
-              <div className="text-default-600 mt-8 space-y-3 text-base">
-                <p>
-                  {t(locale, 'Email')}{' '}
-                  <a href={`mailto:${site.email}`} className="text-primary underline">
-                    {site.email}
-                  </a>
-                </p>
-                <p>
-                  {t(locale, 'Call')}{' '}
-                  <a href={site.phoneHref} className="text-primary underline">
-                    {site.phone}
-                  </a>
-                </p>
-              </div>
-            </div>
-
-            <div className="lg:col-span-7">
-              <div className="border-default-200 bg-default-50 border p-6 lg:p-10">
-                <QuoteForm formTitle={t(locale, 'Request a Quote')} formDesc={t(locale, 'Tell us the product, grade, size, and quantity you need. A specialist who understands the material replies within one business day.')} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ sits below the conversion CTA, per the deck: it is written for AI
-search and rich results rather than to be read on the way down. */}
+      {/* FAQ sits below the conversion block, per the deck: it is written for AI
+          search and rich results rather than to be read on the way down. */}
       <Faq
+        /* The plate is /eid/qc-lab.jpg, which had been orphaned since the
+           curtain tiles took over — so half this section is a picture at no
+           cost in new assets. It suits the block: the lede promises that
+           someone who works with the material will answer, and the frame shows
+           somebody doing exactly that.
+        
+           The caption is not a restatement of the lede. It names the document
+           set, which is what a buyer scanning an FAQ about ISO 9001 and
+           certificates of analysis is actually looking for, and every item on
+           it is already stated in the second answer below. */
+        plate={{
+          src: '/eid/qc-lab.jpg',
+          alt: t(locale, 'A technician at an optical inspection system in a quality laboratory, examining a diamond crystal shown magnified on the instrument screen'),
+          caption: t(locale, 'ISO 9001 certificate, certificate of analysis per lot, retention samples, safety data sheets and Kimberley Process compliance — all available on request.'),
+        }}
         eyebrow={t(locale, 'Frequently asked')}
         title={t(locale, 'Straight answers about the material.')}
         desc={t(locale, 'The questions technical buyers ask before they qualify a superabrasive supplier. If yours is not here, ask us and someone who works with the material will answer.')}

@@ -102,6 +102,163 @@ textarea {
     @apply mx-auto max-w-full lg:px-12.5 md:px-7.5 px-4;
 }
 
+/* Curtain tiles (components/home/ProofPanel).
+ *
+ * One tile sits open at rest so the row never reads as three blank panels. The
+ * dawork reference does this with a hardcoded `.active` class — but that class
+ * is unconditional, so hovering a second card leaves two open at once and the
+ * row loses its focal point exactly when you are pointing at something.
+ *
+ * `:has()` fixes it without JavaScript: the moment the row contains a hovered
+ * tile, the default-open one goes back behind its curtain — unless it is the
+ * one being hovered. So there is always exactly one tile open, and it is
+ * whichever one you are pointing at, falling back to the first.
+ *
+ * Desktop only. Below lg every tile is open permanently (see the component):
+ * there is no hover on a touch screen, and a curtain nobody can lift is just a
+ * photograph nobody will ever see.
+ *
+ * The hooks are classes rather than Tailwind variants because the condition is
+ * "an ancestor has a hovered descendant that is not me", which is three
+ * relationships deep and unreadable as a utility chain. */
+@media (min-width: 1024px) {
+    .eid-tiles [data-open] .eid-curtain {
+        transform: scaleY(0);
+    }
+
+    .eid-tiles [data-open] .eid-ink {
+        color: #fff;
+    }
+
+    .eid-tiles [data-open] .eid-ink-dim {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .eid-tiles [data-open] .eid-num-rest,
+    .eid-tiles [data-open] .eid-arrow-hidden {
+        opacity: 0;
+    }
+
+    .eid-tiles [data-open] .eid-num-over,
+    .eid-tiles [data-open] .eid-arrow {
+        opacity: 1;
+    }
+
+    .eid-tiles:has(a:hover) [data-open]:not(:hover) .eid-curtain {
+        transform: scaleY(1);
+    }
+
+    .eid-tiles:has(a:hover) [data-open]:not(:hover) .eid-ink {
+        color: var(--color-default-900);
+    }
+
+    .eid-tiles:has(a:hover) [data-open]:not(:hover) .eid-ink-dim {
+        color: var(--color-default-500);
+    }
+
+    .eid-tiles:has(a:hover) [data-open]:not(:hover) .eid-num-rest {
+        opacity: 1;
+    }
+
+    .eid-tiles:has(a:hover) [data-open]:not(:hover) .eid-num-over,
+    .eid-tiles:has(a:hover) [data-open]:not(:hover) .eid-arrow {
+        opacity: 0;
+    }
+}
+
+/* Clip-path wipe, borrowed from the Saleschannel home page.
+ *
+ * There it is framer-motion: `initial: inset(0 100% 0 0)` animating to
+ * `inset(0 0% 0 0)` on `whileInView`. This site has no framer-motion in use —
+ * it is in package.json and imported nowhere in src — and one reveal is not the
+ * reason to start, so both variants below are plain CSS and neither costs a
+ * byte of JavaScript.
+ *
+ * `.eid-wipe-in` runs once on load, for something already on screen.
+ *
+ * `.eid-wipe-scroll` is driven by the scroll position instead, through
+ * `animation-timeline: view()`: the image uncovers itself as it enters the
+ * viewport and is complete before it reaches the middle. Scroll-driven rather
+ * than one-shot because a one-shot needs an IntersectionObserver to know when
+ * to fire, and to hide the element until then — which means a frame of visible
+ * content before the observer runs, or content that never appears at all with
+ * JavaScript off.
+ *
+ * Both are wrapped so nothing is ever left hidden: the `@supports` guard means
+ * browsers without scroll-driven animation simply get the image, and the
+ * reduced-motion guard means anyone who has asked for less gets the image too.
+ * The global reduced-motion rule further up this file already collapses the
+ * one-shot to its end state. There is no path here that ends with a clipped
+ * image on screen. */
+@keyframes eid-wipe {
+    from {
+        clip-path: inset(0 100% 0 0);
+    }
+
+    to {
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .eid-wipe-in {
+        animation: eid-wipe 1100ms cubic-bezier(0.4, 0, 0.2, 1) both;
+    }
+
+    @supports (animation-timeline: view()) {
+        .eid-wipe-scroll {
+            animation: eid-wipe linear both;
+            animation-timeline: view();
+            animation-range: entry 5% entry 65%;
+        }
+    }
+}
+
+/* Header sitting directly on the home hero.
+ *
+ * The bar keeps its geometry and loses its ground: no white, no hairline, and
+ * everything inside it recoloured for a dark photograph. Applied as one class
+ * on the bar rather than as a `light` prop threaded through the language
+ * switcher, the dropdown triggers, the CTA and the burger — four components
+ * changed to express one state, and four places to forget.
+ *
+ * The angled brand block behind the logo is deliberately untouched: it is the
+ * one solid shape in the header and it is what stops white type on a light
+ * patch of photograph from disappearing at the left edge.
+ *
+ * Everything here is scoped under the class, so the moment the bar goes solid
+ * again the normal rules apply with no transition fighting. */
+.eid-nav-over-hero :where(nav a, nav button, .hs-dropdown-toggle) {
+    color: #fff;
+}
+
+.eid-nav-over-hero :where(nav a:hover, nav button:hover, .hs-dropdown-toggle:hover) {
+    color: rgba(255, 255, 255, 0.72);
+}
+
+/* The language switcher and the burger both draw a slate border and slate text
+   on white. Over the photograph they need the white treatment, and the burger
+   needs a translucent ground so it stays a target rather than an outline. */
+.eid-nav-over-hero button:not(.hs-dropdown-toggle),
+.eid-nav-over-hero [class*="border-default"] {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+.eid-nav-over-hero button:not(.hs-dropdown-toggle):hover {
+    border-color: rgba(255, 255, 255, 0.8);
+}
+
+/* The dropdown panels are still white cards on a white ground when they open —
+   they are not part of the bar's surface, so they keep their own colours. */
+.eid-nav-over-hero .hs-dropdown-menu :where(a) {
+    color: var(--color-default-700);
+}
+
+.eid-nav-over-hero .hs-dropdown-menu :where(a:hover) {
+    color: var(--color-primary);
+}
+
 /* Navbar Active Link */
 #navbar a.active {
     @apply text-primary;
@@ -162,7 +319,7 @@ textarea {
 .infinite-scroll-inverse:focus-within {
     animation-play-state: paused;
 }
-/* Step transition for scroll-driven sections (see home/TheProblem).
+/* Step transition for scroll-driven sections.
    Deliberately small: the design system's motion is short and eased, not
    theatrical. Anything relying on this must still read with motion disabled. */
 @keyframes fadeUp {

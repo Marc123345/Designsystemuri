@@ -30,7 +30,6 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
         title={t(locale, 'Product Datasheets')}
         desc={t(locale, "Download technical datasheets for EID's full diamond and CBN range: grades, sizes, crystal types, coatings, and packaging. Ungated, free to download.")}
         crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Datasheets') }]}
-        secondaryCta={{ label: t(locale, 'MSDS'), href: '/resources/msds' }}
       />
 
       <section data-note="downloads" className="py-16 lg:py-24">

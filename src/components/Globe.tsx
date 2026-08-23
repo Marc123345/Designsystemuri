@@ -9,8 +9,10 @@ interface GlobeProps {
 
 // EID manufactures in London and supplies tool makers worldwide. London is the
 // hub (index 0); every arc originates there and reaches a market EID ships to
-// across Europe, the Middle East, Asia, and the Americas. These are markets
-// served, not offices — the honesty the copy deck insists on.
+// across Europe, Asia, Africa and the Americas. These are anonymous
+// destination points, not offices and not labelled on the globe — the named
+// market list beside it was cut back to continents after Uri flagged the cities
+// as wrong.
 const CITIES = [
   { lat: 51.5074, lng: -0.1278, name: 'London', hub: true }, // 0 — manufacturing HQ
   { lat: 50.1109, lng: 8.6821, name: 'Frankfurt' }, // 1
@@ -25,6 +27,10 @@ const CITIES = [
   { lat: 40.7128, lng: -74.006, name: 'New York' }, // 10
   { lat: 41.8781, lng: -87.6298, name: 'Chicago' }, // 11
   { lat: -23.5505, lng: -46.6333, name: 'São Paulo' }, // 12
+  // Africa. Added so the arcs actually reach the five continents the copy
+  // beside the globe now claims — without it the southern hemisphere had one
+  // destination and the continent count did not survive a look at the picture.
+  { lat: -26.2041, lng: 28.0473, name: 'Johannesburg' }, // 13
 ]
 
 // EID-blue arc gradients (tints of --color-primary-1 #3d5290), light enough to
@@ -49,6 +55,7 @@ const ROUTES: [number, number, number][] = [
   [0, 9, 1],
   [0, 11, 1],
   [0, 12, 1],
+  [0, 13, 1],
 ]
 
 function buildArcs() {

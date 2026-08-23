@@ -7,7 +7,7 @@ import { applicationMenu, primaryNav, productMenu, resourceMenu, site } from '@/
 import { Icon } from '@iconify/react'
 import { useLocale } from 'next-intl'
 import Image from 'next/image'
-import { useEffect } from 'react'
+import { useEffect, useSyncExternalStore } from 'react'
 import LanguageSwitcher from './LanguageSwitcher'
 
 /**
@@ -21,16 +21,62 @@ import LanguageSwitcher from './LanguageSwitcher'
  * overlay, positioning stays `fixed` (every page already pads its top for a
  * fixed bar), and the link set still comes from lib/site.ts, so the
  * buyer's-journey order is defined once and shared with the footer index.
+ *
+ * ── Transparent over the home hero ──────────────────────────────────────────
+ *
+ * On the home page, while the page is at the top, the bar drops its white
+ * ground and its hairline and sits directly on the hero photograph; the links,
+ * the language switcher and the burger go white to suit. Scroll a little and
+ * the solid bar comes back. That is what lets the hero own the whole viewport
+ * rather than starting 96px down it.
+ *
+ * Scoped to the home route on purpose. Every other page opens with `PageHero`,
+ * and half of those have no background image — a transparent bar over a white
+ * page reads as a rendering fault, not as a design. When another page grows a
+ * full-bleed hero, add it to `TRANSPARENT_ON` and nothing else changes.
+ *
+ * The colour switch is done in CSS rather than by threading a variant through
+ * every child (see `.eid-nav-over-hero` in _general.css). The bar holds the
+ * language switcher, a Preline dropdown set, a CTA and a burger, and passing a
+ * `light` prop into all of them would be four components changed to express
+ * one state.
  */
+/** Routes that open with a full-bleed hero the bar can sit on. */
+const TRANSPARENT_ON = ['/']
+
+/**
+ * Scroll position as an external store.
+ *
+ * A subscription to something outside React, so it reads through
+ * useSyncExternalStore rather than a useState/useEffect pair — the effect
+ * version sets state on first commit and cascades a render on every mount, on
+ * a component that is on every page of the site.
+ *
+ * The threshold is 40px rather than 0 so a rubber-band scroll or a one-notch
+ * nudge does not flicker the bar. The server snapshot is `true`: SSR has no
+ * scroll position, and "at the top" is the state the home page paints first.
+ */
+const subscribeScroll = (onChange: () => void) => {
+  window.addEventListener('scroll', onChange, { passive: true })
+  return () => window.removeEventListener('scroll', onChange)
+}
+const getAtTop = () => window.scrollY < 40
+const getAtTopServer = () => true
+
 const Navbar = () => {
   const pathname = usePathname()
   const locale = useLocale() as Locale
+  const atTop = useSyncExternalStore(subscribeScroll, getAtTop, getAtTopServer)
+  const overHero = atTop && TRANSPARENT_ON.includes(pathname)
 
+  /* Close the mobile overlay on navigation. Preline attaches HSOverlay to
+     `window` at runtime and ships no type for it, so it is narrowed here rather
+     than cast to `any` twice — same behaviour, and the lint rule the rest of
+     the file passes now applies to this block too. */
   useEffect(() => {
     const overlay = document.getElementById('mobile-menu')
-    if (overlay && (window as any).HSOverlay) {
-      ;(window as any).HSOverlay.close(overlay)
-    }
+    const hs = (window as unknown as { HSOverlay?: { close: (el: Element) => void } }).HSOverlay
+    if (overlay && hs) hs.close(overlay)
   }, [pathname])
 
   // A section is active when the path sits anywhere beneath it, so
@@ -70,7 +116,12 @@ const Navbar = () => {
 
   return (
     <header>
-      <div data-note="navbar" className="border-default-200 fixed inset-x-0 top-0 z-[120] h-[76px] w-full border-b bg-white lg:h-[96px]">
+      <div
+        data-note="navbar"
+        className={`fixed inset-x-0 top-0 z-[120] h-[76px] w-full border-b transition-colors duration-300 lg:h-[96px] ${
+          overHero ? 'eid-nav-over-hero border-transparent bg-transparent' : 'border-default-200 bg-white'
+        }`}
+      >
         {/* Angled brand block behind the logo. */}
         <div
           aria-hidden
@@ -120,9 +171,13 @@ const Navbar = () => {
           <div className="ms-auto flex shrink-0 items-center gap-3 lg:ms-0 lg:gap-4">
             <LanguageSwitcher />
 
-            {/* Square solid CTA */}
+            {/* Square solid CTA. Labelled "Contact", not "Request A Quote":
+                the button is the site's one persistent conversion route and a
+                visitor who wants to ask a technical question, chase a sample or
+                find the phone number should not have to read it as a
+                commitment to buy. */}
             <Link href="/contact" className="bg-primary hover:bg-primary-1 hidden items-center gap-2.5 px-6 py-3.5 text-[0.9rem] leading-none font-semibold text-white transition-colors md:inline-flex">
-              {t(locale, 'Request A Quote')}
+              {t(locale, 'Contact')}
               <Icon icon="tabler:arrow-narrow-right" className="size-5" />
             </Link>
 

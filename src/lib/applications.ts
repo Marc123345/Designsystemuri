@@ -209,7 +209,7 @@ export const applications: Application[] = [
     ],
     outcome: {
       title: 'Reproducible edges, or one crystal to an exact spec',
-      body: 'Tool and die work pulls in two directions. Sometimes the requirement is reproducibility: the same defect-controlled edge across hundreds of identical single-point or cutting tools, so every part comes off the same. Sometimes it is precision to a single specification: a CVD crystal grown to a set orientation for an optical or watch-component tool where one geometry has to be exact. EID serves both. MCD gives the reproducible HPHT edge at production scale. CVD single crystal is grown to your exact orientation and face through our growth partnership, then finished and inspected in-house. The right answer depends on your tool, which is where the conversation with our technical team starts.',
+      body: 'Tool and die work pulls in two directions. Sometimes the requirement is reproducibility: the same defect-controlled edge across hundreds of identical single-point or cutting tools, so every part comes off the same. Sometimes it is precision to a single specification: a CVD crystal grown to a set orientation for an optical or watch-component tool where one geometry has to be exact. EID serves both. MCD gives the reproducible HPHT edge at production scale. CVD single crystal is made to your exact orientation and face, then finished and inspected in-house. The right answer depends on your tool, which is where the conversation with our technical team starts.',
     },
     productsTitle: 'The materials tool and die makers use',
     products: [

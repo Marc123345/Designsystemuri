@@ -108,7 +108,6 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
         title={t(locale, 'Quality Control & ISO 9001')}
         desc={t(locale, "EID's in-house QC laboratory tests every batch of diamond and CBN for size distribution and morphology, with strength and coating coverage where required. ISO 9001.")}
         crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Quality') }]}
-        secondaryCta={{ label: t(locale, 'View Products'), href: '/#products' }}
       />
 
       <StatsBar

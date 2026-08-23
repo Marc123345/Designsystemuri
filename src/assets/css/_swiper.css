@@ -22,9 +22,8 @@
  * rule never matched them. The result was a control that looks live at the
  * first and last slide, takes a click and does nothing.
  *
- * HeroRail already dims its arrows at the ends with disabled:opacity-30, so
- * this is what the site does everywhere else too; matching it rather than
- * inventing a second treatment.
+ * disabled:opacity-30 is what the site's own arrow controls use, so this
+ * matches it rather than inventing a second treatment.
  *
  * pointer-events goes off with it: the button is inert at that point, so it
  * should not take a click or sit in the tab order pretending otherwise. */

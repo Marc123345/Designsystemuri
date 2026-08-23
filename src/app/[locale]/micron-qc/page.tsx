@@ -56,7 +56,6 @@ const MicronQcPage = async ({ params }: { params: Promise<{ locale: Locale }> })
         title={t(locale, 'Micron QC')}
         desc={t(locale, 'Particle-size-distribution measurement and the D-value control that fine polishing depends on.')}
         crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Quality'), href: '/quality' }, { label: t(locale, 'Micron QC') }]}
-        primaryCta={{ label: t(locale, 'Request a Quote'), href: '/contact' }}
       />
 
       {/* D-values first: the page has to define the vocabulary before it can

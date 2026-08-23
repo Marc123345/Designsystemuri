@@ -57,7 +57,6 @@ const MeshQcPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =
         title={t(locale, 'Mesh QC')}
         desc={t(locale, 'How we grade and verify grit sizing and shape factor, lot after lot.')}
         crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Quality'), href: '/quality' }, { label: t(locale, 'Mesh QC') }]}
-        primaryCta={{ label: t(locale, 'Request a Quote'), href: '/contact' }}
       />
 
       {/* Why mesh is its own page: sieve grading and micron counting are two

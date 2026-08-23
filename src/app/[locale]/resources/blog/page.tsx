@@ -37,7 +37,6 @@ const BlogPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
         title={t(locale, 'The EID Blog')}
         desc={t(locale, 'News, application notes, and technical insight on industrial diamond and CBN from EID Ltd, London-based superabrasive manufacturer.')}
         crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Blog') }]}
-        secondaryCta={{ label: t(locale, 'Datasheets'), href: '/resources/datasheets' }}
       />
 
       {/* FEATURED */}

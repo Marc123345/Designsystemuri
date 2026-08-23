@@ -1,5 +1,8 @@
-import { CardGrid, DarkFeatureList, PageHero, QuoteSection, StatsBar } from '@/components/sections'
+import CurtainGrid from '@/components/CurtainGrid'
+import { ArrowButton, SectionHeading } from '@/components/ui'
+import { DarkFeatureList, PageHero, QuoteSection, StatsBar } from '@/components/sections'
 import type { Locale } from '@/i18n/routing'
+import { applicationImage } from '@/lib/card-media'
 import { localeAlternates } from '@/lib/hreflang'
 import { getApplications, t } from '@/lib/i18n-content'
 import type { Metadata } from 'next'
@@ -14,29 +17,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   }
 }
 
-// The six application hubs.
-const hubIcon: Record<string, string> = {
-  dental: 'tabler:dental',
-  'semiconductor-electronics': 'tabler:cpu',
-  'automotive-aerospace': 'tabler:engine',
-  'tool-and-die': 'tabler:tools',
-  'grinding-cutting-sawing-drilling': 'tabler:blade',
-  // Was a `lens` name, which does not exist in the tabler set and so rendered
-  // nothing at all. A polished sphere is the closer read for this application
-  // anyway. (Naming the dead icon in full here would keep it alive: the
-  // generator scans this file for tabler:* and does not skip comments.)
-  'polishing-lapping': 'tabler:sphere',
-}
-
 const ApplicationsOverview = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
   const { locale } = await params
   setRequestLocale(locale)
 
   const items = getApplications(locale).map((a) => ({
-    icon: hubIcon[a.slug] || 'tabler:diamond',
     title: a.name,
-    desc: a.cardDesc,
     href: `/applications/${a.slug}`,
+    image: { src: applicationImage(a.slug) ?? '', alt: a.name },
   }))
 
   return (
@@ -57,16 +45,26 @@ const ApplicationsOverview = async ({ params }: { params: Promise<{ locale: Loca
         ]}
       />
 
-      <CardGrid
-        eyebrow={t(locale, 'By the job the tool has to do')}
-        title={t(locale, 'Six application hubs, one material supplier behind them.')}
-        desc={t(locale, 'Our customers convert raw diamond and CBN into finished tools. Start from your application to see the exact grades EID supplies and why tool makers in your field choose us.')}
-        items={items}
-        ctaHref="/contact"
-        ctaLabel={t(locale, 'Request a Quote')}
-        columns={3}
-        variant="image"
-      />
+      {/* The same curtain tiles the home page carries, which is what the
+          dawork reference does: one card, three across on its home page and six
+          across its services page. Six hubs are two clean rows of three. */}
+      <section data-note="applications" className="py-20 lg:py-30">
+        <div className="container">
+          <SectionHeading
+            eyebrow={t(locale, 'By the job the tool has to do')}
+            title={t(locale, 'Six application hubs, one material supplier behind them.')}
+            desc={t(locale, 'Our customers convert raw diamond and CBN into finished tools. Start from your application to see the exact grades EID supplies and why tool makers in your field choose us.')}
+          />
+
+          <div className="mt-14">
+            <CurtainGrid items={items} revealed />
+          </div>
+
+          <div className="mt-12">
+            <ArrowButton href="/contact" label={t(locale, 'Request a Quote')} variant="dark" />
+          </div>
+        </div>
+      </section>
       <div className="pt-14">
         <DarkFeatureList
           bgLabel="Background image — tool maker at work"

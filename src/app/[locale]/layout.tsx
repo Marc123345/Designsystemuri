@@ -1,7 +1,6 @@
 import '@/assets/css/style.css'
 import { SITE_ORIGIN } from '@/app/sitemap'
 import favicon from '@/assets/images/favicon.svg'
-import AnnotationLayer from '@/components/AnnotationLayer'
 import SiteLoader from '@/components/SiteLoader'
 import WhatsAppButton from '@/components/WhatsAppButton'
 import AppProvidersWrapper from '@/components/wrappers/AppProvidersWrapper'
@@ -125,7 +124,6 @@ const LocaleLayout = async ({ children, params }: { children: React.ReactNode; p
               remounted on client navigation, this shows on a full page load and
               not again as you move around the site. */}
           <SiteLoader />
-          <AnnotationLayer />
           <WhatsAppButton />
         </NextIntlClientProvider>
       </body>

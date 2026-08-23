@@ -79,7 +79,7 @@ export const MEGA_MENU_COLUMNS: string[][] = [
   ['polycrystalline-diamond', 'polycrystalline-powder'],
 ]
 
-export const products: Product[] = [
+export const productCatalogue: Product[] = [
   /* ================== 1 · NATURAL DIAMOND GRIT & POWDER ================== */
   {
     slug: 'natural-grit-powder',
@@ -302,7 +302,7 @@ export const products: Product[] = [
         label: 'CVD Single Crystal',
         title: 'CVD single crystal diamond, grown to your exact orientation and specification.',
         intro: [
-          'EID supplies white, mechanical-grade CVD single crystal for single-point precision tooling, not gemstones. It is grown to your orientation and specification through an established growth partnership, then finished and inspected in-house, so you get made-to-spec crystal inside a single-source relationship.',
+          'EID supplies white, mechanical-grade CVD single crystal for single-point precision tooling, not gemstones. It is made to your orientation and specification, then finished and inspected in-house, so you get made-to-spec crystal inside a single-source relationship.',
           'Available in 2-point, 3-point, and 4-point orientation, custom sizes, and specific crystallographic faces.',
         ],
         callouts: [
@@ -671,7 +671,7 @@ export const products: Product[] = [
         title: 'CVD polycrystalline dressing logs, for truing and dressing wheels.',
         intro: [
           'CVD polycrystalline diamond logs true and dress conventional and superabrasive grinding wheels. The crystal structure is randomly oriented, so the log is equally hard in every direction, with no weak planes and no preferential wear. That gives more consistent, longer-lasting dressing than a natural stone, which wears along its cleavage.',
-          'EID supplies the logs in standard and custom sizes, made to specification through our CVD growth partnership and finished in-house. Available in black polycrystalline grade.',
+          'EID supplies the logs in standard and custom sizes, made to our specification and finished in-house. Available in black polycrystalline grade.',
         ],
         callouts: [
           {
@@ -778,6 +778,30 @@ export const products: Product[] = [
     guides: ['How size distribution affects tool performance'],
   },
 ]
+
+/**
+ * The locked display order, from the strategy's revenue priority and the Vol 03
+ * copy deck's product-range section. Kept separate from the catalogue array
+ * above, which is authored in the order the pages were written — Uri's note was
+ * that the product tabs were "not in the right order as planned", and this is
+ * the one place that order now lives.
+ *
+ * Everything downstream reads `products`, so the mega-menu, the footer index,
+ * the home range grid and the sitemap all follow this list and cannot drift
+ * apart from each other again.
+ */
+const DISPLAY_ORDER = ['natural-grit-powder', 'metal-bond', 'resin-bond', 'cbn', 'single-crystal', 'polycrystalline-diamond', 'tool-stones', 'polycrystalline-powder']
+
+// Anything missing from DISPLAY_ORDER sorts to the end rather than to the
+// front, so adding a ninth group to the catalogue and forgetting this list
+// appends it instead of silently promoting it above natural grit.
+export const products: Product[] = [...productCatalogue].sort((a, b) => {
+  const rank = (slug: string) => {
+    const i = DISPLAY_ORDER.indexOf(slug)
+    return i === -1 ? DISPLAY_ORDER.length : i
+  }
+  return rank(a.slug) - rank(b.slug)
+})
 
 export const getProduct = (slug: string) => products.find((p) => p.slug === slug)
 export const productsByFamily = (family: string) => products.filter((p) => p.family === family)

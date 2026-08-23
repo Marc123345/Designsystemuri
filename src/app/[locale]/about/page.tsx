@@ -1,9 +1,9 @@
-import CardCarousel from '@/components/CardCarousel'
-import ChapterRun from '@/components/ChapterRun'
 import GlobeSection from '@/components/GlobeSection'
-import { DarkFeatureList, PageHero, QuoteSection, StatsBar } from '@/components/sections'
-import { ArrowButton, SectionHeading } from '@/components/ui'
+import SectionBanner from '@/components/SectionBanner'
+import { PageHero, StatsBar } from '@/components/sections'
+import TeamGrid from '@/components/TeamGrid'
 import Wireframe from '@/components/Wireframe'
+import { ArrowButton, SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
@@ -44,41 +44,30 @@ const companyFeatures = [
 ]
 
 /**
- * The company story as three balanced frames for the pinned run.
+ * The in-house operations, standing in for dawork's percentage skill bars.
  *
- * The first pass put all three paragraphs on frame one and a single sentence on
- * each of the rest, which made the opening a wall of text and the others feel
- * empty. Every frame now carries the same weight: a heading, one paragraph, and
- * one claim on a rule.
- *
- * The headings for frames two and three are the opening sentence of their own
- * paragraph, with the remainder as the body. That is a presentation split rather
- * than a rewrite — no word is added or removed, they are just distributed — and
- * both sentences happen to be the strongest line in their paragraph. The three
- * short claims become the eyebrows and the accent lines, which is the job they
- * were already doing in the old two-column block.
+ * Every one of these is stated somewhere else on the site already — the home
+ * FAQ, /quality and the product pages — so nothing here is a new claim.
  */
-const companyFrames = [
-  {
-    eyebrow: 'London-based superabrasive manufacturer',
-    heading: "Over 50 years making the material that goes into the world's diamond tools.",
-    body: [companyParagraphs[0]],
-    accent: companyFeatures[2].desc,
-  },
-  {
-    eyebrow: companyFeatures[1].title,
-    heading: 'We make the material inside the tools, not the finished tools.',
-    body: [
-      'A dental bur maker who needs metal bond powder that sinters the same way each run, an optics company that needs a CVD single crystal grown to a set orientation, a grinding wheel maker who needs CBN that matches the last order: they come to EID. Decades of supporting the same customers have built the consistency and technical understanding a production environment needs.',
-    ],
-    accent: companyFeatures[1].desc,
-  },
-  {
-    eyebrow: companyFeatures[0].title,
-    heading: 'That record is what separates us from a distributor.',
-    body: ['We control production and the quality decision, and we cover the whole range from one facility, so our customers manage one relationship instead of five.'],
-    accent: companyFeatures[0].desc,
-  },
+const facilityOperations = [
+  'Crushing, shaping and sizing',
+  'Sieve grading against calibrated references',
+  'Electroless nickel and copper coating',
+  'Metallic PVD coating',
+  'Polishing, etching and CRT rounding',
+  'Incoming and outgoing QC inspection',
+]
+
+/**
+ * ⚠ PLACEHOLDER. Four functional roles so the layout can be reviewed — not
+ * EID's org chart, and the names are deliberately absent. See the note at the
+ * top of components/TeamGrid.
+ */
+const team = [
+  { role: 'Managing Director', photoLabel: 'Portrait — Managing Director' },
+  { role: 'Technical Sales', photoLabel: 'Portrait — Technical Sales' },
+  { role: 'Quality Manager', photoLabel: 'Portrait — Quality Manager' },
+  { role: 'Production Manager', photoLabel: 'Portrait — Production Manager' },
 ]
 
 const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
@@ -92,7 +81,10 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
         title={t(locale, 'About EID — Industrial Diamond Manufacturer')}
         desc={t(locale, 'EID has manufactured and quality-controlled the full industrial diamond and CBN range from London for over 50 years, supplying tool makers worldwide.')}
         crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'About') }]}
-        primaryCta={{ label: t(locale, 'Request a Quote'), href: '/contact' }}
+        // ⚠ PLACEHOLDER. Openly-licensed stock, wide and short per Uri's note
+        // that the top of this page wants a generic background picture. Swap the
+        // file, not the code, when EID supplies its own.
+        bgImage="/eid/home/about-hero.jpg"
       />
 
       <StatsBar
@@ -104,36 +96,52 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
         ]}
       />
 
-      {/* THE COMPANY — the same pinned run the home page uses below the hero.
-          The story opens the sequence, then each of the three claims that
-          separate EID from a distributor holds its own frame. Desktop and motion
-          only; the flat version below carries the same content for mobile and
-          reduced motion. */}
-      <ChapterRun
-        note="about-run"
-        frames={companyFrames.map((f) => ({
-          eyebrow: t(locale, f.eyebrow),
-          heading: t(locale, f.heading),
-          body: f.body.map((para) => t(locale, para)),
-          accent: t(locale, f.accent),
-        }))}
+      {/* THE COMPANY, as one band.
+
+          This was a four-frame pinned scroll run (ChapterRun) with a full
+          duplicate of its content below it as the mobile and reduced-motion
+          fallback, then a swipeable three-card production model, then a
+          full-bleed dark QC block, then a wireframe photograph of the QC lab.
+          About six screens, all of it before the reader reached who EID
+          actually serves.
+
+          Uri's note was that the page should be "shorter with less congestion,
+          simpler and more to the point of who we are and our advantages,
+          removing the qc or production steps", and that this run in particular
+          should keep frames one and three, drop frame two, and merge what is
+          left into one thin banner with no scrolling. That is this block.
+
+          What came out, and why it stays out:
+           - The production model cards. They set out which parts of the range
+             are made from raw in London and which are made to EID's
+             specification elsewhere — the same thing that came out of the home
+             FAQ, and dangerous for the same reason.
+           - The QC section and the QC laboratory photograph. Both belong on
+             /quality, which is linked from here, the header and the footer.
+
+          The closing sentence is from EID's previous site, which Uri asked to
+          bring across — it says the global-reach part better than anything
+          written for this build did. */}
+      <SectionBanner
+        tone="tint"
+        label={t(locale, 'Manufacturer, not distributor')}
+        body={t(
+          locale,
+          'EID Ltd is a London-based manufacturer and finisher of industrial diamond and superabrasives. For over fifty years we have supplied the full diamond and CBN range — grit, powder and crystal products — to tool manufacturers and precision-parts producers worldwide. That record is what separates us from a distributor: we control production and the quality decision, and we cover the whole range from one facility, so our customers manage one relationship instead of five.'
+        )}
       />
 
-      {/* Flat fallback — a pinned sequence with no motion is four screens of
-          nothing happening, so mobile and reduced-motion get the original
-          two-column layout instead. */}
-      <section className="py-20 pt-14 lg:hidden lg:py-30">
+      <section className="py-16 lg:py-20">
         <div className="container">
-          <SectionHeading eyebrow={t(locale, 'London-based superabrasive manufacturer')} title={t(locale, "Over 50 years making the material that goes into the world's diamond tools.")} />
-
-          <div className="mt-14 grid gap-10 lg:grid-cols-12">
-            <div className="space-y-5 lg:col-span-7">
-              {companyParagraphs.map((para) => (
-                <p key={para} className="text-default-600 text-base">
-                  {t(locale, para)}
-                </p>
-              ))}
+          <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+            <div className="lg:col-span-7">
+              {/* Paragraph two only. One and three are the banner directly
+                  above — merged into it per Uri's note — and running all three
+                  here as well printed the same two paragraphs twice in a row,
+                  which is the congestion this pass was meant to remove. */}
+              <p className="text-default-600 text-base">{t(locale, companyParagraphs[1])}</p>
             </div>
+
             <div className="divide-default-200 border-default-200 divide-y border-t lg:col-span-5">
               {companyFeatures.map((feature) => (
                 <div key={feature.title} className="py-6">
@@ -143,77 +151,8 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
               ))}
             </div>
           </div>
-
-          <div className="mt-14">
-            <Wireframe label="EID production floor, London — crushing and grading of natural diamond grit" ratio="wide" />
-          </div>
         </div>
       </section>
-
-      {/* HOW WE MAKE IT — the honest, graduated production model, in the same
-swipeable card layout the home page uses for the product range. */}
-      <CardCarousel
-        eyebrow={t(locale, 'Our production model, stated straight')}
-        title={t(locale, 'How we make what we sell.')}
-        items={[
-          {
-            icon: 'tabler:diamond',
-            title: t(locale, 'Natural grit & powder'),
-            desc: t(locale, 'Natural grit and powder are manufactured entirely in-house at our own factory, from raw material through crushing, grading, and final QC.'),
-            href: '/products/natural-grit-powder#grit',
-          },
-          {
-            icon: 'tabler:cube',
-            title: t(locale, 'CVD single crystal'),
-            desc: t(locale, "CVD single crystal diamond is grown to EID's exact specification, orientation, and quality standard through a dedicated growth partner, then finished and inspected by us."),
-            href: '/products/single-crystal#cvd',
-          },
-          {
-            icon: 'tabler:blade',
-            title: t(locale, 'Metal bond, resin bond & CBN'),
-            desc: t(locale, 'Metal bond, resin bond, and CBN grades are produced to order, then processed and graded through our facility to your specification before shipping. Coating, where you need it, is applied in-house rather than sourced from a second vendor.'),
-            href: '/products/metal-bond',
-          },
-        ]}
-        variant="image"
-      />
-      <section className="py-16 lg:py-24">
-        <div className="container">
-          <p className="text-default-600 max-w-[860px] text-base">{t(locale, 'Across all three, the specification and the QC pass are ours. That is the part a tool maker is actually buying.')}</p>
-        </div>
-      </section>
-
-      <section className="pb-14">
-        <div className="container">
-          <Wireframe label="EID in-house QC laboratory — particle size distribution and morphology testing" ratio="wide" />
-        </div>
-      </section>
-      <DarkFeatureList
-        bgLabel="Background image — production floor, London"
-        eyebrow={t(locale, 'Quality & certification')}
-        title={t(locale, 'Consistency, measured on every run.')}
-        desc={t(locale, 'Our QC laboratory tests every production lot for particle size distribution and morphology, with additional testing such as crystal strength and coating coverage performed where required.')}
-        features={[
-          {
-            title: t(locale, 'In-house QC laboratory'),
-            desc: t(locale, 'The backbone of everything we ship, not an afterthought.'),
-          },
-          {
-            title: t(locale, 'Every production lot'),
-            desc: t(locale, 'Particle size distribution and morphology on every lot, with crystal strength and coating coverage where required.'),
-          },
-          {
-            title: t(locale, 'Full traceability'),
-            desc: t(locale, 'Documented from raw material through QC to delivery.'),
-          },
-          {
-            title: t(locale, 'ISO 9001 certified'),
-            desc: t(locale, 'Covering production, QC, and the full supply chain.'),
-          },
-        ]}
-        ctaLabel={t(locale, 'See how our QC works')}
-        ctaHref="/quality"
-      />
 
       {/* WHO WE SERVE — real buyer types and regions, no unverified figures */}
       <section className="py-20 pt-14 lg:py-30">
@@ -231,17 +170,81 @@ swipeable card layout the home page uses for the product range. */}
         </div>
       </section>
 
-      {/* REACH — the regions named above, made visible: London hub with arcs to
-the markets EID ships to across four continents. */}
+      {/* INSIDE THE FACILITY — dawork's `skill-area`: a dark band with a media
+          panel on one side and a heading, a paragraph and a list on the other.
+
+          Its list is a row of animated percentage bars — "Manufacturing 80%",
+          "Metallurgy 90%". Those numbers are the one thing from that section
+          that cannot come across. They are decoration in the reference and
+          nobody checks them; on a page whose entire argument is that EID's
+          figures are real and documented, an invented competence score is
+          exactly the claim a quality department pulls on. The bars are replaced
+          by the operations EID actually performs in-house, which is the true
+          version of the same idea and reads better for it.
+
+          The media panel is a Wireframe until EID supplies footage or a
+          photograph of the floor. */}
+      <section data-note="facility" className="bg-primary-3 relative isolate overflow-hidden py-20 text-white lg:py-30">
+        <div className="container">
+          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+            <Wireframe label={t(locale, 'Facility — production floor or process footage')} ratio="landscape" tone="dark" />
+
+            <div>
+              <div className="inline-flex items-center gap-1.5 border border-white/20 px-3.5 py-1.25">
+                <span className="bg-primary-1 size-2"></span>
+                <span className="text-sm text-white">{t(locale, 'Inside the facility')}</span>
+              </div>
+
+              <h2 className="mt-4 text-2xl font-bold text-white md:text-[28px] lg:text-[32px]">{t(locale, 'Everything that happens to the material happens here.')}</h2>
+
+              <p className="mt-5 text-base leading-relaxed text-white/70">
+                {t(
+                  locale,
+                  'Raw material comes in, finished grades go out, and every step between them is under one roof and one quality system. That is what lets us answer a question about a lot shipped months ago.'
+                )}
+              </p>
+
+              <ul className="mt-9 grid gap-x-8 gap-y-4 border-t border-white/15 pt-8 sm:grid-cols-2">
+                {facilityOperations.map((op) => (
+                  <li key={op} className="flex items-start gap-3 text-[0.95rem] text-white/85">
+                    <span aria-hidden className="bg-primary-1 mt-2 size-1.5 shrink-0" />
+                    {t(locale, op)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* THE TEAM — dawork's `team-area`. Placeholder portraits and placeholder
+          roles; see the note in components/TeamGrid before this ships. */}
+      <section data-note="team" className="py-20 lg:py-30">
+        <div className="container">
+          <SectionHeading
+            eyebrow={t(locale, 'The people')}
+            title={t(locale, 'You will be dealing with someone who works with the material.')}
+            desc={t(locale, 'A small team, reachable directly. The person who answers your specification question is the person who grades against it.')}
+          />
+
+          <div className="mt-14">
+            <TeamGrid members={team} />
+          </div>
+        </div>
+      </section>
+
+      {/* REACH — the regions named above, made visible: London hub with arcs
+          out to the continents EID ships to.
+
+          The closing quote block that used to follow this is gone. There is
+          already a Contact button in the "Trusted by tool makers" section a
+          screen above, and a second ask below the globe was the third
+          conversion prompt on one page. */}
       <GlobeSection
         eyebrow={t(locale, 'Where our material ships')}
-        title={t(locale, 'From one London facility to four continents.')}
-        desc={t(locale, 'We supply tool makers across Europe, the Middle East, Asia, the Americas, and beyond — every grade manufactured and quality-controlled in London before it ships.')}
+        title={t(locale, 'From one London facility to five continents.')}
+        desc={t(locale, 'With its headquarters in London, England, and worldwide marketing partners, E.I.D has established a global reputation for quality, consistency and superior service. Today E.I.D has customers on every continent. Our sales team speaks more than ten dialects, but we all speak the same language — the right product at the right price, when and where you require it.')}
       />
-
-      <div className="pt-20">
-        <QuoteSection eyebrow={t(locale, 'Trusted by tool makers across continents')} title={t(locale, "Let's talk about what you manufacture.")} desc={t(locale, 'Request a quote, order a sample, or ask a technical question. A real person replies within one business day.')} />
-      </div>
     </>
   )
 }

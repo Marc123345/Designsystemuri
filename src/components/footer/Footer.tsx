@@ -83,19 +83,30 @@ const Footer = () => {
 
         {/* Right — white. The complete index. */}
         <div className="relative flex flex-col bg-white px-4 py-14 md:px-7.5 lg:px-12.5 lg:py-20">
+          {/* Two explicit columns rather than a flowing 2-up grid.
+              Dropping the "Sections" column left three groups in a row-major
+              grid, which put Products and Applications on row one and Company &
+              Resources alone on row two — with the whole right half of that row
+              empty, since Applications is the shortest list. Pinning Products
+              to the first column and stacking the other two in the second fills
+              the panel and keeps the longest list unbroken. */}
           <div className="grid grid-cols-1 gap-x-10 gap-y-9 sm:grid-cols-2">
-            {footerColumns.map((column) => (
-              <div key={column.title}>
-                <h3 className="text-default-900 mb-5 text-lg font-semibold">{t(locale, column.title)}</h3>
-                <ul className="space-y-2.5">
-                  {column.links.map((link) => (
-                    <li key={link.href + link.label}>
-                      <Link href={link.href} className="text-default-500 hover:text-primary text-[0.88rem] transition-colors">
-                        {t(locale, link.label)}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+            {[footerColumns.slice(0, 1), footerColumns.slice(1)].map((group, i) => (
+              <div key={i} className="space-y-9">
+                {group.map((column) => (
+                  <div key={column.title}>
+                    <h3 className="text-default-900 mb-5 text-lg font-semibold">{t(locale, column.title)}</h3>
+                    <ul className="space-y-2.5">
+                      {column.links.map((link) => (
+                        <li key={link.href + link.label}>
+                          <Link href={link.href} className="text-default-500 hover:text-primary text-[0.88rem] transition-colors">
+                            {t(locale, link.label)}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
             ))}
           </div>
