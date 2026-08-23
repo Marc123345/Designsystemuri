@@ -1,6 +1,6 @@
 import GlobeSection from '@/components/GlobeSection'
 import CurtainGrid from '@/components/CurtainGrid'
-import { PageHero, StatsBar } from '@/components/sections'
+import { PageHero } from '@/components/sections'
 import TeamGrid from '@/components/TeamGrid'
 import Wireframe from '@/components/Wireframe'
 import { ArrowButton, SectionHeading } from '@/components/ui'
@@ -101,15 +101,6 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
         bgImage="/eid/home/about-hero.jpg"
       />
 
-      <StatsBar
-        items={[
-          { value: '50+', label: t(locale, "Years' experience") },
-          { value: '8', label: t(locale, 'Product groups') },
-          { value: '12', label: t(locale, 'Product lines') },
-          { value: '100%', label: t(locale, 'Lots QC-tested') },
-        ]}
-      />
-
       {/* THE COMPANY, as one band.
 
           This was a four-frame pinned scroll run (ChapterRun) with a full
@@ -157,7 +148,20 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
               </div>
               <h2 className="mt-4 text-[28px] font-bold md:text-[36px] lg:text-[42px]">{t(locale, 'We make the material inside the tools, not the finished tools.')}</h2>
             </div>
-            <p className="text-default-600 lg:col-span-5">{t(locale, companyParagraphs[1])}</p>
+
+            {/* Paragraphs one and three, merged — what EID is, and the thing
+                that separates it from a distributor. That merge is Uri's, from
+                the banner this section replaced.
+
+                Paragraph two is not here. Its opening sentence is now the
+                heading directly above, and running it as the lede as well
+                printed the same sentence twice; the rest of it is a list of
+                buyer types, which is exactly what "Who we serve" does one
+                section below. Losing it is the congestion Uri asked to remove,
+                not a gap. */}
+            <p className="text-default-600 lg:col-span-5">
+              {t(locale, companyParagraphs[0])} {t(locale, companyParagraphs[2])}
+            </p>
           </div>
 
           <div className="mt-14 lg:mt-18">
