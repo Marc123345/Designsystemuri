@@ -207,7 +207,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           </div>
 
           <div className="mt-12">
-            <ArrowButton href="/contact" label={t(locale, 'Tell us the tool. We will specify the grade.')} variant="dark" />
+            <ArrowButton href="/contact" label={t(locale, 'Tell us the tool')} variant="dark" />
           </div>
         </div>
       </section>

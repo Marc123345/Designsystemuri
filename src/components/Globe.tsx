@@ -1,3 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any --
+ * globe.gl's shipped types describe only its `new Globe()` form, not the
+ * functional `Globe(config)(el)` call this file uses, and they type the chained
+ * configuration methods loosely enough that the fluent calls below do not
+ * survive a cast to anything narrower. The five `any`s here are all the
+ * library's instance and its config objects; nothing app-owned is untyped.
+ *
+ * These predate the mobile gate added below — they surfaced when this file was
+ * next linted, not when it was changed. Worth replacing with a hand-written
+ * declaration for the subset of globe.gl actually used, which is about a dozen
+ * methods, if this file is opened again for anything substantial. */
 'use client'
 
 import { useEffect, useRef } from 'react'

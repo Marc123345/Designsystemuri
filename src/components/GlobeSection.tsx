@@ -7,6 +7,7 @@ import { ArrowButton } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
 import { useLocale } from 'next-intl'
+import { useSyncExternalStore } from 'react'
 
 // Globe renders only two <div>s on the server; all WebGL/three.js work runs
 // lazily inside its useEffect (client-only), so a plain static import hydrates
@@ -47,8 +48,36 @@ const MARKETS: { city: string; region: string; x: number; y: number }[] = [
 /** Background zoom on the world texture — roughly 36° of longitude per tile. */
 const TILE_ZOOM = '1000%'
 
+/**
+ * `(min-width: 1024px)` as an external store, so the globe can be kept off
+ * phones entirely.
+ *
+ * Gating inside Globe's own effect was tried first and broke it: the effect
+ * observes its container with an IntersectionObserver, and hiding that
+ * container with `display: none` until `lg` left the observer watching an
+ * element with no box. Verified against the deployed build — canvas present
+ * there, absent locally — which is why the decision moved out here.
+ *
+ * Not mounting the component at all is also the stronger version of the same
+ * idea. The dynamic import never runs, so three.js and globe.gl are never
+ * fetched, compiled or given a WebGL context on a device that was going to
+ * spend ~1.2MB of JavaScript and an autorotate loop on a decorative globe.
+ *
+ * The server snapshot is `false`: SSR has no viewport, and the phone
+ * arrangement is the one that needs no JavaScript to be correct.
+ */
+const LG = '(min-width: 1024px)'
+const subscribeLg = (onChange: () => void) => {
+  const mq = window.matchMedia(LG)
+  mq.addEventListener('change', onChange)
+  return () => mq.removeEventListener('change', onChange)
+}
+const getLgSnapshot = () => window.matchMedia(LG).matches
+const getLgServerSnapshot = () => false
+
 const GlobeSection = ({ eyebrow, title, desc, ctaLabel, ctaHref = '/contact' }: { eyebrow?: string; title?: string; desc?: string; ctaLabel?: string; ctaHref?: string }) => {
   const locale = useLocale() as Locale
+  const lg = useSyncExternalStore(subscribeLg, getLgSnapshot, getLgServerSnapshot)
 
   return (
     <section data-note="reach" className="relative isolate size-full overflow-hidden py-20 text-white lg:py-37.5">
@@ -76,7 +105,11 @@ const GlobeSection = ({ eyebrow, title, desc, ctaLabel, ctaHref = '/contact' }: 
           and Asian light clusters. The vertical one feathers the band into the
           sections above and below, so a full-bleed map does not read as a
           rectangle pasted onto the page. */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+      {/* Desktop only. `mix-blend-screen` on a full-bleed layer forces its own
+          compositing layer, which is a real cost on a phone for a texture that
+          is mostly invisible at that width anyway — Backdrop underneath already
+          carries the dark ground. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 hidden overflow-hidden lg:block">
         <Image src="/images/earth-night.jpg" alt="" fill sizes="100vw" className="object-cover object-[50%_38%] opacity-60 mix-blend-screen" />
         <div className="from-default-950 via-default-950/72 absolute inset-0 bg-linear-to-r via-34% to-transparent to-72%" />
         {/* Four stops rather than Tailwind's from/via/to, because the middle
@@ -113,7 +146,16 @@ const GlobeSection = ({ eyebrow, title, desc, ctaLabel, ctaHref = '/contact' }: 
               {MARKETS.map((m) => (
                 <li
                   key={m.city}
-                  className="group relative isolate overflow-hidden"
+                  /* `max-md:!bg-none` drops the crop below md, and it is not a
+                     cosmetic saving. Each tile paints the 2048×1024 texture at
+                     `background-size: 1000%` — a 20480px-wide raster — and there
+                     are six of them. On a phone that is six very large layers
+                     allocated to show a patch of night lights behind a 72%
+                     scrim, which is barely visible even on desktop. Below md the
+                     scrim colour stands alone and the tiles look near enough
+                     identical. The `!` is needed because the crop is an inline
+                     style, which a class cannot otherwise beat. */
+                  className="group relative isolate overflow-hidden max-md:!bg-none"
                   style={{
                     backgroundImage: 'url(/images/earth-night.jpg)',
                     backgroundSize: TILE_ZOOM,
@@ -138,8 +180,10 @@ const GlobeSection = ({ eyebrow, title, desc, ctaLabel, ctaHref = '/contact' }: 
 
           {/* Globe */}
           <div className="relative">
-            <Globe size={600} />
-            <p className="mt-6 text-center font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase">{t(locale, 'Spins on its own · drag to explore')}</p>
+            {lg && <Globe size={600} />}
+            {/* Hidden with the globe it describes — there is nothing to spin
+                or drag below lg. */}
+            <p className="mt-6 hidden text-center font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase lg:block">{t(locale, 'Spins on its own · drag to explore')}</p>
           </div>
         </div>
       </div>
