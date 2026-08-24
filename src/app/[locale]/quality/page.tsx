@@ -1,11 +1,10 @@
 import { PageHero } from '@/components/sections'
-import Wireframe from '@/components/Wireframe'
 import Marquee from '@/components/Marquee'
+import SplitSlider from '@/components/SplitSlider'
 import { ArrowButton, SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
-import Image from 'next/image'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
@@ -77,10 +76,10 @@ const controls = [
     n: '04',
     icon: 'tabler:hammer',
     title: 'Toughness (TI / TTI)',
-    note: 'Available on request for advanced applications',
+    note: 'Optional — the three controls above run on every batch; this one is by request.',
     points: [
-      ['Targeted mechanical evaluation', 'Standard size and shape controls meet almost every everyday application. Room-temperature Toughness Index milling tests are available for specialised high-impact projects.'],
-      ['Thermal stability testing', 'For extreme-heat environments, optional Thermal Toughness Index testing measures how well crystals hold up during tool manufacturing.'],
+      ['Toughness Index (TI)', 'A room-temperature milling test that measures how the crystal breaks down under impact. For high-impact work where size and shape alone do not predict tool life.'],
+      ['Thermal Toughness Index (TTI)', 'The same measurement after a heat cycle, for crystals that have to survive the temperatures of tool manufacturing.'],
     ],
     imageLabel: 'T.I. milling and crush chamber equipment — photograph pending',
   },
@@ -128,10 +127,18 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
           rather than following an argument about why the laboratory exists.
           Two by two on desktop; each card is a photograph, a numbered heading
           and its bullets. */}
+      {/* THE FOUR CONTROLS — the thing a buyer came for, so it opens the page
+          rather than following an argument about why the laboratory exists.
+
+          Was a 2x2 grid of cards. Four cards side by side means four
+          photographs at a quarter size each and four bullet lists competing for
+          the same glance — the page showed everything at once and emphasised
+          nothing. One control at a time, on the same slider About uses, gives
+          each stage a full-width photograph and its own reading, and a buyer
+          checking whether we can hold their micron spec stops on 02 and stays
+          there. */}
       <section data-note="qc-controls" className="py-16 lg:py-24">
         <div className="container">
-          {/* About never drops a grid onto the page without saying what it is;
-              this one used to. */}
           <SectionHeading
             eyebrow={t(locale, 'Four controls')}
             title={t(locale, 'What every batch is put through before it ships.')}
@@ -140,40 +147,25 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
               'Sizing, morphology, cleaning and final inspection. Each one is a stage with its own equipment and its own record, which is what lets us answer a question about a lot months after it left.'
             )}
           />
-
-          <div className="bg-default-200 mt-14 grid gap-px lg:grid-cols-2">
-            {controls.map((c) => (
-              <article key={c.n} className="flex flex-col bg-white">
-                <div className="bg-default-100 relative aspect-16/9 overflow-hidden">
-                  {'image' in c && c.image ? (
-                    <Image src={c.image} alt={t(locale, c.alt)} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
-                  ) : (
-                    <Wireframe label={t(locale, c.imageLabel)} className="!aspect-auto h-full border-0" />
-                  )}
-                </div>
-
-                <div className="flex flex-1 flex-col p-7 lg:p-9">
-                  <div className="flex items-baseline gap-3">
-                    <span className="text-default-400 text-xs tracking-[0.2em] tabular-nums">{c.n}</span>
-                    <h2 className="text-xl font-bold lg:text-2xl">{t(locale, c.title)}</h2>
-                  </div>
-
-                  {'note' in c && c.note && <p className="text-default-500 mt-2 text-sm italic">{t(locale, c.note)}</p>}
-
-                  <ul className="mt-6 space-y-5">
-                    {c.points.map(([label, body]) => (
-                      <li key={label} className="border-default-200 border-t pt-4">
-                        <span className="text-default-900 block text-[0.95rem] font-semibold">{t(locale, label)}</span>
-                        <span className="text-default-600 mt-1.5 block text-[0.95rem] leading-relaxed">{t(locale, body)}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </article>
-            ))}
-          </div>
         </div>
       </section>
+
+      {/* No eyebrow badge on this one: the SectionHeading directly above it is
+          already the label, and the slider carrying a second would be the same
+          words twice in 200px. */}
+      <SplitSlider
+        dataNote="qc-slider"
+        ghost={t(locale, 'Quality control')}
+        slides={controls.map((c) => ({
+          n: c.n,
+          title: t(locale, c.title),
+          note: 'note' in c && c.note ? t(locale, c.note) : undefined,
+          points: c.points.map(([label, body]) => [t(locale, label), t(locale, body)] as const),
+          image: 'image' in c ? c.image : undefined,
+          alt: 'alt' in c ? t(locale, c.alt) : undefined,
+          imageLabel: 'imageLabel' in c ? t(locale, c.imageLabel) : undefined,
+        }))}
+      />
 
       {/* The standards band, in the same place About and Contact put theirs —
           between the argument and the close. Every term here is one the four

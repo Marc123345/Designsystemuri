@@ -1,7 +1,7 @@
 import GlobeSection from '@/components/GlobeSection'
 import Marquee from '@/components/Marquee'
 import CurtainGrid from '@/components/CurtainGrid'
-import FacilitySlider from '@/components/FacilitySlider'
+import SplitSlider from '@/components/SplitSlider'
 import { PageHero } from '@/components/sections'
 import TeamGrid from '@/components/TeamGrid'
 import { SectionHeading } from '@/components/ui'
@@ -215,10 +215,12 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
           page whose argument is that EID's figures are real and documented, an
           invented competence score is the first thing a quality department
           pulls on. */}
-      <FacilitySlider
+      <SplitSlider
+        dataNote="facility"
         eyebrow={t(locale, 'Inside the facility')}
         ghost={t(locale, 'Inside the facility')}
         href="/quality"
+        ctaLabel={t(locale, 'How we test it')}
         slides={[
           {
             n: '01',
