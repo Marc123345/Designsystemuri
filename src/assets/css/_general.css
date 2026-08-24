@@ -166,53 +166,6 @@ textarea {
     }
 }
 
-/* Clip-path wipe, borrowed from the Saleschannel home page.
- *
- * There it is framer-motion: `initial: inset(0 100% 0 0)` animating to
- * `inset(0 0% 0 0)` on `whileInView`. This site has no framer-motion in use —
- * it is in package.json and imported nowhere in src — and one reveal is not the
- * reason to start, so both variants below are plain CSS and neither costs a
- * byte of JavaScript.
- *
- * `.eid-wipe-in` runs once on load, for something already on screen.
- *
- * `.eid-wipe-scroll` is driven by the scroll position instead, through
- * `animation-timeline: view()`: the image uncovers itself as it enters the
- * viewport and is complete before it reaches the middle. Scroll-driven rather
- * than one-shot because a one-shot needs an IntersectionObserver to know when
- * to fire, and to hide the element until then — which means a frame of visible
- * content before the observer runs, or content that never appears at all with
- * JavaScript off.
- *
- * Both are wrapped so nothing is ever left hidden: the `@supports` guard means
- * browsers without scroll-driven animation simply get the image, and the
- * reduced-motion guard means anyone who has asked for less gets the image too.
- * The global reduced-motion rule further up this file already collapses the
- * one-shot to its end state. There is no path here that ends with a clipped
- * image on screen. */
-@keyframes eid-wipe {
-    from {
-        clip-path: inset(0 100% 0 0);
-    }
-
-    to {
-        clip-path: inset(0 0 0 0);
-    }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-    .eid-wipe-in {
-        animation: eid-wipe 1100ms cubic-bezier(0.4, 0, 0.2, 1) both;
-    }
-
-    @supports (animation-timeline: view()) {
-        .eid-wipe-scroll {
-            animation: eid-wipe linear both;
-            animation-timeline: view();
-            animation-range: entry 5% entry 65%;
-        }
-    }
-}
 
 /* Header sitting directly on the home hero.
  *
