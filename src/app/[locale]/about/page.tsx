@@ -49,27 +49,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
  * /eid/surface-enhancements.jpg is no longer used anywhere after this change.
  * It is a real EID SEM and worth keeping on disk for /quality.
  */
-const aboutPillars = [
-  {
-    meta: 'Manufacturer, not distributor',
-    title: 'We control the production and the quality decision.',
-    href: '/quality',
-    image: { src: '/eid/qc-inspection.jpg', alt: 'A gloved hand at the control of a digital measuring microscope, a dish of diamond grit on its stage and the crystals shown magnified and being measured on the screen above' },
-  },
-  {
-    meta: 'Full range, one facility',
-    title: 'Grit, powder and crystal, quality-controlled in-house.',
-    href: '/#products',
-    image: { src: '/eid/qc-samples.jpg', alt: 'A laboratory rack of sample jars receding down a shelf, the nearest holding coarse grey diamond stock and the furthest holding fine powder' },
-  },
-  {
-    meta: 'Over 50 years',
-    title: 'Half a century supplying the same kinds of tool makers.',
-    href: '/about',
-    image: { src: '/eid/qc-micron-sem.jpg', alt: 'Scanning electron micrograph of polycrystalline diamond micron powder at 4000x magnification, the particles uniform across the field, with the instrument’s 20 micrometre scale bar, date and lot reference along the bottom edge', position: 'object-bottom' },
-  },
-]
-
 /**
  * ⚠ PLACEHOLDER. Four functional roles so the layout can be reviewed — not
  * EID's org chart, and the names are deliberately absent. See the note at the
@@ -133,41 +112,42 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
 
           The global-reach wording Uri asked to bring across from the previous
           site now sits on the reach band at the foot of the page. */}
-      {/* MANUFACTURER, NOT DISTRIBUTOR — the same shape as the three pillars
-          on the home page, and the same component behind it.
+      {/* The strip, directly under the hero.
 
-          It was a pale banner with two paragraphs beside a rule-separated list
-          of three. The three points are exactly the kind of parallel claim the
-          curtain tiles were built for, so they use them: one card, three
-          places on the site, and About stops being the page with its own
-          layout vocabulary.
+          It has taken the slot the three "Manufacturer, not distributor"
+          curtain cards held. Those cards said the same three things this strip
+          says — made here, full range, quality decided in-house — at the cost
+          of three quarters of a screen and three photographs whose alt text
+          ran longer than the claims. The strip says them in a line and keeps
+          moving.
 
-          No lede paragraph. The one that ran beside the heading opened "EID
-          Ltd is a London-based manufacturer and finisher of industrial diamond
-          and superabrasives" and closed on the distributor line — both of
-          which are already said on this page: the first by the hero's own
-          standfirst directly above, the second by these three cards, which is
-          the whole point of them. Printing it a third time in the middle was
-          the congestion Uri asked to take off this page. */}
-      <section data-note="about-pillars" className="bg-default-50 py-20 lg:py-30">
-        <div className="container">
-          <div className="grid items-end gap-8 lg:grid-cols-12 lg:gap-14">
-            <div className="lg:col-span-7">
-              <div className="border-default-300 inline-flex items-center gap-1.5 border bg-white px-3.5 py-1.25">
-                <span className="bg-primary size-2"></span>
-                <span className="text-default-900 text-sm">{t(locale, 'Manufacturer, not distributor')}</span>
-              </div>
-              <h2 className="mt-4 text-[28px] font-bold md:text-[36px] lg:text-[42px]">{t(locale, 'We make the material inside the tools, not the finished tools.')}</h2>
-            </div>
-          </div>
+          Inverted from the home page on purpose. There the range is solid and
+          the company sits behind it, because a buyer arrives looking for a
+          material. Here it is the other way round — this is the page about who
+          EID is, so the company line leads and the range passes behind it.
+          Same component, opposite emphasis, so the two pages do not read as
+          the same band pasted twice. */}
+      <Marquee
+        items={[
+          t(locale, 'Made in London'),
+          t(locale, 'Since 1970'),
+          t(locale, 'ISO 9001 certified'),
+          t(locale, 'In-house QC laboratory'),
+          t(locale, 'Manufacturer, not distributor'),
+        ]}
+        secondary={[
+          t(locale, 'Natural Diamond Grit'),
+          t(locale, 'Micron Powder'),
+          t(locale, 'CBN'),
+          t(locale, 'PCBN'),
+          t(locale, 'CVD Single Crystal'),
+          t(locale, 'MCD'),
+          t(locale, 'PCD Blanks'),
+          t(locale, 'Metal Bond'),
+          t(locale, 'Resin Bond'),
+        ]}
+      />
 
-          <div className="mt-14 lg:mt-18">
-            <CurtainGrid items={aboutPillars.map((p) => ({ ...p, title: t(locale, p.title), meta: t(locale, p.meta), image: { ...p.image, alt: t(locale, p.image.alt) } }))} numbered />
-          </div>
-        </div>
-      </section>
-
-      {/* WHO WE SERVE — real buyer types and regions, no unverified figures */}
       {/* WHO WE SERVE.
 
           This was a heading over one ninety-word paragraph that named four
@@ -214,35 +194,6 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
           </p>
         </div>
       </section>
-
-      {/* The strip, between the industries and the facility claim.
-
-          Inverted from the home page on purpose. There the range is solid and
-          the company sits behind it, because a buyer arrives looking for a
-          material. Here it is the other way round — this is the page about who
-          EID is, so the company line leads and the range passes behind it.
-          Same component, opposite emphasis, so the two pages do not read as
-          the same band pasted twice. */}
-      <Marquee
-        items={[
-          t(locale, 'Made in London'),
-          t(locale, 'Since 1970'),
-          t(locale, 'ISO 9001 certified'),
-          t(locale, 'In-house QC laboratory'),
-          t(locale, 'Manufacturer, not distributor'),
-        ]}
-        secondary={[
-          t(locale, 'Natural Diamond Grit'),
-          t(locale, 'Micron Powder'),
-          t(locale, 'CBN'),
-          t(locale, 'PCBN'),
-          t(locale, 'CVD Single Crystal'),
-          t(locale, 'MCD'),
-          t(locale, 'PCD Blanks'),
-          t(locale, 'Metal Bond'),
-          t(locale, 'Resin Bond'),
-        ]}
-      />
 
       {/* INSIDE THE FACILITY — the claim, without the process.
 
