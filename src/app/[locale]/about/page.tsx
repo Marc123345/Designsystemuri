@@ -2,7 +2,6 @@ import GlobeSection from '@/components/GlobeSection'
 import CurtainGrid from '@/components/CurtainGrid'
 import { PageHero } from '@/components/sections'
 import TeamGrid from '@/components/TeamGrid'
-import Wireframe from '@/components/Wireframe'
 import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
@@ -173,13 +172,49 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
       </section>
 
       {/* WHO WE SERVE — real buyer types and regions, no unverified figures */}
+      {/* WHO WE SERVE.
+
+          This was the heading and a single ninety-word paragraph that named
+          four kinds of customer, five regions and six application areas in one
+          breath. Everything in it was worth saying and none of it was findable:
+          a buyer scanning for their own trade had to read the whole block to
+          learn whether they were in it.
+
+          Same words, given the structure they already had. The four customer
+          types were a list inside a sentence, so they are a list now — one
+          hairline grid, the idiom the team grid and the facility bento already
+          use, with the geography left as the closing line because it applies to
+          all four rather than to any one of them.
+
+          Hairlines are gaps: a `gap-px` grid over a rule-coloured ground draws
+          one uniform 1px line between cells, where per-cell borders double up
+          on the shared edges. */}
       <section className="py-20 pt-14 lg:py-30">
         <div className="container">
           <SectionHeading eyebrow={t(locale, 'Who we serve')} title={t(locale, 'Trusted by tool makers across industries and continents.')} />
+
           <p className="text-default-600 mt-8 max-w-[860px] text-base">
+            {t(locale, 'Our customers convert raw diamond and CBN into finished tools.')}
+          </p>
+
+          <div className="bg-default-200 mt-10 grid gap-px sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              'Diamond and CBN grinding and dressing tool makers',
+              'Dental bur and rotary instrument producers',
+              'Ultra-precision tool makers for optics and watch components',
+              'Flexible-abrasive manufacturers for glass and stone',
+            ].map((who, i) => (
+              <div key={who} className="flex flex-col bg-white p-7 lg:p-8">
+                <span className="text-default-400 text-xs tracking-[0.2em] tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                <p className="text-default-900 mt-4 text-[1.05rem] leading-snug">{t(locale, who)}</p>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-default-600 mt-10 max-w-[860px] text-base">
             {t(
               locale,
-              'Our customers convert raw diamond and CBN into finished tools: diamond and CBN grinding and dressing tool makers, dental bur and rotary instrument producers, ultra-precision tool makers for optics and watch components, and flexible-abrasive manufacturers for glass and stone. We supply them across Europe, the Middle East, Asia, the Americas, and beyond, with the material behind dental, optics and precision components, automotive and aerospace, tool and die, stone and glass, and electronics applications.'
+              'We supply them across Europe, the Middle East, Asia, the Americas, and beyond, with the material behind dental, optics and precision components, automotive and aerospace, tool and die, stone and glass, and electronics applications.'
             )}
           </p>
         </div>
@@ -248,8 +283,20 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
             {/* ⚠ PLACEHOLDER. The production floor itself, which EID has not
                 supplied. Swap this tile for an <Image> when footage or a
                 photograph lands; the cell already has its shape. */}
-            <div className="bg-primary-3 row-span-2">
-              <Wireframe label={t(locale, 'Facility — production floor or process footage')} tone="dark" className="h-full !aspect-auto border-0" />
+            <div className="bg-primary-3 relative row-span-2 overflow-hidden">
+              {/* Was a wireframe waiting on production-floor footage. The
+                  retention-sample shelf is the better tile anyway: it is the
+                  one operation in the list you cannot photograph as an action,
+                  and it is what makes the paragraph beside it — answering a
+                  question about a lot shipped months ago — actually true. */}
+              <Image
+                src="/eid/qc-samples.jpg"
+                alt={t(locale, 'A shelf of labelled retention sample jars holding graded diamond grit, kept from every batch')}
+                fill
+                sizes="(min-width: 1024px) 25vw, 50vw"
+                className="object-cover"
+              />
+              <span aria-hidden className="from-primary-3/60 absolute inset-0 bg-linear-to-t to-transparent to-55%" />
             </div>
 
             {/* `contents` keeps these six as one list to a screen reader while
