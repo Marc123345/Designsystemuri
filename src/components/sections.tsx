@@ -97,8 +97,8 @@ export const PageHero = ({
     className={
       bgImage
         ? variant === 'band'
-          ? 'relative isolate flex min-h-[58svh] w-full items-end overflow-hidden text-white'
-          : 'relative isolate flex min-h-svh w-full items-center overflow-hidden text-white'
+          ? 'bg-primary-3 relative isolate flex min-h-[58svh] w-full items-end overflow-hidden text-white'
+          : 'bg-primary-3 relative isolate flex min-h-svh w-full items-center overflow-hidden text-white'
         : 'border-default-200 relative isolate overflow-hidden border-b pt-35 pb-14 lg:pt-46 lg:pb-18'
     }
   >
@@ -138,10 +138,28 @@ export const PageHero = ({
             on its own. Type sits on a solid ground, and the right of the frame
             is the photograph at full strength whether it is a dark bench or a
             white room. */}
+        {/* The brand wash. Every gradient here is neutral near-black, which on a
+            pale photograph leaves a grey canvas rather than an EID one — the
+            sample-jar and micrograph heroes both read as washed-out silver.
+            A flat brand sheet over the whole frame ties the band to the site's
+            colour without flattening the picture the way more black would. */}
+        <div aria-hidden className="bg-primary-3/45 absolute inset-0 -z-10" />
+
+        {/* A ground for the navbar, on both variants.
+            The bar goes transparent over these heroes and its links are white.
+            The vertical scrim runs bottom-up, so the top of the frame carries no
+            darkening at all, and over a bright photograph the links simply
+            disappeared — on MSDS, "Resources", "About" and "Quality" were gone
+            entirely. This is deliberately a short strip rather than more weight
+            on the whole image: the problem is 96px tall and fixing it with a
+            heavier overall scrim would cost the photograph everywhere to solve
+            it in one place. */}
+        <div aria-hidden className="from-default-950/78 absolute inset-x-0 top-0 -z-10 h-36 bg-linear-to-b via-transparent to-transparent" />
+
         {variant === 'band' ? (
           <>
-            <div aria-hidden className="from-default-950/72 via-default-950/18 absolute inset-0 -z-10 bg-linear-to-t via-42% to-transparent" />
-            <div aria-hidden className="from-default-950/94 via-default-950/72 absolute inset-0 -z-10 bg-linear-to-r via-24% to-transparent to-58%" />
+            <div aria-hidden className="from-default-950/62 via-default-950/12 absolute inset-0 -z-10 bg-linear-to-t via-42% to-transparent" />
+            <div aria-hidden className="from-default-950/90 via-default-950/60 absolute inset-0 -z-10 bg-linear-to-r via-24% to-transparent to-58%" />
           </>
         ) : (
           <>
