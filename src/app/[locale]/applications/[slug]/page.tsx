@@ -3,9 +3,10 @@ import { RichParagraphs } from '@/components/RichText'
 import { CrossLinks, DarkFeatureList, PageHero, QuoteSection } from '@/components/sections'
 import { ArrowButton, SectionHeading } from '@/components/ui'
 import Wireframe from '@/components/Wireframe'
+import Image from 'next/image'
 import type { Locale } from '@/i18n/routing'
 import { applications } from '@/lib/applications'
-import { productImage } from '@/lib/card-media'
+import { applicationImage, productImage } from '@/lib/card-media'
 import { localeAlternates } from '@/lib/hreflang'
 import { getApplication, getApplications, getProduct, t } from '@/lib/i18n-content'
 import type { Metadata } from 'next'
@@ -62,6 +63,7 @@ const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; s
     }
   })
 
+  const appImage = applicationImage(app.slug)
   const productLinks = serviceItems.map((s) => ({ label: s.title, href: s.href }))
   const guideLinks = (app.guides ?? []).map((g) => ({ label: g, href: '/resources/blog' }))
   const relatedHubLinks = (app.relatedHubs ?? [])
@@ -94,7 +96,28 @@ carries it, so a second identical button read as repetition. */}
             </div>
 
             <div className="lg:col-span-5">
-              <Wireframe label={`Application image — ${app.name}`} />
+              {/* The hub grid has carried an image per industry all along; this
+                  page — the one a buyer lands on from search — rendered a grey
+                  wireframe instead, because it never imported the map. Same
+                  source as the hub, so the two agree and a replacement lands in
+                  both at once.
+
+                  ⚠ These are still placeholder stock, per the note in
+                  card-media.ts. Nothing here depicts EID's premises, staff,
+                  customers or output. */}
+              {appImage ? (
+                <div className="relative aspect-4/5 overflow-hidden">
+                  <Image
+                    src={appImage}
+                    alt={`${app.name} — industrial diamond and CBN applications`}
+                    fill
+                    sizes="(min-width: 1024px) 40vw, 100vw"
+                    className="object-cover"
+                  />
+                </div>
+              ) : (
+                <Wireframe label={`Application image — ${app.name}`} />
+              )}
             </div>
           </div>
 
