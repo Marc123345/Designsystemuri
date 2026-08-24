@@ -32,6 +32,8 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
         title={t(locale, 'Request a Quote')}
         desc={t(locale, 'Request a quote, order a sample, or ask a technical question. One form, and a specialist who understands the material replies within one business day.')}
         crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Contact') }]}
+              /* Generic by intent — the page is a form, and the picture is there to carry the same hero treatment as the rest of the site, not to argue anything. */
+        bgImage="/eid/home/hero.jpg"
       />
 
       {/* The panel copy sits beside the form rather than above it, so the

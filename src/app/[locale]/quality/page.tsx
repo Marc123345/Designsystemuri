@@ -99,6 +99,8 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
           'At E.I.D, every single batch of diamond and CBN powder undergoes strict laboratory validation to guarantee total product consistency, lot after lot. Our QC is built into every stage, from raw material selection through grading, crushing, chemical cleaning, coating and final inspection, and the in-house QC laboratory is the backbone of everything we ship.'
         )}
         crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Quality') }]}
+              /* The laboratory this page is about. */
+        bgImage="/eid/qc-lab.jpg"
       />
 
       {/* COMPLIANCE — one thin strip, not a section. Both statements are

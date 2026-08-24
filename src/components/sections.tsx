@@ -67,8 +67,19 @@ export const PageHero = ({
     {bgImage && (
       <>
         <Image src={bgImage} alt="" fill priority sizes="100vw" className="-z-20 object-cover object-center" />
-        <div aria-hidden className="bg-primary-3/85 absolute inset-0 -z-10" />
-        <div aria-hidden className="from-default-950 absolute inset-0 -z-10 bg-linear-to-r to-transparent to-75%" />
+        {/* The same two-gradient scrim the home hero uses, so an interior page
+            reads as the same site rather than a paler version of it.
+
+            It was a flat bg-primary-3/85 sheet with one horizontal gradient
+            over the top. A single sheet at that opacity tints the whole frame
+            evenly, which is why these heroes looked washed next to the home
+            page: the photograph was there but nothing in it was ever at full
+            strength. Two gradients instead — the vertical one seats the copy on
+            the bottom edge, the horizontal one darkens the left where the words
+            are — so the right of the frame keeps its detail and the image still
+            reads as a photograph. */}
+        <div aria-hidden className="from-default-950/95 via-default-950/45 absolute inset-0 -z-10 bg-linear-to-t via-55% to-transparent" />
+        <div aria-hidden className="from-default-950/96 via-default-950/62 absolute inset-0 -z-10 bg-linear-to-r via-40% to-transparent to-80%" />
       </>
     )}
 
