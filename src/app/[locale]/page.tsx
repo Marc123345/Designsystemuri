@@ -313,7 +313,6 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           endorsements EID has not given us. */}
       <Marquee
         items={[
-          t(locale, 'ISO 9001'),
           t(locale, 'Natural Diamond Grit'),
           t(locale, 'Micron Powder'),
           t(locale, 'CBN'),
@@ -323,8 +322,16 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           t(locale, 'PCD Blanks'),
           t(locale, 'Metal Bond'),
           t(locale, 'Resin Bond'),
+        ]}
+        /* The second row is what EID says about itself, and every line of it is
+           already published elsewhere on the site — these four are the footer's
+           own badges. Nothing new is claimed by putting them in bigger type. */
+        secondary={[
           t(locale, 'Coated in-house'),
           t(locale, 'Made in London'),
+          t(locale, 'ISO 9001 certified'),
+          t(locale, 'In-house QC laboratory'),
+          t(locale, "50+ years' experience"),
         ]}
       />
 
