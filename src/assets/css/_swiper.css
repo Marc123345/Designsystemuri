@@ -32,3 +32,48 @@
   cursor: auto;
   pointer-events: none;
 }
+
+/* Pagination for the About page's facility slider (components/FacilitySlider).
+   The reference uses round grey dots that fill with the accent on the active
+   slide. Diamonds instead of circles: the marquee already separates its words
+   with a rotated square, so the shape is established on the site and costs
+   nothing to reuse here.
+
+   Named classes rather than Swiper's defaults so this styling cannot leak into
+   the product and photo carousels, which have no pagination and use the
+   prev/next chrome instead. */
+.swiper-pagination:has(.eid-bullet) {
+  /* Swiper positions pagination absolutely against the slide box, which on a
+     full-bleed slide drops the dots on top of the photograph. Put it back in
+     flow so it sits under the section where it can be seen and hit. */
+  position: static;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-top: 48px;
+}
+
+.eid-bullet {
+  width: 9px;
+  height: 9px;
+  background-color: var(--color-default-300);
+  transform: rotate(45deg);
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.eid-bullet:hover {
+  background-color: var(--color-default-400);
+}
+
+.eid-bullet-active,
+.eid-bullet-active:hover {
+  background-color: var(--color-primary);
+  transform: rotate(45deg) scale(1.35);
+}
+
+.eid-bullet:focus-visible {
+  outline: 2px solid var(--color-primary-1);
+  outline-offset: 4px;
+}

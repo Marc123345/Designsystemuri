@@ -1,6 +1,7 @@
 import GlobeSection from '@/components/GlobeSection'
 import Marquee from '@/components/Marquee'
 import CurtainGrid from '@/components/CurtainGrid'
+import FacilitySlider from '@/components/FacilitySlider'
 import { PageHero } from '@/components/sections'
 import TeamGrid from '@/components/TeamGrid'
 import { SectionHeading } from '@/components/ui'
@@ -8,7 +9,6 @@ import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { applicationImage } from '@/lib/card-media'
 import { getApplications, t } from '@/lib/i18n-content'
-import Image from 'next/image'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
@@ -215,57 +215,56 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
           page whose argument is that EID's figures are real and documented, an
           invented competence score is the first thing a quality department
           pulls on. */}
-      <section data-note="facility" className="bg-primary-3 relative isolate overflow-hidden py-20 text-white lg:py-28">
-        <div className="container">
-          <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
-            {/* Media — the reference puts it first, and so does this. */}
-            <div className="lg:col-span-7">
-              <div className="grid gap-px bg-white/12">
-                <div className="relative aspect-16/10 overflow-hidden">
-                  <Image
-                    src="/eid/facility/hero-metrology-lab.png"
-                    alt={t(locale, 'Two technicians at a measuring microscope in the metrology laboratory, a diamond crystal shown magnified on the screen beside them')}
-                    fill
-                    sizes="(min-width: 1024px) 58vw, 100vw"
-                    className="object-cover object-center"
-                  />
-                </div>
-
-                <div className="grid grid-cols-3 gap-px">
-                  {[
-                    ['/eid/facility/sieve-stack-astm-e11.png', 'A stack of ASTM E11 test sieves used to grade diamond grit to size'],
-                    ['/eid/facility/diamond-grading-loupe.png', 'A grader examining diamond grit through a loupe'],
-                    ['/eid/facility/crystal-microscopy.png', 'Diamond crystals under the microscope during morphology inspection'],
-                  ].map(([src, alt]) => (
-                    <div key={src} className="relative aspect-4/5 overflow-hidden">
-                      <Image src={src} alt={t(locale, alt)} fill sizes="(min-width: 1024px) 19vw, 33vw" className="object-cover object-center" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Copy — eyebrow, heading, paragraph, in the reference's order. */}
-            <div className="lg:col-span-5">
-              <div className="inline-flex w-fit items-center gap-1.5 border border-white/20 px-3.5 py-1.25">
-                <span className="bg-primary-1 size-2"></span>
-                <span className="text-sm text-white">{t(locale, 'Inside the facility')}</span>
-              </div>
-
-              <h2 className="mt-4 text-2xl font-bold text-white md:text-[28px] lg:text-[34px]">
-                {t(locale, 'Everything that happens to the material happens here.')}
-              </h2>
-
-              <p className="mt-5 text-base leading-relaxed text-white/75">
-                {t(
-                  locale,
-                  'Raw material comes in, finished grades go out, and every step between them is under one roof and one quality system. That is what lets us answer a question about a lot shipped months ago.'
-                )}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FacilitySlider
+        eyebrow={t(locale, 'Inside the facility')}
+        ghost={t(locale, 'Inside the facility')}
+        href="/quality"
+        slides={[
+          {
+            n: '01',
+            title: t(locale, 'Sized against a certified stack.'),
+            desc: t(
+              locale,
+              'Mechanical test sieves separate diamond grit into uniform sizes, and shape-sorting tables split the sharp, fast-cutting grains from the tough, blocky ones. The grade you order is the grade that leaves.'
+            ),
+            image: '/eid/facility/sieve-stack-astm-e11.png',
+            alt: t(locale, 'A stack of ASTM E11 test sieves used to grade diamond grit to size'),
+          },
+          {
+            n: '02',
+            title: t(locale, 'Measured, then measured again.'),
+            desc: t(
+              locale,
+              'Micron and sub-micron sizes are classified by sedimentation and centrifugation, and every lot is run on Malvern particle size distribution equipment. The curve is a document, not an estimate.'
+            ),
+            image: '/eid/facility/hero-metrology-lab.png',
+            alt: t(
+              locale,
+              'Two technicians at a measuring microscope in the metrology laboratory, a diamond crystal shown magnified on the screen beside them'
+            ),
+          },
+          {
+            n: '03',
+            title: t(locale, 'Someone looks at the material.'),
+            desc: t(
+              locale,
+              'Microscope checks run throughout production, monitoring batch appearance, colour consistency and crystal structure. Equipment reports the numbers; a grader still confirms the material behind them.'
+            ),
+            image: '/eid/facility/diamond-grading-loupe.png',
+            alt: t(locale, 'A grader examining diamond grit through a loupe'),
+          },
+          {
+            n: '04',
+            title: t(locale, 'Shape checked crystal by crystal.'),
+            desc: t(
+              locale,
+              'Scanning electron microscopy inspects final grain morphology and confirms nothing oversized or undersized got through. Image analysis records size distribution and shape factor together.'
+            ),
+            image: '/eid/facility/crystal-microscopy.png',
+            alt: t(locale, 'Diamond crystals under the microscope during morphology inspection'),
+          },
+        ]}
+      />
 
       <section data-note="team" className="py-20 lg:py-30">
         <div className="container">
