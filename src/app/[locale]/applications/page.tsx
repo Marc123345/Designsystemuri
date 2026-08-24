@@ -1,4 +1,5 @@
 import CurtainGrid from '@/components/CurtainGrid'
+import Marquee from '@/components/Marquee'
 import { ArrowButton, SectionHeading } from '@/components/ui'
 import { DarkFeatureList, PageHero, QuoteSection, StatsBar } from '@/components/sections'
 import type { Locale } from '@/i18n/routing'
@@ -66,6 +67,27 @@ const ApplicationsOverview = async ({ params }: { params: Promise<{ locale: Loca
         </div>
       </section>
       <div className="pt-14">
+      {/* Between the six hubs and the argument below them. The industries
+          lead here because that is what this page is a list of, and the
+          materials pass behind — the reverse of the product pages. */}
+      <Marquee
+        items={[
+          t(locale, 'Dental'),
+          t(locale, 'Semiconductor & electronics'),
+          t(locale, 'Automotive & aerospace'),
+          t(locale, 'Tool & die'),
+          t(locale, 'Grinding & cutting'),
+          t(locale, 'Polishing & lapping'),
+        ]}
+        secondary={[
+          t(locale, 'Diamond'),
+          t(locale, 'CBN'),
+          t(locale, 'Micron powder'),
+          t(locale, 'Coated grades'),
+          t(locale, 'Made to specification'),
+        ]}
+      />
+
         <DarkFeatureList
           bgLabel="Background image — tool maker at work"
           eyebrow={t(locale, 'One standard behind every hub')}

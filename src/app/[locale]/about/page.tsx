@@ -1,4 +1,5 @@
 import GlobeSection from '@/components/GlobeSection'
+import Marquee from '@/components/Marquee'
 import CurtainGrid from '@/components/CurtainGrid'
 import { PageHero } from '@/components/sections'
 import TeamGrid from '@/components/TeamGrid'
@@ -213,6 +214,35 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
           </p>
         </div>
       </section>
+
+      {/* The strip, between the industries and the facility claim.
+
+          Inverted from the home page on purpose. There the range is solid and
+          the company sits behind it, because a buyer arrives looking for a
+          material. Here it is the other way round — this is the page about who
+          EID is, so the company line leads and the range passes behind it.
+          Same component, opposite emphasis, so the two pages do not read as
+          the same band pasted twice. */}
+      <Marquee
+        items={[
+          t(locale, 'Made in London'),
+          t(locale, 'Since 1970'),
+          t(locale, 'ISO 9001 certified'),
+          t(locale, 'In-house QC laboratory'),
+          t(locale, 'Manufacturer, not distributor'),
+        ]}
+        secondary={[
+          t(locale, 'Natural Diamond Grit'),
+          t(locale, 'Micron Powder'),
+          t(locale, 'CBN'),
+          t(locale, 'PCBN'),
+          t(locale, 'CVD Single Crystal'),
+          t(locale, 'MCD'),
+          t(locale, 'PCD Blanks'),
+          t(locale, 'Metal Bond'),
+          t(locale, 'Resin Bond'),
+        ]}
+      />
 
       {/* INSIDE THE FACILITY — the claim, without the process.
 
