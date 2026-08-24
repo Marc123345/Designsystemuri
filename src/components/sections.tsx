@@ -469,6 +469,7 @@ export const DarkFeatureList = ({
   ctaLabel,
   ctaHref,
   bgLabel = 'Background image — QC laboratory',
+  bgImage,
 }: {
   eyebrow: string
   title: string
@@ -476,29 +477,48 @@ export const DarkFeatureList = ({
   features: { title: string; desc: string }[]
   ctaLabel: string
   ctaHref: string
-  /** Names the photograph this slot is waiting on. */
+  /** Names the photograph this slot is waiting on, where none is supplied. */
   bgLabel?: string
+  /** The full-bleed photograph. Without one the slot stays a wireframe. */
+  bgImage?: string
 }) => {
   const locale = useLocale() as Locale
   return (
     <section data-note="qc" className="relative size-full overflow-hidden py-20 text-white lg:py-37.5">
-      {/* Full-bleed background image slot. The template runs a photograph here.
-        Until EID supplies one this renders as a wireframe — dashed frame,
-diagonals and a centred label — over a dark base that keeps the glass
-card legible. Replace the whole block with a single <Image fill /> when
-the photography lands. */}
-      <div className="from-default-950 via-default-950 to-primary-3 absolute inset-0 bg-linear-to-br"></div>
+      {/* Full-bleed background. With a photograph supplied it runs here under a
+          heavy scrim; without one the slot stays the wireframe it was, so the
+          application pages — which have no photograph for this band — are
+          unchanged.
 
-      <div role="img" aria-label={`Placeholder image: ${bgLabel}`} className="absolute inset-4 border border-dashed border-white/20">
-        <svg className="absolute inset-0 size-full text-white/10" preserveAspectRatio="none" viewBox="0 0 100 100" aria-hidden="true">
-          <line x1="0" y1="0" x2="100" y2="100" stroke="currentColor" strokeWidth="1" vectorEffect="non-scaling-stroke" />
-          <line x1="100" y1="0" x2="0" y2="100" stroke="currentColor" strokeWidth="1" vectorEffect="non-scaling-stroke" />
-        </svg>
+          Two scrims rather than one flat sheet, for the same reason the home
+          hero uses two. The QC shot is a bright white room and the glass card
+          is white type, so the left needs to be nearly opaque — but a single
+          sheet heavy enough for that erases the photograph everywhere and
+          leaves what looks like a plain gradient. The horizontal one carries
+          the card; the vertical one seats the section; the right of the frame
+          keeps enough of the laboratory to read as a room. */}
+      {bgImage ? (
+        <>
+          <Image src={bgImage} alt="" fill sizes="100vw" className="-z-20 object-cover object-center" />
+          <div aria-hidden className="from-default-950/97 via-default-950/80 to-default-950/40 absolute inset-0 -z-10 bg-linear-to-r via-45%"></div>
+          <div aria-hidden className="from-default-950/70 absolute inset-0 -z-10 bg-linear-to-t to-transparent to-70%"></div>
+        </>
+      ) : (
+        <>
+          <div className="from-default-950 via-default-950 to-primary-3 absolute inset-0 bg-linear-to-br"></div>
 
-        <div className="absolute inset-x-0 bottom-6 flex justify-center lg:bottom-10">
-          <span className="bg-default-950/70 border border-white/15 px-3 py-2 text-center text-[11px] tracking-[0.15em] text-white/50 uppercase">{t(locale, bgLabel)}</span>
-        </div>
-      </div>
+          <div role="img" aria-label={`Placeholder image: ${bgLabel}`} className="absolute inset-4 border border-dashed border-white/20">
+            <svg className="absolute inset-0 size-full text-white/10" preserveAspectRatio="none" viewBox="0 0 100 100" aria-hidden="true">
+              <line x1="0" y1="0" x2="100" y2="100" stroke="currentColor" strokeWidth="1" vectorEffect="non-scaling-stroke" />
+              <line x1="100" y1="0" x2="0" y2="100" stroke="currentColor" strokeWidth="1" vectorEffect="non-scaling-stroke" />
+            </svg>
+
+            <div className="absolute inset-x-0 bottom-6 flex justify-center lg:bottom-10">
+              <span className="bg-default-950/70 border border-white/15 px-3 py-2 text-center text-[11px] tracking-[0.15em] text-white/50 uppercase">{t(locale, bgLabel)}</span>
+            </div>
+          </div>
+        </>
+      )}
 
       <div className="absolute inset-0 size-full bg-[url(../images/bg-noice.gif)] bg-auto bg-position-[50%] bg-repeat opacity-6"></div>
 

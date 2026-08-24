@@ -165,6 +165,7 @@ list of tests. */}
       />
 
       <DarkFeatureList
+        bgImage="/eid/qc-lab.jpg"
         bgLabel="Background image — QC laboratory"
         eyebrow={t(locale, 'How our QC works')}
         title={t(locale, 'How a batch moves through our laboratory.')}
