@@ -70,21 +70,6 @@ const aboutPillars = [
 ]
 
 /**
- * The in-house operations, standing in for dawork's percentage skill bars.
- *
- * Every one of these is stated somewhere else on the site already — the home
- * FAQ, /quality and the product pages — so nothing here is a new claim.
- */
-const facilityOperations = [
-  'Crushing, shaping and sizing',
-  'Sieve grading against calibrated references',
-  'Electroless nickel and copper coating',
-  'Metallic PVD coating',
-  'Polishing, etching and CRT rounding',
-  'Incoming and outgoing QC inspection',
-]
-
-/**
  * ⚠ PLACEHOLDER. Four functional roles so the layout can be reviewed — not
  * EID's org chart, and the names are deliberately absent. See the note at the
  * top of components/TeamGrid.
@@ -229,46 +214,37 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
         </div>
       </section>
 
-      {/* INSIDE THE FACILITY — a bento grid.
+      {/* INSIDE THE FACILITY — the claim, without the process.
 
-          It was dawork's `skill-area`: a media panel on one side, a heading, a
-          paragraph and a list of six on the other. Two columns, and the six
-          operations reading as a bulleted afterthought beside the picture.
-          They are the substance of the section — they are what "everything
-          happens here" actually means — so they now get a tile each, at the
-          same weight as the copy and the photography.
+          This was a bento: three photographs and the six operations EID
+          carries out in-house, each numbered. Uri's note on this page is that
+          it "should be shorter with less congestion, simpler and more to the
+          point of who we are and our advantages, removing the qc or production
+          steps".
 
-          The tile sizes come from what each thing needs rather than from a
-          pattern: the copy block is the widest, the two portrait slots are one
-          column by two rows because both images are portrait, the six
-          operations are single squares because each is four words, and the
-          micrograph runs as a wide band because it is a repeating field and
-          crops to any strip without losing what it shows.
+          The six operations are the production steps, so they are gone from
+          here — they are on /quality and on the product pages, which is where
+          someone looking for them is. What stays is the advantage they were
+          evidence for: one roof, one quality system, and the ability to answer
+          a question about a lot that shipped months ago. That is who EID is
+          rather than how the machines are sequenced.
 
-          Hairlines are gaps, not borders. `p-px gap-px` over a translucent
-          white ground paints one uniform 1px line around and between every
-          tile whatever it spans — which a per-tile border cannot do on a grid
-          where cells span different numbers of tracks without doubling up on
-          some edges and missing others.
-
-          The percentage skill bars from the reference are still deliberately
-          absent. They are decoration there and nobody checks them; on a page
-          whose argument is that EID's figures are real and documented, an
-          invented competence score is exactly what a quality department pulls
-          on. These are the operations EID actually performs in-house. */}
-      <section data-note="facility" className="bg-primary-3 relative isolate overflow-hidden py-20 text-white lg:py-30">
+          One photograph rather than three, and the band is now about a screen
+          instead of three. */}
+      <section data-note="facility" className="bg-primary-3 relative isolate overflow-hidden py-16 text-white lg:py-20">
         <div className="container">
-          <div className="grid auto-rows-[minmax(9rem,auto)] grid-cols-2 gap-px bg-white/12 p-px lg:auto-rows-[minmax(13.5rem,auto)] lg:grid-cols-4">
-            {/* Copy — two columns wide, two rows deep. */}
-            <div className="bg-primary-3 col-span-2 row-span-3 flex flex-col justify-center p-7 lg:row-span-2 lg:p-9">
+          <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
+            <div className="lg:col-span-6">
               <div className="inline-flex w-fit items-center gap-1.5 border border-white/20 px-3.5 py-1.25">
                 <span className="bg-primary-1 size-2"></span>
                 <span className="text-sm text-white">{t(locale, 'Inside the facility')}</span>
               </div>
 
-              <h2 className="mt-4 text-2xl font-bold text-white md:text-[28px] lg:text-[32px]">{t(locale, 'Everything that happens to the material happens here.')}</h2>
+              <h2 className="mt-4 text-2xl font-bold text-white md:text-[28px] lg:text-[32px]">
+                {t(locale, 'Everything that happens to the material happens here.')}
+              </h2>
 
-              <p className="mt-5 max-w-[46ch] text-base leading-relaxed text-white/70">
+              <p className="mt-5 max-w-[52ch] text-base leading-relaxed text-white/75">
                 {t(
                   locale,
                   'Raw material comes in, finished grades go out, and every step between them is under one roof and one quality system. That is what lets us answer a question about a lot shipped months ago.'
@@ -276,83 +252,21 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
               </p>
             </div>
 
-            {/* Grading in progress. The one frame we hold of a facility
-                operation being carried out that is not already on this page. */}
-            <div className="bg-primary-3 relative row-span-2 overflow-hidden">
-              <Image
-                src="/eid/qc-sieve.jpg"
-                alt={t(locale, 'A technician operating a stack of laboratory test sieves beside a tray of graded grey diamond grit')}
-                fill
-                sizes="(min-width: 1024px) 25vw, 50vw"
-                className="object-cover object-center"
-              />
-              <span aria-hidden className="from-primary-3/60 absolute inset-0 bg-linear-to-t to-transparent to-55%" />
-            </div>
-
-            {/* ⚠ PLACEHOLDER. The production floor itself, which EID has not
-                supplied. Swap this tile for an <Image> when footage or a
-                photograph lands; the cell already has its shape. */}
-            <div className="bg-primary-3 relative row-span-2 overflow-hidden">
-              {/* Was a wireframe waiting on production-floor footage. The
-                  retention-sample shelf is the better tile anyway: it is the
-                  one operation in the list you cannot photograph as an action,
-                  and it is what makes the paragraph beside it — answering a
-                  question about a lot shipped months ago — actually true. */}
-              <Image
-                src="/eid/qc-samples.jpg"
-                alt={t(locale, 'A shelf of labelled retention sample jars holding graded diamond grit, kept from every batch')}
-                fill
-                sizes="(min-width: 1024px) 25vw, 50vw"
-                className="object-cover"
-              />
-              <span aria-hidden className="from-primary-3/60 absolute inset-0 bg-linear-to-t to-transparent to-55%" />
-            </div>
-
-            {/* `contents` keeps these six as one list to a screen reader while
-                letting each <li> be a grid cell in its own right. A wrapping
-                <ul> would otherwise take a single cell and put the six back
-                inside it, which is the layout this section came from. */}
-            {/* The six operations are one tile spanning the full width, not six
-                cells in the bento.
-
-                As cells they inherited the photographs' row height — a 13rem
-                square holding four words, pinned to the bottom edge, five
-                sixths empty navy. Six of those read as a grid waiting for
-                content rather than as a list of what the building does. They
-                are a list, so they are laid out as one: numbered, in three
-                columns, at the height the words actually need. */}
-            <div className="bg-primary-3 col-span-2 row-span-2 p-7 lg:col-span-4 lg:row-span-1 lg:p-9">
-              <p className="text-xs tracking-[0.2em] text-white/45 uppercase">{t(locale, 'Carried out in-house')}</p>
-              <ul className="mt-6 grid gap-x-10 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
-                {facilityOperations.map((op, i) => (
-                  <li key={op} className="border-t border-white/12 pt-4">
-                    <span aria-hidden className="text-primary-1 text-xs tracking-[0.2em] tabular-nums">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <span className="mt-2 block text-[0.98rem] leading-snug text-white/85">{t(locale, op)}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* The material itself, closing the row: coated and CRT-rounded
-                crystal, which is two of the six operations above in one frame.
-                A repeating field, so the wide crop costs nothing. */}
-            <div className="bg-primary-3 relative col-span-2 overflow-hidden lg:col-span-4">
-              <Image
-                src="/eid/surface-enhancements.jpg"
-                alt={t(locale, 'Scanning electron micrograph of surface-enhanced diamond crystal, coated and CRT-rounded, at 33x magnification')}
-                fill
-                sizes="100vw"
-                className="object-cover object-center"
-              />
+            <div className="lg:col-span-6">
+              <div className="relative aspect-16/10 overflow-hidden">
+                <Image
+                  src="/eid/qc-samples.jpg"
+                  alt={t(locale, 'A shelf of labelled retention sample jars holding graded diamond grit, kept from every batch')}
+                  fill
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  className="object-cover object-center"
+                />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* THE TEAM — dawork's `team-area`. Placeholder portraits and placeholder
-          roles; see the note in components/TeamGrid before this ships. */}
       <section data-note="team" className="py-20 lg:py-30">
         <div className="container">
           <SectionHeading
