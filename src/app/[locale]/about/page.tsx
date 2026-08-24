@@ -195,54 +195,73 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
         ]}
       />
 
-      {/* INSIDE THE FACILITY — the claim, without the process.
+      {/* INSIDE THE FACILITY — dawork's skill-area, in EID's vocabulary.
 
-          This was a bento: three photographs and the six operations EID
-          carries out in-house, each numbered. Uri's note on this page is that
-          it "should be shorter with less congestion, simpler and more to the
-          point of who we are and our advantages, removing the qc or production
-          steps".
+          The reference is section three of the template's services page: a dark
+          band, media down one side, eyebrow / heading / paragraph down the
+          other. This band had drifted to copy-left and a single photograph
+          right, which is the same components in the wrong order and half the
+          presence.
 
-          The six operations are the production steps, so they are gone from
-          here — they are on /quality and on the product pages, which is where
-          someone looking for them is. What stays is the advantage they were
-          evidence for: one roof, one quality system, and the ability to answer
-          a question about a lot that shipped months ago. That is who EID is
-          rather than how the machines are sequenced.
+          Media leads now, as the reference does. Four frames rather than one,
+          because the section's claim is that everything happens here and one
+          picture of one bench cannot carry that: the metrology bench runs wide
+          across the top, and the loupe, the microscope and the sieve stack sit
+          under it as a contact sheet. Three operations and the room they happen
+          in, which is the sentence beside them.
 
-          One photograph rather than three, and the band is now about a screen
-          instead of three. */}
-      <section data-note="facility" className="bg-primary-3 relative isolate overflow-hidden py-16 text-white lg:py-20">
+          The reference's percentage skill bars stay out, as they have from the
+          first build. They are decoration there and nobody checks them; on a
+          page whose argument is that EID's figures are real and documented, an
+          invented competence score is the first thing a quality department
+          pulls on. */}
+      <section data-note="facility" className="bg-primary-3 relative isolate overflow-hidden py-20 text-white lg:py-28">
         <div className="container">
-          <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
-            <div className="lg:col-span-6">
+          <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+            {/* Media — the reference puts it first, and so does this. */}
+            <div className="lg:col-span-7">
+              <div className="grid gap-px bg-white/12">
+                <div className="relative aspect-16/10 overflow-hidden">
+                  <Image
+                    src="/eid/facility/hero-metrology-lab.png"
+                    alt={t(locale, 'Two technicians at a measuring microscope in the metrology laboratory, a diamond crystal shown magnified on the screen beside them')}
+                    fill
+                    sizes="(min-width: 1024px) 58vw, 100vw"
+                    className="object-cover object-center"
+                  />
+                </div>
+
+                <div className="grid grid-cols-3 gap-px">
+                  {[
+                    ['/eid/facility/sieve-stack-astm-e11.png', 'A stack of ASTM E11 test sieves used to grade diamond grit to size'],
+                    ['/eid/facility/diamond-grading-loupe.png', 'A grader examining diamond grit through a loupe'],
+                    ['/eid/facility/crystal-microscopy.png', 'Diamond crystals under the microscope during morphology inspection'],
+                  ].map(([src, alt]) => (
+                    <div key={src} className="relative aspect-4/5 overflow-hidden">
+                      <Image src={src} alt={t(locale, alt)} fill sizes="(min-width: 1024px) 19vw, 33vw" className="object-cover object-center" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Copy — eyebrow, heading, paragraph, in the reference's order. */}
+            <div className="lg:col-span-5">
               <div className="inline-flex w-fit items-center gap-1.5 border border-white/20 px-3.5 py-1.25">
                 <span className="bg-primary-1 size-2"></span>
                 <span className="text-sm text-white">{t(locale, 'Inside the facility')}</span>
               </div>
 
-              <h2 className="mt-4 text-2xl font-bold text-white md:text-[28px] lg:text-[32px]">
+              <h2 className="mt-4 text-2xl font-bold text-white md:text-[28px] lg:text-[34px]">
                 {t(locale, 'Everything that happens to the material happens here.')}
               </h2>
 
-              <p className="mt-5 max-w-[52ch] text-base leading-relaxed text-white/75">
+              <p className="mt-5 text-base leading-relaxed text-white/75">
                 {t(
                   locale,
                   'Raw material comes in, finished grades go out, and every step between them is under one roof and one quality system. That is what lets us answer a question about a lot shipped months ago.'
                 )}
               </p>
-            </div>
-
-            <div className="lg:col-span-6">
-              <div className="relative aspect-16/10 overflow-hidden">
-                <Image
-                  src="/eid/qc-samples.jpg"
-                  alt={t(locale, 'A shelf of labelled retention sample jars holding graded diamond grit, kept from every batch')}
-                  fill
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                  className="object-cover object-center"
-                />
-              </div>
             </div>
           </div>
         </div>
