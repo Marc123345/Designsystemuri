@@ -98,16 +98,20 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
           locale,
           'At E.I.D, every single batch of diamond and CBN powder undergoes strict laboratory validation to guarantee total product consistency, lot after lot. Our QC is built into every stage, from raw material selection through grading, crushing, chemical cleaning, coating and final inspection, and the in-house QC laboratory is the backbone of everything we ship.'
         )}
-        /* Was qc-lab.jpg. That is a white-walled laboratory with no dark
-           values in it at all, and under the hero scrim it went to flat grey —
-           the room was there and nothing in it could be seen. This one holds
-           its tone: a dark-suited grader, a navy tray, the skyline behind. It
-           is also the page's subject, which the wide lab shot was only
-           adjacent to. */
-        bgImage="/eid/facility/diamond-grading-loupe.png"
-        /* Pushed right so the grader's face clears the centred column — at
-           dead centre the mark landed on it. */
-        bgPosition="78% 42%"
+        /* Back to the laboratory, and this time it is the right call for a
+           reason that did not exist before: the copy is centred now.
+
+           The loupe photograph is 725x1080. In a landscape frame `object-cover`
+           scales it to fill the width, which leaves no horizontal slack at all,
+           so `object-position` cannot move it sideways — the grader's face is
+           locked to the middle of the frame, which is exactly where the mark
+           and the eyebrow badge now sit. It read as a sticker on her face.
+
+           This one is 1376x768 with the technician right of centre, so the
+           column lands on the bench rather than on anybody. It was rejected
+           earlier for washing out, but that was against a scrim totalling ~70%
+           over the middle of the frame; at the current weight it holds. */
+        bgImage="/eid/qc-lab.jpg"
       />
 
       {/* COMPLIANCE — one thin strip, not a section. Both statements are
