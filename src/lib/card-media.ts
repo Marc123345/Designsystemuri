@@ -16,37 +16,38 @@
  */
 
 /**
- * Product group imagery, supplied 23 Aug 2026 and installed over the eight
- * slots below.
+ * Product group imagery.
  *
- * ⚠ Read this before treating these as evidence anywhere. What they replaced
- * was EID's own material photography carried over from the previous site —
- * microscope and SEM plates of the actual grades. The supplied set is rendered
- * imagery rather than photographs of EID's material, so it belongs in the
- * catalogue where its job is to identify a group at a glance, and nowhere that
+ * These are the eight cards on the home range grid, on /applications, and in
+ * the related-products carousel on each application page — which is why the
+ * map lives here rather than in any one of them.
+ *
+ * ⚠ Read this before treating them as evidence. They are studio renders of the
+ * material types, not photographs of EID's own output, so they belong in the
+ * catalogue where the job is to identify a group at a glance, and nowhere that
  * argues a claim. The proof panel on the home page deliberately does not draw
  * from here: it points at /eid/surface-enhancements.jpg and
  * /eid/qc-batch-to-batch.jpg, both electron micrographs carrying their own
  * scale bars.
  *
- * Two things to fix when there is a chance:
- *  - Resolution. Every file is 512x279. The cards crop to 4:5 portrait, so
- *    about 43% of the width survives and is then scaled up roughly 3x. Larger
- *    renders drop in with no code change.
- *  - The resin bond frame carries an overlaid spec panel reading "SKU:
- *    RBDA-450 / Grit: 120/140 / Bond Type: R Standard / Concentration: 100".
- *    Those are not EID part numbers. A buyer can quote a SKU back at you, and
- *    this is the one site whose whole argument is that its numbers are real.
+ * What these replaced, and why it mattered:
+ *  - The previous set was 512x279. The cards crop to 4:5 portrait, so roughly
+ *    43% of the width survived and was then scaled up about 3x. These are
+ *    1264x848 and 1376x768, which is 2.5x the width before the crop.
+ *  - The previous resin bond frame carried an overlaid spec panel reading
+ *    "SKU: RBDA-450 / Grit: 120/140 / Bond Type: R Standard / Concentration:
+ *    100". Those were not EID part numbers, on the one site whose whole
+ *    argument is that its numbers are real. It is gone.
  */
 const PRODUCT_IMAGES: Record<string, string> = {
-  'natural-grit-powder': '/eid/natural-grit.jpg',
-  'metal-bond': '/eid/metal-bond.jpg',
-  'resin-bond': '/eid/resin-bond.jpg',
-  cbn: '/eid/cbn.jpg',
-  'single-crystal': '/eid/cvd-single-crystal.jpg',
-  'polycrystalline-diamond': '/eid/cvd-polycrystalline.jpg',
-  'tool-stones': '/eid/tool-stones.jpg',
-  'polycrystalline-powder': '/eid/polycrystalline-micron.jpg',
+  'natural-grit-powder': '/eid/products/natural-grit-powder.png',
+  'metal-bond': '/eid/products/metal-bond.png',
+  'resin-bond': '/eid/products/resin-bond.png',
+  cbn: '/eid/products/cbn.png',
+  'single-crystal': '/eid/products/single-crystal.png',
+  'polycrystalline-diamond': '/eid/products/polycrystalline-diamond.png',
+  'tool-stones': '/eid/products/tool-stones.png',
+  'polycrystalline-powder': '/eid/products/polycrystalline-powder.png',
 }
 
 /**
