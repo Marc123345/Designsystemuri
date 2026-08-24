@@ -123,7 +123,6 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
       <PageHero
         title={p.h1}
         desc={p.metaDesc}
-        crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Products'), href: '/#products' }, { label: p.name }]}
         /* The group's own card render, so all eight product pages open on
            different material instead of the same bordered header. These are
            studio renders rather than EID's own output — fine behind a scrim

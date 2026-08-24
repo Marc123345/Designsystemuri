@@ -1,7 +1,8 @@
 'use client'
 
 import Counter from '@/components/Counter'
-import HeroCertificate from '@/components/HeroCertificate'
+import HeroMark from '@/components/HeroMark'
+import HeroTitle from '@/components/HeroTitle'
 import GradeSelector from '@/components/GradeSelector'
 import { RichText } from '@/components/RichText'
 import Wireframe from '@/components/Wireframe'
@@ -74,15 +75,24 @@ export const PageHero = ({
   eyebrow,
   title,
   desc,
-  crumbs,
   bgImage,
+  bgPosition,
   variant = 'full',
 }: {
   eyebrow?: string
   title: string
   desc?: string
-  crumbs: { label: string; href?: string }[]
   bgImage?: string
+  /**
+   * Focal point for `bgImage`, any `object-position` value. Defaults to centre.
+   *
+   * Needed because the copy is centred now. A photograph whose subject sits in
+   * the middle of the frame ends up with the mark and the eyebrow badge landing
+   * on top of it — on Quality the star sat squarely on the grader's face. The
+   * fix is to move the photograph, not the type, so the subject clears the
+   * column.
+   */
+  bgPosition?: string
   variant?: 'full' | 'band'
 }) => (
   /* With a photograph this is the home hero: same height, same two-gradient
@@ -97,120 +107,82 @@ export const PageHero = ({
     className={
       bgImage
         ? variant === 'band'
-          ? 'bg-primary-3 relative isolate flex min-h-[58svh] w-full items-end overflow-hidden text-white'
-          : 'bg-primary-3 relative isolate flex min-h-svh w-full items-center overflow-hidden text-white'
+          ? 'bg-primary-3 relative isolate flex min-h-[62svh] w-full items-end overflow-hidden text-white'
+          : 'bg-primary-3 relative isolate flex min-h-svh w-full items-end overflow-hidden text-white'
         : 'border-default-200 relative isolate overflow-hidden border-b pt-35 pb-14 lg:pt-46 lg:pb-18'
     }
   >
     {bgImage && (
       <>
-        <Image src={bgImage} alt="" fill priority sizes="100vw" className="-z-20 object-cover object-center" />
-        {/* The same two-gradient scrim the home hero uses, so an interior page
-            reads as the same site rather than a paler version of it.
+        <Image src={bgImage} alt="" fill priority sizes="100vw" className="-z-20 object-cover" style={{ objectPosition: bgPosition ?? 'center' }} />
 
-            It was a flat bg-primary-3/85 sheet with one horizontal gradient
-            over the top. A single sheet at that opacity tints the whole frame
-            evenly, which is why these heroes looked washed next to the home
-            page: the photograph was there but nothing in it was ever at full
-            strength. Two gradients instead — the vertical one seats the copy on
-            the bottom edge, the horizontal one darkens the left where the words
-            are — so the right of the frame keeps its detail and the image still
-            reads as a photograph. */}
-        {/* The band gets its own pair, shaped differently rather than merely
-            lightened.
-
-            The full-hero gradients were tuned for a viewport-tall frame where
-            the copy occupies the lower third and the photograph has 500-odd
-            pixels above it to read in. Reused at 58svh with the copy seated on
-            the bottom edge, both are near their darkest across the whole frame
-            and the picture disappears.
-
-            Lightening them evenly is the wrong fix, and it failed here first:
-            it recovers a dark photograph and does nothing for a pale one. Half
-            this site's library is a white laboratory, and a white image under
-            an even wash does not get darker, it goes flat — the metrology bench
-            and the QC lab both came out as the same grey fog whatever the
-            opacity.
-
-            So the horizontal gradient is hard instead of even: properly opaque
-            under the words, then clear by 58%. The vertical one drops to a
-            third of its old weight since it no longer has to carry legibility
-            on its own. Type sits on a solid ground, and the right of the frame
-            is the photograph at full strength whether it is a dark bench or a
-            white room. */}
-        {/* The brand wash. Every gradient here is neutral near-black, which on a
-            pale photograph leaves a grey canvas rather than an EID one — the
-            sample-jar and micrograph heroes both read as washed-out silver.
-            A flat brand sheet over the whole frame ties the band to the site's
-            colour without flattening the picture the way more black would. */}
+        {/* The brand wash. Every gradient here is neutral near-black, which on
+            a pale photograph leaves a grey canvas rather than an EID one. */}
         <div aria-hidden className="bg-primary-3/45 absolute inset-0 -z-10" />
 
-        {/* A ground for the navbar, on both variants.
-            The bar goes transparent over these heroes and its links are white.
-            The vertical scrim runs bottom-up, so the top of the frame carries no
-            darkening at all, and over a bright photograph the links simply
-            disappeared — on MSDS, "Resources", "About" and "Quality" were gone
-            entirely. This is deliberately a short strip rather than more weight
-            on the whole image: the problem is 96px tall and fixing it with a
-            heavier overall scrim would cost the photograph everywhere to solve
-            it in one place. */}
+        {/* One vertical gradient, seating the block on the bottom edge.
+            There used to be a second running left-to-right, because the copy
+            was held in the left half; centred copy over a left-weighted scrim
+            sits half on a black ground and half on a photograph, which is
+            worse than either.
+
+            Weaker than it was, because it no longer works alone. The flat
+            brand wash above went in first and the full variant kept its
+            original gradient strengths underneath it — 45% plus 92% at the
+            foot and 40% through the middle, which multiplies out to roughly
+            70% across the centre of the frame. On a bright photograph that was
+            survivable; on a dark one like About's bench it composited to flat
+            navy and the picture simply was not there. */}
+        <div
+          aria-hidden
+          className={`absolute inset-0 -z-10 bg-linear-to-t to-transparent ${
+            variant === 'band' ? 'from-default-950/80 via-default-950/26 via-52%' : 'from-default-950/84 via-default-950/24 via-56%'
+          }`}
+        />
+
+        {/* A ground for the navbar, which is transparent over these heroes and
+            has white links. The vertical scrim runs bottom-up, so without this
+            the top of the frame carries no darkening at all and a pale
+            photograph erases the navigation. */}
         <div aria-hidden className="from-default-950/78 absolute inset-x-0 top-0 -z-10 h-36 bg-linear-to-b via-transparent to-transparent" />
-
-        {variant === 'band' ? (
-          <>
-            <div aria-hidden className="from-default-950/62 via-default-950/12 absolute inset-0 -z-10 bg-linear-to-t via-42% to-transparent" />
-            <div aria-hidden className="from-default-950/90 via-default-950/60 absolute inset-0 -z-10 bg-linear-to-r via-24% to-transparent to-58%" />
-          </>
-        ) : (
-          <>
-            <div aria-hidden className="from-default-950/95 via-default-950/45 absolute inset-0 -z-10 bg-linear-to-t via-55% to-transparent" />
-            <div aria-hidden className="from-default-950/96 via-default-950/62 absolute inset-0 -z-10 bg-linear-to-r via-40% to-transparent to-80%" />
-          </>
-        )}
-
-        {/* The inspection bench down the right, exactly as the home hero runs
-            it — xl and up, where there is room for the split. */}
-        <div aria-hidden className={`border-primary-1 absolute inset-y-0 end-0 -z-10 hidden w-[36%] border-s-2 ${variant === 'band' ? '' : 'xl:block'}`}>
-          <Image src="/eid/qc-inspection.jpg" alt="" fill sizes="36vw" className="object-cover object-center" />
-          <div className="bg-primary-3/28 absolute inset-0" />
-          <div className="from-default-950/85 absolute inset-0 bg-linear-to-r to-transparent to-38%" />
-        </div>
       </>
     )}
 
-    <div className={`relative z-10 container ${bgImage ? (variant === 'band' ? 'pt-36 pb-16 lg:pt-44 lg:pb-20' : 'py-32 lg:py-36 xl:pe-[36%]') : ''}`}>
-      <nav aria-label="Breadcrumb">
-        <ol className={`flex flex-wrap items-center gap-2 text-sm ${bgImage ? 'text-white/60' : 'text-default-500'}`}>
-          {crumbs.map((crumb, i) => (
-            <li key={crumb.label} className="flex items-center gap-2">
-              {crumb.href ? (
-                <Link href={crumb.href} className={bgImage ? 'hover:text-white' : 'hover:text-primary'}>
-                  {crumb.label}
-                </Link>
-              ) : (
-                <span className={bgImage ? 'text-white' : 'text-default-900'}>{crumb.label}</span>
-              )}
-              {i < crumbs.length - 1 && <Icon icon="tabler:chevron-right" className="size-4" />}
-            </li>
-          ))}
-        </ol>
-      </nav>
+    <div
+      className={`relative z-10 container ${
+        bgImage ? (variant === 'band' ? 'pt-36 pb-14 lg:pt-40 lg:pb-16' : 'pt-44 pb-24 lg:pt-52 lg:pb-28') : ''
+      }`}
+    >
+      <div className={bgImage ? 'flex flex-col items-center text-center' : ''}>
+        {/* The mark, at the smaller of its two sizes. The home page gives it a
+            whole viewport to sit in and can carry it large; here it shares the
+            stack with a breadcrumb, an eyebrow and a heading, and at the home
+            size it pushes the heading off a band hero entirely. */}
+        {bgImage && <HeroMark size="sm" />}
 
-      <div className="mt-7 max-w-4xl">
-        {eyebrow && (
-          <div className={`mb-4 inline-flex items-center gap-1.5 border px-3.5 py-1.25 ${bgImage ? 'border-white/20' : 'border-default-300 bg-white'}`}>
-            <span className={`size-2 ${bgImage ? 'bg-primary-1' : 'bg-primary'}`}></span>
-            <span className={`text-sm ${bgImage ? 'text-white' : 'text-default-900'}`}>{eyebrow}</span>
-          </div>
-        )}
-        <h1 className={`text-[34px] font-bold md:text-[48px] lg:text-6xl ${bgImage ? 'text-white' : ''}`}>{title}</h1>
-        {desc && <p className={`mt-6 max-w-2xl text-base ${bgImage ? 'text-white/80' : ''}`}>{desc}</p>}
+        <div className={bgImage ? 'mt-6 flex flex-col items-center' : 'mt-7 max-w-4xl'}>
+          {eyebrow && (
+            <div className={`mb-4 inline-flex items-center gap-1.5 border px-3.5 py-1.25 ${bgImage ? 'border-white/20' : 'border-default-300 bg-white'}`}>
+              <span className={`size-2 ${bgImage ? 'bg-primary-1' : 'bg-primary'}`}></span>
+              <span className={`text-sm ${bgImage ? 'text-white' : 'text-default-900'}`}>{eyebrow}</span>
+            </div>
+          )}
+
+          {bgImage ? (
+            <HeroTitle title={title} className={variant === 'band' ? 'text-[clamp(1.75rem,3.6vw,2.9rem)]' : 'text-[clamp(1.9rem,4.4vw,3.5rem)]'} />
+          ) : (
+            <h1 className="text-[34px] font-bold md:text-[48px] lg:text-6xl">{title}</h1>
+          )}
+
+          {desc && (
+            <p className={`mt-6 text-base ${bgImage ? 'max-w-[62ch] leading-relaxed text-pretty text-white/85' : 'max-w-2xl'}`}>{desc}</p>
+          )}
+        </div>
       </div>
     </div>
 
     {!bgImage && <div className="absolute inset-0 size-full bg-[url(../images/bg-noice.gif)] bg-auto bg-position-[50%] bg-repeat opacity-4"></div>}
 
-    {bgImage && variant === 'full' && <HeroCertificate />}
   </section>
 )
 

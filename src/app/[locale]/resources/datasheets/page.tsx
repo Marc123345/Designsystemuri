@@ -30,7 +30,6 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
         eyebrow={t(locale, 'Ungated · specifications, grades & sizing')}
         title={t(locale, 'Product Datasheets')}
         desc={t(locale, "Download technical datasheets for EID's full diamond and CBN range: grades, sizes, crystal types, coatings, and packaging. Ungated, free to download.")}
-        crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Datasheets') }]}
         /* Was the metrology bench, which is another all-white room and washed
            out the same way. Rows of labelled sample jars carry some tone and
            are nearer the point of this page: every grade on file, on a shelf. */

@@ -32,7 +32,6 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
         eyebrow={t(locale, 'A real person replies within one business day')}
         title={t(locale, 'Request a Quote')}
         desc={t(locale, 'Request a quote, order a sample, or ask a technical question. One form, and a specialist who understands the material replies within one business day.')}
-        crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Contact') }]}
         /* Was /eid/home/hero.jpg, which is the home page's own hero — the two
            pages opened on the same photograph. The laboratory shot is unused
            elsewhere and is at least the room the reply will come from. */

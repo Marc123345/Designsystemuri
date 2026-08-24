@@ -56,7 +56,6 @@ const MeshQcPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =
         eyebrow={t(locale, 'Quality · Mesh QC in detail')}
         title={t(locale, 'Mesh QC')}
         desc={t(locale, 'How we grade and verify grit sizing and shape factor, lot after lot.')}
-        crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Quality'), href: '/quality' }, { label: t(locale, 'Mesh QC') }]}
         /* Mesh sizing is sieving, so this is the page's own subject. */
         bgImage="/eid/qc-sieve.jpg"
         variant="band"

@@ -80,7 +80,6 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
         eyebrow={t(locale, 'Over 50 years · the full range · made and graded in-house')}
         title={t(locale, 'About EID — Industrial Diamond Manufacturer')}
         desc={t(locale, 'EID has manufactured and quality-controlled the full industrial diamond and CBN range from London for over 50 years, supplying tool makers worldwide.')}
-        crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'About') }]}
         // ⚠ PLACEHOLDER. Openly-licensed stock, wide and short per Uri's note
         // that the top of this page wants a generic background picture. Swap the
         // file, not the code, when EID supplies its own.

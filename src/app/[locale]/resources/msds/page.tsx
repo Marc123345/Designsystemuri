@@ -42,7 +42,6 @@ const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
         eyebrow={t(locale, 'Handling, storage & regulatory information')}
         title={t(locale, 'Material Safety Data Sheets (MSDS)')}
         desc={t(locale, "Download safety data sheets for EID's industrial diamond and CBN products. Handling, storage, disposal, and regulatory information. Free, no login.")}
-        crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'MSDS') }]}
         /* A micrograph with its own scale bar, for the page that carries the
         handling documents. */
         bgImage="/eid/qc-batch-to-batch.jpg"

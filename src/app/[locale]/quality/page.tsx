@@ -98,7 +98,6 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
           locale,
           'At E.I.D, every single batch of diamond and CBN powder undergoes strict laboratory validation to guarantee total product consistency, lot after lot. Our QC is built into every stage, from raw material selection through grading, crushing, chemical cleaning, coating and final inspection, and the in-house QC laboratory is the backbone of everything we ship.'
         )}
-        crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Quality') }]}
         /* Was qc-lab.jpg. That is a white-walled laboratory with no dark
            values in it at all, and under the hero scrim it went to flat grey —
            the room was there and nothing in it could be seen. This one holds
@@ -106,6 +105,9 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
            is also the page's subject, which the wide lab shot was only
            adjacent to. */
         bgImage="/eid/facility/diamond-grading-loupe.png"
+        /* Pushed right so the grader's face clears the centred column — at
+           dead centre the mark landed on it. */
+        bgPosition="78% 42%"
       />
 
       {/* COMPLIANCE — one thin strip, not a section. Both statements are

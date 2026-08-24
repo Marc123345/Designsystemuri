@@ -3,7 +3,8 @@ import type { Locale } from '@/i18n/routing'
 import { ArrowButton } from '@/components/ui'
 import { t } from '@/lib/i18n-content'
 import { useLocale } from 'next-intl'
-import HeroCertificate from '@/components/HeroCertificate'
+import HeroMark from '@/components/HeroMark'
+import HeroTitle from '@/components/HeroTitle'
 import Image from 'next/image'
 
 /**
@@ -40,25 +41,6 @@ import Image from 'next/image'
 const Hero = ({ title, desc }: { title: string; desc: string }) => {
   const locale = useLocale() as Locale
 
-  /**
-   * The headline is authored as two beats around an em-dash, and the break has
-   * to land on the dash.
-   *
-   * CSS cannot be trusted to do it. Greedy wrapping fills each line as far as
-   * it can, and the two halves here are within one character of each other —
-   * "Industrial Diamond — Manufactured" is 33 characters, "Manufactured
-   * In-House Since 1970" is 32 — so the range of container widths that happens
-   * to break correctly is about one character wide. Any change to the type
-   * scale, the font, or the words moves it. `text-balance` was worse again: it
-   * evened the line lengths by hyphenating through "In-House".
-   *
-   * So the break is explicit. Split on the dash, keep the dash on the first
-   * beat, and let the second beat be one unbroken line. A title with no dash —
-   * a translation, or a future rewrite — falls through unchanged and wraps
-   * however it likes.
-   */
-  const beats = title.split('—')
-  const twoBeat = beats.length === 2
 
   return (
     <section data-note="hero" className="bg-primary-3 relative isolate flex min-h-svh w-full items-end overflow-hidden">
@@ -89,7 +71,7 @@ const Hero = ({ title, desc }: { title: string; desc: string }) => {
           gradient seating the block on the bottom edge. Nothing directional
           left to right, because there is no longer a side to protect. */}
       <div aria-hidden className="bg-primary-3/45 absolute inset-0 -z-10" />
-      <div aria-hidden className="from-default-950/92 via-default-950/40 absolute inset-0 -z-10 bg-linear-to-t via-58% to-transparent" />
+      <div aria-hidden className="from-default-950/84 via-default-950/24 absolute inset-0 -z-10 bg-linear-to-t via-56% to-transparent" />
 
       {/* A ground for the navbar, which is transparent over this hero and has
           white links. Same 144px strip the interior heroes carry. */}
@@ -110,21 +92,7 @@ const Hero = ({ title, desc }: { title: string; desc: string }) => {
               Hidden from assistive tech and from search: the same logo is the
               first link in the header three inches above, and the h1 below
               already says the company name. This one is texture. */}
-          <span
-            aria-hidden
-            className="block w-16 shrink-0 overflow-hidden opacity-95 mix-blend-overlay lg:w-24"
-            style={{ aspectRatio: '232 / 221' }}
-          >
-            {/* The mark only, not the lockup. The full logo carries the
-                wordmark, and the identical wordmark is already the first link
-                in the header 250px above — showing it twice on one screen reads
-                as a mistake rather than as branding. Measured off the alpha
-                channel: the star occupies x 0-221 of the 650px file and the
-                wordmark starts at 250, so a 232px-wide window clips cleanly
-                between them. The image is sized to the box height and allowed
-                to overflow; the box does the cropping. */}
-            <Image src="/eid/logo-white.png" alt="" width={650} height={221} priority className="h-full w-auto max-w-none" />
-          </span>
+          <HeroMark />
 
           {/* Two beats, two weights — the reference sets the name light and the
               claim bold, and the contrast between the two is doing the work a
@@ -134,16 +102,7 @@ const Hero = ({ title, desc }: { title: string; desc: string }) => {
               note on `beats`. What changed is that the break is now expressed
               as two block elements rather than a <br>, because each beat
               carries its own weight. */}
-          <h1 className="mt-7 text-[clamp(1.9rem,4.4vw,3.5rem)] leading-[1.1] tracking-tight text-white lg:mt-9">
-            {twoBeat ? (
-              <>
-                <span className="block font-extralight">{beats[0].trim()}</span>
-                <strong className="block font-bold">{beats[1].trim()}</strong>
-              </>
-            ) : (
-              <span className="block font-bold">{title}</span>
-            )}
-          </h1>
+          <HeroTitle title={title} className="mt-7 text-[clamp(1.9rem,4.4vw,3.5rem)] lg:mt-9" />
 
           {/* `text-pretty` rather than nothing: the supporting line runs to
               two lines at this measure and was ending on a single word.
@@ -177,31 +136,6 @@ const Hero = ({ title, desc }: { title: string; desc: string }) => {
         </div>
       </div>
 
-      {/* ─────────────── The certification mark ───────────────
-
-          Kept, and kept in the corner. A centred composition needs one thing
-          off-axis or it reads as a template; this is already that thing, and it
-          is the only element on the page carrying proof rather than assertion.
-
-          ⚠ Only EID's own. There are two certificates on eid-ltd.com/iso9001 —
-          this one, and a second issued to Delstar Ltd of Petach Tikva, which
-          that page labels as the EID factory and which certifies "manufacturing
-          of diamond powder". The second one is deliberately not here. Uri cut
-          the partner-plant language from the whole site because naming a
-          manufacturer invites a buyer to skip EID and go direct; publishing
-          that manufacturer's certificate, with its street address, on the
-          homepage is the same exposure in a more citable form.
-
-          ⚠ And read the scope before making this any larger. EID Limited's
-          certificate covers "trading, sorting and sales of natural industrial
-          diamond tool stones. Sales and supply of a full range of natural and
-          synthetic diamond powders" — which is narrower than the headline above
-          it. The thumbnail is sized to read as "a certificate exists", not as a
-          document to study, and that is on purpose.
-
-          Desktop only: below lg the hero has no room for it and the trust line
-          is carried by the footer. */}
-      <HeroCertificate />
     </section>
   )
 }

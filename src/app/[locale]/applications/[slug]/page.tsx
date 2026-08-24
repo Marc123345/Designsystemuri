@@ -77,7 +77,6 @@ const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; s
         eyebrow={app.eyebrow}
         title={app.h1}
         desc={app.metaDesc}
-        crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Applications'), href: '/applications' }, { label: app.name }]}
         /* The hub's own card photograph, so the page a visitor clicks into
            opens on the picture they clicked. A hub with no image in the map
            falls through to the bordered header rather than to an empty band. */
