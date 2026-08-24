@@ -1,4 +1,4 @@
-import CardCarousel from '@/components/CardCarousel'
+import CurtainGrid from '@/components/CurtainGrid'
 import { RichParagraphs } from '@/components/RichText'
 import { CrossLinks, DarkFeatureList, PageHero, QuoteSection } from '@/components/sections'
 import { ArrowButton, SectionHeading } from '@/components/ui'
@@ -139,16 +139,55 @@ carries it, so a second identical button read as repetition. */}
         </div>
       </section>
 
-      {/* PRODUCTS USED */}
-      <CardCarousel
-        eyebrow={app.productsTitle}
-        title={t(locale, 'The material behind your tools.')}
-        desc={t(locale, 'Every grade quality-controlled through our own laboratory to the same standard, every time. Tell us your application and we will recommend the right product.')}
-        items={serviceItems}
-        ctaHref="/contact"
-        ctaLabel={app.cta}
-        variant="image"
-      />
+      {/* PRODUCTS USED
+
+          The same grid the home page uses for the eight product groups, not a
+          carousel. A carousel showed three of five grades and made a buyer
+          press an arrow to discover the rest, on the page where the whole
+          question is "which of these do I need". The grid shows all of them at
+          once and the cards are the ones they have already seen on the home
+          page, so a group is recognisable between the two.
+
+          Columns follow the count: these hubs carry three to five products,
+          and four columns would leave the five-product hubs with a single card
+          stranded on its own row. */}
+      <section className="py-20 lg:py-30">
+        <div className="container">
+          <div className="grid items-end gap-8 lg:grid-cols-12 lg:gap-14">
+            <div className="lg:col-span-7">
+              <div className="border-default-300 inline-flex items-center gap-1.5 border bg-white px-3.5 py-1.25">
+                <span className="bg-primary size-2"></span>
+                <span className="text-default-900 text-sm">{app.productsTitle}</span>
+              </div>
+              <h2 className="mt-4 text-[28px] font-bold md:text-[36px] lg:text-[42px]">
+                {t(locale, 'The material behind your tools.')}
+              </h2>
+            </div>
+            <p className="text-default-600 lg:col-span-5">
+              {t(
+                locale,
+                'Every grade quality-controlled through our own laboratory to the same standard, every time. Tell us your application and we will recommend the right product.',
+              )}
+            </p>
+          </div>
+
+          <div className="mt-14 lg:mt-18">
+            <CurtainGrid
+              items={serviceItems.map((item) => ({
+                title: item.title,
+                href: item.href,
+                image: { src: item.image ?? '', alt: item.title },
+              }))}
+              columns={serviceItems.length % 4 === 0 ? 4 : 3}
+              revealed
+            />
+          </div>
+
+          <div className="mt-12">
+            <ArrowButton href="/contact" label={app.cta} variant="dark" />
+          </div>
+        </div>
+      </section>
 
       {/* WHY EID */}
       <div className="pt-14">
