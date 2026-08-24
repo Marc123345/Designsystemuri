@@ -1,6 +1,7 @@
 'use client'
 
 import Counter from '@/components/Counter'
+import HeroCertificate from '@/components/HeroCertificate'
 import GradeSelector from '@/components/GradeSelector'
 import { RichText } from '@/components/RichText'
 import Wireframe from '@/components/Wireframe'
@@ -63,7 +64,21 @@ export const PageHero = ({
   crumbs: { label: string; href?: string }[]
   bgImage?: string
 }) => (
-  <section data-note="page-hero" className={`relative isolate overflow-hidden pt-35 pb-14 lg:pt-46 lg:pb-18 ${bgImage ? 'text-white' : 'border-default-200 border-b'}`}>
+  /* With a photograph this is the home hero: same height, same two-gradient
+     scrim, same inspection panel down the right at xl, same certificate card
+     at the foot. An interior page should not be a shorter, quieter version of
+     the front page — it is the same site.
+
+     Without one it stays the compact bordered header it always was, which is
+     what the product, application and resource pages still use. */
+  <section
+    data-note="page-hero"
+    className={
+      bgImage
+        ? 'relative isolate flex min-h-svh w-full items-center overflow-hidden text-white'
+        : 'border-default-200 relative isolate overflow-hidden border-b pt-35 pb-14 lg:pt-46 lg:pb-18'
+    }
+  >
     {bgImage && (
       <>
         <Image src={bgImage} alt="" fill priority sizes="100vw" className="-z-20 object-cover object-center" />
@@ -80,10 +95,18 @@ export const PageHero = ({
             reads as a photograph. */}
         <div aria-hidden className="from-default-950/95 via-default-950/45 absolute inset-0 -z-10 bg-linear-to-t via-55% to-transparent" />
         <div aria-hidden className="from-default-950/96 via-default-950/62 absolute inset-0 -z-10 bg-linear-to-r via-40% to-transparent to-80%" />
+
+        {/* The inspection bench down the right, exactly as the home hero runs
+            it — xl and up, where there is room for the split. */}
+        <div aria-hidden className="border-primary-1 absolute inset-y-0 end-0 -z-10 hidden w-[36%] border-s-2 xl:block">
+          <Image src="/eid/qc-inspection.jpg" alt="" fill sizes="36vw" className="object-cover object-center" />
+          <div className="bg-primary-3/28 absolute inset-0" />
+          <div className="from-default-950/85 absolute inset-0 bg-linear-to-r to-transparent to-38%" />
+        </div>
       </>
     )}
 
-    <div className="relative z-10 container">
+    <div className={`relative z-10 container ${bgImage ? 'py-32 lg:py-36 xl:pe-[36%]' : ''}`}>
       <nav aria-label="Breadcrumb">
         <ol className={`flex flex-wrap items-center gap-2 text-sm ${bgImage ? 'text-white/60' : 'text-default-500'}`}>
           {crumbs.map((crumb, i) => (
@@ -114,6 +137,8 @@ export const PageHero = ({
     </div>
 
     {!bgImage && <div className="absolute inset-0 size-full bg-[url(../images/bg-noice.gif)] bg-auto bg-position-[50%] bg-repeat opacity-4"></div>}
+
+    {bgImage && <HeroCertificate />}
   </section>
 )
 

@@ -112,42 +112,6 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
 
           The global-reach wording Uri asked to bring across from the previous
           site now sits on the reach band at the foot of the page. */}
-      {/* The strip, directly under the hero.
-
-          It has taken the slot the three "Manufacturer, not distributor"
-          curtain cards held. Those cards said the same three things this strip
-          says — made here, full range, quality decided in-house — at the cost
-          of three quarters of a screen and three photographs whose alt text
-          ran longer than the claims. The strip says them in a line and keeps
-          moving.
-
-          Inverted from the home page on purpose. There the range is solid and
-          the company sits behind it, because a buyer arrives looking for a
-          material. Here it is the other way round — this is the page about who
-          EID is, so the company line leads and the range passes behind it.
-          Same component, opposite emphasis, so the two pages do not read as
-          the same band pasted twice. */}
-      <Marquee
-        items={[
-          t(locale, 'Made in London'),
-          t(locale, 'Since 1970'),
-          t(locale, 'ISO 9001 certified'),
-          t(locale, 'In-house QC laboratory'),
-          t(locale, 'Manufacturer, not distributor'),
-        ]}
-        secondary={[
-          t(locale, 'Natural Diamond Grit'),
-          t(locale, 'Micron Powder'),
-          t(locale, 'CBN'),
-          t(locale, 'PCBN'),
-          t(locale, 'CVD Single Crystal'),
-          t(locale, 'MCD'),
-          t(locale, 'PCD Blanks'),
-          t(locale, 'Metal Bond'),
-          t(locale, 'Resin Bond'),
-        ]}
-      />
-
       {/* WHO WE SERVE.
 
           This was a heading over one ninety-word paragraph that named four
@@ -194,6 +158,42 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
           </p>
         </div>
       </section>
+
+      {/* The strip, between the industries and the facility claim.
+
+          It sat directly under the hero for a moment, in the slot the three
+          "Manufacturer, not distributor" cards used to hold. Wrong place: the
+          hero now runs full height with the certificate at its foot, and a
+          moving band immediately under that is two attention-grabbing things
+          back to back with nothing read in between. Its job is to break up the
+          run of sections, so it goes back between them.
+
+          Inverted from the home page on purpose. There the range is solid and
+          the company sits behind it, because a buyer arrives looking for a
+          material. Here it is the other way round — this is the page about who
+          EID is, so the company line leads and the range passes behind it.
+          Same component, opposite emphasis, so the two pages do not read as
+          the same band pasted twice. */}
+      <Marquee
+        items={[
+          t(locale, 'Made in London'),
+          t(locale, 'Since 1970'),
+          t(locale, 'ISO 9001 certified'),
+          t(locale, 'In-house QC laboratory'),
+          t(locale, 'Manufacturer, not distributor'),
+        ]}
+        secondary={[
+          t(locale, 'Natural Diamond Grit'),
+          t(locale, 'Micron Powder'),
+          t(locale, 'CBN'),
+          t(locale, 'PCBN'),
+          t(locale, 'CVD Single Crystal'),
+          t(locale, 'MCD'),
+          t(locale, 'PCD Blanks'),
+          t(locale, 'Metal Bond'),
+          t(locale, 'Resin Bond'),
+        ]}
+      />
 
       {/* INSIDE THE FACILITY — the claim, without the process.
 
