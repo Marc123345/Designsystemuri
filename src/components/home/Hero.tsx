@@ -74,7 +74,7 @@ const Hero = ({ title, desc }: { title: string; desc: string }) => {
           ⚠ The source is 1024×1024 and that is its ceiling; the CDN's larger
           variants are upscales with no extra detail in them. A native
           2560px-wide render of the same shot drops in with no code change. */}
-      <Image src="/eid/home/hero-grit.jpg" alt="" fill priority sizes="100vw" className="-z-20 object-cover object-[32%_46%]" />
+      <Image src="/eid/home/hero-grit.png" alt="" fill priority sizes="100vw" className="-z-20 object-cover object-[50%_58%]" />
 
       {/* Legibility. Two gradients rather than one flat sheet: the vertical one
           seats the copy on the bottom edge, the horizontal one darkens the left
