@@ -5,7 +5,8 @@ import TeamGrid from '@/components/TeamGrid'
 import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
-import { t } from '@/lib/i18n-content'
+import { applicationImage } from '@/lib/card-media'
+import { getApplications, t } from '@/lib/i18n-content'
 import Image from 'next/image'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
@@ -95,9 +96,18 @@ const team = [
   { role: 'Production Manager', photoLabel: 'Portrait — Production Manager' },
 ]
 
+/* Same order the home page runs its hubs in, so a reader meeting them twice
+   meets them in the same sequence. */
+const HUB_ORDER = ['dental', 'grinding-cutting-sawing-drilling', 'semiconductor-electronics', 'automotive-aerospace', 'tool-and-die', 'polishing-lapping']
+
 const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
   const { locale } = await params
   setRequestLocale(locale)
+
+  const apps = getApplications(locale)
+  const hubTiles = HUB_ORDER.map((slug) => apps.find((a) => a.slug === slug))
+    .filter((a): a is NonNullable<typeof a> => Boolean(a))
+    .map((a) => ({ title: a.name, href: `/applications/${a.slug}`, image: { src: applicationImage(a.slug) ?? '', alt: a.name } }))
 
   return (
     <>
@@ -174,47 +184,46 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
       {/* WHO WE SERVE — real buyer types and regions, no unverified figures */}
       {/* WHO WE SERVE.
 
-          This was the heading and a single ninety-word paragraph that named
-          four kinds of customer, five regions and six application areas in one
-          breath. Everything in it was worth saying and none of it was findable:
-          a buyer scanning for their own trade had to read the whole block to
-          learn whether they were in it.
+          This was a heading over one ninety-word paragraph that named four
+          kinds of customer, five regions and six application areas in a single
+          breath, and then — briefly — four numbered text boxes, which was
+          structure without being anything to look at.
 
-          Same words, given the structure they already had. The four customer
-          types were a list inside a sentence, so they are a list now — one
-          hairline grid, the idiom the team grid and the facility bento already
-          use, with the geography left as the closing line because it applies to
-          all four rather than to any one of them.
+          The industries are the point of the section and the site already
+          photographs them: the same six hub cards the home page runs, in the
+          same order, linking to the same pages. A reader meets a recognisable
+          card rather than a list, and every one of them is a way further in.
 
-          Hairlines are gaps: a `gap-px` grid over a rule-coloured ground draws
-          one uniform 1px line between cells, where per-cell borders double up
-          on the shared edges. */}
+          The customer sentence stays above it whole — it says what those
+          customers actually make, which the hub names do not — and the
+          geography stays below, because it applies to all six rather than to
+          any one. */}
       <section className="py-20 pt-14 lg:py-30">
         <div className="container">
-          <SectionHeading eyebrow={t(locale, 'Who we serve')} title={t(locale, 'Trusted by tool makers across industries and continents.')} />
-
-          <p className="text-default-600 mt-8 max-w-[860px] text-base">
-            {t(locale, 'Our customers convert raw diamond and CBN into finished tools.')}
-          </p>
-
-          <div className="bg-default-200 mt-10 grid gap-px sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              'Diamond and CBN grinding and dressing tool makers',
-              'Dental bur and rotary instrument producers',
-              'Ultra-precision tool makers for optics and watch components',
-              'Flexible-abrasive manufacturers for glass and stone',
-            ].map((who, i) => (
-              <div key={who} className="flex flex-col bg-white p-7 lg:p-8">
-                <span className="text-default-400 text-xs tracking-[0.2em] tabular-nums">{String(i + 1).padStart(2, '0')}</span>
-                <p className="text-default-900 mt-4 text-[1.05rem] leading-snug">{t(locale, who)}</p>
+          <div className="grid items-end gap-8 lg:grid-cols-12 lg:gap-14">
+            <div className="lg:col-span-7">
+              <div className="border-default-300 inline-flex items-center gap-1.5 border bg-white px-3.5 py-1.25">
+                <span className="bg-primary size-2"></span>
+                <span className="text-default-900 text-sm">{t(locale, 'Who we serve')}</span>
               </div>
-            ))}
+              <h2 className="mt-4 text-[28px] font-bold md:text-[36px] lg:text-[42px]">{t(locale, 'Trusted by tool makers across industries and continents.')}</h2>
+            </div>
+            <p className="text-default-600 lg:col-span-5">
+              {t(
+                locale,
+                'Our customers convert raw diamond and CBN into finished tools: diamond and CBN grinding and dressing tool makers, dental bur and rotary instrument producers, ultra-precision tool makers for optics and watch components, and flexible-abrasive manufacturers for glass and stone.'
+              )}
+            </p>
           </div>
 
-          <p className="text-default-600 mt-10 max-w-[860px] text-base">
+          <div className="mt-14 lg:mt-18">
+            <CurtainGrid items={hubTiles} revealed />
+          </div>
+
+          <p className="text-default-500 mt-10 max-w-[720px] text-base">
             {t(
               locale,
-              'We supply them across Europe, the Middle East, Asia, the Americas, and beyond, with the material behind dental, optics and precision components, automotive and aerospace, tool and die, stone and glass, and electronics applications.'
+              'We supply them across Europe, the Middle East, Asia, the Americas, and beyond.'
             )}
           </p>
         </div>
@@ -249,7 +258,7 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
           on. These are the operations EID actually performs in-house. */}
       <section data-note="facility" className="bg-primary-3 relative isolate overflow-hidden py-20 text-white lg:py-30">
         <div className="container">
-          <div className="grid auto-rows-[minmax(8rem,auto)] grid-cols-2 gap-px bg-white/12 p-px lg:auto-rows-[minmax(11.5rem,auto)] lg:grid-cols-4">
+          <div className="grid auto-rows-[minmax(9rem,auto)] grid-cols-2 gap-px bg-white/12 p-px lg:auto-rows-[minmax(13.5rem,auto)] lg:grid-cols-4">
             {/* Copy — two columns wide, two rows deep. */}
             <div className="bg-primary-3 col-span-2 row-span-3 flex flex-col justify-center p-7 lg:row-span-2 lg:p-9">
               <div className="inline-flex w-fit items-center gap-1.5 border border-white/20 px-3.5 py-1.25">
@@ -303,24 +312,38 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
                 letting each <li> be a grid cell in its own right. A wrapping
                 <ul> would otherwise take a single cell and put the six back
                 inside it, which is the layout this section came from. */}
-            <ul className="contents">
-              {facilityOperations.map((op) => (
-                <li key={op} className="bg-primary-3 flex flex-col justify-end p-5 lg:p-6">
-                  <span aria-hidden className="bg-primary-1 mb-4 size-2 shrink-0" />
-                  <span className="text-[0.95rem] leading-snug text-white/85">{t(locale, op)}</span>
-                </li>
-              ))}
-            </ul>
+            {/* The six operations are one tile spanning the full width, not six
+                cells in the bento.
+
+                As cells they inherited the photographs' row height — a 13rem
+                square holding four words, pinned to the bottom edge, five
+                sixths empty navy. Six of those read as a grid waiting for
+                content rather than as a list of what the building does. They
+                are a list, so they are laid out as one: numbered, in three
+                columns, at the height the words actually need. */}
+            <div className="bg-primary-3 col-span-2 row-span-2 p-7 lg:col-span-4 lg:row-span-1 lg:p-9">
+              <p className="text-xs tracking-[0.2em] text-white/45 uppercase">{t(locale, 'Carried out in-house')}</p>
+              <ul className="mt-6 grid gap-x-10 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
+                {facilityOperations.map((op, i) => (
+                  <li key={op} className="border-t border-white/12 pt-4">
+                    <span aria-hidden className="text-primary-1 text-xs tracking-[0.2em] tabular-nums">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span className="mt-2 block text-[0.98rem] leading-snug text-white/85">{t(locale, op)}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
             {/* The material itself, closing the row: coated and CRT-rounded
                 crystal, which is two of the six operations above in one frame.
                 A repeating field, so the wide crop costs nothing. */}
-            <div className="bg-primary-3 relative col-span-2 overflow-hidden">
+            <div className="bg-primary-3 relative col-span-2 overflow-hidden lg:col-span-4">
               <Image
                 src="/eid/surface-enhancements.jpg"
                 alt={t(locale, 'Scanning electron micrograph of surface-enhanced diamond crystal, coated and CRT-rounded, at 33x magnification')}
                 fill
-                sizes="(min-width: 1024px) 50vw, 100vw"
+                sizes="100vw"
                 className="object-cover object-center"
               />
             </div>
