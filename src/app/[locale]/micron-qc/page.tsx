@@ -56,6 +56,9 @@ const MicronQcPage = async ({ params }: { params: Promise<{ locale: Locale }> })
         title={t(locale, 'Micron QC')}
         desc={t(locale, 'Particle-size-distribution measurement and the D-value control that fine polishing depends on.')}
         crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Quality'), href: '/quality' }, { label: t(locale, 'Micron QC') }]}
+        /* The micrograph the micron grades are actually verified on. */
+        bgImage="/eid/qc-micron-sem.jpg"
+        variant="band"
       />
 
       {/* D-values first: the page has to define the vocabulary before it can

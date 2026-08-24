@@ -50,6 +50,25 @@ export type Card = {
  * `bgImage` is the optional wide, short photograph Uri asked for on About: a
  * full-bleed image behind the block, with the band going dark so the type
  * inverts cleanly.
+ *
+ * ── Three tiers, not two ────────────────────────────────────────────────────
+ *
+ * `full` is the home-page treatment: a whole viewport, the inspection panel
+ * down the right, the ISO card at the foot. It belongs to the pages someone
+ * arrives on and is asked to believe something — home, About, Quality, Contact.
+ *
+ * `band` is the same photograph and the same scrim at roughly half the height,
+ * without the panel or the card. Utility pages — the datasheet and MSDS
+ * indexes, the application and product routes — earn a picture and the same
+ * inverted type, but not a full screen of it: someone who came for a PDF should
+ * not have to scroll past a poster to reach the list.
+ *
+ * No photograph at all leaves the compact bordered header, which is now only
+ * a fallback rather than the interior-page default it used to be.
+ *
+ * The navbar keeps its own list of the routes that open on a photograph, since
+ * it goes transparent over exactly these two tiers. Adding a hero here means
+ * adding the route there.
  */
 export const PageHero = ({
   eyebrow,
@@ -57,12 +76,14 @@ export const PageHero = ({
   desc,
   crumbs,
   bgImage,
+  variant = 'full',
 }: {
   eyebrow?: string
   title: string
   desc?: string
   crumbs: { label: string; href?: string }[]
   bgImage?: string
+  variant?: 'full' | 'band'
 }) => (
   /* With a photograph this is the home hero: same height, same two-gradient
      scrim, same inspection panel down the right at xl, same certificate card
@@ -75,7 +96,9 @@ export const PageHero = ({
     data-note="page-hero"
     className={
       bgImage
-        ? 'relative isolate flex min-h-svh w-full items-center overflow-hidden text-white'
+        ? variant === 'band'
+          ? 'relative isolate flex min-h-[58svh] w-full items-end overflow-hidden text-white'
+          : 'relative isolate flex min-h-svh w-full items-center overflow-hidden text-white'
         : 'border-default-200 relative isolate overflow-hidden border-b pt-35 pb-14 lg:pt-46 lg:pb-18'
     }
   >
@@ -93,12 +116,43 @@ export const PageHero = ({
             the bottom edge, the horizontal one darkens the left where the words
             are — so the right of the frame keeps its detail and the image still
             reads as a photograph. */}
-        <div aria-hidden className="from-default-950/95 via-default-950/45 absolute inset-0 -z-10 bg-linear-to-t via-55% to-transparent" />
-        <div aria-hidden className="from-default-950/96 via-default-950/62 absolute inset-0 -z-10 bg-linear-to-r via-40% to-transparent to-80%" />
+        {/* The band gets its own pair, shaped differently rather than merely
+            lightened.
+
+            The full-hero gradients were tuned for a viewport-tall frame where
+            the copy occupies the lower third and the photograph has 500-odd
+            pixels above it to read in. Reused at 58svh with the copy seated on
+            the bottom edge, both are near their darkest across the whole frame
+            and the picture disappears.
+
+            Lightening them evenly is the wrong fix, and it failed here first:
+            it recovers a dark photograph and does nothing for a pale one. Half
+            this site's library is a white laboratory, and a white image under
+            an even wash does not get darker, it goes flat — the metrology bench
+            and the QC lab both came out as the same grey fog whatever the
+            opacity.
+
+            So the horizontal gradient is hard instead of even: properly opaque
+            under the words, then clear by 58%. The vertical one drops to a
+            third of its old weight since it no longer has to carry legibility
+            on its own. Type sits on a solid ground, and the right of the frame
+            is the photograph at full strength whether it is a dark bench or a
+            white room. */}
+        {variant === 'band' ? (
+          <>
+            <div aria-hidden className="from-default-950/72 via-default-950/18 absolute inset-0 -z-10 bg-linear-to-t via-42% to-transparent" />
+            <div aria-hidden className="from-default-950/94 via-default-950/72 absolute inset-0 -z-10 bg-linear-to-r via-24% to-transparent to-58%" />
+          </>
+        ) : (
+          <>
+            <div aria-hidden className="from-default-950/95 via-default-950/45 absolute inset-0 -z-10 bg-linear-to-t via-55% to-transparent" />
+            <div aria-hidden className="from-default-950/96 via-default-950/62 absolute inset-0 -z-10 bg-linear-to-r via-40% to-transparent to-80%" />
+          </>
+        )}
 
         {/* The inspection bench down the right, exactly as the home hero runs
             it — xl and up, where there is room for the split. */}
-        <div aria-hidden className="border-primary-1 absolute inset-y-0 end-0 -z-10 hidden w-[36%] border-s-2 xl:block">
+        <div aria-hidden className={`border-primary-1 absolute inset-y-0 end-0 -z-10 hidden w-[36%] border-s-2 ${variant === 'band' ? '' : 'xl:block'}`}>
           <Image src="/eid/qc-inspection.jpg" alt="" fill sizes="36vw" className="object-cover object-center" />
           <div className="bg-primary-3/28 absolute inset-0" />
           <div className="from-default-950/85 absolute inset-0 bg-linear-to-r to-transparent to-38%" />
@@ -106,7 +160,7 @@ export const PageHero = ({
       </>
     )}
 
-    <div className={`relative z-10 container ${bgImage ? 'py-32 lg:py-36 xl:pe-[36%]' : ''}`}>
+    <div className={`relative z-10 container ${bgImage ? (variant === 'band' ? 'pt-36 pb-16 lg:pt-44 lg:pb-20' : 'py-32 lg:py-36 xl:pe-[36%]') : ''}`}>
       <nav aria-label="Breadcrumb">
         <ol className={`flex flex-wrap items-center gap-2 text-sm ${bgImage ? 'text-white/60' : 'text-default-500'}`}>
           {crumbs.map((crumb, i) => (
@@ -138,7 +192,7 @@ export const PageHero = ({
 
     {!bgImage && <div className="absolute inset-0 size-full bg-[url(../images/bg-noice.gif)] bg-auto bg-position-[50%] bg-repeat opacity-4"></div>}
 
-    {bgImage && <HeroCertificate />}
+    {bgImage && variant === 'full' && <HeroCertificate />}
   </section>
 )
 

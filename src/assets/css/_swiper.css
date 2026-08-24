@@ -33,31 +33,35 @@
   pointer-events: none;
 }
 
-/* Pagination for the About page's facility slider (components/FacilitySlider).
-   The reference uses round grey dots that fill with the accent on the active
-   slide. Diamonds instead of circles: the marquee already separates its words
-   with a rotated square, so the shape is established on the site and costs
-   nothing to reuse here.
+/* Pagination for the sliders that use it (components/FacilitySlider and the
+   Quality page's control slider). Scoped by `.eid-slider` on the Swiper root
+   rather than by `:has(.eid-bullet)` — a container query that has to match on
+   a class Swiper writes in after mount is a dependency this does not need, and
+   when it fails to match the bullets are left as inline spans, where width and
+   height do not apply at all and the dots vanish.
 
-   Named classes rather than Swiper's defaults so this styling cannot leak into
-   the product and photo carousels, which have no pagination and use the
-   prev/next chrome instead. */
-.swiper-pagination:has(.eid-bullet) {
+   `display: block` sits on the bullet itself for the same reason: the dot is
+   dimensioned whether or not anything blockified it. */
+.eid-slider .swiper-pagination {
   /* Swiper positions pagination absolutely against the slide box, which on a
-     full-bleed slide drops the dots on top of the photograph. Put it back in
-     flow so it sits under the section where it can be seen and hit. */
+     full-bleed slide drops the dots on top of the photograph. Back into flow. */
   position: static;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 14px;
   margin-top: 48px;
+  width: 100%;
 }
 
 .eid-bullet {
+  display: block;
   width: 9px;
   height: 9px;
+  flex: none;
   background-color: var(--color-default-300);
+  /* Diamonds rather than circles: the marquee already separates its words with
+     a rotated square, so the shape is established on the site. */
   transform: rotate(45deg);
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
@@ -73,7 +77,9 @@
   transform: rotate(45deg) scale(1.35);
 }
 
+/* The site-wide focus ring is defined once in _general.css and applies here
+   through `[tabindex]:not([tabindex="-1"])`; only the offset is widened, so a
+   rotated 9px diamond does not wear its ring on its corners. */
 .eid-bullet:focus-visible {
-  outline: 2px solid var(--color-primary-1);
-  outline-offset: 4px;
+  outline-offset: 5px;
 }

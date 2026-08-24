@@ -35,6 +35,12 @@ const ApplicationsOverview = async ({ params }: { params: Promise<{ locale: Loca
         title={t(locale, 'Diamond and CBN for the work your tools do')}
         desc={t(locale, 'EID supplies industrial diamond and CBN to tool makers across dental, semiconductor and advanced electronics, automotive and aerospace, tool and die, grinding and cutting, and polishing and lapping.')}
         crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Applications') }]}
+        /* The one application photograph that shows a tool doing work rather than a
+        finished part. It is also a card further down this page — accepted,
+        because the alternative is opening the applications hub on something
+        that is not an application. */
+        bgImage="/eid/home/app-grinding-cutting-sawing-drilling.jpg"
+        variant="band"
       />
 
       <StatsBar

@@ -87,6 +87,7 @@ const FacilitySlider = ({ eyebrow, ghost, slides, href }: { eyebrow: string; gho
 
         <div className="mt-10 lg:mt-14">
           <Swiper
+            className="eid-slider"
             modules={[Pagination, Keyboard, A11y]}
             grabCursor
             loop

@@ -1,4 +1,5 @@
 import { RichText } from '@/components/RichText'
+import Marquee from '@/components/Marquee'
 import { PageHero, QuoteSection } from '@/components/sections'
 import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
@@ -42,6 +43,10 @@ const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
         title={t(locale, 'Material Safety Data Sheets (MSDS)')}
         desc={t(locale, "Download safety data sheets for EID's industrial diamond and CBN products. Handling, storage, disposal, and regulatory information. Free, no login.")}
         crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'MSDS') }]}
+        /* A micrograph with its own scale bar, for the page that carries the
+        handling documents. */
+        bgImage="/eid/qc-batch-to-batch.jpg"
+        variant="band"
       />
 
       <section data-note="downloads" className="py-16 lg:py-24">
@@ -71,6 +76,25 @@ not a lead magnet. */}
           </div>
         </div>
       </section>
+
+      {/* The band that closes About, Quality and Contact, so the resources
+          pages end on the site's rhythm rather than dropping straight from a
+          list of links into the contact block. */}
+      <Marquee
+        items={[
+          t(locale, 'Handling'),
+          t(locale, 'Storage'),
+          t(locale, 'Transport'),
+          t(locale, 'Regulatory'),
+        ]}
+        secondary={[
+          t(locale, 'Natural Diamond'),
+          t(locale, 'Synthetic Diamond'),
+          t(locale, 'CBN'),
+          t(locale, 'Free to download'),
+          t(locale, 'No form, no login'),
+        ]}
+      />
 
       <QuoteSection
         eyebrow={t(locale, 'Need a safety document not listed?')}

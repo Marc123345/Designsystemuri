@@ -5,6 +5,7 @@ import { CatalogSpecs, CrossLinks, DarkFeatureList, JumpNav, PageHero, ProductPh
 import { ArrowLink, SectionHeading } from '@/components/ui'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
+import { productImage } from '@/lib/card-media'
 import { getSectionDatasheet } from '@/lib/documents'
 import { localeAlternates } from '@/lib/hreflang'
 import { getApplication, getProduct, getSectionCatalog, t } from '@/lib/i18n-content'
@@ -123,6 +124,12 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
         title={p.h1}
         desc={p.metaDesc}
         crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Products'), href: '/#products' }, { label: p.name }]}
+        /* The group's own card render, so all eight product pages open on
+           different material instead of the same bordered header. These are
+           studio renders rather than EID's own output — fine behind a scrim
+           where the job is to identify the group, and they argue nothing. */
+        bgImage={productImage(p.slug)}
+        variant="band"
       />
 
       {isSplit && <JumpNav items={p.sections.map((s) => ({ id: s.id, label: s.label }))} />}

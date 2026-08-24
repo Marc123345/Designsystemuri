@@ -1,6 +1,7 @@
 import { PageHero } from '@/components/sections'
 import Wireframe from '@/components/Wireframe'
-import { ArrowButton } from '@/components/ui'
+import Marquee from '@/components/Marquee'
+import { ArrowButton, SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
@@ -99,8 +100,13 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
           'At E.I.D, every single batch of diamond and CBN powder undergoes strict laboratory validation to guarantee total product consistency, lot after lot. Our QC is built into every stage, from raw material selection through grading, crushing, chemical cleaning, coating and final inspection, and the in-house QC laboratory is the backbone of everything we ship.'
         )}
         crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Quality') }]}
-              /* The laboratory this page is about. */
-        bgImage="/eid/qc-lab.jpg"
+        /* Was qc-lab.jpg. That is a white-walled laboratory with no dark
+           values in it at all, and under the hero scrim it went to flat grey —
+           the room was there and nothing in it could be seen. This one holds
+           its tone: a dark-suited grader, a navy tray, the skyline behind. It
+           is also the page's subject, which the wide lab shot was only
+           adjacent to. */
+        bgImage="/eid/facility/diamond-grading-loupe.png"
       />
 
       {/* COMPLIANCE — one thin strip, not a section. Both statements are
@@ -124,7 +130,18 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
           and its bullets. */}
       <section data-note="qc-controls" className="py-16 lg:py-24">
         <div className="container">
-          <div className="bg-default-200 grid gap-px lg:grid-cols-2">
+          {/* About never drops a grid onto the page without saying what it is;
+              this one used to. */}
+          <SectionHeading
+            eyebrow={t(locale, 'Four controls')}
+            title={t(locale, 'What every batch is put through before it ships.')}
+            desc={t(
+              locale,
+              'Sizing, morphology, cleaning and final inspection. Each one is a stage with its own equipment and its own record, which is what lets us answer a question about a lot months after it left.'
+            )}
+          />
+
+          <div className="bg-default-200 mt-14 grid gap-px lg:grid-cols-2">
             {controls.map((c) => (
               <article key={c.n} className="flex flex-col bg-white">
                 <div className="bg-default-100 relative aspect-16/9 overflow-hidden">
@@ -157,6 +174,27 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
           </div>
         </div>
       </section>
+
+      {/* The standards band, in the same place About and Contact put theirs —
+          between the argument and the close. Every term here is one the four
+          controls above already name, so it is a recap in the site's loudest
+          voice rather than a new claim in a quiet one. */}
+      <Marquee
+        items={[
+          t(locale, 'FEPA'),
+          t(locale, 'ISO 6106'),
+          t(locale, 'ANSI'),
+          t(locale, 'ISO 9001:2015'),
+        ]}
+        secondary={[
+          t(locale, 'Test sieves'),
+          t(locale, 'Shape sorting'),
+          t(locale, 'Malvern PSD'),
+          t(locale, 'SEM verification'),
+          t(locale, 'Chemical cleaning'),
+          t(locale, 'Image Pro validation'),
+        ]}
+      />
 
       {/* CTA — the page ends here, and the footer follows. */}
       <section className="bg-primary-3 py-16 text-white lg:py-20">

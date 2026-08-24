@@ -41,8 +41,31 @@ import LanguageSwitcher from './LanguageSwitcher'
  * `light` prop into all of them would be four components changed to express
  * one state.
  */
-/** Routes that open with a full-bleed hero the bar can sit on. */
-const TRANSPARENT_ON = ['/']
+/**
+ * Routes that open with a full-bleed hero the bar can sit on.
+ *
+ * Entries ending in `/` match a prefix, so the dynamic product and application
+ * routes are covered without listing every slug. Everything here is a page
+ * whose `PageHero` carries a photograph — the two lists have to stay in step,
+ * because a transparent bar over a white page reads as a rendering fault.
+ */
+const TRANSPARENT_ON = [
+  '/',
+  '/about',
+  '/quality',
+  '/contact',
+  '/applications',
+  '/applications/',
+  '/mesh-qc',
+  '/micron-qc',
+  '/products/',
+  '/resources/blog',
+  '/resources/datasheets',
+  '/resources/msds',
+]
+
+const opensOnPhoto = (pathname: string) =>
+  TRANSPARENT_ON.some((route) => (route.endsWith('/') && route.length > 1 ? pathname.startsWith(route) : pathname === route))
 
 /**
  * Scroll position as an external store.
@@ -67,7 +90,7 @@ const Navbar = () => {
   const pathname = usePathname()
   const locale = useLocale() as Locale
   const atTop = useSyncExternalStore(subscribeScroll, getAtTop, getAtTopServer)
-  const overHero = atTop && TRANSPARENT_ON.includes(pathname)
+  const overHero = atTop && opensOnPhoto(pathname)
 
   /* Close the mobile overlay on navigation. Preline attaches HSOverlay to
      `window` at runtime and ships no type for it, so it is narrowed here rather
