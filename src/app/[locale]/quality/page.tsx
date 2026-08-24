@@ -1,101 +1,89 @@
-import CardCarousel from '@/components/CardCarousel'
-import PhotoCarousel from '@/components/PhotoCarousel'
-import { RichText } from '@/components/RichText'
-import { CrossLinks, DarkFeatureList, PageHero, QuoteSection, StatsBar } from '@/components/sections'
-import { SectionHeading } from '@/components/ui'
+import { PageHero } from '@/components/sections'
 import Wireframe from '@/components/Wireframe'
-import { Link } from '@/i18n/navigation'
+import { ArrowButton } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
-import { Icon } from '@iconify/react'
+import Image from 'next/image'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params
   return {
-    title: { absolute: 'Quality Control & ISO 9001 | Industrial Diamond QC | EID' },
-    description: "EID's in-house QC laboratory tests every batch of diamond and CBN for size distribution and morphology, with strength and coating coverage where required. ISO 9001.",
+    title: { absolute: 'Quality Control & Laboratory Standards | EID Ltd' },
+    description:
+      'Every batch of EID diamond and CBN powder undergoes laboratory validation — sieve and micron sizing, morphology, chemical cleaning and optional toughness testing — against FEPA, ISO 6106 and ANSI standards.',
     alternates: localeAlternates(locale, '/quality'),
   }
 }
 
-const tests = [
+/**
+ * The four controls, as Uri specified them.
+ *
+ * Two notes on how they are rendered.
+ *
+ * The spec heads each card with an emoji. The rest of this site has none, and
+ * uses Iconify throughout — a line icon carries the same "here is the marker
+ * for this card" job in the register the page is already written in. Swap the
+ * `icon` values for the emoji if that reads better on review; nothing else
+ * changes.
+ *
+ * Every card names the photograph it wants. Three of the four already exist in
+ * the library and are wired in. The fourth — the T.I. milling and crush chamber
+ * — does not, so that slot is a labelled Wireframe naming the shot, the same
+ * placeholder the rest of the site uses for an outstanding asset.
+ */
+const controls = [
   {
-    icon: 'tabler:gauge',
-    title: 'Particle size distribution',
-    desc: 'Graded and verified for tight D50, D10 and D90, and span, with outliers controlled, on every lot. This is what keeps a grade cutting and finishing the same way order to order.',
-    href: '/contact',
+    n: '01',
+    icon: 'tabler:ruler-measure',
+    title: 'Size & Morphology: Mesh',
+    points: [
+      ['Precision size separation', 'Mechanical test sieves separate and sort diamond grit into uniform sizes.'],
+      ['Morphological sorting', 'Automated shape-sorting tables separate the different crystal shapes — from sharp, fast-cutting grains to tough, blocky crystals.'],
+      ['Visual microscope check', 'Microscope checks run throughout production to monitor batch appearance, colour consistency, crystal structure and general uniformity.'],
+      ['Image Pro validation', 'Final batches are processed through image analysis software, documenting size distribution and shape factor together.'],
+    ],
+    image: '/eid/qc-sieve.jpg',
+    alt: 'A technician operating a stack of laboratory test sieves beside a tray of graded diamond grit',
   },
   {
-    icon: 'tabler:diamond',
-    title: 'Crystal morphology, and shape factor on mesh grades',
-    desc: 'Inspected to confirm the blocky, semi-blocky, or irregular form matches the grade specification.',
-    href: '/contact',
+    n: '02',
+    icon: 'tabler:microscope',
+    title: 'Size & Morphology: Micron',
+    points: [
+      ['Advanced particle separation', 'Sedimentation and centrifugation classify micron and sub-micron sizes.'],
+      ['Malvern PSD reporting', 'Every lot is measured on Malvern particle size distribution equipment, generating a distribution curve.'],
+      ['SEM verification', 'Scanning electron microscopy inspects final grain morphology and confirms the absence of oversized or undersized particles.'],
+    ],
+    image: '/eid/qc-micron-sem.jpg',
+    alt: 'Scanning electron micrograph of micron diamond powder with the particle size distribution visible',
   },
   {
-    icon: 'tabler:shield',
-    title: 'Crystal strength (friability)',
-    desc: 'Tested where the grade or the application requires it, so the diamond or CBN performs as expected in your bond system rather than breaking down too fast or too slow. Not a routine every-batch test.',
-    href: '/contact',
+    n: '03',
+    icon: 'tabler:droplet',
+    title: 'Advanced Chemical Cleaning',
+    points: [
+      ['Targeted impurity removal', 'Chemical washing strips surface impurities, processing dust and metallic residues where high purity is required.'],
+      ['Surface purity control', 'The treatment clears crystal surfaces, allowing better bond adhesion during tool manufacturing.'],
+      ['Visual purity inspection', 'Optical checks under the microscope confirm the cleaned material is consistent.'],
+    ],
+    image: '/eid/qc-batch-to-batch.jpg',
+    alt: 'Scanning electron micrograph of cleaned diamond crystals against a 1 micron scale bar',
   },
   {
-    icon: 'tabler:stack-2',
-    title: 'Coating weight and coverage',
-    desc: 'Every coated batch checked for target weight percentage and uniform coverage.',
-    href: '/contact',
+    n: '04',
+    icon: 'tabler:hammer',
+    title: 'Toughness (TI / TTI)',
+    note: 'Available on request for advanced applications',
+    points: [
+      ['Targeted mechanical evaluation', 'Standard size and shape controls meet almost every everyday application. Room-temperature Toughness Index milling tests are available for specialised high-impact projects.'],
+      ['Thermal stability testing', 'For extreme-heat environments, optional Thermal Toughness Index testing measures how well crystals hold up during tool manufacturing.'],
+    ],
+    imageLabel: 'T.I. milling and crush chamber equipment — photograph pending',
   },
-  {
-    icon: 'tabler:grid-dots',
-    title: 'Traceability',
-    desc: 'Every lot documented from raw material through production, QC, and shipping, with full traceability on request.',
-    href: '/contact',
-  },
-]
-
-// The five QC guarantees that sit beside the philosophy copy: the badge, the
-// document, and the sample that lets a claim be checked later.
-const philosophyFeatures = [
-  { title: 'ISO 9001 certified', desc: 'Covering production, QC, and the full supply chain.' },
-  { title: 'Certificate of analysis', desc: 'Issued with every shipment on request, per lot.' },
-  { title: 'Retention samples', desc: 'Kept for every batch for retrospective testing.' },
-]
-
-// Named instruments, because "we test everything" is a claim and the machine
-// that produces the number is the proof.
-const machinery = [
-  {
-    meta: 'Particle sizing',
-    title: 'Laser diffraction analyser',
-    desc: 'Measures the full particle size distribution of micron powders, producing the D10, D50, D90, and span values recorded on the certificate of analysis.',
-  },
-  {
-    meta: 'Particle counting',
-    title: 'Coulter counter',
-    desc: 'Independent electrical-sensing-zone count used to confirm distribution and catch outliers at the coarse tail, which is the failure mode in fine polishing.',
-  },
-  {
-    meta: 'Sizing',
-    title: 'Calibrated sieve stack & shaker',
-    desc: 'Grades mesh grit to FEPA and US mesh, verified against calibrated reference sieves on a fixed re-certification interval.',
-  },
-  {
-    meta: 'Morphology',
-    title: 'Optical & stereo microscopy',
-    desc: 'Confirms crystal shape (blocky, semi-blocky, irregular) against the grade specification and inspects coating coverage for uniformity.',
-  },
-  {
-    meta: 'Strength',
-    title: 'Friability / toughness test rig',
-    desc: 'Measures how the crystal breaks down under load, run where the grade or the application calls for a friability figure rather than as a routine every-batch test.',
-  },
-  {
-    meta: 'Coating',
-    title: 'Coating weight assay',
-    desc: 'Confirms target weight percentage on every coated batch, because retention in a sintered matrix depends on it.',
-  },
-]
+] as const
 
 const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
   const { locale } = await params
@@ -104,251 +92,89 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
   return (
     <>
       <PageHero
-        eyebrow={t(locale, 'In-house QC · ISO 9001 · full traceability')}
-        title={t(locale, 'Quality Control & ISO 9001')}
-        desc={t(locale, "EID's in-house QC laboratory tests every batch of diamond and CBN for size distribution and morphology, with strength and coating coverage where required. ISO 9001.")}
+        eyebrow={t(locale, 'Quality control')}
+        title={t(locale, 'Our Quality Control & Laboratory Standards')}
+        desc={t(
+          locale,
+          'At E.I.D, every single batch of diamond and CBN powder undergoes strict laboratory validation to guarantee total product consistency, lot after lot. Our QC is built into every stage, from raw material selection through grading, crushing, chemical cleaning, coating and final inspection, and the in-house QC laboratory is the backbone of everything we ship.'
+        )}
         crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Quality') }]}
       />
 
-      <StatsBar
-        items={[
-          { value: '5', label: t(locale, 'QC process steps') },
-          { value: '100%', label: t(locale, 'Batches tested') },
-          { value: '8', label: t(locale, 'Product groups') },
-          { value: '50+', label: t(locale, "Years' experience") },
-        ]}
-      />
-
-      {/* QC PHILOSOPHY — the argument for why the laboratory exists, before any
-list of tests. */}
-      <section data-note="quality" className="py-16 lg:py-24">
-        <div className="container">
-          <div className="grid gap-12 lg:grid-cols-12">
-            <div className="lg:col-span-7">
-              <SectionHeading eyebrow={t(locale, 'Quality is the product')} title={t(locale, 'Quality control is what you are buying.')} />
-              <div className="text-default-600 mt-7 space-y-4 text-base">
-                <p>{t(locale, 'EID does not check quality after the fact. It is built into every stage, from raw material selection through grading, coating, and final inspection, and the in-house QC laboratory is the backbone of everything we ship.')}</p>
-                <p>
-                  {t(
-                    locale,
-                    'The reason matters more than the badge. When a tool maker reorders a grade, they are trusting that this lot behaves like the last one, because their own production is tuned to it. Our job is to make that true every time, and to prove it with data rather than a promise.'
-                  )}
-                </p>
-              </div>
-            </div>
-
-            <div className="lg:col-span-5">
-              <div className="divide-default-200 border-default-200 divide-y border-t">
-                {philosophyFeatures.map((f) => (
-                  <div key={f.title} className="py-5">
-                    <h4 className="text-default-900 text-base font-semibold">{t(locale, f.title)}</h4>
-                    <p className="text-default-600 mt-1 text-base">{t(locale, f.desc)}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+      {/* COMPLIANCE — one thin strip, not a section. Both statements are
+          credentials rather than an argument, so they sit on a single rule
+          under the hero and take a line each on a phone. */}
+      <div className="border-default-200 border-b">
+        <div className="container flex flex-wrap items-center gap-x-10 gap-y-3 py-5">
+          <span className="text-default-600 text-sm">
+            {t(locale, 'All laboratory testing is compliant with international FEPA, ISO 6106 and ANSI standards.')}
+          </span>
+          <span className="border-default-300 text-default-900 ms-auto inline-flex items-center gap-2 border px-3 py-1.5 text-xs tracking-[0.18em] uppercase">
+            <span className="bg-primary size-2" aria-hidden />
+            {t(locale, 'ISO 9001:2015 certified')}
+          </span>
         </div>
-      </section>
-
-      <CardCarousel
-        eyebrow={t(locale, 'What we test on every batch')}
-        title={t(locale, 'What we test on every batch.')}
-        desc={t(locale, 'Particle size distribution and morphology are verified on every lot, with crystal strength and coating coverage tested where the grade or the application requires it. Every lot is documented and traceable from raw material through QC to delivery.')}
-        items={tests.map((item) => ({
-          ...item,
-          title: t(locale, item.title),
-          desc: t(locale, item.desc),
-        }))}
-        ctaHref="/contact"
-        ctaLabel={t(locale, 'Request a Quote with QC Spec')}
-      />
-
-      <DarkFeatureList
-        bgImage="/eid/qc-lab.jpg"
-        bgLabel="Background image — QC laboratory"
-        eyebrow={t(locale, 'How our QC works')}
-        title={t(locale, 'How a batch moves through our laboratory.')}
-        desc={t(locale, 'Five steps from incoming inspection to shipped product, with documentation at every stage and a retention sample kept from every batch.')}
-        ctaLabel={t(locale, 'Request a Quote')}
-        ctaHref="/contact"
-        features={[
-          {
-            title: t(locale, '01 · Incoming inspection'),
-            desc: t(locale, 'Raw materials are tested on arrival against their incoming specification before anything enters production.'),
-          },
-          {
-            title: t(locale, '02 · In-process control'),
-            desc: t(locale, 'Production parameters are monitored and recorded through grading, coating, and finishing.'),
-          },
-          {
-            title: t(locale, '03 · Final QC'),
-            desc: t(locale, 'Every finished batch is sampled and tested in our laboratory, and results are compared against your specification and our internal standards.'),
-          },
-          {
-            title: t(locale, '04 · Certificate of analysis'),
-            desc: t(locale, 'Issued with any shipment on request, documenting the results for that specific lot.'),
-          },
-          {
-            title: t(locale, '05 · Retention samples'),
-            desc: t(locale, 'A sample from every batch is kept, so any later question can be checked against the exact material that shipped.'),
-          },
-        ]}
-      />
-
-      {/* The deck asks for each QC step to be supported by a photo of the actual
-machinery or lab. EID has not supplied those assets, so every slot is a
-labelled wireframe rather than a stock image — presented as a swipeable
-sequence the visitor controls. */}
-      <PhotoCarousel
-        eyebrow={t(locale, 'Inside the laboratory')}
-        title={t(locale, 'The QC process, step by step.')}
-        desc={t(locale, 'Each stage, from incoming inspection to the retained sample, photographed on our own floor.')}
-        items={[
-          { label: 'Incoming inspection — lab photo pending from Uri' },
-          { label: 'In-process control — production floor photo pending from Uri' },
-          { label: 'Final QC — laboratory photo pending from Uri' },
-          { label: 'Certificate of analysis — document photo pending from Uri' },
-          { label: 'Retention samples — sample store photo pending from Uri' },
-        ]}
-      />
-
-      {/* MESH & MICRON QC + ISO 9001 */}
-      <div className="bg-default-50">
-        <section className="py-16 lg:py-24">
-          <div className="container">
-            <div className="grid gap-10 lg:grid-cols-2">
-              <div className="border-primary border-t-2 pt-5">
-                <div className="text-default-500 text-sm tracking-[0.2em] uppercase">{t(locale, 'Mesh & micron QC in detail')}</div>
-                <h3 className="mt-3 text-2xl">{t(locale, 'Mesh and micron QC in detail.')}</h3>
-                <p className="text-default-600 mt-3 text-base">
-                  {t(locale, 'Grading and testing differ between mesh grit and micron powder, so each has its own detail.')}{' '}
-                  <Link href="/mesh-qc" className="text-primary underline underline-offset-2">
-                    {t(locale, 'Mesh QC')}
-                  </Link>{' '}
-                  {t(locale, 'covers how we grade and verify grit sizing and shape factor.')}{' '}
-                  <Link href="/micron-qc" className="text-primary underline underline-offset-2">
-                    {t(locale, 'Micron QC')}
-                  </Link>{' '}
-                  {t(locale, 'covers particle-size-distribution measurement and the D-value control fine polishing depends on.')}
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
       </div>
 
-      {/* QC MACHINERY — Phase 2 build-out. The equipment is shown as page
-content because "we test everything" is a claim; naming the instrument
-that produces the number is the proof. */}
-      <section className="py-16 lg:py-24">
+      {/* THE FOUR CONTROLS — the thing a buyer came for, so it opens the page
+          rather than following an argument about why the laboratory exists.
+          Two by two on desktop; each card is a photograph, a numbered heading
+          and its bullets. */}
+      <section data-note="qc-controls" className="py-16 lg:py-24">
         <div className="container">
-          <SectionHeading
-            eyebrow={t(locale, 'The laboratory')}
-            title={t(locale, 'The instruments behind the numbers.')}
-            desc={t(locale, 'Every figure on a certificate of analysis comes off a named instrument, calibrated and logged. Photographs of the laboratory and the exact model designations are to be supplied by Uri before launch.')}
-          />
-
-          {/* Progressive disclosure: each instrument is a row (function label +
-instrument name) that opens to what it measures, on demand. Native
-exclusive <details> accordion (plus->cross), so the reader drills
-into one instrument at a time instead of scanning a six-card wall. */}
-          <div className="divide-default-200 border-default-200 mt-14 max-w-3xl divide-y border-y">
-            {machinery.map((m, i) => (
-              <details key={m.title} name="qc-instruments" open={i === 0} className="group py-5">
-                <summary className="flex cursor-pointer list-none items-center gap-4 [&::-webkit-details-marker]:hidden">
-                  <div className="flex-1">
-                    <div className="text-default-500 text-xs tracking-[0.2em] uppercase">{t(locale, m.meta)}</div>
-                    <h3 className="text-default-900 mt-1 text-xl">{t(locale, m.title)}</h3>
-                  </div>
-                  {/* The open/closed affordance is a UI component, so it needs
-                      3:1 under 1.4.11. slate-400 on white is 2.56:1. */}
-                  <Icon icon="tabler:plus" className="text-default-500 size-5 shrink-0 transition-transform duration-500 group-open:rotate-45" />
-                </summary>
-                <p className="text-default-600 mt-3 max-w-2xl text-base">{t(locale, m.desc)}</p>
-              </details>
-            ))}
-          </div>
-
-          <p className="text-default-500 mt-12 font-mono text-sm">Confirm exact instrument makes, models, and calibration intervals with Uri. Replace this block with photographs of the actual QC laboratory before launch.</p>
-        </div>
-      </section>
-
-      {/* CERTIFICATES — shown as content, offered as downloads. This replaces the
-pattern of embedding one large PDF as the whole page. */}
-      <div className="bg-default-50">
-        <section className="py-16 lg:py-24">
-          <div className="container">
-            <div className="grid gap-12 lg:grid-cols-12">
-              <div className="lg:col-span-7">
-                <SectionHeading eyebrow={t(locale, 'ISO 9001 certified')} title={t(locale, 'A documented, audited, repeatable process.')} />
-                <p className="text-default-600 mt-7 text-base">
-                  {t(
-                    locale,
-                    "EID's quality management system is ISO 9001 certified, covering the full process from incoming raw material inspection through manufacturing, testing, packaging, and delivery. Certification means the process is documented, audited, and repeatable, which is what stands behind every certificate of analysis we issue."
+          <div className="bg-default-200 grid gap-px lg:grid-cols-2">
+            {controls.map((c) => (
+              <article key={c.n} className="flex flex-col bg-white">
+                <div className="bg-default-100 relative aspect-16/9 overflow-hidden">
+                  {'image' in c && c.image ? (
+                    <Image src={c.image} alt={t(locale, c.alt)} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
+                  ) : (
+                    <Wireframe label={t(locale, c.imageLabel)} className="!aspect-auto h-full border-0" />
                   )}
-                </p>
-                <p className="text-default-500 mt-5 font-mono text-sm">Certificate number, issuing body, and validity dates to be confirmed with Uri. The scanned certificate is displayed here as an image with the PDF offered alongside it.</p>
-              </div>
+                </div>
 
-              <div className="lg:col-span-5">
-                {/* The deck is explicit that the ISO 9001 certificate is shown,
-not just claimed. The scan is outstanding. */}
-                <Wireframe label="ISO 9001 certificate — scan pending from Uri" ratio="portrait" />
+                <div className="flex flex-1 flex-col p-7 lg:p-9">
+                  <div className="flex items-baseline gap-3">
+                    <span className="text-default-400 text-xs tracking-[0.2em] tabular-nums">{c.n}</span>
+                    <h2 className="text-xl font-bold lg:text-2xl">{t(locale, c.title)}</h2>
+                  </div>
 
-                <div className="border-primary mt-10 border-t-2 pt-5">
-                  <div className="text-default-500 text-sm tracking-[0.2em] uppercase">{t(locale, 'Downloads')}</div>
-                  <ul className="mt-4 space-y-3">
-                    {['ISO 9001 certificate (PDF) — [awaiting file from Uri]', 'Sample certificate of analysis (PDF) — [awaiting file from Uri]', 'QC methods & test parameters summary (PDF) — [awaiting file from Uri]'].map((item) => (
-                      <li key={item} className="text-default-600 flex gap-2.5 text-base">
-                        <Icon icon="tabler:check" className="text-primary mt-1 size-5 shrink-0" />
-                        {item}
+                  {'note' in c && c.note && <p className="text-default-500 mt-2 text-sm italic">{t(locale, c.note)}</p>}
+
+                  <ul className="mt-6 space-y-5">
+                    {c.points.map(([label, body]) => (
+                      <li key={label} className="border-default-200 border-t pt-4">
+                        <span className="text-default-900 block text-[0.95rem] font-semibold">{t(locale, label)}</span>
+                        <span className="text-default-600 mt-1.5 block text-[0.95rem] leading-relaxed">{t(locale, body)}</span>
                       </li>
                     ))}
                   </ul>
-                  <div className="mt-6 flex flex-col gap-3">
-                    <p className="text-base">
-                      <RichText>{t(locale, '[All datasheets](/resources/datasheets)')}</RichText>
-                    </p>
-                    <p className="text-base">
-                      <RichText>{t(locale, '[Safety data sheets](/resources/msds)')}</RichText>
-                    </p>
-                  </div>
                 </div>
-              </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA — the page ends here, and the footer follows. */}
+      <section className="bg-primary-3 py-16 text-white lg:py-20">
+        <div className="container">
+          <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-14">
+            <div className="lg:col-span-7">
+              <h2 className="text-[26px] font-bold md:text-[32px]">{t(locale, 'Test our consistency')}</h2>
+              <p className="mt-4 max-w-[60ch] text-base leading-relaxed text-white/75">
+                {t(
+                  locale,
+                  "Don't guess on your superabrasive performance. Contact our technical team to arrange a sample batch tailored to your exact specifications."
+                )}
+              </p>
+            </div>
+            <div className="lg:col-span-5 lg:justify-self-end">
+              <ArrowButton href="/contact" label={t(locale, 'Contact us / request a sample')} />
             </div>
           </div>
-        </section>
-      </div>
-
-      <div className="pt-20">
-        <QuoteSection
-          eyebrow={t(locale, 'Specify your tolerances')}
-          title={t(locale, 'Request a quote with your QC specification.')}
-          desc={t(locale, 'Send us your grade and the QC parameters you need documented, and a real person replies within one business day. A certificate of analysis is available with the shipment.')}
-        />
-      </div>
-
-      {/* CROSS-LINKS — the deck's Products / Detail / Support blocks */}
-      <CrossLinks
-        groups={[
-          { title: t(locale, 'Products'), links: [{ label: t(locale, 'Products overview'), href: '/#products' }] },
-          {
-            title: t(locale, 'Detail'),
-            links: [
-              { label: t(locale, 'Mesh QC'), href: '/mesh-qc' },
-              { label: t(locale, 'Micron QC'), href: '/micron-qc' },
-            ],
-          },
-          {
-            title: t(locale, 'Support'),
-            links: [
-              { label: t(locale, 'Datasheets'), href: '/resources/datasheets' },
-              { label: t(locale, 'MSDS'), href: '/resources/msds' },
-            ],
-          },
-        ]}
-      />
+        </div>
+      </section>
     </>
   )
 }
