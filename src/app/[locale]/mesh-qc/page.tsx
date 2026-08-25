@@ -1,5 +1,5 @@
 import { RichText } from '@/components/RichText'
-import { CrossLinks, DarkFeatureList, PageHero, QuoteSection } from '@/components/sections'
+import { CrossLinks, DarkFeatureList, PageHero } from '@/components/sections'
 import { SectionHeading } from '@/components/ui'
 import Wireframe from '@/components/Wireframe'
 import type { Locale } from '@/i18n/routing'
@@ -96,9 +96,20 @@ different problems, and a buyer arrives already in one of them. */}
         ctaHref="/quality"
       />
 
-      <div className="pt-20">
-        <QuoteSection eyebrow={t(locale, 'Specify your tolerances')} title={t(locale, 'Request a quote with your QC specification.')} desc={t(locale, 'Send us the mesh grade and the parameters you need documented, and a real person replies within one business day.')} />
-      </div>
+      {/* ── ⚠ THE QUOTE BLOCK IS GONE FROM EVERY PAGE BUT /contact ───────
+          Marc's call, applied site-wide: the eyebrow, "Request a quote or a
+          sample.", the email and phone lines, and the embedded Jotform.
+
+          It was on seven pages — this one, the application hubs, both QC pages
+          and all three resources pages — which meant the site shipped the same
+          cross-origin form seven times over, each instance a second full copy
+          of the contact page pasted onto the foot of something else. /contact
+          is the header button on every page, it is in the footer, and the
+          floating WhatsApp control sits over all of it.
+
+          Each page's own eyebrow/title/desc strings went with it. They were
+          Uri's per-page wording, so if the block ever returns it returns with
+          them — check this file's history rather than writing new ones. */}
 
       <CrossLinks
         groups={[

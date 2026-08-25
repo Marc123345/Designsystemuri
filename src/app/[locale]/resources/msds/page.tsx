@@ -1,14 +1,13 @@
-import { RichText } from '@/components/RichText'
-import Image from 'next/image'
 import DocList from '@/components/resources/DocList'
-import SectionBanner from '@/components/SectionBanner'
-import { PageHero, QuoteSection } from '@/components/sections'
+import { RichText } from '@/components/RichText'
+import { PageHero } from '@/components/sections'
 import type { Locale } from '@/i18n/routing'
 import { safetySheets } from '@/lib/documents'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
+import Image from 'next/image'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params
@@ -47,15 +46,18 @@ const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
         variant="band"
       />
 
-      {/* Shade 2, against Datasheets' 1. The two resources pages sit beside
-          each other in the footer and the mega-menu, so giving them different
-          cuts is the cheapest way to make it obvious which one you are on. */}
-      <SectionBanner
-        label={t(locale, 'Safety')}
-        body={t(locale, 'Handling, storage, disposal and regulatory information — current documents only.')}
-        shade={2}
-      />
+      {/* ── ⚠ THE BLUE CUT UNDER THE HERO IS GONE ────────────────────────
+          Marc's call, and the same one already applied to the application
+          hubs: a PageHero carries an eyebrow, an h1 and a lede, so a
+          full-bleed band immediately under it saying the same thing in
+          eleven-pixel mono was the page introducing itself twice before it
+          said anything.
 
+          The four cuts on the home page are a different thing and are still
+          there — they sit BETWEEN sections of equal weight, which is the beat
+          Uri's V1 note asks for ("a very, very thin banner with a bit of
+          wording, prepping for the products — and then the products"). These
+          three sat under a hero, which is not that. */}
       <section data-note="downloads" className="py-16 lg:py-24">
         <div className="container">
           <div className="grid gap-6 lg:grid-cols-12">
@@ -72,7 +74,9 @@ const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
                   {/* Link override — see the identical note on the datasheets
                       page. RichText's `text-primary` is invisible on navy. */}
                   <span className="[&_a]:text-white [&_a]:decoration-white/60">
-                    <RichText>{t(locale, "Safety data sheets for EID's diamond and CBN products, covering handling, storage, disposal, and regulatory information. No form, no login. If you need a document that isn't listed, or a specific regional format, [ask us](/contact).")}</RichText>
+                    <RichText>
+                      {t(locale, "Safety data sheets for EID's diamond and CBN products, covering handling, storage, disposal, and regulatory information. No form, no login. If you need a document that isn't listed, or a specific regional format, [ask us](/contact).")}
+                    </RichText>
                   </span>
                 </p>
               </div>
@@ -83,7 +87,7 @@ const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
                   not the seven a speculative version once had. Deriving the
                   figure from the registry means it can never claim more sheets
                   than exist. */}
-              <dl className="mt-9 grid grid-cols-2 gap-px overflow-hidden rounded-control bg-white/15">
+              <dl className="rounded-control mt-9 grid grid-cols-2 gap-px overflow-hidden bg-white/15">
                 {[
                   { v: String(safetySheets.length), k: 'Current sheets' },
                   { v: '0', k: 'Forms to fill in' },
@@ -97,13 +101,7 @@ const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
             </div>
 
             <div className="rounded-card relative min-h-[260px] overflow-hidden lg:col-span-5">
-              <Image
-                src="/eid/quality/10-chemical-rinse-beaker-diamonds.png"
-                alt={t(locale, 'Diamond crystals suspended in a beaker of clear chemical rinse under a fume hood')}
-                fill
-                sizes="(min-width: 1024px) 42vw, 100vw"
-                className="object-cover object-center"
-              />
+              <Image src="/eid/quality/10-chemical-rinse-beaker-diamonds.png" alt={t(locale, 'Diamond crystals suspended in a beaker of clear chemical rinse under a fume hood')} fill sizes="(min-width: 1024px) 42vw, 100vw" className="object-cover object-center" />
             </div>
           </div>
 
@@ -116,14 +114,20 @@ const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
         </div>
       </section>
 
-      {/* The band that closes About, Quality and Contact, so the resources
-          pages end on the site's rhythm rather than dropping straight from a
-          list of links into the contact block. */}
-      <QuoteSection
-        eyebrow={t(locale, 'Need a safety document not listed?')}
-        title={t(locale, "Need a safety document that isn't listed?")}
-        desc={t(locale, 'Tell us the product and the regional format you need, and we will send the current MSDS.')}
-      />
+      {/* ── ⚠ THE QUOTE BLOCK IS GONE FROM EVERY PAGE BUT /contact ───────
+          Marc's call, applied site-wide: the eyebrow, "Request a quote or a
+          sample.", the email and phone lines, and the embedded Jotform.
+
+          It was on seven pages — this one, the application hubs, both QC pages
+          and all three resources pages — which meant the site shipped the same
+          cross-origin form seven times over, each instance a second full copy
+          of the contact page pasted onto the foot of something else. /contact
+          is the header button on every page, it is in the footer, and the
+          floating WhatsApp control sits over all of it.
+
+          Each page's own eyebrow/title/desc strings went with it. They were
+          Uri's per-page wording, so if the block ever returns it returns with
+          them — check this file's history rather than writing new ones. */}
     </>
   )
 }

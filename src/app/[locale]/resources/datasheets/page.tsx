@@ -1,14 +1,13 @@
-import Image from 'next/image'
 import { RichText } from '@/components/RichText'
 import DocList from '@/components/resources/DocList'
-import SectionBanner from '@/components/SectionBanner'
-import { PageHero, QuoteSection } from '@/components/sections'
+import { PageHero } from '@/components/sections'
 import type { Locale } from '@/i18n/routing'
 import { datasheets } from '@/lib/documents'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
+import Image from 'next/image'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params
@@ -36,16 +35,18 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
         variant="band"
       />
 
-      {/* The blue cut. Every content page on this site runs
-          SectionBanner -> section, and the resources pages were the last that
-          did not — which is why they read as a hero followed by a list rather
-          than as pages with a structure. */}
-      <SectionBanner
-        label={t(locale, 'Datasheets')}
-        body={t(locale, 'Every grade on file — specifications, sizing, coatings and packaging. Ungated.')}
-        shade={1}
-      />
+      {/* ── ⚠ THE BLUE CUT UNDER THE HERO IS GONE ────────────────────────
+          Marc's call, and the same one already applied to the application
+          hubs: a PageHero carries an eyebrow, an h1 and a lede, so a
+          full-bleed band immediately under it saying the same thing in
+          eleven-pixel mono was the page introducing itself twice before it
+          said anything.
 
+          The four cuts on the home page are a different thing and are still
+          there — they sit BETWEEN sections of equal weight, which is the beat
+          Uri's V1 note asks for ("a very, very thin banner with a bit of
+          wording, prepping for the products — and then the products"). These
+          three sat under a hero, which is not that. */}
       <section data-note="downloads" className="py-16 lg:py-24">
         <div className="container">
           {/* ── INTRO, AS A BENTO ────────────────────────────────────────────
@@ -81,7 +82,7 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
               {/* The count is the argument. "Ungated" is a promise; a number is
                   the evidence for it, and it is derived rather than typed so it
                   cannot drift from the registry. */}
-              <dl className="mt-9 grid grid-cols-3 gap-px overflow-hidden rounded-control bg-white/15">
+              <dl className="rounded-control mt-9 grid grid-cols-3 gap-px overflow-hidden bg-white/15">
                 {[
                   { v: String(datasheets.reduce((n, g) => n + g.sheets.length, 0)), k: 'Datasheets' },
                   { v: String(datasheets.length), k: 'Product groups' },
@@ -96,13 +97,7 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
             </div>
 
             <div className="rounded-card relative min-h-[260px] overflow-hidden lg:col-span-5">
-              <Image
-                src="/eid/qc-samples.jpg"
-                alt={t(locale, 'A laboratory shelf of labelled sample jars, coarse grit at the front graduating to fine powder along the row')}
-                fill
-                sizes="(min-width: 1024px) 42vw, 100vw"
-                className="object-cover object-center"
-              />
+              <Image src="/eid/qc-samples.jpg" alt={t(locale, 'A laboratory shelf of labelled sample jars, coarse grit at the front graduating to fine powder along the row')} fill sizes="(min-width: 1024px) 42vw, 100vw" className="object-cover object-center" />
             </div>
           </div>
 
@@ -112,14 +107,20 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
         </div>
       </section>
 
-      {/* The band that closes About, Quality and Contact, so the resources
-          pages end on the site's rhythm rather than dropping straight from a
-          list of links into the contact block. */}
-      <QuoteSection
-        eyebrow={t(locale, 'Need a spec not listed?')}
-        title={t(locale, "Need a spec that isn't listed here?")}
-        desc={t(locale, 'Tell us the product and the parameters you need, and we will send the datasheet or confirm a custom specification.')}
-      />
+      {/* ── ⚠ THE QUOTE BLOCK IS GONE FROM EVERY PAGE BUT /contact ───────
+          Marc's call, applied site-wide: the eyebrow, "Request a quote or a
+          sample.", the email and phone lines, and the embedded Jotform.
+
+          It was on seven pages — this one, the application hubs, both QC pages
+          and all three resources pages — which meant the site shipped the same
+          cross-origin form seven times over, each instance a second full copy
+          of the contact page pasted onto the foot of something else. /contact
+          is the header button on every page, it is in the footer, and the
+          floating WhatsApp control sits over all of it.
+
+          Each page's own eyebrow/title/desc strings went with it. They were
+          Uri's per-page wording, so if the block ever returns it returns with
+          them — check this file's history rather than writing new ones. */}
     </>
   )
 }

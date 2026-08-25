@@ -1,14 +1,14 @@
-import { Icon } from '@iconify/react'
 import Backdrop from '@/components/Backdrop'
 import Globe from '@/components/Globe'
-import SalesLocations from '@/components/SalesLocations'
 import QuoteForm from '@/components/QuoteForm'
+import SalesLocations from '@/components/SalesLocations'
 import VideoHero from '@/components/VideoHero'
 import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
 import { site } from '@/lib/site'
+import { Icon } from '@iconify/react'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
@@ -71,12 +71,7 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
           saying the same sentence twice; this is that note being honoured
           rather than worked around. The metadata description keeps the wording
           for search. */}
-      <VideoHero
-        title={t(locale, 'Contact Us')}
-        video="https://ik.imagekit.io/qcvroy8xpd/EID%20NEW.mp4"
-        minHeight="min-h-[48svh]"
-        objectPosition="object-center"
-      />
+      <VideoHero title={t(locale, 'Contact Us')} video="https://ik.imagekit.io/qcvroy8xpd/EID%20NEW.mp4" minHeight="min-h-[48svh]" objectPosition="object-center" />
 
       {/* ── THE SPLIT: the globe on the left, the ask on the right ─────────
 

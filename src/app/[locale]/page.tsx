@@ -1,10 +1,10 @@
+import CurtainGrid from '@/components/CurtainGrid'
 import EntryCards from '@/components/home/EntryCards'
-import VideoHero from '@/components/VideoHero'
 import ProofPanel from '@/components/home/ProofPanel'
 import QualityContactBento from '@/components/home/QualityContactBento'
-import CurtainGrid from '@/components/CurtainGrid'
 import SectionBanner from '@/components/SectionBanner'
 import { Faq } from '@/components/sections'
+import VideoHero from '@/components/VideoHero'
 import type { Locale } from '@/i18n/routing'
 import { applicationImage, productImage } from '@/lib/card-media'
 import { localeAlternates } from '@/lib/hreflang'
@@ -146,13 +146,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 
   return (
     <>
-      <VideoHero
-        title={t(locale, hero.title)}
-        desc={t(locale, hero.desc)}
-        video="https://ik.imagekit.io/qcvroy8xpd/EID%20VIDEO%20HERO.mp4"
-        minHeight="min-h-[60svh]"
-        scrollCue
-      />
+      <VideoHero title={t(locale, hero.title)} desc={t(locale, hero.desc)} video="https://ik.imagekit.io/qcvroy8xpd/EID%20VIDEO%20HERO.mp4" minHeight="min-h-[60svh]" scrollCue />
 
       {/* The two doors, 50/50, still on the hero's navy ground so they read as
           the foot of the hero rather than as the page's first section — which
@@ -188,9 +182,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
             <div className="lg:col-span-7">
               <h2 className="text-[28px] font-bold md:text-[36px] lg:text-[42px]">{t(locale, 'Eight groups, from natural grit to single crystal.')}</h2>
             </div>
-            <p className="text-default-600 lg:col-span-5">
-              {t(locale, 'Natural grit and powder made in our own factory, bonded and CBN grades processed, coated and graded to your specification, and single crystal made to your exact orientation.')}
-            </p>
+            <p className="text-default-600 lg:col-span-5">{t(locale, 'Natural grit and powder made in our own factory, bonded and CBN grades processed, coated and graded to your specification, and single crystal made to your exact orientation.')}</p>
           </div>
 
           {/* Four across, revealed. The eight groups are a catalogue — the
@@ -333,11 +325,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           and this one are separated by the whole applications grid, so they
           never co-appear — which is the one arrangement where the repeat costs
           nothing. A fourth blue token would fix it properly. */}
-      <SectionBanner
-        label={t(locale, 'Quality')}
-        body={t(locale, 'Every run measured, recorded and traceable — and one form to the person who did it.')}
-        shade={3}
-      />
+      <SectionBanner label={t(locale, 'Quality')} body={t(locale, 'Every run measured, recorded and traceable — and one form to the person who did it.')} shade={3} />
 
       {/* QUALITY + THE ASK, combined.
 

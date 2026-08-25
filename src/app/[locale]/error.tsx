@@ -54,10 +54,7 @@ export default function LocaleError({ error, reset }: { error: Error & { digest?
         <div className="max-w-2xl">
           <div className="text-default-500 text-sm tracking-[0.2em] uppercase">Something went wrong</div>
           <h1 className="mt-4 text-[34px] font-bold md:text-[48px] lg:text-6xl">This page did not load properly.</h1>
-          <p className="text-default-600 mt-5 text-base">
-            The fault is ours, not yours, and it is usually temporary. Try again first — if it keeps happening, the products and datasheets below are unaffected, and a person will answer if you contact us
-            directly.
-          </p>
+          <p className="text-default-600 mt-5 text-base">The fault is ours, not yours, and it is usually temporary. Try again first — if it keeps happening, the products and datasheets below are unaffected, and a person will answer if you contact us directly.</p>
 
           <div className="mt-9 flex flex-wrap gap-4">
             <button type="button" onClick={reset} className="bg-primary hover:bg-primary-1 inline-flex items-center px-6 py-3.75 text-[0.9rem] leading-none font-semibold text-white transition-colors">

@@ -47,7 +47,7 @@ export type CurtainItem = {
    like it is fading rather than retracting. */
 const CURTAIN = 'cubic-bezier(0.24,0.74,0.58,1)'
 
-const Tile = ({ item, index, open, sizes, revealed, numbered, aspect }: { item: CurtainItem; index: number; open: boolean; sizes: string; revealed: boolean; numbered: boolean; aspect: string }) => {
+const Tile = ({ item, index, open, sizes, revealed, numbered, aspect, cell = '' }: { item: CurtainItem; index: number; open: boolean; sizes: string; revealed: boolean; numbered: boolean; aspect: string; cell?: string }) => {
   const n = String(index + 1).padStart(2, '0')
 
   /* `revealed` is the mobile treatment applied at every width: no curtain, the
@@ -61,7 +61,7 @@ const Tile = ({ item, index, open, sizes, revealed, numbered, aspect }: { item: 
     <Link
       href={item.href}
       data-open={!revealed && open ? true : undefined}
-      className={`group focus-visible:outline-primary rounded-card relative block ${aspect} overflow-hidden bg-white focus-visible:outline-2 focus-visible:outline-offset-2`}
+      className={`group focus-visible:outline-primary rounded-card relative block ${aspect} ${cell} overflow-hidden bg-white focus-visible:outline-2 focus-visible:outline-offset-2`}
     >
       <Image src={item.image.src} alt={item.image.alt} fill sizes={sizes} className={`object-cover ${item.image.position ?? 'object-center'}`} />
 
@@ -162,6 +162,7 @@ const CurtainGrid = ({
   revealed = false,
   numbered = false,
   aspect = 'portrait',
+  bento,
   sizes,
 }: {
   items: CurtainItem[]
@@ -207,15 +208,86 @@ const CurtainGrid = ({
    * third shorter than products while keeping the even rows.
    */
   aspect?: 'portrait' | 'landscape'
+  /**
+   * Per-item span and height, in 12ths — the bento layout.
+   *
+   * ── Why this exists ────────────────────────────────────────────────────────
+   *
+   * `columns` is 3 or 4, and an odd count divides into neither. Five products —
+   * which is what three of the six application hubs carry — comes out three
+   * then two on a 3-column grid, and the half-empty second row reads as a page
+   * that failed to load rather than as a set of five. Padding it with a sixth
+   * card is not available: the five are the five grades that hub uses.
+   *
+   * So the row shapes change instead of the count. Give it one entry per item:
+   *
+   *   [{ span: 'lg:col-span-7', minHeight: 'lg:min-h-[460px]' }, ...]
+   *
+   * ── The two things that have to move together ──────────────────────────────
+   *
+   * 1. `aspect-3/4` HAS TO COME OFF at lg, and that is not a tidy-up. Two tiles
+   *    of different widths at one ratio are two different heights, so a 7/5 row
+   *    on a fixed aspect leaves a step at the bottom of the row. The height
+   *    comes from `minHeight` and the grid's own stretch instead. Below lg the
+   *    ratio still governs, because the grid is one or two even columns there
+   *    and the bento does not apply.
+   * 2. `sizes` has to follow the span. A tile spanning 7 of 12 is about 55vw at
+   *    lg and one spanning 4 is about 30vw; leaving the 3-column default on both
+   *    ships the wide tile an image sized for a third of the row.
+   *
+   * Row heights are per-item on purpose rather than derived. A bento is a
+   * composition — the two-up row reads as the lead and the three-up row as the
+   * tail, and that only happens if the first row is taller.
+   */
+  bento?: { span: string; minHeight: string }[]
   sizes?: string
 }) => {
   const auto = columns === 4 ? '(min-width: 1024px) 23vw, (min-width: 768px) 50vw, 100vw' : '(min-width: 1024px) 31vw, (min-width: 768px) 50vw, 100vw'
   const ratio = aspect === 'landscape' ? 'aspect-4/3' : 'aspect-3/4'
 
+  /* A bento entry only ever pairs with its own item, so a short `bento` array
+     degrades to the even grid for the items it does not cover rather than
+     throwing. */
+  const cellFor = (i: number) => (bento?.[i] ? `${bento[i].span} ${bento[i].minHeight} lg:aspect-auto` : '')
+
+  /**
+   * `sizes` for a bento cell, derived from its span.
+   *
+   * A bento cell is not a column, so it cannot inherit `auto` — a 7-span tile
+   * is 748px on a desktop and a 4-span is 417px, and shipping both the
+   * 3-column default means the wide one is served an image sized for a third
+   * of the row and the narrow one is served nearly twice what it needs.
+   *
+   * `.container` caps at 1360px with 30px of padding, so above about 1420px
+   * these tiles stop being a fraction of anything and become fixed widths.
+   * Saying so is more accurate than any vw figure:
+   *
+   *   col  = (1360 - 60 - 11 × 24) / 12  = 86.33px
+   *   span = n × col + (n - 1) × 24      → 7 → 748px, 5 → 528px, 4 → 417px
+   *
+   * Those are measured against the live grid, not estimated. If the container
+   * width or the 24px gap changes, they change with it.
+   *
+   * ⚠ A NOTE FOR WHOEVER SEES A BLANK TILE NEXT. During this build the 7-span
+   * came back white — the tile's own `bg-white` under the scrim, with the
+   * narrow tiles beside it loading fine, which reads exactly like a bug in the
+   * span handling. It was not: `next dev` optimises on first request, the
+   * browser had picked the 3840 candidate for a lazy image before layout, and
+   * that variant had not been generated yet. Every tile loads on `next start`.
+   * Check a production server before changing anything here.
+   */
+  const sizeFor = (i: number) => {
+    if (sizes) return sizes
+    if (!bento?.[i]) return auto
+    const n = Number(bento[i].span.match(/(\d+)$/)?.[1] ?? 4)
+    const px = Math.round(n * 86.33 + (n - 1) * 24)
+    return `(min-width: 1420px) ${px}px, (min-width: 1024px) ${Math.round((95 * n) / 12)}vw, (min-width: 768px) 50vw, 100vw`
+  }
+
   return (
-    <div className={`grid grid-cols-1 gap-6 md:grid-cols-2 ${revealed ? '' : 'eid-tiles'} ${columns === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'}`}>
+    <div className={`grid grid-cols-1 gap-6 md:grid-cols-2 ${revealed ? '' : 'eid-tiles'} ${bento ? 'lg:grid-cols-12' : columns === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'}`}>
       {items.map((item, i) => (
-        <Tile key={item.href} item={item} index={i} open={i === 0} sizes={sizes ?? auto} revealed={revealed} numbered={numbered} aspect={ratio} />
+        <Tile key={item.href} item={item} index={i} open={i === 0} sizes={sizeFor(i)} revealed={revealed} numbered={numbered} aspect={ratio} cell={cellFor(i)} />
       ))}
     </div>
   )

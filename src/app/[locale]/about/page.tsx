@@ -1,7 +1,7 @@
-import GlobeSection from '@/components/GlobeSection'
 import AboutMosaic from '@/components/about/AboutMosaic'
 import CoreValues from '@/components/about/CoreValues'
 import TheCompany from '@/components/about/TheCompany'
+import GlobeSection from '@/components/GlobeSection'
 import VideoHero from '@/components/VideoHero'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
@@ -105,12 +105,7 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
           London" is wrong wherever it appears, so the sentence no longer
           places manufacture anywhere. "Over 50 years" became "Since 1970",
           which is the anniversary his approved home-page hero copy uses. */}
-      <VideoHero
-        title={t(locale, 'About EID — Industrial Diamond Manufacturer')}
-        video="https://ik.imagekit.io/qcvroy8xpd/EID%20NEW.mp4"
-        minHeight="min-h-[48svh]"
-        objectPosition="object-center"
-      />
+      <VideoHero title={t(locale, 'About EID — Industrial Diamond Manufacturer')} video="https://ik.imagekit.io/qcvroy8xpd/EID%20NEW.mp4" minHeight="min-h-[48svh]" objectPosition="object-center" />
 
       {/* ── WHAT CAME OUT OF THIS PAGE, AND WHY ─────────────────────────
           Three whole sections stood between the hero and the reach block. All

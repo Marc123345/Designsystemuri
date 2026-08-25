@@ -1,8 +1,8 @@
 'use client'
 
 import Backdrop from '@/components/Backdrop'
+import { ArrowButton } from '@/components/ui'
 import Wireframe from '@/components/Wireframe'
-import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
 import type { GradeSeries } from '@/lib/product-catalog'
@@ -204,7 +204,15 @@ const GradeSelector = ({ series, fallbackImage, sectionTitle, productName }: { s
 
   return (
     <section data-note="grade-selector" ref={panelRef} aria-labelledby={baseId + '-heading'}>
-      <div className="relative isolate overflow-hidden text-white">
+      {/* ⚠ `rounded-card`. This panel is the largest single surface on the
+          site — a viewport-tall dark card in the middle of a product page —
+          and it was the only one still on square corners after the rounding
+          pass. Every hero, every photograph, every navy tile and the wireframe
+          placeholder all carry Uri's 24px; a hard-cornered black rectangle
+          between two of them did not read as a deliberate contrast, it read as
+          a block that had been missed. `overflow-hidden` was already here for
+          the Backdrop, so the radius costs nothing. */}
+      <div className="rounded-card relative isolate overflow-hidden text-white">
         <Backdrop className="-z-10" />
         {/* ---------------------------- 1 · HEADER --------------------------- */}
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 px-5 py-4 sm:px-8 sm:py-5">
@@ -215,9 +223,20 @@ const GradeSelector = ({ series, fallbackImage, sectionTitle, productName }: { s
             <div className="mt-1 text-sm text-white/60">{summary}</div>
           </div>
 
-          <div role="group" aria-label={t(locale, 'View')} className="flex shrink-0 border border-white/15 p-1">
+          {/* The shell takes `rounded-control` and the selected pill takes the
+              same radius less its 4px inset — the identical construction
+              ArrowButton uses for its arrow badge, so a nested rounded shape
+              on this site is always drawn the same way. Mismatch them and the
+              inner pill appears to break out of the outer corner. */}
+          <div role="group" aria-label={t(locale, 'View')} className="rounded-control flex shrink-0 border border-white/15 p-1">
             {(['explore', 'compare'] as ViewMode[]).map((m) => (
-              <button key={m} type="button" onClick={() => chooseMode(m)} aria-pressed={mode === m} className={['flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium transition-colors', mode === m ? 'text-default-950 bg-white' : 'text-white/70 hover:text-white'].join(' ')}>
+              <button
+                key={m}
+                type="button"
+                onClick={() => chooseMode(m)}
+                aria-pressed={mode === m}
+                className={['flex items-center gap-1.5 rounded-[calc(var(--radius-control)-4px)] px-3 py-1.5 text-sm font-medium transition-colors', mode === m ? 'text-default-950 bg-white' : 'text-white/70 hover:text-white'].join(' ')}
+              >
                 <Icon icon={m === 'explore' ? 'tabler:photo' : 'tabler:table'} className="size-4" aria-hidden />
                 {t(locale, m === 'explore' ? 'Explore' : 'Compare')}
               </button>
@@ -228,7 +247,16 @@ const GradeSelector = ({ series, fallbackImage, sectionTitle, productName }: { s
         {/* ----------------------- 2 · SERIES SWITCHER ----------------------- */}
         {series.length > 1 && (
           <div className="border-b border-white/10 px-5 pt-5 pb-4 sm:px-8">
-            <div role="group" aria-label={t(locale, 'Series')} className="flex">
+            {/* ⚠ THE RADIUS GOES ON THE GROUP, NOT ON THE SEGMENTS. These
+                buttons deliberately butt against each other and share a 1px
+                seam (`-ml-px`) because their widths are proportional to the
+                mesh span each series covers — the control is a scale, and gaps
+                between the segments would break it. Rounding each button would
+                put four notches of dark ground at every internal seam, which is
+                exactly the fault documented on CurtainGrid. Clipping the row
+                instead gives the bar the site's corners and leaves the scale
+                intact. */}
+            <div role="group" aria-label={t(locale, 'Series')} className="rounded-control flex overflow-hidden">
               {series.map((s, i) => {
                 const on = i === activeSeries
                 return (
@@ -323,7 +351,10 @@ const GradeSelector = ({ series, fallbackImage, sectionTitle, productName }: { s
             {/* ------------------------ 4 · DETAIL --------------------------- */}
             <div role="tabpanel" id={tabPanelId} aria-labelledby={tabId(activeSeries, activeGrade)} className="grid lg:grid-cols-12">
               <div className="border-b border-white/10 p-5 sm:p-8 lg:col-span-5 lg:border-e lg:border-b-0">
-                <div className="relative aspect-[4/3]">
+                {/* `rounded-card`, like every other photograph on the site.
+                    This one sits inside a dark panel that is itself rounded, so
+                    a square frame in it read as a hole cut in the card. */}
+                <div className="rounded-card relative aspect-[4/3] overflow-hidden">
                   <GradePhoto imageKey={grade.image ?? current.image ?? fallbackImage} alt={`${grade.code} — EID`} />
                 </div>
                 <div className="mt-3 flex items-baseline justify-between gap-3 text-xs">
@@ -340,7 +371,7 @@ const GradeSelector = ({ series, fallbackImage, sectionTitle, productName }: { s
               <div className="flex flex-col gap-4 p-5 sm:p-8 lg:col-span-7 lg:p-10">
                 <div className="flex flex-wrap items-center gap-3">
                   <h5 className="font-mono text-2xl font-semibold text-white lg:text-3xl">{grade.code}</h5>
-                  {grade.tag && <span className="border-primary-1/50 bg-primary-1/20 inline-flex items-center border px-2.5 py-1 text-xs font-semibold tracking-wider text-white uppercase">{grade.tag}</span>}
+                  {grade.tag && <span className="border-primary-1/50 bg-primary-1/20 rounded-control inline-flex items-center border px-2.5 py-1 text-xs font-semibold tracking-wider text-white uppercase">{grade.tag}</span>}
                 </div>
 
                 <p className="max-w-prose text-base leading-relaxed text-white/70">{grade.desc ?? current.note ?? t(locale, 'Available across the full range — enquire for the complete specification.')}</p>
@@ -360,7 +391,7 @@ const GradeSelector = ({ series, fallbackImage, sectionTitle, productName }: { s
                     {showAllSizes && (
                       <div className="mt-3 flex flex-wrap gap-1.5">
                         {sizes.map((s) => (
-                          <span key={s} className="border border-white/15 px-2 py-0.5 font-mono text-xs text-white/70">
+                          <span key={s} className="rounded-control border border-white/15 px-2 py-0.5 font-mono text-xs text-white/70">
                             {s}
                           </span>
                         ))}
@@ -370,14 +401,23 @@ const GradeSelector = ({ series, fallbackImage, sectionTitle, productName }: { s
                 )}
 
                 {/* The CTA carries the selection through to the form, so the
-                    reader does not re-enter what they just chose. */}
-                <Link
-                  href={`/contact?product=${encodeURIComponent(productName)}&grade=${encodeURIComponent(grade.code)}`}
-                  className="bg-primary-1 hover:text-default-950 mt-auto inline-flex w-fit items-center gap-2.5 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white"
-                >
-                  {t(locale, 'Request a quote for')} {grade.code}
-                  <Icon icon="tabler:arrow-narrow-right" className="size-5" />
-                </Link>
+                    reader does not re-enter what they just chose.
+
+                    ── It is the site's button now, not a local one ──────────
+                    This was a hand-rolled `bg-primary-1` rectangle with a
+                    static arrow: square where everything else is rounded, and
+                    the one CTA on the site that did not do the label-slide and
+                    arrow-travel every other one does. ArrowButton exists so
+                    that motion and that corner live in a single file — this was
+                    the last thing bypassing it.
+
+                    `light` — white shell, brand badge. `primary` is navy on a
+                    navy-black panel and would vanish; `light` is the same
+                    variant the application hubs use on their brand tile, for
+                    the same reason. */}
+                <div className="mt-auto">
+                  <ArrowButton href={`/contact?product=${encodeURIComponent(productName)}&grade=${encodeURIComponent(grade.code)}`} label={`${t(locale, 'Request a quote for')} ${grade.code}`} variant="light" />
+                </div>
               </div>
             </div>
           </>

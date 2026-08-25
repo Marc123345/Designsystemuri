@@ -872,7 +872,10 @@ export const SpecTable = ({ specs }: { specs: { label: string; value: string }[]
 /* Driven by src/lib/product-catalog.ts (data scraped from eid-ltd.com).      */
 /* ------------------------------------------------------------------------- */
 
-const Chip = ({ children }: { children: React.ReactNode }) => <span className="border-default-200 bg-default-50 text-default-700 inline-flex items-center border px-2.5 py-1 text-sm">{children}</span>
+/* `rounded-control` — the same radius the nav pills, the eyebrow chips and the
+   buttons use. A page can carry sixty of these under one grade series, so they
+   were sixty square corners in the middle of a rounded system. */
+const Chip = ({ children }: { children: React.ReactNode }) => <span className="border-default-200 bg-default-50 text-default-700 rounded-control inline-flex items-center border px-2.5 py-1 text-sm">{children}</span>
 
 /**
  * Product image slot, backed by EID's own catalogue photography (the microscope
@@ -887,7 +890,12 @@ export const ProductPhoto = ({ image, alt }: { image: string; alt: string; galle
   // for the whole products area is SHOW_PHOTOS in product-images.ts.
   if (!SHOW_PHOTOS || !src) return <Wireframe label={alt} ratio="landscape" />
   return (
-    <div className="relative aspect-[4/3] overflow-hidden">
+    /* `rounded-card`, like every other image on the site. Wireframe — the slot
+       this falls back to when a photo is missing — has carried the radius since
+       the rounding pass, so without it here a product page's real photographs
+       were the only square-cornered images on the site and the placeholder
+       looked more finished than the asset. */
+    <div className="rounded-card relative aspect-[4/3] overflow-hidden">
       <Image src={src} alt={alt} fill sizes="(min-width: 1024px) 42vw, 100vw" className="object-cover" placeholder="blur" />
     </div>
   )
@@ -1072,7 +1080,10 @@ export const JumpNav = ({ items }: { items: { id: string; label: string }[] }) =
   return (
     <nav ref={navRef} data-note="jump-nav" aria-label={t(locale, 'On this page')} className="border-default-200 bg-body-bg/95 sticky top-[84px] z-40 border-b backdrop-blur-md">
       <div className="container flex flex-wrap items-center gap-3 py-4">
-        <span className="text-default-500 text-sm tracking-[0.2em] uppercase">{t(locale, 'On this page')}</span>
+        {/* The site's eyebrow: 11px mono at 0.22em. It was 14px sans at 0.2em,
+            which read as a label competing with the pills rather than as the
+            caption on a rule. */}
+        <span className="text-default-500 font-mono text-[11px] tracking-[0.22em] uppercase">{t(locale, 'On this page')}</span>
         {items.map((item) => {
           const isActive = item.id === active
           return (
@@ -1080,7 +1091,7 @@ export const JumpNav = ({ items }: { items: { id: string; label: string }[] }) =
               key={item.id}
               href={`#${item.id}`}
               aria-current={isActive ? 'true' : undefined}
-              className={`border px-3.5 py-1.5 text-sm transition-colors ${isActive ? 'border-primary bg-primary text-white' : 'border-default-300 text-default-800 hover:border-primary hover:text-primary'}`}
+              className={`rounded-control border px-3.5 py-1.5 text-sm transition-colors ${isActive ? 'border-primary bg-primary text-white' : 'border-default-300 text-default-800 hover:border-primary hover:text-primary'}`}
             >
               {item.label}
             </a>

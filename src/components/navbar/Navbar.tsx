@@ -116,25 +116,60 @@ const Navbar = () => {
     const entries = menu === 'products' ? productMenu : menu === 'applications' ? applicationMenu : resourceMenu
     return (
       <div
-        /* The mega-menu floats over the page, so it is a card in the same
-              sense every other floating surface is — `rounded-card` and
-              `overflow-hidden` so the 4px brand rule at its head is clipped by
-              the corner rather than poking out of it. */
-        className="hs-dropdown-menu hs-dropdown-open:opacity-100 border-default-200 rounded-card absolute start-1/2 top-full z-50 hidden -translate-x-1/2 overflow-hidden border bg-white opacity-0 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.5)] transition-[opacity,margin] duration-300 before:absolute before:start-0 before:-top-4 before:h-4 before:w-full"
+        /* ── ⚠ THE PADDING IS THE HOVER BRIDGE. DO NOT MAKE IT A MARGIN. ────
+            This element is transparent and carries no chrome; it is a hit area
+            with a card inside it. That split is the fix for a real bug, so it
+            needs to survive the next tidy-up.
+
+            ── What was broken ────────────────────────────────────────────────
+            Hovering Applications opened the menu, and moving the pointer down
+            towards "Dental" closed it before it could be clicked. Every entry
+            in all three menus was unreachable by mouse.
+
+            Preline hangs the panel `--offset: 10` below the trigger and binds
+            `mouseleave` on `.hs-dropdown` with no close delay. The button is
+            23px tall inside a 96px bar, so between its bottom edge (59px) and
+            the panel's top (69px) sat 10px of header — measured, and
+            `document.elementFromPoint` in that band returned the bar's own div,
+            not anything inside the dropdown. Crossing it fired `mouseleave` and
+            the panel shut instantly.
+
+            There WAS a bridge for exactly this: `before:-top-4 before:h-4` on
+            this element, reaching up into the gap. It stopped working the day
+            the panel became a rounded card, because `overflow-hidden` — added
+            so the 4px brand rule gets clipped by the corner instead of poking
+            out of it — clips a pseudo-element sitting outside the box. The
+            bridge was still in the class list, rendering nothing.
+
+            ── The fix ────────────────────────────────────────────────────────
+            `[--offset:0]` on the trigger, so this wrapper's top edge meets the
+            button's bottom edge with nothing between them, and `pt-2.5` here to
+            put the 10px of air back INSIDE the wrapper. Same 10px, same look,
+            except the pointer now crosses a descendant of `.hs-dropdown`
+            instead of the header, so `mouseleave` never fires. Padding, not
+            margin: a margin is outside the box and would restore the gap
+            exactly as it was.
+
+            The card chrome moved to the inner div, which keeps its
+            `overflow-hidden` and its clipped brand rule — that part was never
+            the problem. */
+        className="hs-dropdown-menu hs-dropdown-open:opacity-100 absolute start-1/2 top-full z-50 hidden -translate-x-1/2 pt-2.5 opacity-0 transition-[opacity,margin] duration-300"
         role="menu"
       >
-        <div className="bg-primary h-[4px]" />
-        <div className="flex min-w-64 flex-col p-2">
-          {entries.map((entry) => (
-            <Link
-              key={entry.href}
-              href={entry.href}
-              className={`hover:text-primary border-default-100 flex items-center gap-2.5 border-b px-3 py-2.5 text-[0.88rem] font-semibold last:border-b-0 ${isActive(entry.href) ? 'text-primary' : 'text-default-700'}`}
-            >
-              <span className="bg-default-300 size-1 shrink-0 transition-transform group-hover:scale-150" />
-              {t(locale, entry.label)}
-            </Link>
-          ))}
+        <div className="border-default-200 rounded-card overflow-hidden border bg-white shadow-[0_30px_70px_-30px_rgba(0,0,0,0.5)]">
+          <div className="bg-primary h-[4px]" />
+          <div className="flex min-w-64 flex-col p-2">
+            {entries.map((entry) => (
+              <Link
+                key={entry.href}
+                href={entry.href}
+                className={`hover:text-primary border-default-100 flex items-center gap-2.5 border-b px-3 py-2.5 text-[0.88rem] font-semibold last:border-b-0 ${isActive(entry.href) ? 'text-primary' : 'text-default-700'}`}
+              >
+                <span className="bg-default-300 size-1 shrink-0 transition-transform group-hover:scale-150" />
+                {t(locale, entry.label)}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     )
@@ -192,7 +227,11 @@ const Navbar = () => {
               const menu = 'menu' in item ? item.menu : undefined
               if (menu) {
                 return (
-                  <div key={item.href} className="hs-dropdown relative inline-flex [--trigger:hover]">
+                  /* `[--offset:0]` overrides Preline's 10px default gap. The
+                     air under the trigger has not gone anywhere — it is
+                     `pt-2.5` on the panel now, inside the hover area rather
+                     than outside it. See the long note on menuPanel. */
+                  <div key={item.href} className="hs-dropdown relative inline-flex [--offset:0] [--trigger:hover]">
                     <button type="button" className={`hs-dropdown-toggle ${navLink(active)}`} aria-haspopup="menu" aria-expanded="false">
                       {t(locale, item.label)}
                       <Icon icon="tabler:chevron-down" className="hs-dropdown-open:rotate-180 size-3.5 transition-transform duration-300" />

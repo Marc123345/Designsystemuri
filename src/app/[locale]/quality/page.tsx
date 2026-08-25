@@ -1,6 +1,6 @@
-import TheLaboratory from '@/components/quality/TheLaboratory'
 import QualityMosaic from '@/components/quality/QualityMosaic'
 import TheControls from '@/components/quality/TheControls'
+import TheLaboratory from '@/components/quality/TheLaboratory'
 import VideoHero from '@/components/VideoHero'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
@@ -12,8 +12,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   const { locale } = await params
   return {
     title: { absolute: 'Quality Control & Laboratory Standards | EID Ltd' },
-    description:
-      'Every batch of EID diamond and CBN powder undergoes laboratory validation — sieve and micron sizing, morphology, chemical cleaning and optional toughness testing — against FEPA, ISO 6106 and ANSI standards.',
+    description: 'Every batch of EID diamond and CBN powder undergoes laboratory validation — sieve and micron sizing, morphology, chemical cleaning and optional toughness testing — against FEPA, ISO 6106 and ANSI standards.',
     alternates: localeAlternates(locale, '/quality'),
   }
 }
@@ -79,11 +78,7 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
           About's `object-center` — the same distinction the home page already
           makes, because this composition has its subject above the midline and
           About's wireframe is centred by construction. */}
-      <VideoHero
-        title={t(locale, 'Our Quality Control & Laboratory Standards')}
-        video="https://ik.imagekit.io/qcvroy8xpd/EID%20VIDEO%20HERO.mp4"
-        minHeight="min-h-[48svh]"
-      />
+      <VideoHero title={t(locale, 'Our Quality Control & Laboratory Standards')} video="https://ik.imagekit.io/qcvroy8xpd/EID%20VIDEO%20HERO.mp4" minHeight="min-h-[48svh]" />
 
       <TheLaboratory />
       <QualityMosaic />

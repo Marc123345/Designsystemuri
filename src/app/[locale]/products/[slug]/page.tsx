@@ -1,7 +1,7 @@
 import { RichParagraphs, RichText } from '@/components/RichText'
 import Wireframe from '@/components/Wireframe'
-import { CatalogSpecs, CrossLinks, DarkFeatureList, JumpNav, PageHero, ProductPhoto, QuoteSection, SpecTable } from '@/components/sections'
-import { ArrowLink, SectionHeading } from '@/components/ui'
+import { CatalogSpecs, CrossLinks, JumpNav, PageHero, ProductPhoto, SpecTable } from '@/components/sections'
+import { ArrowLink } from '@/components/ui'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { productImage } from '@/lib/card-media'
@@ -109,7 +109,7 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
               '@type': 'Product',
               name: g.code,
               ...(g.desc ? { description: g.desc } : {}),
-            })),
+            }))
           ),
         }
       : {}),
@@ -132,41 +132,86 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
 
       {isSplit && <JumpNav items={p.sections.map((s) => ({ id: s.id, label: s.label }))} />}
 
-      {/* OVERVIEW
-          No eyebrow here: it used to repeat p.family, which is the H1 verbatim,
-          so the page opened by saying its own name three times before it said
-          anything. No CTA either — the hero carries the same one two hundred
-          pixels above. The lede leads, and the panel beside it carries facts
-          instead of an empty spec list. */}
+      {/* ── OVERVIEW ─────────────────────────────────────────────────────
+          About's `TheCompany` block on the left, the product's own summary as a
+          bento on the right.
+
+          ── The rule down the left edge ─────────────────────────────────────
+          A 2px brand bar with a mono kicker over the heading, and the opening
+          paragraph set at 18-19px rather than at body size. That is the block
+          that opens About and Quality and every application hub, and it is
+          Uri's F1/F2 note applied here: the words at the top of a page are what
+          a reader takes away, so they get the weight a heading would carry.
+
+          The kicker is "The range" rather than `p.family`. The old note on this
+          section is still true — the family name IS the H1, so printing it here
+          would open the page by saying its own name twice. A kicker says what
+          kind of block this is, not which product you are on.
+
+          ── The facts moved onto navy ───────────────────────────────────────
+          Not one figure changed: same `facts` array, same derivation from the
+          catalogue, same order. What changed is the ground. On white under a
+          hairline they were the quietest thing on a page whose whole job is to
+          answer "what sizes, how many grades, which coatings" — the four
+          questions a buyer arrives with. Every other page on this site puts its
+          answer on a solid brand tile; this one now does too.
+
+          Sticky is kept. A grade table runs long, and the summary is what a
+          reader checks back against while they scroll it. */}
       <section data-note="overview" className="py-16 lg:py-24">
         <div className="container">
-          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
+            {/* ⚠ THE RULE IS ON THE INNER DIV, NOT ON THE GRID CELL, and that
+                is not tidiness. A grid cell stretches to the row's height, and
+                this row's height comes from the sticky aside — photo plus the
+                facts tile, which on a long product runs a couple of hundred
+                pixels past the copy. With the border on the cell, the brand bar
+                carried on down the page beside nothing at all. On the inner div
+                it is content-height and stops where the words stop. */}
             <div className="lg:col-span-7">
-              <h2 className="text-default-900 max-w-3xl text-[26px] font-bold md:text-[32px] lg:text-[38px]">{headline}</h2>
-              <RichParagraphs className="text-default-600 mt-7 text-base" paragraphs={bodyParas} />
+              <div className="border-primary border-s-2 ps-7 lg:ps-9">
+                <p className="text-default-500 font-mono text-[11px] tracking-[0.22em] uppercase">{t(locale, 'The range')}</p>
+                <h2 className="text-default-900 mt-4 text-[26px] leading-tight font-bold md:text-[32px] lg:text-[38px]">{headline}</h2>
+
+                <RichParagraphs className="text-default-700 mt-6 text-[18px] leading-relaxed lg:text-[19px]" paragraphs={bodyParas.slice(0, 1)} />
+                {bodyParas.length > 1 && <RichParagraphs className="text-default-600 mt-5 text-base leading-relaxed" paragraphs={bodyParas.slice(1)} />}
+              </div>
             </div>
 
             <aside className="lg:col-span-5">
-              {/* Sticky so the summary stays with the reader through a long
-                  intro; top clears the fixed header and the jump nav. */}
-              <div className="lg:sticky lg:top-40">
+              <div className="flex flex-col gap-6 lg:sticky lg:top-40">
                 {leadImage?.image ? <ProductPhoto image={leadImage.image} alt={`${p.name} — EID`} /> : <Wireframe label={`Product image — ${p.name}`} />}
 
-                <dl className="border-default-200 divide-default-200 mt-7 divide-y border-t">
-                  {facts.map((f) => (
-                    <div key={f.label} className="flex items-baseline justify-between gap-6 py-3.5">
-                      <dt className="text-default-500 text-xs tracking-wider uppercase">{f.label}</dt>
-                      <dd className="text-default-900 text-right font-mono text-sm font-semibold">{f.value}</dd>
-                    </div>
-                  ))}
-                </dl>
+                <div className="rounded-card bg-primary p-6 lg:p-7">
+                  <div className="rounded-control inline-flex w-fit items-center gap-1.5 border border-white/25 px-3.5 py-1.25">
+                    <span className="bg-primary-1 size-2" />
+                    <span className="text-sm text-white">{t(locale, 'At a glance')}</span>
+                  </div>
 
-                {hasDatasheet && (
-                  <Link href="/resources/datasheets" className="text-primary mt-5 inline-flex items-center gap-2 text-sm font-semibold">
-                    <Icon icon="tabler:download" className="size-5" />
-                    {t(locale, 'Datasheets for this range')}
-                  </Link>
-                )}
+                  {/* Still a `dl`, and still label/value pairs — a spec summary
+                      is a description list whatever colour it sits on. Only the
+                      ink and the rules changed: white/70 for the terms at 11px
+                      mono tracking, which is the eyebrow scale used everywhere
+                      else, and white hairlines instead of slate ones. */}
+                  <dl className="mt-5 divide-y divide-white/15">
+                    {facts.map((f) => (
+                      <div key={f.label} className="flex items-baseline justify-between gap-6 py-3">
+                        <dt className="text-[11px] tracking-[0.18em] text-white/70 uppercase">{f.label}</dt>
+                        <dd className="text-right font-mono text-sm font-semibold text-white">{f.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+
+                  {hasDatasheet && (
+                    /* White, not `text-primary`. The same trap the two
+                       resources pages document: brand navy on a brand-navy
+                       panel is invisible. */
+                    <Link href="/resources/datasheets" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white underline-offset-4 transition-colors hover:underline">
+                      <Icon icon="tabler:download" className="size-5" />
+                      {t(locale, 'Datasheets for this range')}
+                    </Link>
+                  )}
+                </div>
               </div>
             </aside>
           </div>
@@ -178,41 +223,20 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
         <ProductSectionBlock key={s.id} locale={locale} slug={p.slug} productName={p.name} section={s} gray={i % 2 === 1} showHeading={isSplit} />
       ))}
 
-      {/* Between the grade detail and the closing argument. Industries lead
-          and the credentials pass behind: someone this deep into a product
-          page has the material, and what they are weighing is whether it is
-          used in work like theirs and who stands behind it. */}
-      <DarkFeatureList
-        bgLabel="Background image — QC laboratory"
-        eyebrow={t(locale, 'Proven on every lot')}
-        title={t(locale, 'Tested in our own laboratory.')}
-        desc={p.quality ?? t(locale, 'Every production run is tested in our in-house QC laboratory for size distribution, crystal morphology, and strength. ISO 9001 certified. Full traceability from raw material to shipped product.')}
-        ctaLabel={p.qualityCta ?? t(locale, 'See how our QC works')}
-        ctaHref="/quality"
-        features={[
-          {
-            title: t(locale, 'Particle size distribution'),
-            desc: t(locale, 'Tight D50 and span, graded and verified on every batch.'),
-          },
-          {
-            title: t(locale, 'Crystal strength & morphology'),
-            desc: t(locale, 'Confirmed to perform as expected in your bond system.'),
-          },
-          {
-            title: t(locale, 'Coating weight & coverage'),
-            desc: t(locale, 'Every coated batch checked for target weight and uniformity.'),
-          },
-          {
-            title: t(locale, 'ISO 9001 & traceability'),
-            desc: t(locale, 'Certificate of analysis and retention samples on request.'),
-          },
-        ]}
-      />
+      {/* ── ⚠ THE QUOTE BLOCK IS GONE FROM EVERY PAGE BUT /contact ───────
+          Marc's call, applied site-wide: the eyebrow, "Request a quote or a
+          sample.", the email and phone lines, and the embedded Jotform.
 
-      <div className="pt-20">
-        <QuoteSection eyebrow={t(locale, 'Made to your specification')} title={t(locale, 'Request a quote or a sample.')} desc={t(locale, 'Give us the grade, size, format, and application, and a real person replies within one business day.')} />
-      </div>
+          It was on seven pages — this one, the application hubs, both QC pages
+          and all three resources pages — which meant the site shipped the same
+          cross-origin form seven times over, each instance a second full copy
+          of the contact page pasted onto the foot of something else. /contact
+          is the header button on every page, it is in the footer, and the
+          floating WhatsApp control sits over all of it.
 
+          Each page's own eyebrow/title/desc strings went with it. They were
+          Uri's per-page wording, so if the block ever returns it returns with
+          them — check this file's history rather than writing new ones. */}
       <CrossLinks
         groups={[
           // Vol 03 writes an explicit "On this page" group into crossLinks for
@@ -260,7 +284,11 @@ const ProductSectionBlock = ({ locale, slug, productName, section, gray, showHea
   // placeholder specs, so only fall back to the placeholder table where no
   // catalogue entry exists for this section.
   const hasCatalog = Boolean(cat)
-  const hasDetail = Boolean(section.applications?.length || (!hasCatalog && section.specs?.length))
+  /* The copy-deck attribute table only renders where the catalogue has nothing
+     real to show — the same rule as before, named once so the layout below can
+     size its columns from it instead of re-deriving the condition twice. */
+  const showSpecs = Boolean(!hasCatalog && section.specs?.length)
+  const hasDetail = Boolean(section.applications?.length || showSpecs)
 
   return (
     <>
@@ -273,17 +301,35 @@ const ProductSectionBlock = ({ locale, slug, productName, section, gray, showHea
         <section data-note="product-section" id={section.id} className="py-16 lg:py-24">
           <div className="container">
             <div className="grid gap-12 lg:grid-cols-12">
-              <div className="lg:col-span-7">
-                <SectionHeading eyebrow={showHeading ? section.label : undefined} title={section.title} />
-                <div className="mt-7">
-                  <RichParagraphs className="text-default-600 text-base" paragraphs={section.intro} />
-                </div>
+              {/* The same ruled statement the overview above opens on, and
+                  About, and Quality, and every application hub — so a reader
+                  moving down a five-section product page meets one kind of
+                  section head rather than two.
 
-                {section.enquiryCta && (
-                  <div className="mt-6">
-                    <ArrowLink href={section.enquiryCta.href} label={section.enquiryCta.label} />
-                  </div>
-                )}
+                  It was `SectionHeading`: a bordered white eyebrow chip over an
+                  h2. The chip is the right device for a section that has to
+                  announce itself across a page break; it is the wrong one four
+                  times down a single page, where it reads as four separate
+                  pages stacked. The rule carries the same information with a
+                  fraction of the weight, and `section.label` is unchanged
+                  wording in the kicker slot. */}
+              <div className="lg:col-span-7">
+                {/* Inner div carries the rule — see the note on the overview
+                    block. The column beside this one holds a photo and any
+                    number of callouts, so the row height is never the copy's. */}
+                <div className="border-primary border-s-2 ps-7 lg:ps-9">
+                  {showHeading && <p className="text-default-500 font-mono text-[11px] tracking-[0.22em] uppercase">{section.label}</p>}
+                  <h2 className={`text-default-900 text-[26px] leading-tight font-bold md:text-[30px] lg:text-[34px] ${showHeading ? 'mt-4' : ''}`}>{section.title}</h2>
+
+                  <RichParagraphs className="text-default-700 mt-6 text-[17px] leading-relaxed lg:text-[18px]" paragraphs={section.intro.slice(0, 1)} />
+                  {section.intro.length > 1 && <RichParagraphs className="text-default-600 mt-4 text-base leading-relaxed" paragraphs={section.intro.slice(1)} />}
+
+                  {section.enquiryCta && (
+                    <div className="mt-7">
+                      <ArrowLink href={section.enquiryCta.href} label={section.enquiryCta.label} />
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="space-y-6 lg:col-span-5">
@@ -292,9 +338,14 @@ those blocks (mirroring eid-ltd.com); only show a header
 photo for single-image sections without a grade selector. */}
                 {!cat?.series?.length && cat?.image ? <ProductPhoto image={cat.image} alt={`${section.title} — EID`} gallery={cat.imageGallery} /> : !cat ? <Wireframe label={`${section.label} — material / tooling shot`} ratio="landscape" /> : null}
 
+                {/* Ruled on the left, like every other aside on the site,
+                    rather than capped with a top border. Same 2px brand bar as
+                    the section head it sits beside, so an explainer reads as a
+                    quieter member of the same family instead of as a different
+                    component. */}
                 {section.callouts?.map((c) => (
-                  <div key={c.title} className="border-primary border-t-2 pt-5">
-                    <div className="text-default-500 text-sm tracking-[0.2em] uppercase">{c.title}</div>
+                  <div key={c.title} className="border-primary border-s-2 ps-6">
+                    <div className="text-default-500 font-mono text-[11px] tracking-[0.22em] uppercase">{c.title}</div>
                     {/* Callout bodies carry the deck's in-prose links (the
                           CBN-vs-diamond guide, the PCD ↔ PCBN counterparts), so
 they have to go through RichText like every other
@@ -320,31 +371,70 @@ copy field rather than render as literal markdown. */}
               </div>
             </div>
 
+            {/* ── TYPICAL APPLICATIONS + SPECIFICATIONS, AS A BENTO ────────
+                Two plain columns of h3-and-a-list on white before. Every word
+                is unchanged; what changed is that the applications list is now
+                the page's brand tile.
+
+                That is not decoration. On a product page the applications list
+                is the closest thing to an argument — it is the block that says
+                "this is the work this material is for", and it was set in the
+                same weight as the attribute table beside it. Every other page
+                on this site puts its argument on navy. This one now does.
+
+                7/5 when there is a spec table to sit beside it, 8 on its own so
+                the tile still runs short of the full measure and the row keeps
+                the asymmetry the rest of the site is built on. */}
             {hasDetail && (
-              <div className="mt-16 grid gap-12 lg:grid-cols-2">
+              <div className="mt-14 grid gap-6 lg:mt-16 lg:grid-cols-12">
                 {section.applications?.length ? (
-                  <div>
-                    <h3 className="text-2xl">{section.applicationsTitle ?? t(locale, 'Typical Applications')}</h3>
-                    <ul className="mt-6 space-y-3">
+                  <div className={`rounded-card bg-primary p-7 lg:p-9 ${showSpecs ? 'lg:col-span-7' : 'lg:col-span-8'}`}>
+                    <div className="rounded-control inline-flex w-fit items-center gap-1.5 border border-white/25 px-3.5 py-1.25">
+                      <span className="bg-primary-1 size-2" />
+                      <span className="text-sm text-white">{section.applicationsTitle ?? t(locale, 'Typical Applications')}</span>
+                    </div>
+
+                    {/* ⚠ WHITE TICKS, NOT `primary-1` — and this is a lesson
+                        the site has already learnt once. The note on
+                        AboutMosaic says it plainly: primary-1 is #3d5290 and on
+                        a navy ground it is barely separable from it. That note
+                        was written about 11px labels; these are 20px marks and
+                        they were just as invisible, measured against #2c3c6c on
+                        the tile below. Contrast wins over palette on a marker
+                        that has a job to do. `primary-1` is fine where it
+                        already appears — the square dot inside a
+                        white-bordered chip, which is decorative and framed. */}
+                    <ul className="mt-6 space-y-3.5">
                       {section.applications.map((a, i) => (
-                        <li key={i} className="text-default-600 flex gap-2.5 text-base">
-                          <Icon icon="tabler:check" className="text-primary mt-1 size-5 shrink-0" />
+                        <li key={i} className="flex gap-3 text-base leading-relaxed text-white/90">
+                          <Icon icon="tabler:check" className="mt-1 size-5 shrink-0 text-white/75" />
                           {a}
                         </li>
                       ))}
                     </ul>
+
                     {section.applicationsNote && (
-                      <p className="text-default-600 mt-6 text-base">
-                        <RichText>{section.applicationsNote}</RichText>
+                      <p className="mt-7 border-t border-white/15 pt-6 text-base leading-relaxed text-white/80">
+                        {/* ⚠ RichText renders its links `text-primary` — brand
+                            navy, invisible on a brand-navy panel. Same trap the
+                            two resources pages document, overridden locally for
+                            the same reason: every other consumer of RichText is
+                            on white. These notes carry the deck's real in-prose
+                            links, so they have to stay clickable AND visible. */}
+                        <span className="[&_a]:text-white [&_a]:decoration-white/60">
+                          <RichText>{section.applicationsNote}</RichText>
+                        </span>
                       </p>
                     )}
                   </div>
                 ) : null}
 
-                {!hasCatalog && section.specs?.length ? (
-                  <div>
-                    <h3 className="mb-6 text-2xl">{section.specsTitle ?? t(locale, 'Specifications')}</h3>
-                    <SpecTable specs={section.specs} />
+                {showSpecs ? (
+                  <div className={`border-default-200 bg-default-50 rounded-card border p-7 lg:p-8 ${section.applications?.length ? 'lg:col-span-5' : 'lg:col-span-8'}`}>
+                    <h3 className="text-default-900 text-xl font-bold lg:text-2xl">{section.specsTitle ?? t(locale, 'Specifications')}</h3>
+                    <div className="mt-6">
+                      <SpecTable specs={section.specs!} />
+                    </div>
                     {section.specsNote && (
                       <p className="text-default-600 mt-5 text-base">
                         <RichText>{section.specsNote}</RichText>
@@ -364,8 +454,8 @@ copy field rather than render as literal markdown. */}
             {/* Real grade / size / coating / property data from eid-ltd.com */}
             {cat && (
               <div className="border-default-200 mt-16 border-t pt-14">
-                <div className="mb-10 flex items-baseline gap-3">
-                  <h3 className="text-2xl">{t(locale, 'Grades & specifications')}</h3>
+                <div className="mb-10 flex flex-wrap items-baseline gap-3">
+                  <h3 className="text-default-900 text-2xl font-bold">{t(locale, 'Grades & specifications')}</h3>
                   {section.datasheet && (
                     <a href={doc?.file ?? '/resources/datasheets'} download={doc ? '' : undefined} className="text-primary inline-flex items-center gap-1.5 text-sm font-semibold">
                       <Icon icon="tabler:download" className="size-4" />

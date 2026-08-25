@@ -1,12 +1,11 @@
-import Image from 'next/image'
 import PhotoCard from '@/components/PhotoCard'
-import SectionBanner from '@/components/SectionBanner'
-import { PageHero, QuoteSection } from '@/components/sections'
+import { PageHero } from '@/components/sections'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
+import Image from 'next/image'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params
@@ -94,16 +93,18 @@ const BlogPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
         variant="band"
       />
 
-      {/* ⚠ THE DISCLOSURE COMES FIRST, IN THE CUT, BEFORE ANY TITLE.
-          Not at the foot of the page and not in small type under the grid.
-          Every reader meets it before they meet a headline they cannot read.
-          See the note on `posts`. */}
-      <SectionBanner
-        label={t(locale, 'Coming soon')}
-        body={t(locale, 'The content hub launches with the site. These are the first pieces in preparation — none are published yet.')}
-        shade={1}
-      />
+      {/* ── ⚠ THE BLUE CUT UNDER THE HERO IS GONE ────────────────────────
+          Marc's call, and the same one already applied to the application
+          hubs: a PageHero carries an eyebrow, an h1 and a lede, so a
+          full-bleed band immediately under it saying the same thing in
+          eleven-pixel mono was the page introducing itself twice before it
+          said anything.
 
+          The four cuts on the home page are a different thing and are still
+          there — they sit BETWEEN sections of equal weight, which is the beat
+          Uri's V1 note asks for ("a very, very thin banner with a bit of
+          wording, prepping for the products — and then the products"). These
+          three sat under a hero, which is not that. */}
       {/* ── THE LEAD PIECE ─────────────────────────────────────────────────
           Was a grey box with a left border: the pre-radius language, and flat.
           It is a full-bleed frame with the type over it now, which is the rule
@@ -127,9 +128,7 @@ const BlogPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
             </div>
 
             <h2 className="mt-5 max-w-[24ch] text-[26px] font-bold text-white md:text-[34px] lg:text-[40px]">{t(locale, posts[0].title)}</h2>
-            <p className="mt-4 max-w-[62ch] text-base leading-relaxed text-white/85">
-              {t(locale, 'Procurement optimises for price per carat. The bigger number is what an inconsistent batch costs downstream: rejected product, recalibrated lines, lost trust.')}
-            </p>
+            <p className="mt-4 max-w-[62ch] text-base leading-relaxed text-white/85">{t(locale, 'Procurement optimises for price per carat. The bigger number is what an inconsistent batch costs downstream: rejected product, recalibrated lines, lost trust.')}</p>
           </article>
         </div>
       </section>
@@ -162,12 +161,20 @@ const BlogPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
         </div>
       </section>
 
-      <div className="pt-20">
-      {/* The band that closes About, Quality and Contact, so the resources
-          pages end on the site's rhythm rather than dropping straight from a
-          list of links into the contact block. */}
-        <QuoteSection eyebrow={t(locale, 'Have a technical question?')} title={t(locale, 'Ask our team, we may write about it.')} desc={t(locale, "Send us your application question and we'll point you to the right grade, or cover it in a future guide.")} />
-      </div>
+      {/* ── ⚠ THE QUOTE BLOCK IS GONE FROM EVERY PAGE BUT /contact ───────
+          Marc's call, applied site-wide: the eyebrow, "Request a quote or a
+          sample.", the email and phone lines, and the embedded Jotform.
+
+          It was on seven pages — this one, the application hubs, both QC pages
+          and all three resources pages — which meant the site shipped the same
+          cross-origin form seven times over, each instance a second full copy
+          of the contact page pasted onto the foot of something else. /contact
+          is the header button on every page, it is in the footer, and the
+          floating WhatsApp control sits over all of it.
+
+          Each page's own eyebrow/title/desc strings went with it. They were
+          Uri's per-page wording, so if the block ever returns it returns with
+          them — check this file's history rather than writing new ones. */}
     </>
   )
 }
