@@ -1,8 +1,7 @@
-import ContactStrip from '@/components/home/ContactStrip'
 import EntryCards from '@/components/home/EntryCards'
 import VideoHero from '@/components/VideoHero'
 import ProofPanel from '@/components/home/ProofPanel'
-import QcBanner from '@/components/home/QcBanner'
+import QualityContactBento from '@/components/home/QualityContactBento'
 import CurtainGrid from '@/components/CurtainGrid'
 import SectionBanner from '@/components/SectionBanner'
 import { Faq } from '@/components/sections'
@@ -317,25 +316,44 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
         </div>
       </section>
 
-      {/* QUALITY, as a band. The long-form version of this block still runs on
-          /quality, where the sentences belong. */}
-      <QcBanner
-        eyebrow={t(locale, 'Quality')}
-        title={t(locale, 'Every production run is tested before it leaves.')}
-        desc={t(locale, 'Consistency is a process, and ours runs on measurement. We test the run and record the result rather than sampling and assuming — ISO 9001 certified, with full traceability from incoming raw material to shipped lot.')}
-        checks={[t(locale, 'Particle size distribution'), t(locale, 'Crystal morphology'), t(locale, 'Coating weight & coverage'), t(locale, 'ISO 9001 & traceability')]}
-        ctaLabel={t(locale, 'See how our QC works')}
-        ctaHref="/quality"
+      {/* ── BAND 4 ─────────────────────────────────────────────────────────
+          Quality and the ask had no cut above them, so they read as a tail on
+          Applications rather than as a section of their own. That was defensible
+          while QcBanner was a dark full-bleed band — the note on BAND 1 says so
+          in as many words, "the QC block already carries the darkest ground of
+          all", and a cut above a dark band is a cut against nothing. It stopped
+          being true when that block became two light cards, and it is not true
+          at all of the bento that replaced them.
+
+          ⚠ SHADE 3 AGAIN, and that is the least-bad option rather than an
+          oversight. There are three blue tokens and four bands now, so one
+          value has to repeat somewhere. What the shades are actually for is
+          stated on the component: keeping cuts "distinguishable from each other
+          when three of them appear on one screen of scrolling". Applications
+          and this one are separated by the whole applications grid, so they
+          never co-appear — which is the one arrangement where the repeat costs
+          nothing. A fourth blue token would fix it properly. */}
+      <SectionBanner
+        label={t(locale, 'Quality')}
+        body={t(locale, 'Every run measured, recorded and traceable — and one form to the person who did it.')}
+        shade={3}
       />
 
-      {/* REACH lived here as <GlobeSection />. Uri's V1 note moves it: the
-          corrected version is canonical on About, and Contact closes with a
-          small country grid instead. Keeping a third copy on the home page was
-          the same argument made three times. */}
+      {/* QUALITY + THE ASK, combined.
 
-      {/* The ask, and the two direct channels. The form itself lives on
-          /contact rather than being rendered a second time here. */}
-      <ContactStrip title={t(locale, 'Tell us what you need')} desc={t(locale, 'Request a quote, order a sample, or ask a technical question. One form, routed to someone who works with the material.')} />
+          Was two consecutive sections: QcBanner and ContactStrip. Marc's call
+          is one bento, and they belong together — the QC block was the last
+          proof on the page and the ask sat immediately under it. Run as two
+          sections they read as the page ending twice.
+
+          The long-form quality content still lives on /quality, which this
+          links to; nothing was lost in the merge. See the component for the
+          bento's shape and why the QC heading moved up into the section. */}
+      <QualityContactBento />
+
+      {/* REACH lived here as <GlobeSection />. Uri's V1 note moves it: the
+          corrected version is canonical on About, and Contact closes with the
+          globe instead. */}
 
       {/* FAQ sits below the conversion block, per the deck: it is written for AI
           search and rich results rather than to be read on the way down. */}
