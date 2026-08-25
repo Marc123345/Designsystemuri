@@ -1,7 +1,7 @@
 import '@/assets/css/style.css'
 import { SITE_ORIGIN } from '@/app/sitemap'
 import favicon from '@/assets/images/favicon.svg'
-import SiteLoader from '@/components/SiteLoader'
+import SiteIntro from '@/components/SiteIntro'
 import WhatsAppButton from '@/components/WhatsAppButton'
 import AppProvidersWrapper from '@/components/wrappers/AppProvidersWrapper'
 import { routing } from '@/i18n/routing'
@@ -123,7 +123,7 @@ const LocaleLayout = async ({ children, params }: { children: React.ReactNode; p
               are prerendered, so it was invisible. Because the layout is not
               remounted on client navigation, this shows on a full page load and
               not again as you move around the site. */}
-          <SiteLoader />
+          <SiteIntro />
           <WhatsAppButton />
         </NextIntlClientProvider>
       </body>
