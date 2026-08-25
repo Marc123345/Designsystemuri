@@ -24,6 +24,41 @@ import { useEffect, useState } from 'react'
  * before that first message lands.
  */
 
+/**
+ * ── STYLING THE FORM: WHAT IS POSSIBLE FROM HERE, AND WHAT IS NOT ───────────
+ *
+ * Marc's note is "we can also better style the form on Jotform accordingly".
+ * Recording the boundary so nobody spends an afternoon on the wrong side of it.
+ *
+ * NOT POSSIBLE FROM THIS REPO. The form renders in a cross-origin iframe on
+ * form.jotform.com. Same-origin policy means no stylesheet, class, CSS variable
+ * or `!important` written anywhere in src/ reaches a single control inside it.
+ * There is not one native form element in this codebase. Anything that looks
+ * like it should work — a wrapper class, a global input rule, injecting CSS
+ * into the iframe — either silently does nothing or throws.
+ *
+ * DONE IN THE JOTFORM BUILDER (Form Designer → Styles → Inject Custom CSS),
+ * to match the design system this page is built on:
+ *
+ *   font              Rubik for headings, Roboto for body — the two the site
+ *                     loads. Jotform defaults to its own stack, which is why
+ *                     the fields read as a different product to the card
+ *                     around them.
+ *   input radius      12px, the site's --radius-control. Jotform ships square.
+ *   input border      #e2e8f0 default, #2c3c6c on focus, 2px focus ring.
+ *   labels            #1c2749, 0.95rem, not bold.
+ *   required asterisk currently red; the palette has no red. #2c3c6c.
+ *   submit button     #2c3c6c fill, white text, 12px radius, full width.
+ *   page background   transparent, so the form sits on the card rather than
+ *                     painting its own white panel inside a grey one.
+ *   width             100%, no max-width — the card controls the measure now.
+ *
+ * ALSO BUILDER-SIDE, and outstanding from Uri's F5: the field set still has
+ * to come down to Name, Country, Email, Phone, Company, Product, Message.
+ * Grade, size and quantity come out and go in the message. The form currently
+ * renders 1692px tall inside a page whose brief is one screen — the field
+ * count is the reason, and it is the single biggest thing left on this page.
+ */
 const FORM_ID = '262084626654058'
 const EMBED_HANDLER = 'https://cdn.jotfor.ms/s/umd/latest/for-form-embed-handler.js'
 
