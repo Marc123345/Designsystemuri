@@ -38,16 +38,20 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
  *     substantive claims survive intact: the complete range, precision
  *     engineered, QC-controlled to your specification.
  *
- *  2. Who it is for. "We supply tool makers, not end users" is the sharpest
- *     qualifier EID has and it was buried in the fifth FAQ answer. In the hero
- *     it turns away the wrong enquiries in one second and tells the right buyer
- *     the site is aimed at them. The words are lifted from that FAQ answer
- *     rather than newly written, so nothing here is a claim EID has not already
- *     made in its own voice.
+ *  2. Who it is for. This point used to argue for a second sentence in the
+ *     hero naming who EID sells to, lifted out of the fifth FAQ answer, on the
+ *     grounds that it turned away the wrong enquiries in one second.
+ *
+ *     ⚠ REMOVED ON MARC'S INSTRUCTION, EVERYWHERE ON THE SITE — not just here.
+ *     It is gone from this hero, from the FAQ answer it came from, and from
+ *     the mission statement on About. Do not reintroduce it as a shorter
+ *     variant or a paraphrase; the instruction was the sentence, in all its
+ *     placements. If a qualifier is wanted again it needs new wording from
+ *     Uri, not this one restored.
  */
 const hero = {
   title: 'Industrial Diamond — Manufactured In-House Since 1970',
-  desc: 'The complete range of diamond and CBN products, precision engineered and QC-controlled to your specification. We supply tool makers, not end users.',
+  desc: 'The complete range of diamond and CBN products, precision engineered and QC-controlled to your specification.',
 }
 
 /**
@@ -88,7 +92,7 @@ const faqs = [
   },
   {
     q: 'What industries and applications do you serve?',
-    a: 'We supply tool makers, not end users, so the material goes into your product. The main sectors are dental, semiconductor and advanced electronics, automotive and aerospace, tool and die, construction and stone, and optics. By operation, that means grinding, cutting, sawing and drilling; polishing and lapping; dressing and truing; and precision machining with PCD, PCBN, MCD and CVD single crystal. Tell us the material you are working and the finish you need and we will specify the grade.',
+    a: 'The material goes into your product. The main sectors are dental, semiconductor and advanced electronics, automotive and aerospace, tool and die, construction and stone, and optics. By operation, that means grinding, cutting, sawing and drilling; polishing and lapping; dressing and truing; and precision machining with PCD, PCBN, MCD and CVD single crystal. Tell us the material you are working and the finish you need and we will specify the grade.',
   },
   {
     q: 'Can you customise products and do the finishing in-house?',

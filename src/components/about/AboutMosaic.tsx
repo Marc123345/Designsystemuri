@@ -55,8 +55,11 @@ import { useLocale } from 'next-intl'
  * mission are the two things a company writes for itself, and EID has not
  * written these. The constraint applied was: claim nothing the site does not
  * already claim, in its own words — "every batch measured rather than sampled"
- * is the Quality page, "we supply tool makers, not end users" is the home hero
- * and the FAQ, "since 1970" is his approved hero copy.
+ * is the Quality page and "since 1970" is his approved hero copy.
+ *
+ * (This list used to cite a third sentence, naming who EID sells to. Marc has
+ * had it removed everywhere, so it is no longer a claim the site makes and no
+ * longer available to borrow. See the note on the home page hero.)
  *
  * Safe to show him. Wrong to ship without him. The two `body` strings are the
  * only thing that changes if he writes his own, which is the better outcome.
@@ -74,7 +77,7 @@ const STATEMENTS = [
   },
   {
     label: 'Our mission',
-    body: 'To manufacture, grade and quality-control superabrasives to a standard we can document rather than assert. Every batch is measured rather than sampled, every lot is traceable, and every grade is answered for by someone who works with the material. We supply tool makers, not end users, and the relationship is expected to outlast the order.',
+    body: 'To manufacture, grade and quality-control superabrasives to a standard we can document rather than assert. Every batch is measured rather than sampled, every lot is traceable, and every grade is answered for by someone who works with the material, and the relationship is expected to outlast the order.',
   },
 ]
 
