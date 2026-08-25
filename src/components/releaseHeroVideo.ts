@@ -24,6 +24,15 @@
  */
 function playAll(rewind: boolean) {
   document.querySelectorAll<HTMLVideoElement>('video[data-hero-video]').forEach((v) => {
+    /* The hero ships with preload="none" so it does not compete with the intro
+       for bandwidth while it is hidden behind it — see the note in VideoHero.
+       Releasing it is therefore two steps, not one: permit the fetch, then
+       start it. Without this line play() still works, because play() forces a
+       load on a preload="none" element, but it starts from nothing buffered
+       and stalls on a slow connection. Raising preload first lets the browser
+       begin buffering in the same tick. */
+    if (v.preload !== 'auto') v.preload = 'auto'
+
     if (rewind) {
       try {
         v.currentTime = 0
@@ -61,4 +70,28 @@ function bindResume() {
 export function releaseHeroVideo() {
   bindResume()
   playAll(true)
+}
+
+/**
+ * Let the hero start buffering while the intro is still on screen.
+ *
+ * The hero ships with preload="none" so it does not take bandwidth from the
+ * clip the visitor is actually watching. Deferring it entirely to the end of
+ * the swoosh overcorrects, though: the intro is ~334 KB and arrives long
+ * before its three-second hold is up, so the connection then sits idle for
+ * two seconds with a full-screen panel over a hero that has fetched nothing.
+ *
+ * SiteIntro calls this on the intro's `canplaythrough` — the point at which
+ * the browser reckons it can finish the intro without stalling. Spending the
+ * idle tail of the hold on the hero costs the intro nothing and means the film
+ * behind the swoosh is buffered by the time the swoosh lifts.
+ *
+ * Raising `preload` only. It deliberately does not call play(), because a hero
+ * that starts underneath the panel is the bug the whole no-autoPlay
+ * arrangement exists to prevent — see the note at the top of this file.
+ */
+export function warmHeroVideo() {
+  document.querySelectorAll<HTMLVideoElement>('video[data-hero-video]').forEach((v) => {
+    if (v.preload !== 'auto') v.preload = 'auto'
+  })
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { releaseHeroVideo } from '@/components/releaseHeroVideo'
+import { releaseHeroVideo, warmHeroVideo } from '@/components/releaseHeroVideo'
 import { videoSources, videoPoster } from '@/components/videoSources'
 
 /**
@@ -90,6 +90,12 @@ const SiteIntro = () => {
   /** The dismissal, hoisted so the Skip button can call it directly. */
   const finishRef = useRef<() => void>(() => {})
   const videoRef = useRef<HTMLVideoElement>(null)
+  /**
+   * The hold timer lives in a ref because it is STARTED by the video effect
+   * below and CANCELLED by finish() in the mount effect. Two effects, one
+   * timer — a local would leave finish() unable to clear it.
+   */
+  const holdRef = useRef(0)
 
   useEffect(() => {
     // Second visit this session, or someone who does not want motion.
@@ -114,7 +120,6 @@ const SiteIntro = () => {
     const prevOverflow = root.style.overflow
     root.style.overflow = 'hidden'
 
-    let holdTimer = 0
     let ceilingTimer = 0
     let swooshTimer = 0
 
@@ -122,7 +127,7 @@ const SiteIntro = () => {
     const finish = () => {
       if (done.current) return
       done.current = true
-      window.clearTimeout(holdTimer)
+      window.clearTimeout(holdRef.current)
       window.clearTimeout(ceilingTimer)
       setLeaving(true)
 
@@ -140,13 +145,6 @@ const SiteIntro = () => {
     // The ceiling runs from now; the hold runs from first frame.
     ceilingTimer = window.setTimeout(finish, MAX_TOTAL)
 
-    const video = videoRef.current
-    const onPlaying = () => {
-      window.clearTimeout(holdTimer)
-      holdTimer = window.setTimeout(finish, HOLD)
-    }
-    video?.addEventListener('playing', onPlaying, { once: true })
-
     // Any intent to interact ends it. `once` on each, and all removed below.
     const opts = { once: true, passive: true } as const
     window.addEventListener('pointerdown', finish, opts)
@@ -161,10 +159,9 @@ const SiteIntro = () => {
     }
 
     return () => {
-      window.clearTimeout(holdTimer)
+      window.clearTimeout(holdRef.current)
       window.clearTimeout(ceilingTimer)
       window.clearTimeout(swooshTimer)
-      video?.removeEventListener('playing', onPlaying)
       window.removeEventListener('pointerdown', finish)
       window.removeEventListener('keydown', finish)
       window.removeEventListener('wheel', finish)
@@ -173,6 +170,68 @@ const SiteIntro = () => {
       root.style.overflow = prevOverflow
     }
   }, [])
+
+  /**
+   * Everything that needs the <video> ELEMENT, which does not exist when the
+   * mount effect runs.
+   *
+   * ⚠ THIS IS A BUG FIX, AND THE BUG IS WORTH UNDERSTANDING BEFORE TOUCHING IT.
+   *
+   * This wiring used to live in the mount effect above, reading
+   * `videoRef.current` directly. That is always null there: `visible` starts
+   * false, the component returns null on first render, and the effect body
+   * runs before the `setVisible(true)` re-render has put the element in the
+   * DOM. So `video?.addEventListener(...)` was a no-op on every single visit.
+   *
+   * Two things were silently dead as a result:
+   *
+   *   · The hold timer never started from the `playing` event, so the intro
+   *     was ending on the MAX_TOTAL ceiling every time rather than holding for
+   *     HOLD after first frame. The whole point of that change — that the
+   *     intro's length should track whether any film had actually played — did
+   *     nothing.
+   *   · The hero never warmed during the hold.
+   *
+   * Both looked correct in review because the optional chaining made the
+   * no-op indistinguishable from a wired-up listener. Keying the effect on
+   * `visible` is what makes the element exist by the time we ask for it.
+   */
+  useEffect(() => {
+    if (!visible) return
+    const video = videoRef.current
+    if (!video) return
+
+    /* HOLD starts at first frame, not at mount. A clip that has not started —
+       slow connection, blocked autoplay — must not be timed as though it had;
+       MAX_TOTAL in the mount effect is the backstop for that case, and
+       whichever fires first wins because finish() is idempotent. */
+    const onPlaying = () => {
+      window.clearTimeout(holdRef.current)
+      holdRef.current = window.setTimeout(() => finishRef.current(), HOLD)
+    }
+
+    /* Once the browser reckons it can finish this clip without stalling, the
+       connection is free for the rest of the hold. Spend it on the hero, which
+       is sitting at preload="none" behind this panel, so the film is buffered
+       by the time the swoosh lifts. See warmHeroVideo.
+
+       The readyState check is the fast path, not belt-and-braces. On a quick
+       connection the clip is buffered before this effect runs, so
+       `canplaythrough` has already fired and a listener alone never hears it.
+       Same class of mistake as the one this effect exists to fix: an
+       optimisation that is silently dead exactly where it is cheapest to
+       verify. */
+    if (video.readyState >= 4) warmHeroVideo()
+    else video.addEventListener('canplaythrough', warmHeroVideo, { once: true })
+
+    if (!video.paused && video.readyState >= 3) onPlaying()
+    else video.addEventListener('playing', onPlaying, { once: true })
+
+    return () => {
+      video.removeEventListener('playing', onPlaying)
+      video.removeEventListener('canplaythrough', warmHeroVideo)
+    }
+  }, [visible])
 
   if (!visible) return null
 

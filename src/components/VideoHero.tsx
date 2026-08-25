@@ -87,7 +87,21 @@ const VideoHero = ({
           muted + playsInline  — autoplay is refused without both, and on iOS
                                  playsInline stops it going fullscreen.
           loop                 — background film, no controls, no end state.
-          preload="metadata"   — the poster covers first paint.
+
+          preload="none", and this is a fix rather than a default. It was
+          "metadata", and measuring a first visit showed why that was wrong:
+          the hero's request went out at 37ms and the intro's at 399ms. The
+          hero is server-rendered and SiteIntro is a client component, so the
+          clip nobody can see — it is behind a full-screen opaque panel —
+          reached the network first and took bandwidth from the one filling
+          the viewport. On a phone that is the difference between the intro
+          playing and the intro sitting on its poster.
+
+          With "none" the hero costs nothing until releaseHeroVideo raises it,
+          which happens the moment the swoosh ends, or immediately on a repeat
+          visit where no intro runs. Nothing is lost visually: `poster` is an
+          image attribute and is unaffected by preload, so first paint is still
+          a real frame of the real film.
 
           NO `autoPlay`, and that is the point. With it the clip starts as soon
           as the browser can play it, which is behind the full-screen loading
@@ -104,7 +118,7 @@ const VideoHero = ({
         loop
         muted
         playsInline
-        preload="metadata"
+        preload="none"
         aria-hidden
       >
         {sources.map((s) => (

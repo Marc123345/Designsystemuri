@@ -4,25 +4,63 @@
  *
  * ── Everything here was measured, not assumed ───────────────────────────────
  *
- * Fetched every variant and compared bytes. Hero clip (1367 KB as shipped):
+ * Fetched every variant and compared bytes. WebM at q-30, against the
+ * untransformed masters (hero 1333 KB, intro 930 KB):
  *
- *              webm      mp4
- *   w-720      326 KB    456 KB
- *   w-960      506 KB    731 KB
- *   full       892 KB   1367 KB
+ *              hero      intro
+ *   w-720      170 KB    232 KB
+ *   w-960      254 KB    270 KB
+ *   full       439 KB    333 KB
  *
- * Intro clip (952 KB as shipped): webm 300 / 362 / 462 KB at the same widths.
+ * A phone that used to pull 1333 KB of hero now pulls 170 KB — an 87%
+ * reduction on the connection least able to afford it. A 1080p laptop takes
+ * the 960 rung at 254 KB.
  *
- * So a phone that used to pull 1367 KB now pulls 326 KB — a 76% reduction on
- * the connection least able to afford it. A 1080p laptop takes the 960 rung at
- * 506 KB rather than 892.
+ * ── Quality: q-30, and a correction to what this file used to say ───────────
  *
- * ── Two transforms deliberately NOT used ────────────────────────────────────
+ * ⚠ This block previously said quality transforms were useless, on the
+ * evidence that `q-60` returned 1.5 MB — larger than the original. That
+ * observation was right and the conclusion drawn from it was wrong. ImageKit's
+ * default is about q-50, so q-60 asked for MORE quality than the source was
+ * already carrying and re-encoded it upward. The mistake was testing in one
+ * direction and generalising from it.
  *
- * `q-60` on the source returned 1.5 MB — LARGER than the original, because
- * re-encoding already-compressed video to a quality target can inflate it.
- * `w-1280` did nothing, since both masters are already 1280 wide. Both would
- * have read as optimisations in a diff while doing nothing or harm.
+ * Measured downward, on the hero clip in WebM:
+ *
+ *   q-60   1415 KB     ← above the default; inflates
+ *   q-50    892 KB     ← the default, whether or not you ask for it
+ *   q-40    629 KB
+ *   q-30    439 KB     ← what we serve
+ *   q-20    283 KB
+ *
+ * q-30 is chosen after looking, not after reading the byte counts. Frames from
+ * q-50, q-30 and q-20 were pulled at the same timestamp and compared 1:1 with
+ * no scaling, on the out-of-focus background and the smooth bench reflection —
+ * where WebM blocking shows before it shows on a sharp subject. Nothing was
+ * visible at any of the three. Mean absolute error against the default is 2.37
+ * of 255 per channel at q-30, under 1%.
+ *
+ * q-20 also looked clean and would save another 150 KB, but it is not worth
+ * the headroom: this ladder is applied to whatever clip is passed to it, and a
+ * future clip with fine detail or a hard-edged graphic would show artefacts at
+ * q-20 sooner than at q-30. If a new clip ever does look soft, raise q before
+ * suspecting anything else.
+ *
+ * ── One transform deliberately NOT used ─────────────────────────────────────
+ *
+ * `w-1280` does nothing, since both masters are already 1280 wide. It would
+ * have read as an optimisation in a diff while doing nothing at all.
+ *
+ * ── Codec is content-dependent, and WebM still wins overall ─────────────────
+ *
+ * At q-30, MP4 is actually SMALLER than WebM on the hero (409 vs 439 KB full,
+ * 160 vs 170 at w-720) because that clip is live action, which H.264 handles
+ * well. On the intro — an animated wireframe on flat colour — WebM wins
+ * clearly: 333 vs 395 KB, a 16% gap.
+ *
+ * WebM stays first. The intro is the latency-critical clip, its margin is the
+ * larger of the two, and per-clip codec ordering would be two code paths for a
+ * 7% difference on the one that is already behind a poster.
  *
  * ── `media` on <source> is honoured, and that was checked ───────────────────
  *
@@ -60,6 +98,12 @@
  */
 export type VideoSource = { src: string; type: string; media?: string }
 
+/**
+ * Quality floor for every rendition. See the note above — this is a measured
+ * choice, not a default, and it roughly halves every rung.
+ */
+const Q = 30
+
 /** Breakpoint / width pairs, narrowest first. */
 const LADDER: { media?: string; w: number | null }[] = [
   { media: '(max-width: 768px)', w: 720 },
@@ -69,8 +113,8 @@ const LADDER: { media?: string; w: number | null }[] = [
 
 export function videoSources(mp4Url: string): VideoSource[] {
   const at = (w: number | null, webm: boolean) => {
-    const tr = [webm ? 'f-webm' : null, w ? `w-${w}` : null].filter(Boolean).join(',')
-    return tr ? `${mp4Url}?tr=${tr}` : mp4Url
+    const tr = [webm ? 'f-webm' : null, w ? `w-${w}` : null, `q-${Q}`].filter(Boolean).join(',')
+    return `${mp4Url}?tr=${tr}`
   }
 
   return [
