@@ -56,7 +56,7 @@ const CardCarousel = ({
   const arrow = (dir: 'prev' | 'next') => (
     <button type="button" className={`${dir === 'prev' ? prev : next} group static! flex`} aria-label={dir === 'prev' ? 'Previous products' : 'Next products'}>
       <span className={`bg-default-100 text-default-900! hover:bg-default-200 inline-flex! size-12! cursor-pointer items-center justify-center transition-all ${dir === 'prev' ? '' : ''}`}>
-        <span className="relative block overflow-hidden">
+        <span className="rounded-card relative block overflow-hidden">
           <span className={`block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] ${dir === 'prev' ? 'group-hover:-translate-x-7' : 'group-hover:translate-x-7'}`}>
             <Icon icon={dir === 'prev' ? 'tabler:arrow-narrow-left' : 'tabler:arrow-narrow-right'} className="flex size-6" />
           </span>
@@ -110,7 +110,7 @@ const CardCarousel = ({
                   // across the grids and the carousels.
                   <ImageCard item={item} size="lg" className="border" />
                 ) : (
-                  <Link href={item.href} className="group border-default-200 hover:border-primary hover:bg-default-50 flex h-full flex-col gap-5 border p-8 transition-colors">
+                  <Link href={item.href} className="group border-default-200 hover:border-primary hover:bg-default-50 rounded-card flex h-full flex-col gap-5 border p-8 transition-colors">
                     <Icon icon={item.icon} className="text-primary size-10" />
                     <h3 className="group-hover:text-primary text-xl">{item.title}</h3>
                     <p className="text-default-600 text-base">{item.desc}</p>

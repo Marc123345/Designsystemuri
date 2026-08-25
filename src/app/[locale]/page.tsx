@@ -1,11 +1,10 @@
-import GlobeSection from '@/components/GlobeSection'
-import Marquee from '@/components/Marquee'
 import ContactStrip from '@/components/home/ContactStrip'
+import EntryCards from '@/components/home/EntryCards'
 import Hero from '@/components/home/Hero'
 import ProofPanel from '@/components/home/ProofPanel'
 import QcBanner from '@/components/home/QcBanner'
 import CurtainGrid from '@/components/CurtainGrid'
-import { ArrowButton } from '@/components/ui'
+import SectionBanner from '@/components/SectionBanner'
 import { Faq } from '@/components/sections'
 import type { Locale } from '@/i18n/routing'
 import { applicationImage, productImage } from '@/lib/card-media'
@@ -146,52 +145,39 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
     <>
       <Hero title={t(locale, hero.title)} desc={t(locale, hero.desc)} />
 
-      {/* THE RANGE. One section: its own heading, its own grid, its own padding.
-          Anchor target for the header's "Products" and the hero's own CTA — the
-          offset comes from html's scroll-padding-top (see _general.css), so no
-          scroll-mt here or the two would add up.
+      {/* The two doors, 50/50, still on the hero's navy ground so they read as
+          the foot of the hero rather than as the page's first section — which
+          is exactly where Strauss puts theirs. They peek above the fold, and
+          that is the point: you see the hero end and the next thing begin in
+          the same view, which is what lets a short hero feel deliberate rather
+          than truncated. */}
+      <EntryCards />
 
-          This used to be a full-bleed navy SectionBanner sitting on top of the
-          grid, per Uri's Van Moppes markup. Two separate blocks introducing one
-          idea read as two sections; welding them together with a flush grid then
-          read as the cards spilling out of the band. Both were symptoms of the
-          same thing — the heading was in a different section from the content it
-          headed. It is now in the same one, which is what every other section on
-          the page already does, and the page gets its normal py-20/py-30 of air
-          under the hero back.
+      {/* ── BAND 1 ─────────────────────────────────────────────────────────
+          The rhythm Uri asked for, third attempt, and the difference this time
+          is the height. The two earlier versions of this band carried a 44px
+          heading at py-14 — a section pretending to be a divider, which is why
+          it read as two blocks introducing one idea and why it was pulled.
 
-          No copy was rewritten: the band's single paragraph splits at its own
-          full stop into the heading sentence and the lede, which is the
-          eyebrow-plus-sentence shape ProofPanel and the FAQ already use.
+          This one is a line of type on a rule of colour. It does not repeat the
+          section's h2 and it does not try to be the heading; the label is a
+          waypoint and the sentence is the prep line from his doc, verbatim. The
+          section below keeps its own heading and its own air.
 
-          The trust bar that used to sit in this slot is gone. Its four points
-          (ISO 9001, in-house QC, complete range, 50+ years) are each made
-          properly further down — by the QC banner, the values row and the
-          footer's own trust line — and as a strip of four ticks directly under
-          the hero it was a row of assertions before the reader knew what EID
-          sells. */}
-      {/* THE RANGE. The heading lives in the same section as the grid it
-          heads, rather than in a separate full-bleed banner above it.
+          Shade 1 — the lightest of the three blues. The bands walk darker down
+          the page: 1 here, 2 at applications, and the QC block already carries
+          the darkest ground of all. */}
+      <SectionBanner label={t(locale, 'Our Products')} body={t(locale, 'Every industrial diamond and CBN product, from one source.')} shade={1} />
 
-          Uri's V1 note asked for a thin "Our Products" banner in the Van Moppes
-          shape, and that was built — twice. It reads as a separate block from
-          the grid it introduces, which is the fault Marc kept landing on. This
-          is his call over the note; worth knowing it is a deliberate departure
-          rather than an oversight.
-
-          Anchor target for the header's "Products" and the hero's own CTA —
-          nine things across the site link to /#products. The offset comes from
-          html's scroll-padding-top, so no scroll-mt here or the two would add
-          up. */}
       <section id="products" data-note="range" className="py-20 lg:py-30">
         <div className="container">
           <div className="grid items-end gap-8 lg:grid-cols-12 lg:gap-14">
+            {/* No eyebrow chip and no restatement of the band's sentence —
+                both sat four lines above this heading. What the section needs
+                from a heading is the thing the band cannot say in one line:
+                which eight groups, and how they divide. */}
             <div className="lg:col-span-7">
-              <div className="border-default-300 inline-flex items-center gap-1.5 border bg-white px-3.5 py-1.25">
-                <span className="bg-primary size-2"></span>
-                <span className="text-default-900 text-sm">{t(locale, 'Our Products')}</span>
-              </div>
-              <h2 className="mt-4 text-[28px] font-bold md:text-[36px] lg:text-[42px]">{t(locale, 'Every industrial diamond and CBN product, from one source.')}</h2>
+              <h2 className="text-[28px] font-bold md:text-[36px] lg:text-[42px]">{t(locale, 'Eight groups, from natural grit to single crystal.')}</h2>
             </div>
             <p className="text-default-600 lg:col-span-5">
               {t(locale, 'Natural grit and powder made in our own factory, bonded and CBN grades processed, coated and graded to your specification, and single crystal made to your exact orientation.')}
@@ -205,17 +191,15 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           <div className="mt-14 lg:mt-18">
             <CurtainGrid items={groupTiles} columns={4} revealed />
           </div>
-
-          <div className="mt-12">
-            <ArrowButton href="/contact" label={t(locale, 'Tell us the tool')} variant="dark" />
-          </div>
         </div>
       </section>
+
+      {/* ── BAND 2 ─────────────────────────────────────────────────────── */}
+      <SectionBanner label={t(locale, 'Why EID')} body={t(locale, 'Fifty years of supplying tool makers has narrowed down to three things they buy us for.')} shade={2} />
 
       <ProofPanel
         eyebrow={t(locale, 'Why tool makers qualify EID')}
         title={t(locale, 'One accountable manufacturer, spec to delivery.')}
-        desc={t(locale, 'Fifty years of supplying tool makers has narrowed down to three things they buy us for.')}
         ghost={t(locale, 'Industrial diamond')}
         /* ⚠ The three paragraphs that used to sit here are gone, and that is
            the change rather than the layout. Six previous arrangements each
@@ -274,26 +258,52 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           columns against four already makes these the bigger tiles, so if the
           hierarchy matters it needs a lighter ground or tighter padding rather
           than a different card. */}
-      <section data-note="applications" className="py-20 lg:py-30">
+      {/* ── BAND 3 ─────────────────────────────────────────────────────────
+          Darkest of the three, and the last cut before the QC block's own
+          dark ground closes the run. */}
+      <SectionBanner label={t(locale, 'Applications')} body={t(locale, 'We supply the material; you build the tools that do the work.')} shade={3} />
+
+      {/* APPLICATIONS. Deliberately lighter than the range above it.
+
+          Uri's V1 note puts this section below products in weight — "even
+          smaller than products ... because it's not so important" — and is
+          candid about why it stays at all: it earns its place for search and
+          for lead capture, not because a buyer came looking for it.
+
+          The weight difference is made without changing the card, which is
+          what failed before — two cards on one page read as two components.
+
+          Three across, not four: six hubs on a 4-column grid come out four then
+          two, and the ragged second row makes the section look unfinished
+          rather than minor. Three and three is even.
+
+          What carries the demotion instead is the crop. These run at 4:3 where
+          the range runs 3:4, so a hub tile is wider but about 120px shorter
+          than a product tile, and the section lands roughly a third shorter
+          than the range above it. Plus py-14 against the range's py-20/30, and
+          no lede paragraph. */}
+      {/* `id="applications"` is the anchor three things now depend on: the
+          header's Applications entry, the entry card above, and the 301 from
+          the removed /applications index. Renaming it breaks all three
+          silently — they are strings, not references.
+
+          The scroll offset comes from html's `scroll-padding-top`, the same way
+          #products does, so no `scroll-mt` here or the two would add up. */}
+      <section id="applications" data-note="applications" className="py-14 lg:py-20">
         <div className="container">
           <div className="grid items-end gap-8 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-7">
-              <div className="border-default-300 inline-flex items-center gap-1.5 border bg-white px-3.5 py-1.25">
-                <span className="bg-primary size-2"></span>
-                <span className="text-default-900 text-sm">{t(locale, 'Applications')}</span>
-              </div>
-              <h2 className="mt-4 text-[28px] font-bold md:text-[36px] lg:text-[42px]">{t(locale, 'Diamond and CBN for the work your tools do.')}</h2>
+              <h2 className="text-[24px] font-bold md:text-[30px] lg:text-[34px]">{t(locale, 'Diamond and CBN for the work your tools do.')}</h2>
             </div>
-            <p className="text-default-600 lg:col-span-5">{t(locale, 'We supply the material; you build the tools that serve these applications.')}</p>
           </div>
 
-          <div className="mt-14 lg:mt-18">
-            <CurtainGrid items={hubTiles} revealed />
+          <div className="mt-10 lg:mt-12">
+            <CurtainGrid items={hubTiles} aspect="landscape" revealed />
           </div>
 
-          <div className="mt-12">
-            <ArrowButton href="/applications" label={t(locale, 'View all applications')} variant="dark" />
-          </div>
+          {/* "View all applications" is gone with the index page it pointed at.
+              All six hubs are in the grid directly above it, so the button was
+              offering a longer route to what the reader can already see. */}
         </div>
       </section>
 
@@ -308,35 +318,10 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
         ctaHref="/quality"
       />
 
-      {/* Material vocabulary rather than a logo wall — the deck names customers
-          only as buyer types, so a wall of client logos would claim
-          endorsements EID has not given us. */}
-      <Marquee
-        items={[
-          t(locale, 'Natural Diamond Grit'),
-          t(locale, 'Micron Powder'),
-          t(locale, 'CBN'),
-          t(locale, 'PCBN'),
-          t(locale, 'CVD Single Crystal'),
-          t(locale, 'MCD'),
-          t(locale, 'PCD Blanks'),
-          t(locale, 'Metal Bond'),
-          t(locale, 'Resin Bond'),
-        ]}
-        /* The second row is what EID says about itself, and every line of it is
-           already published elsewhere on the site — these four are the footer's
-           own badges. Nothing new is claimed by putting them in bigger type. */
-        secondary={[
-          t(locale, 'Coated in-house'),
-          t(locale, 'Made in London'),
-          t(locale, 'ISO 9001 certified'),
-          t(locale, 'In-house QC laboratory'),
-          t(locale, "50+ years' experience"),
-        ]}
-      />
-
-      {/* REACH — the one-facility-worldwide story made visible. */}
-      <GlobeSection />
+      {/* REACH lived here as <GlobeSection />. Uri's V1 note moves it: the
+          corrected version is canonical on About, and Contact closes with a
+          small country grid instead. Keeping a third copy on the home page was
+          the same argument made three times. */}
 
       {/* The ask, and the two direct channels. The form itself lives on
           /contact rather than being rendered a second time here. */}
@@ -345,21 +330,11 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       {/* FAQ sits below the conversion block, per the deck: it is written for AI
           search and rich results rather than to be read on the way down. */}
       <Faq
-        /* The plate is /eid/qc-lab.jpg, which had been orphaned since the
-           curtain tiles took over — so half this section is a picture at no
-           cost in new assets. It suits the block: the lede promises that
-           someone who works with the material will answer, and the frame shows
-           somebody doing exactly that.
-        
-           The caption is not a restatement of the lede. It names the document
-           set, which is what a buyer scanning an FAQ about ISO 9001 and
-           certificates of analysis is actually looking for, and every item on
-           it is already stated in the second answer below. */
-        plate={{
-          src: '/eid/qc-lab.jpg',
-          alt: t(locale, 'A technician at an optical inspection system in a quality laboratory, examining a diamond crystal shown magnified on the instrument screen'),
-          caption: t(locale, 'ISO 9001 certificate, certificate of analysis per lot, retention samples, safety data sheets and Kimberley Process compliance — all available on request.'),
-        }}
+        /* No plate. Uri's V1 note strips the FAQ back to a compact list of
+           questions — the picture (a technician at an optical inspection rig)
+           was half the block's height and said nothing the answers do not. The
+           document set it used to caption is stated in full in the second
+           answer below, which is where a buyer looking for it will be. */
         eyebrow={t(locale, 'Frequently asked')}
         title={t(locale, 'Straight answers about the material.')}
         desc={t(locale, 'The questions technical buyers ask before they qualify a superabrasive supplier. If yours is not here, ask us and someone who works with the material will answer.')}

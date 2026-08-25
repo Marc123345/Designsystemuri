@@ -35,7 +35,7 @@ const QcBanner = ({ eyebrow, title, desc, checks, ctaLabel, ctaHref }: { eyebrow
       <div className="py-14 lg:py-16">
         <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-14">
           <div className="lg:col-span-7">
-            <div className="inline-flex items-center gap-1.5 border border-white/20 px-3.5 py-1.25">
+            <div className="rounded-control inline-flex items-center gap-1.5 border border-white/20 px-3.5 py-1.25">
               <span className="bg-primary-1 size-2"></span>
               <span className="text-sm text-white">{eyebrow}</span>
             </div>

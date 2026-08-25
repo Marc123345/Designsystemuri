@@ -110,7 +110,7 @@ const ChapterRun = ({ frames, note }: { frames: Frame[]; note?: string }) => {
             <>
               <div className="overflow-hidden">
                 <div className="transition-transform duration-1000 ease-out" style={line('100ms')}>
-                  <div className="inline-flex items-center gap-1.5 border border-white/15 px-3.5 py-1.25">
+                  <div className="rounded-control inline-flex items-center gap-1.5 border border-white/15 px-3.5 py-1.25">
                     <span className="bg-primary-1 size-2" />
                     <span className="text-sm text-white">{frame.eyebrow}</span>
                   </div>

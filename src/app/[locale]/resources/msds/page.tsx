@@ -1,5 +1,4 @@
 import { RichText } from '@/components/RichText'
-import Marquee from '@/components/Marquee'
 import { PageHero, QuoteSection } from '@/components/sections'
 import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
@@ -79,22 +78,6 @@ not a lead magnet. */}
       {/* The band that closes About, Quality and Contact, so the resources
           pages end on the site's rhythm rather than dropping straight from a
           list of links into the contact block. */}
-      <Marquee
-        items={[
-          t(locale, 'Handling'),
-          t(locale, 'Storage'),
-          t(locale, 'Transport'),
-          t(locale, 'Regulatory'),
-        ]}
-        secondary={[
-          t(locale, 'Natural Diamond'),
-          t(locale, 'Synthetic Diamond'),
-          t(locale, 'CBN'),
-          t(locale, 'Free to download'),
-          t(locale, 'No form, no login'),
-        ]}
-      />
-
       <QuoteSection
         eyebrow={t(locale, 'Need a safety document not listed?')}
         title={t(locale, "Need a safety document that isn't listed?")}

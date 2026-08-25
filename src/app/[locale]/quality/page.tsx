@@ -1,7 +1,5 @@
 import { PageHero } from '@/components/sections'
-import Marquee from '@/components/Marquee'
-import SplitSlider from '@/components/SplitSlider'
-import { ArrowButton, SectionHeading } from '@/components/ui'
+import PhotoCard from '@/components/PhotoCard'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
@@ -81,7 +79,6 @@ const controls = [
       ['Toughness Index (TI)', 'A room-temperature milling test that measures how the crystal breaks down under impact. For high-impact work where size and shape alone do not predict tool life.'],
       ['Thermal Toughness Index (TTI)', 'The same measurement after a heat cycle, for crystals that have to survive the temperatures of tool manufacturing.'],
     ],
-    imageLabel: 'T.I. milling and crush chamber equipment — photograph pending',
   },
 ] as const
 
@@ -122,97 +119,81 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
           <span className="text-default-600 text-sm">
             {t(locale, 'All laboratory testing is compliant with international FEPA, ISO 6106 and ANSI standards.')}
           </span>
-          <span className="border-default-300 text-default-900 ms-auto inline-flex items-center gap-2 border px-3 py-1.5 text-xs tracking-[0.18em] uppercase">
+          <span className="border-default-300 text-default-900 rounded-control ms-auto inline-flex items-center gap-2 border px-3 py-1.5 text-xs tracking-[0.18em] uppercase">
             <span className="bg-primary size-2" aria-hidden />
             {t(locale, 'ISO 9001:2015 certified')}
           </span>
         </div>
       </div>
 
-      {/* THE FOUR CONTROLS — the thing a buyer came for, so it opens the page
-          rather than following an argument about why the laboratory exists.
-          Two by two on desktop; each card is a photograph, a numbered heading
-          and its bullets. */}
-      {/* THE FOUR CONTROLS — the thing a buyer came for, so it opens the page
-          rather than following an argument about why the laboratory exists.
+      {/* ── THE FOUR CONTROLS, AS A BENTO ────────────────────────────────────
+          This was a SplitSlider: one control at a time, full-width photograph
+          on one side, its bullets on the other, advanced by arrows.
 
-          Was a 2x2 grid of cards. Four cards side by side means four
-          photographs at a quarter size each and four bullet lists competing for
-          the same glance — the page showed everything at once and emphasised
-          nothing. One control at a time, on the same slider About uses, gives
-          each stage a full-width photograph and its own reading, and a buyer
-          checking whether we can hold their micron spec stops on 02 and stays
-          there. */}
-      <section data-note="qc-controls" className="py-16 lg:py-24">
+          Two problems with that, and the second is the one that matters.
+
+          It hid three quarters of the page. Uri's F3 note is that a buyer has
+          to reach the four controls immediately and see them — "if they don't
+          see these four buttons, they're going to miss it fully" — and a slider
+          answers that by showing exactly one. Everything about this page is
+          organised around the four controls being the thing you came for; they
+          cannot be behind a control most readers never touch.
+
+          And it broke the rule. Images are full cover with the text over them,
+          everywhere on this site. The slider put the photograph beside its copy,
+          which made it the one block on the site working the other way round.
+
+          So: four cards, all visible, 7/5 then 5/7. No two adjacent tiles share
+          a width and the row break moves, which is what makes it a composition
+          rather than a 2x2. `weight="heavy"` on all four because these carry
+          three and four bullet pairs each — far more copy than a value card —
+          and the scrim has to cover accordingly.
+
+          Card 04 has no photograph: the T.I. milling and crush chamber shot does
+          not exist in the library. PhotoCard fills it with brand navy instead,
+          which reads as the deliberate odd tile rather than as a missing asset —
+          and it happens to suit the one control that is optional rather than run
+          on every batch. Drop a file in and it becomes a photograph with no
+          other change. */}
+      <section data-note="qc-controls" className="py-14 lg:py-20">
         <div className="container">
-          <SectionHeading
-            eyebrow={t(locale, 'Four controls')}
-            title={t(locale, 'What every batch is put through before it ships.')}
-            desc={t(
-              locale,
-              'Sizing, morphology, cleaning and final inspection. Each one is a stage with its own equipment and its own record, which is what lets us answer a question about a lot months after it left.'
-            )}
-          />
-        </div>
-      </section>
+          {/* Equal 2x2, not a bento. With the checks collapsed every card
+              carries the same amount of visible copy — a number, a title and a
+              disclosure — so unequal spans would be decoration rather than
+              hierarchy. These are four controls of equal standing; three run on
+              every batch and one is by request, and that distinction is made in
+              the card rather than by making it a different size.
 
-      {/* No eyebrow badge on this one: the SectionHeading directly above it is
-          already the label, and the slider carrying a second would be the same
-          words twice in 200px. */}
-      <SplitSlider
-        dataNote="qc-slider"
-        ghost={t(locale, 'Quality control')}
-        slides={controls.map((c) => ({
-          n: c.n,
-          title: t(locale, c.title),
-          note: 'note' in c && c.note ? t(locale, c.note) : undefined,
-          points: c.points.map(([label, body]) => [t(locale, label), t(locale, body)] as const),
-          image: 'image' in c ? c.image : undefined,
-          alt: 'alt' in c ? t(locale, c.alt) : undefined,
-          imageLabel: 'imageLabel' in c ? t(locale, c.imageLabel) : undefined,
-        }))}
-      />
-
-      {/* The standards band, in the same place About and Contact put theirs —
-          between the argument and the close. Every term here is one the four
-          controls above already name, so it is a recap in the site's loudest
-          voice rather than a new claim in a quiet one. */}
-      <Marquee
-        items={[
-          t(locale, 'FEPA'),
-          t(locale, 'ISO 6106'),
-          t(locale, 'ANSI'),
-          t(locale, 'ISO 9001:2015'),
-        ]}
-        secondary={[
-          t(locale, 'Test sieves'),
-          t(locale, 'Shape sorting'),
-          t(locale, 'Malvern PSD'),
-          t(locale, 'SEM verification'),
-          t(locale, 'Chemical cleaning'),
-          t(locale, 'Image Pro validation'),
-        ]}
-      />
-
-      {/* CTA — the page ends here, and the footer follows. */}
-      <section className="bg-primary-3 py-16 text-white lg:py-20">
-        <div className="container">
-          <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-14">
-            <div className="lg:col-span-7">
-              <h2 className="text-[26px] font-bold md:text-[32px]">{t(locale, 'Test our consistency')}</h2>
-              <p className="mt-4 max-w-[60ch] text-base leading-relaxed text-white/75">
-                {t(
-                  locale,
-                  "Don't guess on your superabrasive performance. Contact our technical team to arrange a sample batch tailored to your exact specifications."
-                )}
-              </p>
-            </div>
-            <div className="lg:col-span-5 lg:justify-self-end">
-              <ArrowButton href="/contact" label={t(locale, 'Contact us / request a sample')} />
-            </div>
+              It also means all four photographs get the same amount of room,
+              which they did not when one tile was 7 columns and its neighbour
+              5. */}
+          <div className="grid gap-6 md:grid-cols-2">
+            {controls.map((c) => (
+              <PhotoCard
+                key={c.n}
+                minHeight="min-h-[380px] lg:min-h-[440px]"
+                weight="light"
+                collapsible
+                disclosureLabel={t(locale, c.points.length === 2 ? 'Two checks' : c.points.length === 3 ? 'Three checks' : 'Four checks')}
+                eyebrow={c.n}
+                title={t(locale, c.title)}
+                points={c.points.map(([label, body]) => [t(locale, label), t(locale, body)] as const)}
+                note={'note' in c && c.note ? t(locale, c.note) : undefined}
+                image={'image' in c ? c.image : undefined}
+                alt={'alt' in c ? t(locale, c.alt) : ''}
+              />
+            ))}
           </div>
         </div>
       </section>
+
+      {/* The "Test our consistency" CTA that closed this page is gone on Marc's
+          call. Worth knowing it was in Uri's written spec (§4 of the V1 doc), so
+          if it comes back it comes back with his wording.
+
+          Nothing is orphaned by removing it: /contact is the header button on
+          every page, it is in the footer, and the floating WhatsApp control sits
+          over this page too. */}
     </>
   )
 }

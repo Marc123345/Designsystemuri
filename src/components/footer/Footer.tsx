@@ -23,7 +23,12 @@ const Footer = () => {
   const locale = useLocale() as Locale
 
   return (
-    <footer data-note="footer" id="footer" className="relative">
+    /* `rounded-t-card`, top corners only, and `overflow-hidden` so the two
+       dark panels inside are clipped by the corner rather than squaring it off
+       again. It is the mirror of the heroes: they round the edge where the
+       page continues past them, and the footer rounds the edge where the page
+       arrives at it. */
+    <footer data-note="footer" id="footer" className="rounded-t-card relative overflow-hidden">
       {/* ── SPLIT PANEL ── */}
       <div className="grid grid-cols-1 lg:grid-cols-2">
         {/* Left — the same brand blue as the header's angled block, so the top
@@ -65,7 +70,7 @@ const Footer = () => {
           {/* Persistent WhatsApp Business channel: one tap opens a chat to the
               London landline, shared across the sales team, for the buyer who
               wants a fast answer rather than a form. */}
-          <a href={site.whatsappHref} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex items-center gap-2 border border-white/15 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40">
+          <a href={site.whatsappHref} target="_blank" rel="noopener noreferrer" className="rounded-control mt-8 inline-flex items-center gap-2 border border-white/15 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40">
             <Icon icon="tabler:brand-whatsapp" className="size-5" />
             {t(locale, 'WhatsApp us')}
           </a>

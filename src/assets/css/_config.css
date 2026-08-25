@@ -11,6 +11,30 @@
     --color-primary-2: #2c3c6c;
     --color-primary-3: #1c2749;
 
+    /* ── Card radius ─────────────────────────────────────────────────────
+       Uri's note, off Strauss: 24px on the cards and on the hero.
+
+       One token rather than `rounded-[24px]` at each call site, because this
+       site had no radius at all before it — every division was a hairline and
+       every corner was square — so this is a change of language, not a tweak.
+       When it is adjusted it has to move everywhere at once, and a token is the
+       only way that stays true.
+
+       `--radius-*` under @theme generates the `rounded-card` utility. */
+    --radius-card: 24px;
+
+    /* The same decision at control scale. 24px on a 44px-tall button is a
+       pill, and a pill is a different statement from a rounded card — Strauss
+       does run pills, so that is a live option, but it is a bigger change than
+       "round the corners" and should be Uri's to make rather than a side
+       effect of this one.
+
+       12px is half the card radius: unmistakably rounded, still square-ish
+       enough to read as an industrial control. Buttons, eyebrow chips, icon
+       buttons and form fields all take it, so nothing on the site is left as
+       the one hard-edged thing. */
+    --radius-control: 12px;
+
     --color-body-bg: var(--color-white);
     --color-body-color: var(--color-slate-600);
 

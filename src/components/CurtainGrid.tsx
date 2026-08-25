@@ -47,7 +47,7 @@ export type CurtainItem = {
    like it is fading rather than retracting. */
 const CURTAIN = 'cubic-bezier(0.24,0.74,0.58,1)'
 
-const Tile = ({ item, index, open, sizes, revealed, numbered }: { item: CurtainItem; index: number; open: boolean; sizes: string; revealed: boolean; numbered: boolean }) => {
+const Tile = ({ item, index, open, sizes, revealed, numbered, aspect }: { item: CurtainItem; index: number; open: boolean; sizes: string; revealed: boolean; numbered: boolean; aspect: string }) => {
   const n = String(index + 1).padStart(2, '0')
 
   /* `revealed` is the mobile treatment applied at every width: no curtain, the
@@ -61,7 +61,7 @@ const Tile = ({ item, index, open, sizes, revealed, numbered }: { item: CurtainI
     <Link
       href={item.href}
       data-open={!revealed && open ? true : undefined}
-      className={`group focus-visible:outline-primary border-default-200 relative block aspect-3/4 overflow-hidden bg-white not-first:border-t focus-visible:outline-2 focus-visible:-outline-offset-4 md:not-first:border-t-0 md:not-first:border-s`}
+      className={`group focus-visible:outline-primary rounded-card relative block ${aspect} overflow-hidden bg-white focus-visible:outline-2 focus-visible:outline-offset-2`}
     >
       <Image src={item.image.src} alt={item.image.alt} fill sizes={sizes} className={`object-cover ${item.image.position ?? 'object-center'}`} />
 
@@ -135,12 +135,33 @@ const Tile = ({ item, index, open, sizes, revealed, numbered }: { item: CurtainI
  * Not full-bleed: the reference's `pl-0 pr-0` drops the gutter between cards but
  * its row still sits inside a max-width container, and running the tiles to the
  * viewport edges puts them out of line with the heading above them.
+ *
+ * ── The hairline grid is gone, and it had to be ─────────────────────────────
+ *
+ * These tiles used to butt against each other with no gap, separated by shared
+ * 1px borders (`not-first:border-t`, `md:not-first:border-s`) inside one
+ * outer-bordered box — the same rule-not-box device the whole site uses.
+ *
+ * Uri's 24px radius is not compatible with that, and not by a little: rounded
+ * corners on tiles that share an edge produce four little notches of background
+ * at every internal junction, which looks like a rendering fault rather than a
+ * decision. A radius needs air around the shape to read as a radius at all.
+ *
+ * So the tiles are separate cards now, on `gap-6` — 24px, deliberately the same
+ * number as the radius, which is the proportion Strauss uses between their card
+ * gap and their corner. The outer border and every internal rule came off with
+ * it; the gap does that work now.
+ *
+ * The focus ring moved with them: `-outline-offset-4` drew the ring inside the
+ * tile because there was no gap to draw it in. There is one now, so it is
+ * `outline-offset-2` and sits outside the card where it belongs.
  */
 const CurtainGrid = ({
   items,
   columns = 3,
   revealed = false,
   numbered = false,
+  aspect = 'portrait',
   sizes,
 }: {
   items: CurtainItem[]
@@ -165,14 +186,36 @@ const CurtainGrid = ({
    * suggests a ranking nobody intended.
    */
   numbered?: boolean
+  /**
+   * Tile shape. `portrait` is 3:4 and the default everywhere.
+   *
+   * `landscape` (4:3) exists for the home page's applications row, and it is
+   * the answer to a conflict between two of Uri's notes rather than a style
+   * choice. He wants applications below products in weight — "even smaller than
+   * products … because it's not so important" — and Marc wants the six hubs on
+   * an even three-and-three rather than the ragged four-then-two a 4-column
+   * grid gives six items.
+   *
+   * Both cannot be had from the column count alone: three across makes each
+   * tile WIDER than a product tile, and at 3:4 that makes the whole section
+   * taller than the range above it — the opposite of the note. Changing the
+   * card was tried before and failed, because two different cards on one page
+   * read as two different components.
+   *
+   * Same card, same treatment, shorter crop. Three across at 4:3 comes out
+   * around 350px a tile against the range's 466px, so the section lands about a
+   * third shorter than products while keeping the even rows.
+   */
+  aspect?: 'portrait' | 'landscape'
   sizes?: string
 }) => {
   const auto = columns === 4 ? '(min-width: 1024px) 23vw, (min-width: 768px) 50vw, 100vw' : '(min-width: 1024px) 31vw, (min-width: 768px) 50vw, 100vw'
+  const ratio = aspect === 'landscape' ? 'aspect-4/3' : 'aspect-3/4'
 
   return (
-    <div className={`border-default-200 grid grid-cols-1 border md:grid-cols-2 ${revealed ? '' : 'eid-tiles'} ${columns === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'}`}>
+    <div className={`grid grid-cols-1 gap-6 md:grid-cols-2 ${revealed ? '' : 'eid-tiles'} ${columns === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'}`}>
       {items.map((item, i) => (
-        <Tile key={item.href} item={item} index={i} open={i === 0} sizes={sizes ?? auto} revealed={revealed} numbered={numbered} />
+        <Tile key={item.href} item={item} index={i} open={i === 0} sizes={sizes ?? auto} revealed={revealed} numbered={numbered} aspect={ratio} />
       ))}
     </div>
   )

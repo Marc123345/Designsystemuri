@@ -30,11 +30,12 @@ type Meta = { priority: number; changeFrequency: MetadataRoute.Sitemap[number]['
 // per-slug product and application pages are generated from the data so the
 // sitemap can never drift out of sync with the routes that actually exist.
 //
-// Deliberately absent: /products (Products Overview was removed — /products
-// 301s to /#products, so listing it would advertise a redirect).
+// Deliberately absent: /products and /applications. Both index pages were
+// removed and both 301 to their home-page section (/#products, /#applications),
+// so listing either would advertise a redirect. The per-slug pages under them
+// are still here and are the real destinations.
 const paths: Record<string, Meta> = {
   '/': { priority: 1.0, changeFrequency: 'weekly' },
-  '/applications': { priority: 0.9, changeFrequency: 'weekly' },
   ...Object.fromEntries(products.map((p) => [`/products/${p.slug}`, { priority: 0.8, changeFrequency: 'monthly' } as Meta])),
   ...Object.fromEntries(applications.map((a) => [`/applications/${a.slug}`, { priority: 0.8, changeFrequency: 'monthly' } as Meta])),
   '/quality': { priority: 0.7, changeFrequency: 'monthly' },

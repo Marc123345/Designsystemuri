@@ -37,21 +37,24 @@ export type Pillar = CurtainItem & { meta: string }
 
 /* ══════════════════════════ THE SECTION ══════════════════════════ */
 
-const ProofPanel = ({ eyebrow, title, desc, pillars, ghost }: { eyebrow: string; title: string; desc?: string; pillars: Pillar[]; ghost?: string }) => (
-  <section data-note="core-values" className="bg-default-50 relative overflow-hidden py-20 lg:py-30">
+const ProofPanel = ({ title, desc, pillars, ghost }: { /** Retained for call-site compatibility; the band above carries it now. */ eyebrow?: string; title: string; desc?: string; pillars: Pillar[]; ghost?: string }) => (
+  /* Halved, per Uri's V1 note: "the whole section about half a screen, the
+     wording is what matters, not the image."
+
+     Three things came out rather than one, because padding alone would not
+     have got there: py-20/30 → py-14/20, the eyebrow chip (the band directly
+     above now carries the same words), and the lede paragraph. What is left is
+     a heading and three tiles, which is the shape he approved on Strauss. */
+  <section data-note="core-values" className="bg-default-50 relative overflow-hidden py-14 lg:py-20">
     <div className="container">
       <div className="grid items-end gap-8 lg:grid-cols-12 lg:gap-14">
         <div className="lg:col-span-7">
-          <div className="border-default-300 inline-flex items-center gap-1.5 border bg-white px-3.5 py-1.25">
-            <span className="bg-primary size-2"></span>
-            <span className="text-default-900 text-sm">{eyebrow}</span>
-          </div>
-          <h2 className="mt-4 text-[28px] font-bold md:text-[36px] lg:text-[42px]">{title}</h2>
+          <h2 className="text-[24px] font-bold md:text-[30px] lg:text-[34px]">{title}</h2>
         </div>
         {desc && <p className="text-default-600 lg:col-span-5">{desc}</p>}
       </div>
 
-      <div className="mt-14 lg:mt-18">
+      <div className="mt-10 lg:mt-12">
         <CurtainGrid items={pillars} numbered />
       </div>
     </div>

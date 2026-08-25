@@ -62,7 +62,6 @@ type Slide = {
 
 const SplitSlider = ({
   eyebrow,
-  ghost,
   slides,
   href,
   ctaLabel,
@@ -70,7 +69,8 @@ const SplitSlider = ({
 }: {
   /** Omitted where the section already carries a SectionHeading above it. */
   eyebrow?: string
-  ghost: string
+  /** Retained for call-site compatibility; no longer rendered. */
+  ghost?: string
   slides: readonly Slide[]
   href?: string
   ctaLabel?: string
@@ -80,33 +80,14 @@ const SplitSlider = ({
 
   return (
     <section data-note={dataNote} className="bg-default-100 relative isolate overflow-hidden pt-16 pb-20 lg:pt-20 lg:pb-28">
-      {/* The reference's scrollbox. Two copies so the loop has no seam; the
-          second is hidden from the accessibility tree along with the first. */}
-      <div
-        className="pointer-events-none absolute inset-x-0 top-4 -z-10 flex w-full flex-nowrap select-none lg:top-6"
-        aria-hidden
-        style={{
-          WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
-          maskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
-        }}
-      >
-        {[0, 1].map((copy) => (
-          <div
-            key={copy}
-            style={{ animationDuration: '70s', fontFamily: 'var(--font-heading)' }}
-            className="infinite-scroll-inverse flex shrink-0 items-center gap-12 pe-12 text-[clamp(3rem,8vw,7.5rem)] leading-none font-bold whitespace-nowrap uppercase motion-reduce:animate-none"
-          >
-            {[0, 1, 2].map((i) => (
-              <span
-                key={i}
-                className="bg-linear-to-b from-transparent to-white bg-clip-text text-transparent"
-              >
-                {ghost}
-              </span>
-            ))}
-          </div>
-        ))}
-      </div>
+      {/* The reference's scrollbox — a giant ghost word scrolling behind the
+          section — is gone. Uri's V1 note calls out the moving-word animations
+          twice ("reminds me of the stock market"), and this was the second of
+          the two; the first was the Marquee strip, now removed site-wide.
+
+          The `ghost` prop is kept on the signature and simply not rendered, so
+          the nine call sites did not all have to change in the same pass. It
+          reads as an unused prop deliberately, not as a leftover. */}
 
       <div className="container">
         <div className="flex items-center justify-between gap-6">
@@ -175,7 +156,7 @@ const SplitSlider = ({
                   </div>
 
                   <div className="lg:col-span-7">
-                    <div className="relative aspect-4/3 overflow-hidden lg:aspect-16/11">
+                    <div className="rounded-card relative aspect-4/3 overflow-hidden lg:aspect-16/11">
                       {slide.image ? (
                         <Image
                           src={slide.image}

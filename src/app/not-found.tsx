@@ -35,7 +35,7 @@ const NotFound = () => (
               start their search over. */}
           <p className="text-default-600 mt-7 text-sm">
             Or go to{' '}
-            <Link href="/applications" className="text-primary underline underline-offset-2">
+            <Link href="/#applications" className="text-primary underline underline-offset-2">
               applications
             </Link>{' '}
             or{' '}

@@ -95,20 +95,44 @@ export const PageHero = ({
   bgPosition?: string
   variant?: 'full' | 'band'
 }) => (
-  /* With a photograph this is the home hero: same height, same two-gradient
+  /* With a photograph this is the home hero: same treatment, same two-gradient
      scrim, same inspection panel down the right at xl, same certificate card
-     at the foot. An interior page should not be a shorter, quieter version of
-     the front page — it is the same site.
+     at the foot. An interior page should not be a different site.
 
-     Without one it stays the compact bordered header it always was, which is
-     what the product, application and resource pages still use. */
+     ── Heights, and why they are these numbers ──────────────────────────────
+     
+     Uri's V1 note is one sentence repeated across six videos: no section
+     should fill a screen, and a hero should "end around the halfway line".
+     `full` was `min-h-svh` and `band` was 62svh, so the three pages he
+     complained about hardest — About, Quality, Contact — were the three still
+     on `full`.
+
+     They are now 60svh and 52svh. `min-h` is a floor, not a cap, so nothing
+     clips: a hero whose copy needs more room still takes it. What the number
+     buys is the thing Strauss's own hero does — the next section shows above
+     the fold, which is what tells a reader the page continues and is the whole
+     mechanism behind the rhythm he is asking for.
+
+     ── The rounded foot ─────────────────────────────────────────────────────
+
+     `rounded-b-card` on both photographic variants, matching the home hero and
+     Uri's 24px. BOTTOM corners only: the band runs under the navbar to the top
+     of the viewport, where there is nothing for a radius to be a radius
+     against — which is exactly where Strauss puts theirs.
+
+     The borderless header variant keeps square corners. It is a rule under a
+     heading, not a card, and rounding a full-bleed 1px border does nothing but
+     put two small kinks at the ends of it.
+
+     Without a photograph it stays the compact bordered header it always was,
+     which is what the product, application and resource pages still use. */
   <section
     data-note="page-hero"
     className={
       bgImage
         ? variant === 'band'
-          ? 'bg-primary-3 relative isolate flex min-h-[62svh] w-full items-end overflow-hidden text-white'
-          : 'bg-primary-3 relative isolate flex min-h-svh w-full items-end overflow-hidden text-white'
+          ? 'bg-primary-3 rounded-b-card relative isolate flex min-h-[52svh] w-full items-end overflow-hidden text-white'
+          : 'bg-primary-3 rounded-b-card relative isolate flex min-h-[60svh] w-full items-end overflow-hidden text-white'
         : 'border-default-200 relative isolate overflow-hidden border-b pt-35 pb-14 lg:pt-46 lg:pb-18'
     }
   >
@@ -162,7 +186,7 @@ export const PageHero = ({
 
         <div className={bgImage ? 'mt-6 flex flex-col items-center' : 'mt-7 max-w-4xl'}>
           {eyebrow && (
-            <div className={`mb-4 inline-flex items-center gap-1.5 border px-3.5 py-1.25 ${bgImage ? 'border-white/20' : 'border-default-300 bg-white'}`}>
+            <div className={`mb-4 rounded-control inline-flex items-center gap-1.5 border px-3.5 py-1.25 ${bgImage ? 'border-white/20' : 'border-default-300 bg-white'}`}>
               <span className={`size-2 ${bgImage ? 'bg-primary-1' : 'bg-primary'}`}></span>
               <span className={`text-sm ${bgImage ? 'text-white' : 'text-default-900'}`}>{eyebrow}</span>
             </div>
@@ -606,7 +630,7 @@ export const DarkFeatureList = ({
         {/* The glass card: a translucent panel over the backdrop rather than a
 two-column split, so the claim reads as one block. */}
         <div className="bg-default-900/50 max-w-2xl border border-white/10 p-6 [backdrop-filter:blur(5px)] md:p-7.5 lg:p-12.5">
-          <div className="inline-flex items-center gap-1.5 border border-white/15 px-3.5 py-1.25">
+          <div className="rounded-control inline-flex items-center gap-1.5 border border-white/15 px-3.5 py-1.25">
             <span className="bg-primary-1 size-2"></span>
             <span className="text-sm text-white">{eyebrow}</span>
           </div>
@@ -705,7 +729,7 @@ export const Faq = ({
           <SectionHeading eyebrow={eyebrow} title={title} desc={desc} />
 
           {plate && (
-            <figure className="border-default-200 bg-default-50 mt-10 border">
+            <figure className="border-default-200 bg-default-50 rounded-card mt-10 overflow-hidden border">
               <div className="relative aspect-16/9 w-full overflow-hidden">
                 <Image src={plate.src} alt={plate.alt} fill sizes="(min-width: 1024px) 38vw, 100vw" className={`object-cover ${plate.position ?? 'object-center'}`} />
               </div>
@@ -714,10 +738,15 @@ export const Faq = ({
           )}
         </div>
 
-        <div className="border-default-200 divide-default-200 divide-y border-t lg:col-span-7">
+        {/* Cards, not a divided list. This was one bordered box with hairline
+            rules between the questions — the old rule-not-box language. On a
+            site where every other block now has a 24px edge it was the one
+            place that did not, and an accordion in particular reads better as
+            discrete objects: each question is its own thing to open. */}
+        <div className="flex flex-col gap-3 lg:col-span-7">
           {items.map((item, i) => (
-            <details key={item.q} open={i === 0} className="group">
-              <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-6 [&::-webkit-details-marker]:hidden">
+            <details key={item.q} open={i === 0} className="group border-default-200 rounded-card border bg-white px-6 open:bg-default-50/60 transition-colors">
+              <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-5 [&::-webkit-details-marker]:hidden">
                 <div className="flex items-start gap-5">
                   {/* default-500, not 400: on white, slate-400 is 2.56:1 and
                       fails 1.4.3 outright. slate-500 is 4.76:1. */}
@@ -725,14 +754,15 @@ export const Faq = ({
                   <h3 className="group-hover:text-primary group-open:text-primary text-lg transition-colors">{item.q}</h3>
                 </div>
 
-                {/* Square, like every other control in the system — this badge
-                    was the one rounded-full element on the page. */}
-                <span className="border-default-300 text-default-600 group-open:border-primary group-open:bg-primary flex size-8 shrink-0 items-center justify-center border transition-colors group-open:text-white">
+                {/* `rounded-control`, like every other control in the system.
+                    It was square when the whole site was square; it is 12px now
+                    for the same reason everything else is. */}
+                <span className="border-default-300 text-default-600 group-open:border-primary group-open:bg-primary rounded-control flex size-8 shrink-0 items-center justify-center border transition-colors group-open:text-white">
                   <Icon icon="tabler:plus" className="size-4 transition-transform duration-500 group-open:rotate-45" />
                 </span>
               </summary>
 
-              <p className="text-default-600 ps-10 pb-7 text-base">
+              <p className="text-default-600 ps-10 pb-6 text-base">
                 <RichText>{item.a}</RichText>
               </p>
             </details>
@@ -1086,7 +1116,7 @@ export const QuoteSection = ({
           </div>
 
           <div className="lg:col-span-7">
-            <div className="border-default-200 bg-default-50 border p-6 lg:p-10">
+            <div className="border-default-200 bg-default-50 rounded-card border p-6 lg:p-10">
               <QuoteForm formTitle={t(locale, formTitle)} formDesc={t(locale, formDesc)} />
             </div>
           </div>
@@ -1100,7 +1130,7 @@ export const QuoteSection = ({
 export const BannerCTA = ({ eyebrow, title, desc, ctaLabel, ctaHref, footnote }: { eyebrow: string; title: string; desc: string; ctaLabel: string; ctaHref: string; footnote?: React.ReactNode }) => (
   <section className="pb-20 lg:pb-30">
     <div className="container">
-      <div className="border-default-200 bg-default-50 border p-8 text-center lg:p-16">
+      <div className="border-default-200 bg-default-50 rounded-card border p-8 text-center lg:p-16">
         <SectionHeading eyebrow={eyebrow} title={title} desc={desc} align="center" />
         <div className="mt-9 flex justify-center">
           <ArrowButton href={ctaHref} label={ctaLabel} />

@@ -8,7 +8,23 @@ import { Icon } from '@iconify/react'
  * that slides across. Every CTA in the site goes through here so the motion and
  * the corner radius stay identical.
  */
-export const ArrowButton = ({ href, label, variant = 'primary', external = false }: { href: string; label: string; variant?: 'primary' | 'dark' | 'light'; external?: boolean }) => {
+/**
+ * `size` exists for one reason: Uri's V1 note on the home hero — the two CTAs
+ * were "a fifth of the size" they should be relative to a hero that big. Rather
+ * than scale the component and grow every button on the site, `lg` is opt-in
+ * and used by the hero only.
+ *
+ * The badge grows with the shell, and the label's hover duplicate is offset by
+ * the badge height, so both `top-7`/`top-9` pairs have to move together — that
+ * is why the offsets below are derived from `size` rather than hard-coded.
+ */
+export const ArrowButton = ({ href, label, variant = 'primary', size = 'md', external = false }: { href: string; label: string; variant?: 'primary' | 'dark' | 'light'; size?: 'md' | 'lg'; external?: boolean }) => {
+  const lg = size === 'lg'
+  const shellSize = lg ? 'gap-5 ps-8 pe-2 py-2 text-lg' : 'gap-4 ps-6 pe-1.5 py-1.5 text-base'
+  const badgeSize = lg ? 'size-12' : 'size-10'
+  const slide = lg ? { rest: 'top-9', hover: 'group-hover:-translate-y-9', arrowRest: 'end-9' } : { rest: 'top-7', hover: 'group-hover:-translate-y-7', arrowRest: 'end-7' }
+  const arrowSlide = lg ? 'group-hover:translate-x-9' : 'group-hover:translate-x-7'
+
   const shell = variant === 'primary' ? 'bg-primary text-white' : variant === 'dark' ? 'bg-default-900 text-white' : 'bg-white text-default-900 border border-default-200'
 
   const badge = variant === 'primary' ? 'bg-default-900 text-white' : variant === 'dark' ? 'bg-primary text-white' : 'bg-primary text-white'
@@ -24,18 +40,18 @@ The second copy is purely the animation's other half, so it is hidden
 from assistive tech. Without that, every CTA on the site announced and
 copy-pasted as "Request a Quote Request a Quote". */}
       <span className="relative block overflow-hidden">
-        <span className="block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:-translate-y-7">{label}</span>
-        <span aria-hidden="true" className="absolute start-0 top-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:top-0">
+        <span className={`block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] ${slide.hover}`}>{label}</span>
+        <span aria-hidden="true" className={`absolute start-0 ${slide.rest} duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:top-0`}>
           {label}
         </span>
       </span>
 
-      <span aria-hidden="true" className={`flex size-10 shrink-0 items-center justify-center ${badge}`}>
+      <span aria-hidden="true" className={`flex ${badgeSize} shrink-0 items-center justify-center rounded-[calc(var(--radius-control)-4px)] ${badge}`}>
         <span className="relative block overflow-hidden">
-          <span className="block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-x-7">
+          <span className={`block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] ${arrowSlide}`}>
             <Icon icon="tabler:arrow-narrow-right" className="flex size-6" />
           </span>
-          <span className="absolute end-7 top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:end-0">
+          <span className={`absolute ${slide.arrowRest} top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:end-0`}>
             <Icon icon="tabler:arrow-narrow-right" className="flex size-6" />
           </span>
         </span>
@@ -46,7 +62,7 @@ copy-pasted as "Request a Quote Request a Quote". */}
   // One uniform radius on the shell and a matching inset on the badge. The
   // previous mismatched corner radii ( shell,
   // badge) made the badge appear to break out of the button's corner.
-  const className = `group inline-flex items-center gap-4  ps-6 pe-1.5 py-1.5 text-base font-medium leading-none transition-all ${shell}`
+  const className = `group rounded-control inline-flex items-center ${shellSize} font-medium leading-none transition-all ${shell}`
 
   if (external) {
     return (
@@ -86,7 +102,7 @@ export const ChapterMarker = ({ index, label }: { index: string; label: string }
 export const SectionHeading = ({ eyebrow, title, desc, align = 'start', light = false }: { eyebrow?: string; title: string; desc?: string; align?: 'start' | 'center'; light?: boolean }) => (
   <div className={`max-w-3xl ${align === 'center' ? 'mx-auto text-center' : ''}`}>
     {eyebrow && (
-      <div className="border-default-300 inline-flex items-center gap-1.5 border bg-white px-3.5 py-1.25">
+      <div className="border-default-300 rounded-control inline-flex items-center gap-1.5 border bg-white px-3.5 py-1.25">
         <span className="bg-primary size-2"></span>
         <span className="text-default-900 text-sm">{eyebrow}</span>
       </div>

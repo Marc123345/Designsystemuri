@@ -18,14 +18,14 @@ interface GlobeProps {
   className?: string
 }
 
-// EID manufactures in London and supplies tool makers worldwide. London is the
-// hub (index 0); every arc originates there and reaches a market EID ships to
+// London is EID's headquarters and the hub of this globe (index 0); every arc
+// originates there and reaches a market EID ships to
 // across Europe, Asia, Africa and the Americas. These are anonymous
 // destination points, not offices and not labelled on the globe — the named
 // market list beside it was cut back to continents after Uri flagged the cities
 // as wrong.
 const CITIES = [
-  { lat: 51.5074, lng: -0.1278, name: 'London', hub: true }, // 0 — manufacturing HQ
+  { lat: 51.5074, lng: -0.1278, name: 'London', hub: true }, // 0 — headquarters, not a manufacturing site (Uri, F1/F2)
   { lat: 50.1109, lng: 8.6821, name: 'Frankfurt' }, // 1
   { lat: 45.4642, lng: 9.19, name: 'Milan' }, // 2
   { lat: 48.8566, lng: 2.3522, name: 'Paris' }, // 3

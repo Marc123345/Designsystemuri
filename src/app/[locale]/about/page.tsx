@@ -1,14 +1,11 @@
 import GlobeSection from '@/components/GlobeSection'
-import Marquee from '@/components/Marquee'
-import CurtainGrid from '@/components/CurtainGrid'
-import SplitSlider from '@/components/SplitSlider'
+import AboutMosaic from '@/components/about/AboutMosaic'
+import CoreValues from '@/components/about/CoreValues'
+import TheCompany from '@/components/about/TheCompany'
 import { PageHero } from '@/components/sections'
-import TeamGrid from '@/components/TeamGrid'
-import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
-import { applicationImage } from '@/lib/card-media'
-import { getApplications, t } from '@/lib/i18n-content'
+import { t } from '@/lib/i18n-content'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
@@ -16,7 +13,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   const { locale } = await params
   return {
     title: { absolute: 'About EID | Industrial Diamond Manufacturer, London' },
-    description: 'EID has manufactured and quality-controlled the full industrial diamond and CBN range from London for over 50 years, supplying tool makers worldwide.',
+    description: 'EID has manufactured and quality-controlled the full industrial diamond and CBN range since 1970, supplying tool makers on five continents from its London headquarters.',
     alternates: localeAlternates(locale, '/about'),
   }
 }
@@ -50,10 +47,18 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
  * It is a real EID SEM and worth keeping on disk for /quality.
  */
 /**
- * ⚠ PLACEHOLDER. Four functional roles so the layout can be reviewed — not
- * EID's org chart, and the names are deliberately absent. See the note at the
- * top of components/TeamGrid.
+ * SHELVED, NOT DELETED. Uri's F2 note on the people section is "remove it for
+ * now, but shelve the design — it may come back". So the table stays and the
+ * section that consumed it does not; putting it back is one JSX block plus the
+ * TeamGrid import, both of which still resolve.
+ *
+ * Delete this only if he decides against it outright.
+ *
+ * ⚠ PLACEHOLDER contents. Four functional roles so the layout can be reviewed
+ * — not EID's org chart, and the names are deliberately absent. See the note
+ * at the top of components/TeamGrid.
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const team = [
   { role: 'Managing Director', photoLabel: 'Portrait — Managing Director' },
   { role: 'Technical Sales', photoLabel: 'Portrait — Technical Sales' },
@@ -61,225 +66,74 @@ const team = [
   { role: 'Production Manager', photoLabel: 'Portrait — Production Manager' },
 ]
 
-/* Same order the home page runs its hubs in, so a reader meeting them twice
-   meets them in the same sequence. */
-const HUB_ORDER = ['dental', 'grinding-cutting-sawing-drilling', 'semiconductor-electronics', 'automotive-aerospace', 'tool-and-die', 'polishing-lapping']
-
 const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
   const { locale } = await params
   setRequestLocale(locale)
 
-  const apps = getApplications(locale)
-  const hubTiles = HUB_ORDER.map((slug) => apps.find((a) => a.slug === slug))
-    .filter((a): a is NonNullable<typeof a> => Boolean(a))
-    .map((a) => ({ title: a.name, href: `/applications/${a.slug}`, image: { src: applicationImage(a.slug) ?? '', alt: a.name } }))
-
   return (
     <>
+      {/* Two corrections and a demotion.
+
+          The eyebrow said "made and graded in-house" and the lede said the
+          range is manufactured "from London". Uri's F1/F2 note is explicit
+          that London is the sales headquarters and that "manufacturing in UK,
+          London" is wrong wherever it appears, so the sentence no longer
+          places manufacture anywhere — see the ⚠ in the page docblock, because
+          the positive version of that claim is still an open question for him.
+
+          "Over 50 years" becomes "Since 1970", which is the anniversary his own
+          approved home-page hero copy uses. Both were true and the site was
+          saying them in different places. */}
       <PageHero
-        eyebrow={t(locale, 'Over 50 years · the full range · made and graded in-house')}
+        eyebrow={t(locale, 'Since 1970 · the full range · graded and QC-passed in-house')}
         title={t(locale, 'About EID — Industrial Diamond Manufacturer')}
-        desc={t(locale, 'EID has manufactured and quality-controlled the full industrial diamond and CBN range from London for over 50 years, supplying tool makers worldwide.')}
+        desc={t(locale, 'EID has manufactured and quality-controlled the full industrial diamond and CBN range since 1970, supplying tool makers on five continents from its London headquarters.')}
         // ⚠ PLACEHOLDER. Openly-licensed stock, wide and short per Uri's note
         // that the top of this page wants a generic background picture. Swap the
         // file, not the code, when EID supplies its own.
         bgImage="/eid/home/about-hero.jpg"
       />
 
-      {/* THE COMPANY, as one band.
+      {/* ── WHAT CAME OUT OF THIS PAGE, AND WHY ─────────────────────────
+          Three whole sections stood between the hero and the reach block. All
+          three are gone on Uri's F1/F2 note, whose one-line summary of this
+          page was "shorter, less congestion, simpler, more to the point of who
+          we are and our advantages".
 
-          This was a four-frame pinned scroll run (ChapterRun) with a full
-          duplicate of its content below it as the mobile and reduced-motion
-          fallback, then a swipeable three-card production model, then a
-          full-bleed dark QC block, then a wireframe photograph of the QC lab.
-          About six screens, all of it before the reader reached who EID
-          actually serves.
+           · WHO WE SERVE — six industry hub cards under a ninety-word customer
+             sentence. His words: "very vague … doesn't give much". The same six
+             hubs are on the home page and in the mega-menu, so nothing became
+             unreachable.
 
-          Uri's note was that the page should be "shorter with less congestion,
-          simpler and more to the point of who we are and our advantages,
-          removing the qc or production steps", and that this run in particular
-          should keep frames one and three, drop frame two, and merge what is
-          left into one thin banner with no scrolling. That is this block.
+           · INSIDE THE FACILITY — a four-slide run through sieving, Malvern
+             PSD, microscope checks and SEM morphology. That is the Quality
+             page, made twice; his note is that QC and production-step content
+             belongs there and only there. /quality is linked from the header,
+             the footer and the reach block below.
 
-          What came out, and why it stays out:
-           - The production model cards. They set out which parts of the range
-             are made from raw in London and which are made to EID's
-             specification elsewhere — the same thing that came out of the home
-             FAQ, and dangerous for the same reason.
-           - The QC section and the QC laboratory photograph. Both belong on
-             /quality, which is linked from here, the header and the footer.
+           · THE PEOPLE — the team grid. "Remove for now, but shelve it": he is
+             undecided rather than against. TeamGrid and the `team` table are
+             left in the tree intact so putting it back is one JSX block, not a
+             rebuild.
 
-          The global-reach wording Uri asked to bring across from the previous
-          site now sits on the reach band at the foot of the page. */}
-      {/* WHO WE SERVE.
+          What replaces them is what he asked for by name off Strauss: a
+          numbers strip lengthways under the intro, then core values. The
+          heritage wording from the old site stays where it already is, on the
+          reach block — merging it there is the "one thin banner, no scrolling"
+          he asked for, and it lands directly above the closing CTA. */}
+      {/* Strauss's About, in their order: the company statement, the numbers,
+          vision and mission, then the values. Uri asked for the numbers strip
+          and the values off their page by name; these are the two blocks
+          between them that make the sequence work — a page that opens on four
+          figures is a page that has asserted before it has said anything. */}
+      <TheCompany />
 
-          This was a heading over one ninety-word paragraph that named four
-          kinds of customer, five regions and six application areas in a single
-          breath, and then — briefly — four numbered text boxes, which was
-          structure without being anything to look at.
+      {/* The numbers, the photographs and the two statements are ONE block, not
+          three stacked rows — which is the thing that is easy to get wrong
+          about Strauss's page. See the diagram at the top of AboutMosaic. */}
+      <AboutMosaic />
 
-          The industries are the point of the section and the site already
-          photographs them: the same six hub cards the home page runs, in the
-          same order, linking to the same pages. A reader meets a recognisable
-          card rather than a list, and every one of them is a way further in.
-
-          The customer sentence stays above it whole — it says what those
-          customers actually make, which the hub names do not — and the
-          geography stays below, because it applies to all six rather than to
-          any one. */}
-      <section className="py-20 pt-14 lg:py-30">
-        <div className="container">
-          <div className="grid items-end gap-8 lg:grid-cols-12 lg:gap-14">
-            <div className="lg:col-span-7">
-              <div className="border-default-300 inline-flex items-center gap-1.5 border bg-white px-3.5 py-1.25">
-                <span className="bg-primary size-2"></span>
-                <span className="text-default-900 text-sm">{t(locale, 'Who we serve')}</span>
-              </div>
-              <h2 className="mt-4 text-[28px] font-bold md:text-[36px] lg:text-[42px]">{t(locale, 'Trusted by tool makers across industries and continents.')}</h2>
-            </div>
-            <p className="text-default-600 lg:col-span-5">
-              {t(
-                locale,
-                'Our customers convert raw diamond and CBN into finished tools: diamond and CBN grinding and dressing tool makers, dental bur and rotary instrument producers, ultra-precision tool makers for optics and watch components, and flexible-abrasive manufacturers for glass and stone.'
-              )}
-            </p>
-          </div>
-
-          <div className="mt-14 lg:mt-18">
-            <CurtainGrid items={hubTiles} revealed />
-          </div>
-
-          <p className="text-default-500 mt-10 max-w-[720px] text-base">
-            {t(
-              locale,
-              'We supply them across Europe, the Middle East, Asia, the Americas, and beyond.'
-            )}
-          </p>
-        </div>
-      </section>
-
-      {/* The strip, between the industries and the facility claim.
-
-          It sat directly under the hero for a moment, in the slot the three
-          "Manufacturer, not distributor" cards used to hold. Wrong place: the
-          hero now runs full height with the certificate at its foot, and a
-          moving band immediately under that is two attention-grabbing things
-          back to back with nothing read in between. Its job is to break up the
-          run of sections, so it goes back between them.
-
-          Inverted from the home page on purpose. There the range is solid and
-          the company sits behind it, because a buyer arrives looking for a
-          material. Here it is the other way round — this is the page about who
-          EID is, so the company line leads and the range passes behind it.
-          Same component, opposite emphasis, so the two pages do not read as
-          the same band pasted twice. */}
-      <Marquee
-        items={[
-          t(locale, 'Made in London'),
-          t(locale, 'Since 1970'),
-          t(locale, 'ISO 9001 certified'),
-          t(locale, 'In-house QC laboratory'),
-          t(locale, 'Manufacturer, not distributor'),
-        ]}
-        secondary={[
-          t(locale, 'Natural Diamond Grit'),
-          t(locale, 'Micron Powder'),
-          t(locale, 'CBN'),
-          t(locale, 'PCBN'),
-          t(locale, 'CVD Single Crystal'),
-          t(locale, 'MCD'),
-          t(locale, 'PCD Blanks'),
-          t(locale, 'Metal Bond'),
-          t(locale, 'Resin Bond'),
-        ]}
-      />
-
-      {/* INSIDE THE FACILITY — dawork's skill-area, in EID's vocabulary.
-
-          The reference is section three of the template's services page: a dark
-          band, media down one side, eyebrow / heading / paragraph down the
-          other. This band had drifted to copy-left and a single photograph
-          right, which is the same components in the wrong order and half the
-          presence.
-
-          Media leads now, as the reference does. Four frames rather than one,
-          because the section's claim is that everything happens here and one
-          picture of one bench cannot carry that: the metrology bench runs wide
-          across the top, and the loupe, the microscope and the sieve stack sit
-          under it as a contact sheet. Three operations and the room they happen
-          in, which is the sentence beside them.
-
-          The reference's percentage skill bars stay out, as they have from the
-          first build. They are decoration there and nobody checks them; on a
-          page whose argument is that EID's figures are real and documented, an
-          invented competence score is the first thing a quality department
-          pulls on. */}
-      <SplitSlider
-        dataNote="facility"
-        eyebrow={t(locale, 'Inside the facility')}
-        ghost={t(locale, 'Inside the facility')}
-        href="/quality"
-        ctaLabel={t(locale, 'How we test it')}
-        slides={[
-          {
-            n: '01',
-            title: t(locale, 'Sized against a certified stack.'),
-            desc: t(
-              locale,
-              'Mechanical test sieves separate diamond grit into uniform sizes, and shape-sorting tables split the sharp, fast-cutting grains from the tough, blocky ones. The grade you order is the grade that leaves.'
-            ),
-            image: '/eid/facility/sieve-stack-astm-e11.png',
-            alt: t(locale, 'A stack of ASTM E11 test sieves used to grade diamond grit to size'),
-          },
-          {
-            n: '02',
-            title: t(locale, 'Measured, then measured again.'),
-            desc: t(
-              locale,
-              'Micron and sub-micron sizes are classified by sedimentation and centrifugation, and every lot is run on Malvern particle size distribution equipment. The curve is a document, not an estimate.'
-            ),
-            image: '/eid/facility/hero-metrology-lab.png',
-            alt: t(
-              locale,
-              'Two technicians at a measuring microscope in the metrology laboratory, a diamond crystal shown magnified on the screen beside them'
-            ),
-          },
-          {
-            n: '03',
-            title: t(locale, 'Someone looks at the material.'),
-            desc: t(
-              locale,
-              'Microscope checks run throughout production, monitoring batch appearance, colour consistency and crystal structure. Equipment reports the numbers; a grader still confirms the material behind them.'
-            ),
-            image: '/eid/facility/diamond-grading-loupe.png',
-            alt: t(locale, 'A grader examining diamond grit through a loupe'),
-          },
-          {
-            n: '04',
-            title: t(locale, 'Shape checked crystal by crystal.'),
-            desc: t(
-              locale,
-              'Scanning electron microscopy inspects final grain morphology and confirms nothing oversized or undersized got through. Image analysis records size distribution and shape factor together.'
-            ),
-            image: '/eid/facility/crystal-microscopy.png',
-            alt: t(locale, 'Diamond crystals under the microscope during morphology inspection'),
-          },
-        ]}
-      />
-
-      <section data-note="team" className="py-20 lg:py-30">
-        <div className="container">
-          <SectionHeading
-            eyebrow={t(locale, 'The people')}
-            title={t(locale, 'You will be dealing with someone who works with the material.')}
-            desc={t(locale, 'A small team, reachable directly. The person who answers your specification question is the person who grades against it.')}
-          />
-
-          <div className="mt-14">
-            <TeamGrid members={team} />
-          </div>
-        </div>
-      </section>
+      <CoreValues />
 
       {/* REACH — the regions named above, made visible: London hub with arcs
           out to the continents EID ships to.
@@ -290,9 +144,26 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
           conversion prompt on one page. */}
       <GlobeSection
         eyebrow={t(locale, 'Where our material ships')}
-        title={t(locale, 'From one London facility to five continents.')}
-        desc={t(locale, 'With its headquarters in London, England, and worldwide marketing partners, E.I.D has established a global reputation for quality, consistency and superior service. Today E.I.D has customers on every continent. Our sales team speaks more than ten dialects, but we all speak the same language — the right product at the right price, when and where you require it.')}
+        title={t(locale, 'From our own facilities to five continents.')}
+        /* The heritage wording that used to sit here has moved to TheCompany
+           at the top of the page, which is where a company statement belongs.
+           Repeating it at the foot would have been the same paragraph twice on
+           one screen of scrolling. What is left is the sentence this section
+           actually needs: where the material goes. */
+        desc={t(locale, 'Sales and technical support run from London. Manufacturing, grading and QC run through our own facilities to one specification, and the material ships to tool makers on five continents.')}
       />
+
+      {/* White between the reach band and the footer.
+
+          Without it the two rounded edges meet with nothing between them, and a
+          24px curve against another dark block at zero distance still reads as
+          a notch rather than as a corner — the radius needs some of the page's
+          own ground visible to be legible as a radius.
+
+          This is a spacer rather than padding on either neighbour on purpose:
+          GlobeSection does not know what follows it, and the footer is on every
+          page, most of which end on white and need nothing. */}
+      <div aria-hidden className="h-16 lg:h-24" />
     </>
   )
 }

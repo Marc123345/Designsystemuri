@@ -159,7 +159,7 @@ carries it, so a second identical button read as repetition. */}
         <div className="container">
           <div className="grid items-end gap-8 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-7">
-              <div className="border-default-300 inline-flex items-center gap-1.5 border bg-white px-3.5 py-1.25">
+              <div className="border-default-300 rounded-control inline-flex items-center gap-1.5 border bg-white px-3.5 py-1.25">
                 <span className="bg-primary size-2"></span>
                 <span className="text-default-900 text-sm">{app.productsTitle}</span>
               </div>

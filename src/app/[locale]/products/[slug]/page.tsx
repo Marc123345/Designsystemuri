@@ -1,5 +1,4 @@
 import { RichParagraphs, RichText } from '@/components/RichText'
-import Marquee from '@/components/Marquee'
 import Wireframe from '@/components/Wireframe'
 import { CatalogSpecs, CrossLinks, DarkFeatureList, JumpNav, PageHero, ProductPhoto, QuoteSection, SpecTable } from '@/components/sections'
 import { ArrowLink, SectionHeading } from '@/components/ui'
@@ -183,24 +182,6 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
           and the credentials pass behind: someone this deep into a product
           page has the material, and what they are weighing is whether it is
           used in work like theirs and who stands behind it. */}
-      <Marquee
-        items={[
-          t(locale, 'Dental'),
-          t(locale, 'Semiconductor & electronics'),
-          t(locale, 'Automotive & aerospace'),
-          t(locale, 'Tool & die'),
-          t(locale, 'Grinding & cutting'),
-          t(locale, 'Polishing & lapping'),
-        ]}
-        secondary={[
-          t(locale, 'Graded in-house'),
-          t(locale, 'Coated in-house'),
-          t(locale, 'ISO 9001 certified'),
-          t(locale, 'Certificate of analysis per lot'),
-          t(locale, 'Retention sample kept'),
-        ]}
-      />
-
       <DarkFeatureList
         bgLabel="Background image — QC laboratory"
         eyebrow={t(locale, 'Proven on every lot')}

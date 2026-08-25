@@ -48,7 +48,7 @@ const Wireframe = ({
   const chip = dark ? 'border border-white/15 bg-default-950/70 text-white/50' : 'bg-white/90 text-default-500'
 
   return (
-    <div data-note={`image:${label}`} role="img" aria-label={`Placeholder image: ${label}`} className={`relative w-full overflow-hidden border border-dashed ${frame} ${aspect} ${className}`}>
+    <div data-note={`image:${label}`} role="img" aria-label={`Placeholder image: ${label}`} className={`rounded-card relative w-full overflow-hidden border border-dashed ${frame} ${aspect} ${className}`}>
       {/* Diagonals mark the slot as deliberately empty rather than a failed load. */}
       <svg className={`absolute inset-0 size-full ${diagonals}`} preserveAspectRatio="none" viewBox="0 0 100 100" aria-hidden="true">
         <line x1="0" y1="0" x2="100" y2="100" stroke="currentColor" strokeWidth="0.4" vectorEffect="non-scaling-stroke" />

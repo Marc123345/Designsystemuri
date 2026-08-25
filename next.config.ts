@@ -69,6 +69,12 @@ const nextConfig: NextConfig = {
   redirects: async () => [
     { source: "/products", destination: "/#products", permanent: true },
     { source: "/:locale(de|es|it|ja|fr|ko|zh)/products", destination: "/:locale#products", permanent: true },
+    // /applications went the same way as /products, and for the same reason:
+    // the home page already lists all six hubs, so an index page that listed
+    // them again was a click between the reader and the hub they wanted. Both
+    // were deployed, so both redirect rather than 404.
+    { source: "/applications", destination: "/#applications", permanent: true },
+    { source: "/:locale(de|es|it|ja|fr|ko|zh)/applications", destination: "/:locale#applications", permanent: true },
   ],
 };
 

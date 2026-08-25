@@ -37,7 +37,7 @@ const PhotoCarousel = ({ eyebrow, title, desc, items }: { eyebrow?: string; titl
   const arrow = (dir: 'prev' | 'next') => (
     <button type="button" className={`${dir === 'prev' ? prev : next} group static! flex`} aria-label={dir === 'prev' ? t(locale, 'Previous photos') : t(locale, 'Next photos')}>
       <span className={`bg-default-100 text-default-900! hover:bg-default-200 inline-flex! size-12! cursor-pointer items-center justify-center transition-all ${dir === 'prev' ? '' : ''}`}>
-        <span className="relative block overflow-hidden">
+        <span className="rounded-card relative block overflow-hidden">
           <span className={`block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] ${dir === 'prev' ? 'group-hover:-translate-x-7' : 'group-hover:translate-x-7'}`}>
             <Icon icon={dir === 'prev' ? 'tabler:arrow-narrow-left' : 'tabler:arrow-narrow-right'} className="flex size-6" />
           </span>

@@ -32,7 +32,7 @@ const LanguageSwitcher = () => {
           the only thing on screen to say — matched nothing. Including the code
           keeps the purpose clear for a screen reader and keeps the visible word
           addressable. */}
-      <button type="button" className="hs-dropdown-toggle border-default-200 text-default-800 hover:border-primary hover:text-primary flex items-center gap-1.5 border px-3 py-2 text-sm font-semibold transition-all" aria-haspopup="menu" aria-expanded="false" aria-label={`Language: ${LABELS[active]}`}>
+      <button type="button" className="hs-dropdown-toggle border-default-200 text-default-800 hover:border-primary hover:text-primary rounded-control flex items-center gap-1.5 border px-3 py-2 text-sm font-semibold transition-all" aria-haspopup="menu" aria-expanded="false" aria-label={`Language: ${LABELS[active]}`}>
         <Icon icon="tabler:world" className="size-4" />
         {LABELS[active]}
         <Icon icon="tabler:chevron-down" className="size-3.5 opacity-70" />

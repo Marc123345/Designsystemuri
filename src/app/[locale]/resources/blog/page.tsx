@@ -1,4 +1,3 @@
-import Marquee from '@/components/Marquee'
 import { PageHero, QuoteSection } from '@/components/sections'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
@@ -80,23 +79,6 @@ const BlogPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
       {/* The band that closes About, Quality and Contact, so the resources
           pages end on the site's rhythm rather than dropping straight from a
           list of links into the contact block. */}
-      <Marquee
-        items={[
-          t(locale, 'Application notes'),
-          t(locale, 'Technical insight'),
-          t(locale, 'Grade selection'),
-          t(locale, 'From the laboratory'),
-        ]}
-        secondary={[
-          t(locale, 'Natural Diamond Grit'),
-          t(locale, 'Micron Powder'),
-          t(locale, 'CBN'),
-          t(locale, 'PCD Blanks'),
-          t(locale, 'Metal Bond'),
-          t(locale, 'Resin Bond'),
-        ]}
-      />
-
         <QuoteSection eyebrow={t(locale, 'Have a technical question?')} title={t(locale, 'Ask our team, we may write about it.')} desc={t(locale, "Send us your application question and we'll point you to the right grade, or cover it in a future guide.")} />
       </div>
     </>

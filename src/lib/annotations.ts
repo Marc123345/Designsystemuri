@@ -66,13 +66,6 @@ export const annotations: Record<string, Annotation> = {
       'Borderless cards separated by rules rather than boxes, so eight items read as a catalogue instead of clutter. This is the same grid the applications use, at a different column count.',
     ],
   },
-  'why-eid': {
-    title: 'Why EID — the graduated claim',
-    body: [
-      'This block carries the honesty that the whole site rests on: natural diamond is manufactured fully in-house; synthetic grades are made to EID’s specification and then finished, graded and released in London.',
-      'Saying which is which is the credibility. Flattening it into “we manufacture everything” is the one claim a serious buyer would catch, and losing that argument loses the account.',
-    ],
-  },
   'core-values': {
     title: 'Why tool makers qualify EID — claims with their evidence',
     body: [
@@ -93,18 +86,11 @@ export const annotations: Record<string, Annotation> = {
     title: 'QC proof band',
     body: ['Placed immediately after the range and the applications, because “will it be the same next order?” is the question that follows “do you make it?”.', 'Dark, full-bleed, and used sparingly — this treatment appears once per page at most, so it still reads as emphasis.'],
   },
-  marquee: {
-    title: 'Material vocabulary, not a logo wall',
-    body: [
-      'The obvious move here is a row of customer logos. EID has not given permission to name customers, so a logo wall would claim endorsements that do not exist.',
-      'Instead the strip carries the language of the range — ISO 9001, CBN, PCBN, CVD, MCD, Made in London — which does the same scanning job and claims nothing untrue.',
-    ],
-  },
   reach: {
-    title: 'Reach — one facility, four continents',
+    title: 'Reach — where EID is, and where it supplies',
     body: [
-      'The commercial point is not that EID is everywhere; it is that everything comes from one facility to one specification. The copy says exactly that.',
-      'Twelve real cities are listed rather than a vague “worldwide”, grouped by the four regions the copy actually claims.',
+      'Two claims that were previously flattened into one row of six identical tiles, which is how "Manufacturing · UK" ended up sitting on London. They are now told apart: London is the headquarters, the Middle East facility is where manufacturing happens, and the five continents are places EID ships to.',
+      'Per Uri (F1/F2) the manufacturing country is deliberately not named. The five continents still need his confirmation — see the note in GlobeSection.tsx.',
     ],
   },
   faq: {

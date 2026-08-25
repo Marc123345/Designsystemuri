@@ -1,5 +1,4 @@
 import { RichText } from '@/components/RichText'
-import Marquee from '@/components/Marquee'
 import { PageHero, QuoteSection } from '@/components/sections'
 import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
@@ -81,27 +80,6 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
       {/* The band that closes About, Quality and Contact, so the resources
           pages end on the site's rhythm rather than dropping straight from a
           list of links into the contact block. */}
-      <Marquee
-        items={[
-          t(locale, 'Grades'),
-          t(locale, 'Sizes'),
-          t(locale, 'Concentrations'),
-          t(locale, 'Bond systems'),
-          t(locale, 'Tolerances'),
-        ]}
-        secondary={[
-          t(locale, 'Natural Diamond Grit'),
-          t(locale, 'Micron Powder'),
-          t(locale, 'CBN'),
-          t(locale, 'PCBN'),
-          t(locale, 'CVD Single Crystal'),
-          t(locale, 'MCD'),
-          t(locale, 'PCD Blanks'),
-          t(locale, 'Metal Bond'),
-          t(locale, 'Resin Bond'),
-        ]}
-      />
-
       <QuoteSection
         eyebrow={t(locale, 'Need a spec not listed?')}
         title={t(locale, "Need a spec that isn't listed here?")}

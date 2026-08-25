@@ -54,7 +54,8 @@ const TRANSPARENT_ON = [
   '/about',
   '/quality',
   '/contact',
-  '/applications',
+  // The /applications index is gone; the per-hub pages under it remain and
+  // still open on a photograph.
   '/applications/',
   '/mesh-qc',
   '/micron-qc',
@@ -115,7 +116,11 @@ const Navbar = () => {
     const entries = menu === 'products' ? productMenu : menu === 'applications' ? applicationMenu : resourceMenu
     return (
       <div
-        className="hs-dropdown-menu hs-dropdown-open:opacity-100 border-default-200 absolute start-1/2 top-full z-50 hidden -translate-x-1/2 border bg-white opacity-0 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.5)] transition-[opacity,margin] duration-300 before:absolute before:start-0 before:-top-4 before:h-4 before:w-full"
+        /* The mega-menu floats over the page, so it is a card in the same
+              sense every other floating surface is — `rounded-card` and
+              `overflow-hidden` so the 4px brand rule at its head is clipped by
+              the corner rather than poking out of it. */
+        className="hs-dropdown-menu hs-dropdown-open:opacity-100 border-default-200 rounded-card absolute start-1/2 top-full z-50 hidden -translate-x-1/2 overflow-hidden border bg-white opacity-0 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.5)] transition-[opacity,margin] duration-300 before:absolute before:start-0 before:-top-4 before:h-4 before:w-full"
         role="menu"
       >
         <div className="bg-primary h-[4px]" />
@@ -145,10 +150,29 @@ const Navbar = () => {
           overHero ? 'eid-nav-over-hero border-transparent bg-transparent' : 'border-default-200 bg-white'
         }`}
       >
-        {/* Angled brand block behind the logo. */}
+        {/* Angled brand block behind the logo — and it only exists when the bar
+            has a ground of its own.
+
+            The lockup is `logo-white.png`, a reverse mark, so it needs
+            something dark under it. Once the bar turns white on scroll, that
+            something is this block. Over a hero it is not: the bar is
+            transparent, the logo is already sitting on a dark photograph or on
+            the film, and the block was a second navy shape pasted over a frame
+            that was navy anyway — a hard clipped edge cutting across the
+            picture for no reason, which is exactly what it looks like on the
+            new video hero.
+
+            So it fades with `overHero`, on the same 300ms the bar uses to swap
+            its background, and the two changes read as one movement rather than
+            a plate popping in.
+
+            Kept mounted rather than conditionally rendered: unmounting it
+            cannot be transitioned, and it would snap. `pointer-events-none` is
+            still on it, so an invisible block over the logo link costs
+            nothing. */}
         <div
           aria-hidden
-          className="bg-primary pointer-events-none absolute top-0 left-0 h-full"
+          className={`bg-primary pointer-events-none absolute top-0 left-0 h-full transition-opacity duration-300 ${overHero ? 'opacity-0' : 'opacity-100'}`}
           style={{ width: 'clamp(200px, 22vw, 340px)', clipPath: 'polygon(0 0, 85% 0, 100% 100%, 0% 100%)' }}
         />
 
@@ -199,7 +223,7 @@ const Navbar = () => {
                 visitor who wants to ask a technical question, chase a sample or
                 find the phone number should not have to read it as a
                 commitment to buy. */}
-            <Link href="/contact" className="bg-primary hover:bg-primary-1 hidden items-center gap-2.5 px-6 py-3.5 text-[0.9rem] leading-none font-semibold text-white transition-colors md:inline-flex">
+            <Link href="/contact" className="bg-primary hover:bg-primary-1 rounded-control hidden items-center gap-2.5 px-6 py-3.5 text-[0.9rem] leading-none font-semibold text-white transition-colors md:inline-flex">
               {t(locale, 'Contact')}
               <Icon icon="tabler:arrow-narrow-right" className="size-5" />
             </Link>
@@ -210,7 +234,7 @@ const Navbar = () => {
               aria-expanded="false"
               aria-controls="mobile-menu"
               data-hs-overlay="#mobile-menu"
-              className="border-default-200 hover:bg-primary hover:border-primary inline-flex size-11 items-center justify-center border transition-colors hover:text-white lg:hidden"
+              className="border-default-200 hover:bg-primary hover:border-primary rounded-control inline-flex size-11 items-center justify-center border transition-colors hover:text-white lg:hidden"
               aria-label="Open menu"
             >
               <Icon icon="tabler:menu-2" className="size-6" />
@@ -221,7 +245,10 @@ const Navbar = () => {
 
       <div
         id="mobile-menu"
-        className="hs-overlay hs-overlay-open:translate-y-0 hs-overlay-open:top-[76px] absolute top-0 z-[110] max-h-[80vh] w-full -translate-y-full transform overflow-y-auto bg-white shadow-xl transition-all duration-300 lg:hidden"
+        /* Bottom corners only. The mobile overlay drops from under the bar
+            and its top edge is flush against it, so a radius up there would be
+            a gap; the same reasoning as the heroes. */
+        className="hs-overlay hs-overlay-open:translate-y-0 hs-overlay-open:top-[76px] rounded-b-card absolute top-0 z-[110] max-h-[80vh] w-full -translate-y-full transform overflow-y-auto bg-white shadow-xl transition-all duration-300 lg:hidden"
         role="dialog"
         // Preline gives this role; a dialog with no accessible name is
         // announced as just "dialog", so a screen reader user has no idea what

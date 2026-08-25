@@ -1,141 +1,175 @@
-import { Link } from '@/i18n/navigation'
-import type { Locale } from '@/i18n/routing'
-import { ArrowButton } from '@/components/ui'
-import { t } from '@/lib/i18n-content'
-import { useLocale } from 'next-intl'
 import HeroMark from '@/components/HeroMark'
 import HeroTitle from '@/components/HeroTitle'
-import Image from 'next/image'
 
 /**
- * The hero: one statement, two pictures, and a card that hangs into the page.
+ * The hero: a film, then the statement under it.
  *
- * Built to the Construz `hero-1` shape Marc marked up, restated in this site's
- * vocabulary rather than copied:
+ * ── Why the type is off the footage ─────────────────────────────────────────
  *
- *  - full-bleed photograph with the header sitting on it rather than above it;
- *  - copy held in the left half;
- *  - a hard-edged image panel down the right, divided by a rule of brand colour
- *    (the reference uses a 5px orange border; here it is a 2px brand rule,
- *    because every other division on this site is a hairline);
- *  - and the reference's signature move — a chamfered card positioned so it
- *    hangs out of the section and overlaps the one below.
+ * This has been built both ways. Strauss lays their type over the film, and
+ * that version existed here and looked like theirs. Marc's call is the stack,
+ * and the reasons hold up:
  *
- * ── Full height ─────────────────────────────────────────────────────────────
+ *  · The clip plays clean. Nothing sits on it, so it needs no scrim, and it
+ *    shows at full strength instead of through a 45% brand wash plus a bottom
+ *    gradient. On a 720p source that is the difference between a video you can
+ *    see and one you can tell is there.
+ *  · The type gets a flat ground, so it is legible whatever the frame is doing
+ *    behind it — which matters on a 15-second loop nobody graded for text.
  *
- * `min-h-svh` at every breakpoint now, not `92svh` on mobile. The old value
- * deliberately let the products band show a sliver above the fold; the brief
- * here is that the hero owns the screen until you scroll, and the overhanging
- * card does the job that sliver was doing — it is the thing that says the page
- * continues.
+ * The cost is height and the Strauss likeness. Both were accepted.
  *
- * `svh` rather than `vh` for the same reason as before: on mobile browsers
- * `vh` counts the retracting chrome, so a 100vh hero is clipped on first paint
- * and only fits after a scroll.
+ * ── The join is the whole problem ───────────────────────────────────────────
  *
- * The chamfered card at the bottom-right was built to hang out of the section
- * into the one below, then removed, and is now back sitting inside the hero
- * rather than overhanging it. It carries the ISO 9001:2015 certificate; see the
- * two warnings at that block before changing what is in it or how large it is.
+ * A video band with a coloured box under it reads as two sections, which is
+ * exactly the fault that got the first SectionBanner pulled off this page.
+ * Three things stop it:
+ *
+ *  1. The section carries `bg-primary-3` and the copy block paints no ground of
+ *     its own — it is the same surface, continuing.
+ *  2. The foot of the film dissolves INTO that ground rather than ending on a
+ *     cut. Getting that seam-free took three attempts; see the note on the
+ *     gradient below, because the numbers in it are not arbitrary.
+ *  3. The mark, the headline and the lede sit in one centred column on the same
+ *     axis the film is composed on.
+ *
+ * ── The mark has no blend here ──────────────────────────────────────────────
+ *
+ * `mix-blend-mode: overlay` is the point of HeroMark — the footage reads
+ * through the star so the mark belongs to the image. Over flat navy there is
+ * nothing to read through and overlay just renders it muddy, so `blend={false}`.
  */
 const Hero = ({ title, desc }: { title: string; desc: string }) => {
-  const locale = useLocale() as Locale
-
-
   return (
-    <section data-note="hero" className="bg-primary-3 relative isolate flex min-h-svh w-full items-end overflow-hidden">
-      {/* The ground. `priority` because this is the LCP element on the
-          highest-traffic page in the site — left lazy it is fetched after the
-          CSS and the fonts, which is exactly the wrong order for the one image
-          the score is measured against.
+    /* `rounded-b-card` — Uri's 24px, bottom corners only. The band runs under
+       the navbar to the top of the viewport, where there is nothing for a
+       radius to be a radius against, which is exactly where Strauss puts
+       theirs. The entry cards below sit on the page's own white ground, so this
+       corner is what ends the hero. */
+    <section data-note="hero" className="bg-primary-3 rounded-b-card relative isolate w-full overflow-hidden">
+      {/* ── THE FILM ──────────────────────────────────────────────────────────
+          Sized in svh rather than by aspect ratio: the source is 16:9, and
+          full-bleed on a wide desktop a 16:9 box is over 800px tall on its own
+          — the whole hero before a word is read. A viewport fraction crops it
+          instead, which is what `object-cover` is for.
 
-          Graded diamond grit, coarse at one end of the frame and fine at the
-          other, which is mesh grading made visible — the thing the headline is
-          claiming.
+          `object-[50%_45%]` biases the crop up. The subject is the technician's
+          hands at the bench, and a centred crop cuts them at the frame's waist. */}
+      <div className="relative h-[46svh] w-full lg:h-[50svh]">
+        {/* Streaming from EID's own ImageKit account rather than committed, so
+            the clip can be recut and swapped without a deploy, and ImageKit
+            answers range requests so the browser streams instead of blocking on
+            the whole 1.3MB.
 
-          Centred now rather than biased left. The old crop pushed the brightest
-          cluster out to the right to keep it off the words; with the words in
-          the middle the composition wants its subject in the middle too.
+            `poster` is the frame at t=3s, generated by ImageKit from the same
+            file (`/ik-thumbnail.jpg?tr=so-3`). First paint is a real frame of
+            the real video, and there is no second asset to keep in sync — recut
+            the clip and the poster follows.
 
-          ⚠ The source is 1024×1024 and that is its ceiling; the CDN's larger
-          variants are upscales with no extra detail in them. A native
-          2560px-wide render of the same shot drops in with no code change. */}
-      <Image src="/eid/home/hero-grit.png" alt="" fill priority sizes="100vw" className="-z-20 object-cover object-[50%_50%]" />
+            muted + playsInline  — autoplay is refused without both, and on iOS
+                                   playsInline stops it going fullscreen.
+            autoPlay + loop      — background film, no controls, no end state.
+            preload="metadata"   — the poster covers first paint, so there is no
+                                   reason to spend the connection on the whole
+                                   file before the page below has rendered. */}
+        <video
+          className="size-full object-cover object-[50%_45%] motion-reduce:hidden"
+          src="https://ik.imagekit.io/qcvroy8xpd/EID%20VIDEO%20HERO.mp4"
+          poster="https://ik.imagekit.io/qcvroy8xpd/EID%20VIDEO%20HERO.mp4/ik-thumbnail.jpg?tr=so-3"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          aria-hidden
+        />
 
-      {/* Legibility, rebuilt for a centred composition.
+        {/* Reduced motion gets the poster and nothing else. A background film is
+            exactly the kind of unrequested movement that setting exists for, and
+            `motion-reduce:` on the pair swaps them with no JavaScript and no
+            layout shift — same box, same crop. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          className="absolute inset-0 hidden size-full object-cover object-[50%_45%] motion-reduce:block"
+          src="https://ik.imagekit.io/qcvroy8xpd/EID%20VIDEO%20HERO.mp4/ik-thumbnail.jpg?tr=so-3"
+          alt=""
+          aria-hidden
+        />
 
-          The old pair darkened the left of the frame hard, because that is
-          where the words were. Centred copy over a left-weighted scrim sits
-          half on a black ground and half on a photograph, which is worse than
-          either. So: a flat brand wash over the whole frame, and one vertical
-          gradient seating the block on the bottom edge. Nothing directional
-          left to right, because there is no longer a side to protect. */}
-      <div aria-hidden className="bg-primary-3/45 absolute inset-0 -z-10" />
-      <div aria-hidden className="from-default-950/84 via-default-950/24 absolute inset-0 -z-10 bg-linear-to-t via-56% to-transparent" />
+        {/* A ground for the navbar, which is transparent over this hero and has
+            white links.
 
-      {/* A ground for the navbar, which is transparent over this hero and has
-          white links. Same 144px strip the interior heroes carry. */}
-      <div aria-hidden className="from-default-950/78 absolute inset-x-0 top-0 -z-10 h-36 bg-linear-to-b via-transparent to-transparent" />
+            ⚠ THE TWO GRADIENTS ON THIS BAND HAVE TO BE BUDGETED TOGETHER, and
+            that is what went wrong: this one was 192px and the join below was
+            176px, against a band of about 373px at lg. 368 of 373 — the pair
+            covered essentially the whole film, which is why it looked washed
+            rather than lit.
 
-      {/* The block is seated toward the foot of the frame rather than centred
-          in it — the reference's `margin-top:auto` with a tall top padding and
-          a shorter bottom one. That is what leaves the photograph a clear upper
-          two-thirds to be a photograph in, instead of having type through its
-          middle. */}
-      <div className="relative z-10 w-full pt-44 pb-20 lg:pt-52 lg:pb-24">
-        <div className="container flex flex-col items-center text-center">
-          {/* The mark above the statement, blended into the photograph rather
-              than sitting on top of it — the reference's `mix-blend-mode:
-              overlay`, which lets the grit read through the letterforms so the
-              mark belongs to the image instead of being pasted onto it.
+            Both are now roughly a third shorter and the band a little taller,
+            which leaves ~165px of the frame at full strength in the middle.
+            Before changing either number, add them and compare against the
+            band height.
 
-              Hidden from assistive tech and from search: the same logo is the
-              first link in the header three inches above, and the h1 below
-              already says the company name. This one is texture. */}
-          <HeroMark />
+            Shorter but slightly stronger at the very top (70% against 62%), so
+            the navbar keeps its contrast out of a shorter ramp. Brand navy
+            rather than near-black: against cool blue-grey footage black is a
+            foreign colour and reads as a bar laid on top. */}
+        <div aria-hidden className="from-primary-3/70 via-primary-3/14 absolute inset-x-0 top-0 h-28 bg-linear-to-b via-50% to-transparent lg:h-32" />
 
-          {/* Two beats, two weights — the reference sets the name light and the
-              claim bold, and the contrast between the two is doing the work a
-              second colour would otherwise have to do.
+        {/* THE JOIN, and the numbers here are load-bearing.
 
-              The dash-splitting below is unchanged and still necessary; see the
-              note on `beats`. What changed is that the break is now expressed
-              as two block elements rather than a <br>, because each beat
-              carries its own weight. */}
-          <HeroTitle title={title} className="mt-7 text-[clamp(1.9rem,4.4vw,3.5rem)] lg:mt-9" />
+            A two-stop ramp only reaches full opacity on its very last pixel row,
+            so the stretch above it stays slightly translucent and the bright
+            bench edge in the footage shows through as a pale streak — precisely
+            the seam the fade exists to prevent. A mid stop alone was not enough
+            either; 99% opaque over a bright edge is still not 100%.
 
-          {/* `text-pretty` rather than nothing: the supporting line runs to
-              two lines at this measure and was ending on a single word.
-              Pretty is the one wrap mode that exists specifically to pull a
-              word back off an orphaned last line. */}
-          <p className="mt-7 max-w-[56ch] text-base leading-relaxed text-pretty text-white/85 md:text-lg">{desc}</p>
+            So: 92% at 60% down, then fully solid at `to-86%` rather than at the
+            boundary. The last seventh is flat navy with no video under it, and
+            there is nothing left to show through. Those two percentages held
+            when the ramp was shortened from 176px to 112px — they are
+            proportional, so the seam stayed fixed.
 
-          {/* Primary used to be "Our Products", which scrolled seven hundred
-              pixels down to a heading reading "Our Products" — the same two
-              words twice for one screen of travel. Secondary was a bare
-              `mailto:`, which opens an empty message with no subject, no
-              context and no routing, and on a locked-down work machine often
-              opens nothing at all.
-
-              /contact already holds the real path: a routed quote form asking
-              for product, grade, size and quantity, answered by a specialist
-              within one business day. That is the action this page exists to
-              produce, so it is the primary.
-
-              Labelled "Contact" and not "Request a quote", per Uri's V1
-              note. The reasoning is the same one behind the header button: a
-              visitor who wants to ask a technical question, chase a sample or
-              find the phone number should not have to read the primary action
-              as a commitment to buy. */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <ArrowButton href="/contact" label={t(locale, 'Contact')} />
-            <Link href="/#products" className="inline-flex items-center border border-white/25 px-6 py-3.5 text-[0.95rem] leading-none font-medium text-white transition-colors hover:border-white/70">
-              {t(locale, 'See the range')}
-            </Link>
-          </div>
-        </div>
+            `from-primary-3/0` rather than `from-transparent`: same rendered
+            result, since CSS interpolates gradient alpha premultiplied, but it
+            states the intent — this fades the section's own ground in, it does
+            not fade some unrelated colour out. */}
+        <div aria-hidden className="from-primary-3/0 via-primary-3/92 to-primary-3 absolute inset-x-0 bottom-0 h-24 bg-linear-to-b via-60% to-86% lg:h-28" />
       </div>
 
+      {/* ── THE STATEMENT ─────────────────────────────────────────────────────
+          The lockup is still Strauss's, even though its position is not: mark,
+          then headline at `mt-1.5`, which is their `row-gap: 5px` and the
+          measurement the composition turns on — their monogram is not above the
+          headline, it is part of it.
+
+          The type scale is the site's own. `clamp(1.9rem, 4.4vw, 3.5rem)` is
+          what PageHero's `full` variant renders, so the home h1 matches About,
+          Quality and the product pages rather than a competitor's fixed steps.
+          Leading comes from HeroTitle.
+
+          No CTAs — the header's Contact button is directly above on every page,
+          and the two entry cards below carry Products and Applications. */}
+      <div className="relative z-10 pt-10 pb-14 lg:pt-12 lg:pb-20">
+        <div className="container flex flex-col items-center text-center">
+          <HeroMark blend={false} />
+
+          <HeroTitle title={title} className="mt-1.5 text-[clamp(1.9rem,4.4vw,3.5rem)]" />
+
+          {/* `text-pretty` because the line runs to two at this measure and was
+              ending on a single word; pretty is the one wrap mode that exists to
+              pull a word back off an orphaned last line.
+
+              mt-6 rather than the lockup's 6px, and that gap is doing work: it
+              tells the eye the mark and the headline are one object and this
+              sentence is a second one.
+
+              64ch, not 52: at the narrower measure the line broke three ways and
+              left "end users." alone on the last one, which is the one phrase in
+              the hero that should not read as an afterthought. */}
+          <p className="mt-6 max-w-[64ch] text-[0.95rem] leading-relaxed text-pretty text-white/80 md:text-base">{desc}</p>
+        </div>
+      </div>
     </section>
   )
 }

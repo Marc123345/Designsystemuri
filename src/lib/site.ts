@@ -21,7 +21,16 @@ export const site = {
 
 // Verified trust signals only. The "30+ countries" figure is unconfirmed, so the
 // trust bar leads with the verified 50-year record and ISO 9001 instead.
-export const trustPoints = ['ISO 9001 Certified', 'In-House QC Laboratory', 'Complete Superabrasive Range', "50+ Years' Experience"]
+/* "Manufacturing Since 1970", not "50+ Years' Experience".
+   
+   Uri's approved home-page hero copy anchors on 1970, and the About numbers
+   strip reads 55+. Three different ways of saying one thing was one of the
+   inconsistencies flagged against the V1 feedback; 1970 is now the single
+   anchor, and it is the one that never needs editing. The old string is still
+   translated in i18n-content for the seven non-English locales — that table
+   will pick up the new key on the next `npm run translate`, and falls back to
+   English until it does. */
+export const trustPoints = ['ISO 9001 Certified', 'In-House QC Laboratory', 'Complete Superabrasive Range', 'Manufacturing Since 1970']
 
 /**
  * Products mega-menu: the eight pages exposed directly, laid out as a 2-2-2-2
@@ -58,7 +67,10 @@ export const primaryNav = [
   // There is no standalone products page. Hovering reveals the eight product
   // pages in the mega-menu; clicking goes to the range section on the homepage.
   { label: 'Products', href: '/#products', menu: 'products' as const },
-  { label: 'Applications', href: '/applications', menu: 'applications' as const },
+  // Same shape as Products directly above: there is no standalone applications
+  // page any more. Hovering reveals the six hubs in the mega-menu; clicking
+  // goes to the applications section on the homepage.
+  { label: 'Applications', href: '/#applications', menu: 'applications' as const },
   { label: 'Quality', href: '/quality' },
   // href here is the active-state prefix only — a menu entry renders as a
   // dropdown button, never a link, so it does not point at the removed index.
