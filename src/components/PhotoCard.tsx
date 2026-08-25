@@ -119,7 +119,21 @@ const PhotoCard = ({ image, alt = '', eyebrow, title, body, points, note, href, 
           whatever the card's height turns out to be — and in a bento the height
           is never the card's own, it is the tallest cell in the row. */}
       <div className="relative z-10 flex h-full flex-col justify-end p-7 lg:p-9">
-        {eyebrow && <p className="font-mono text-[11px] tracking-[0.22em] text-white/60 uppercase">{eyebrow}</p>}
+        {/* white/85, not white/60.
+            ⚠ This is a contrast fix and it is site-wide, so do not tune it back
+            down for looks. At 11px this label needs 4.5:1. Measured against the
+            brightest ground behind it, white/60 came out at 1.9-3.2:1 on the
+            Quality controls and 1.55-1.82:1 on About's core values — every
+            PhotoCard eyebrow on the site was failing, on both the light and the
+            heavy scrim. It surfaced when /quality took brighter photographs;
+            it was never specific to them.
+
+            ⚠ AND THIS DOES NOT FIX EVERY CARD. On About's brightest frames the
+            ground is light enough that no white text can reach 4.5:1 at all —
+            those need a heavier scrim or a darker photograph, which is a
+            separate pass on that page. This raises the floor everywhere and
+            clears the Quality controls outright; it does not close About. */}
+        {eyebrow && <p className="font-mono text-[11px] tracking-[0.22em] text-white/85 uppercase">{eyebrow}</p>}
 
         <h3 className="mt-3 text-[22px] leading-tight font-bold text-white lg:text-[26px]">{title}</h3>
 

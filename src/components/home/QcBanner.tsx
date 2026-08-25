@@ -107,9 +107,21 @@ const QcBanner = ({
 
         {/* ── CARD TWO: the evidence ── */}
         <article className="rounded-card relative isolate flex min-h-[420px] flex-col justify-end overflow-hidden p-7 lg:col-span-5 lg:min-h-[460px] lg:p-9">
+          {/* The micrometer closed on a crystal, reading 3.000 mm. This card's
+              eyebrow is "Measured on every run" and this is a measurement
+              being read off an instrument, which is as literal as the library
+              gets.
+
+              ⚠ DELIBERATELY THE SAME FRAME THAT OPENS /quality, which this
+              card's button links to. A teaser and its destination sharing one
+              signature image is the intent, not an oversight — but it does
+              mean the two are seen back to back by anyone who clicks through.
+              If that reads as a repeat rather than a thread, this card is the
+              one to change, not the Quality page: it is the smaller slot and
+              the page has the stronger claim on the image. */}
           <Image
-            src="/eid/qc-inspection.jpg"
-            alt="An optical measurement system with a diamond crystal magnified on screen and its dimensions read out alongside"
+            src="/eid/quality/09-digital-micrometer-diamond-measurement.png"
+            alt="A digital micrometer closed on a diamond crystal, its display reading 3.000 mm"
             fill
             sizes="(min-width: 1024px) 42vw, 100vw"
             className="-z-20 object-cover object-center"

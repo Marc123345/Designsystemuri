@@ -100,6 +100,15 @@ const CoreValues = () => {
               key={v.name}
               className={SPANS[i]}
               minHeight="min-h-[340px] lg:min-h-[380px]"
+              /* ⚠ `heavy` for contrast, not for looks. Found while auditing
+                 /quality after its photographs changed: these four cards were
+                 the WORST on the site, with the eyebrow numerals at 1.55-1.82:1
+                 against the brightest part of each frame on the light scrim.
+                 Raising PhotoCard's eyebrow to white/85 took them to 2.73; only
+                 the heavier scrim clears 4.5:1. Two of these photographs are
+                 bright by nature — a lit microscope stage and a white lab shelf
+                 — so the cover has to come from the scrim. */
+              weight="heavy"
               eyebrow={String(i + 1).padStart(2, '0')}
               title={t(locale, v.name)}
               body={t(locale, v.body)}

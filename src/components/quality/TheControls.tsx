@@ -28,29 +28,27 @@ import { useLocale } from 'next-intl'
  *
  * ── The photographs ─────────────────────────────────────────────────────────
  *
- *   01 → the sieve stack. What the control is.
- *   02 → micron SEM with the distribution visible. What the control produces.
- *   03 → see the warning below.
- *   04 → no photograph, deliberately.
+ *   01 → grit on a precision balance. See the note below.
+ *   02 → sample prep for sedimentation, centrifuge behind.
+ *   03 → the chemical rinse itself.
+ *   04 → the impact test station.
  *
- * ⚠ 03 is the one that is approximate, and it is worth knowing why rather than
- * discovering it later. The control is chemical cleaning, and no before/after
- * cleaning frame exists in the library. It previously carried
- * /eid/qc-batch-to-batch.jpg under alt text reading "cleaned diamond crystals
- * against a 1 micron scale bar" — but that file is a two-panel comparison of
- * two production lots, so the alt described a picture that was not there, and
- * the frame is now doing its proper job in the mosaic. What is here instead is
- * a genuine EID micrograph of crystal surfaces at X33 with the instrument's
- * own data bar in it. It is a picture of surfaces being examined, which is
- * nearer to the control than a lot comparison was, and the alt text describes
- * the photograph rather than the claim. A real fix is one frame: the same
- * material before and after the wash.
+ * ⚠ 04 FINALLY HAS ONE. This slot has been brand navy since the page was
+ * built, because the T.I. milling and crush chamber shot did not exist and a
+ * navy tile reads as a deliberate odd card rather than a missing asset. The
+ * automated impact station is that shot: an indenter over a guarded stage,
+ * which is what a toughness test looks like. The card is no longer the odd one
+ * out, so if the grid ever wants a deliberate break again it has to come from
+ * somewhere else.
  *
- * ⚠ 04 has no photograph because the T.I. milling and crush chamber shot does
- * not exist. PhotoCard fills it with brand navy, which reads as the deliberate
- * odd tile rather than as a missing asset — and it happens to land on the one
- * control that is optional rather than run on every batch. Drop a file in and
- * it becomes a photograph with no other change.
+ * ⚠ 01 IS THE APPROXIMATE ONE NOW, and the weak link in the set. This control
+ * is mesh sizing — test sieves, shape-sorting tables, Image Pro. A balance
+ * weighing grit is not sizing it; it is the nearest of the seven new frames
+ * because it at least shows graded grit as the subject. The frame it replaced
+ * was a technician actually operating a stack of test sieves, which is the
+ * control exactly. That file, /eid/qc-sieve.jpg, is still on disk and still
+ * the better picture for this card. Worth putting back if a sieve frame is
+ * not commissioned in the new style.
  */
 const CONTROLS = [
   {
@@ -62,8 +60,8 @@ const CONTROLS = [
       ['Visual microscope check', 'Microscope checks run throughout production to monitor batch appearance, colour consistency, crystal structure and general uniformity.'],
       ['Image Pro validation', 'Final batches are processed through image analysis software, documenting size distribution and shape factor together.'],
     ],
-    image: '/eid/qc-sieve.jpg',
-    alt: 'A technician operating a stack of laboratory test sieves beside a tray of graded diamond grit',
+    image: '/eid/quality/06-precision-scale-diamond-grit.png',
+    alt: 'A dish of diamond grit on a precision balance reading 0.0456 grams, with a microscope on the bench behind',
   },
   {
     n: '02',
@@ -73,8 +71,8 @@ const CONTROLS = [
       ['Malvern PSD reporting', 'Every lot is measured on Malvern particle size distribution equipment, generating a distribution curve.'],
       ['SEM verification', 'Scanning electron microscopy inspects final grain morphology and confirms the absence of oversized or undersized particles.'],
     ],
-    image: '/eid/qc-micron-sem.jpg',
-    alt: 'Scanning electron micrograph of micron diamond powder with the particle size distribution visible',
+    image: '/eid/quality/03-sample-preparation-pipette.png',
+    alt: 'A gloved hand pipetting into a test tube of micron diamond powder, a centrifuge on the bench behind',
   },
   {
     n: '03',
@@ -84,8 +82,8 @@ const CONTROLS = [
       ['Surface purity control', 'The treatment clears crystal surfaces, allowing better bond adhesion during tool manufacturing.'],
       ['Visual purity inspection', 'Optical checks under the microscope confirm the cleaned material is consistent.'],
     ],
-    image: '/eid/surface-enhancements.jpg',
-    alt: 'Scanning electron micrograph of diamond crystal surfaces at 33x magnification, the instrument data bar showing a 100 micron scale',
+    image: '/eid/quality/10-chemical-rinse-beaker-diamonds.png',
+    alt: 'Diamond crystals suspended in a beaker of clear chemical rinse under a fume hood',
   },
   {
     n: '04',
@@ -95,6 +93,8 @@ const CONTROLS = [
       ['Toughness Index (TI)', 'A room-temperature milling test that measures how the crystal breaks down under impact. For high-impact work where size and shape alone do not predict tool life.'],
       ['Thermal Toughness Index (TTI)', 'The same measurement after a heat cycle, for crystals that have to survive the temperatures of tool manufacturing.'],
     ],
+    image: '/eid/quality/01-automated-hardness-test-station.png',
+    alt: 'An automated impact test station, its indenter lowered over the sample stage inside a guarded enclosure',
   },
 ] as const
 
@@ -120,6 +120,19 @@ const TheControls = () => {
               key={c.n}
               className={SPANS[i]}
               minHeight="min-h-[340px] lg:min-h-[380px]"
+              /* ⚠ `heavy`, and it is a legibility fix rather than a look.
+                 These cards ran on the light scrim while they carried the old
+                 photographs, which were dark: a sieve stack in shadow, two grey
+                 micrographs, and a card with no image at all. The new set is
+                 bright — a lit balance, a white lab bench, a beaker under a
+                 fume hood, a blue-lit test cell — and under the light scrim the
+                 11px eyebrow numerals measured 1.87-2.25:1 against the brightest
+                 part of each frame, failing 1.4.3 on all four cards at once.
+
+                 Swapping a photograph is never only a content change. If these
+                 images are replaced again, re-measure before assuming the scrim
+                 still covers. */
+              weight="heavy"
               collapsible
               disclosureLabel={t(locale, COUNT_LABEL[c.points.length])}
               eyebrow={c.n}

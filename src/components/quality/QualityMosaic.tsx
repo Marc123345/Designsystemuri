@@ -18,11 +18,22 @@ import { useLocale } from 'next-intl'
  *
  * ── The tall tile's photograph is the argument ──────────────────────────────
  *
- * /eid/qc-batch-to-batch.jpg is a genuine side-by-side SEM: two production
- * lots, same magnification, a 1 µm scale bar under each. It is the only frame
- * in the library that shows consistency rather than asserting it, which makes
- * it the right ground for figures whose whole subject is consistency. On
- * About it would be an illustration; here it is the proof.
+ * The grade comparison: sixteen dishes of micron powder laid out in order,
+ * graduating from the finest white through to the coarsest dark grey. Figures
+ * whose subject is consistency want a ground that shows a graded series rather
+ * than one sample, and an ordered grid reads as exactly that even at tile size
+ * under a heavy scrim.
+ *
+ * ⚠ It replaces a genuine side-by-side SEM of two production lots at 1 µm,
+ * which was stronger evidence — it showed two real lots matching. This is a
+ * range rather than a repeat, so it demonstrates breadth where the old frame
+ * demonstrated repeatability. If the "100% batches tested" figure ever needs
+ * its evidence back, /eid/qc-batch-to-batch.jpg is still on disk.
+ *
+ * One incidental benefit of the scrim here: the dish labels in this image are
+ * generated and do not survive reading closely. At 78% navy over them they are
+ * illegible, which is the right outcome. Do not reuse this frame anywhere it
+ * is shown large and unscrimmed.
  *
  * ── The solid tile ──────────────────────────────────────────────────────────
  *
@@ -90,7 +101,7 @@ const QualityMosaic = () => {
           <div className="grid auto-rows-fr grid-cols-2 gap-6 lg:col-span-6">
             {/* TALL — three figures over the two-lot comparison. */}
             <div className="rounded-card relative row-span-2 min-h-[420px] overflow-hidden lg:min-h-[520px]">
-              <Image src="/eid/qc-batch-to-batch.jpg" alt="" fill sizes="(min-width: 1024px) 25vw, 50vw" className="object-cover" />
+              <Image src="/eid/quality/08-micron-powder-grade-comparison.png" alt="" fill sizes="(min-width: 1024px) 25vw, 50vw" className="object-cover" />
               <span aria-hidden className="bg-primary-3/78 absolute inset-0" />
 
               <dl className="absolute inset-0 flex flex-col items-center justify-around p-5 text-center">
@@ -103,14 +114,22 @@ const QualityMosaic = () => {
               </dl>
             </div>
 
-            {/* SHORT — the retention shelf, no figure. About's equivalent tile
-                is the one that stops the column being all claims; this one
-                does that and doubles as the evidence for the second statement
-                on the right, which is the sentence about retention samples. */}
+            {/* SHORT — the sample cabinet, no figure. Doubles as the evidence
+                for the second statement on the right, which is the sentence
+                about retention samples and traceability: every jar in it
+                carries a barcode, which is the traceability half made
+                literal.
+
+                ⚠ It is weaker than the frame it replaces on the retention
+                half. The old shelf showed jars with material in them, coarse
+                grit at the front graduating to fine powder; these jars read as
+                empty glass. "A retention sample is kept from every batch" is
+                better served by visible material. Worth a frame of the real
+                cabinet with real samples in it. */}
             <div className="rounded-card relative min-h-[200px] overflow-hidden lg:min-h-[248px]">
               <Image
-                src="/eid/qc-samples.jpg"
-                alt={t(locale, 'A laboratory shelf of labelled retention sample jars, coarse grit at the front graduating to fine powder along the row')}
+                src="/eid/quality/05-labeled-sample-storage-cabinet.png"
+                alt={t(locale, 'A stainless steel cabinet of barcode-labelled sample jars on lit shelves')}
                 fill
                 sizes="(min-width: 1024px) 25vw, 50vw"
                 className="object-cover"

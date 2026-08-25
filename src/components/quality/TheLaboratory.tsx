@@ -58,26 +58,30 @@ const TheLaboratory = () => {
             </p>
           </div>
 
-          {/* About's slot holds a still of the metrology bench — a picture of
-              the company the paragraph describes. The parallel here is the
-              laboratory itself: the optical measurement instrument with a
-              crystal magnified on screen, a technician at the controls, and
-              the ISO 9001 sign on the wall behind them.
+          {/* The signature frame of the new set: a digital micrometer closed on
+              a diamond crystal, reading 3.000 mm. The paragraph beside it says
+              every batch is validated rather than sampled, and this is a
+              measurement being taken — the claim, happening.
 
-              That last detail is why this frame rather than a micrograph. The
-              paragraph beside it ends on a list of standards, and this is the
-              only photograph in the library where the certification is visibly
-              part of the room instead of being asserted in text.
+              ⚠ WHAT THIS SWAP COST, so nobody re-litigates it blind. The
+              previous frame was the QC laboratory with an ISO 9001 notice
+              visibly on the wall, chosen because the second paragraph here
+              ends on a list of standards and that was the only photograph in
+              which the certification was part of the room rather than
+              asserted in text. That is gone; the standards are now text only
+              on this page. The mosaic's 9001 tile a section below is where a
+              buyer meets the credential as an object instead.
 
-              ⚠ Shared with About, which uses it as a small tile in its mosaic.
-              It is the only true photograph of the laboratory we hold, and the
-              laboratory page has the better claim on it. If it should be
-              unique to one page, the honest fix is a new frame for About's
-              tile rather than a worse one here. */}
+              ⚠ The source is square (1024x1024) and this frame is 16:10, so
+              roughly a third of the height is cropped away. `object-center`
+              is right for this one — the micrometer jaw and the crystal sit
+              dead centre — but it is not automatically right for the others.
+              Every square image placed in a non-square slot on this page had
+              its crop checked. */}
           <div className="rounded-card relative aspect-16/10 overflow-hidden lg:col-span-6">
             <Image
-              src="/eid/qc-lab.jpg"
-              alt={t(locale, 'A technician at an optical measurement system in the EID quality laboratory, a diamond crystal magnified on screen and an ISO 9001 certification notice on the wall behind')}
+              src="/eid/quality/09-digital-micrometer-diamond-measurement.png"
+              alt={t(locale, 'A digital micrometer closed on a diamond crystal, its display reading 3.000 mm')}
               fill
               sizes="(min-width: 1024px) 50vw, 100vw"
               className="object-cover"

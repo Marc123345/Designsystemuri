@@ -55,8 +55,16 @@ const MicronQcPage = async ({ params }: { params: Promise<{ locale: Locale }> })
         eyebrow={t(locale, 'Quality · Micron QC in detail')}
         title={t(locale, 'Micron QC')}
         desc={t(locale, 'Particle-size-distribution measurement and the D-value control that fine polishing depends on.')}
-        /* The micrograph the micron grades are actually verified on. */
-        bgImage="/eid/qc-micron-sem.jpg"
+        /* The grade series itself: sixteen dishes of micron powder in order,
+           finest through coarsest. This page is about grading and the D-value
+           control, and a graded series says that in one frame where the single
+           micrograph it replaces showed one grade being verified.
+
+           ⚠ The dish labels in this image are generated and do not read
+           closely. In a `variant="band"` hero they sit small and behind the
+           heading scrim; do not promote this frame to a large unscrimmed slot
+           without checking them. */
+        bgImage="/eid/quality/08-micron-powder-grade-comparison.png"
         variant="band"
       />
 
