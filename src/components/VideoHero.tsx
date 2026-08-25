@@ -108,7 +108,7 @@ const VideoHero = ({
         aria-hidden
       >
         {sources.map((s) => (
-          <source key={s.type} src={s.src} type={s.type} />
+          <source key={s.src} src={s.src} type={s.type} media={s.media} />
         ))}
       </video>
 

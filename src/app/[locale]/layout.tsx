@@ -110,9 +110,24 @@ const LocaleLayout = async ({ children, params }: { children: React.ReactNode; p
     <html lang={locale} className={`${geist.variable} ${monaSans.variable} antialiased`}>
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
-        {/* The loader is dismissed by script. Without script it would cover the
-            site permanently, so hide it outright in that case. */}
-        <noscript dangerouslySetInnerHTML={{ __html: '<style>.site-loader{display:none!important}</style>' }} />
+
+        {/* Every video, poster and rendition comes from ImageKit, and the
+            intro's clip is requested within milliseconds of the page painting.
+            Without this the browser pays a DNS lookup plus a TLS handshake
+            before the first byte of it arrives — on a phone that is commonly
+            200-400ms of nothing happening, at the exact moment the brand
+            moment is meant to start.
+
+            `crossOrigin` is required: media is fetched anonymously, and a
+            preconnect that does not match the eventual request's CORS mode
+            opens a connection the browser then cannot reuse. */}
+        <link rel="preconnect" href="https://ik.imagekit.io" crossOrigin="" />
+
+        {/* The `.site-loader` noscript rule that used to sit here is gone with
+            SiteLoader. It hid the overlay for visitors without JavaScript,
+            because a script-dismissed panel would otherwise cover the site
+            permanently. SiteIntro cannot create that problem: it renders
+            nothing until its effect runs, so no-JS means no overlay at all. */}
       </head>
       <body suppressHydrationWarning>
         <NextIntlClientProvider>
