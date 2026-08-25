@@ -58,7 +58,19 @@ export type PhotoCardProps = {
   body?: string
   /** Label/description pairs, for cards that carry a spec rather than a claim. */
   points?: readonly (readonly [string, string])[]
-  /** Italic aside under the points — used for "optional, by request". */
+  /**
+   * Italic aside under the points — "optional, by request", "in preparation".
+   *
+   * ⚠ white/80, NOT the white/55 this was. It reads as a quiet aside and it was
+   * styled like one, but every use of it so far carries something a reader has
+   * to act on: that control 04 on /quality is by request rather than run on
+   * every batch, and that the blog posts are unpublished. Measured at white/55
+   * it came out at 3.9-4.0:1 on the blog cards and about the same on the solid
+   * navy of control 04 — under the 4.5 floor everywhere it appears.
+   *
+   * If a genuinely decorative aside is ever needed, add a variant rather than
+   * dimming this back down.
+   */
   note?: string
   /**
    * Put `points` behind a disclosure instead of listing them.
@@ -162,7 +174,7 @@ const PhotoCard = ({ image, alt = '', eyebrow, title, body, points, note, href, 
                 ))}
               </dl>
 
-              {note && <p className="mt-5 text-[0.85rem] text-white/55 italic">{note}</p>}
+              {note && <p className="mt-5 text-[0.85rem] text-white/80 italic">{note}</p>}
             </details>
           ) : (
             <dl className="mt-5 space-y-3.5 border-t border-white/15 pt-5">
@@ -175,7 +187,7 @@ const PhotoCard = ({ image, alt = '', eyebrow, title, body, points, note, href, 
             </dl>
           ))}
 
-        {note && !collapsible && <p className="mt-5 text-[0.85rem] text-white/55 italic">{note}</p>}
+        {note && !collapsible && <p className="mt-5 text-[0.85rem] text-white/80 italic">{note}</p>}
 
         {href && (
           <span aria-hidden className="mt-6 flex items-center gap-3 text-white">

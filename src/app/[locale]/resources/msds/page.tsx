@@ -1,14 +1,14 @@
 import { RichText } from '@/components/RichText'
+import Image from 'next/image'
+import DocList from '@/components/resources/DocList'
+import SectionBanner from '@/components/SectionBanner'
 import { PageHero, QuoteSection } from '@/components/sections'
-import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { safetySheets } from '@/lib/documents'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
-import { Icon } from '@iconify/react'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
-import Link from 'next/link'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params
@@ -47,30 +47,71 @@ const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
         variant="band"
       />
 
+      {/* Shade 2, against Datasheets' 1. The two resources pages sit beside
+          each other in the footer and the mega-menu, so giving them different
+          cuts is the cheapest way to make it obvious which one you are on. */}
+      <SectionBanner
+        label={t(locale, 'Safety')}
+        body={t(locale, 'Handling, storage, disposal and regulatory information — current documents only.')}
+        shade={2}
+      />
+
       <section data-note="downloads" className="py-16 lg:py-24">
         <div className="container">
-          {/* Deliberately ungated: a safety document behind a form is a liability,
-not a lead magnet. */}
-          <SectionHeading eyebrow={t(locale, 'No form, no login')} title={t(locale, 'Safety data sheets, free to download.')} />
-          <p className="text-default-600 mt-5 max-w-3xl text-base">
-            <RichText>{t(locale, "Safety data sheets for EID's diamond and CBN products, covering handling, storage, disposal, and regulatory information. No form, no login. If you need a document that isn't listed, or a specific regional format, [ask us](/contact).")}</RichText>
-          </p>
-          <div className="divide-default-200 border-default-200 mt-14 divide-y border-t">
-            {safetySheets.map((sheet) => (
-              <Link key={sheet.key} href={sheet.file} download className="group flex flex-wrap items-center justify-between gap-4 py-5">
-                <div className="flex items-start gap-4">
-                  <Icon icon="tabler:shield" className="text-primary mt-0.5 size-6 shrink-0" />
-                  <div>
-                    <h3 className="text-default-900 group-hover:text-primary text-base font-semibold">{t(locale, sheet.title)}</h3>
-                    <p className="text-default-600 mt-1 text-base">{t(locale, sheet.desc)}</p>
-                  </div>
+          <div className="grid gap-6 lg:grid-cols-12">
+            <div className="rounded-card bg-primary flex flex-col justify-between p-7 lg:col-span-7 lg:p-10">
+              <div>
+                <div className="rounded-control inline-flex w-fit items-center gap-1.5 border border-white/25 px-3.5 py-1.25">
+                  <span className="bg-primary-1 size-2" />
+                  <span className="text-sm text-white">{t(locale, 'No form, no login')}</span>
                 </div>
-                <span className="border-default-300 text-default-800 group-hover:border-primary group-hover:text-primary inline-flex items-center gap-2 border px-3.5 py-1.5 text-sm font-semibold transition-colors">
-                  <Icon icon="tabler:download" className="text-primary size-5" />
-                  PDF
-                </span>
-              </Link>
-            ))}
+
+                <h2 className="mt-5 text-2xl font-bold text-white md:text-[30px] lg:text-[34px]">{t(locale, 'Safety data sheets, free to download.')}</h2>
+
+                <p className="mt-4 max-w-[56ch] text-base leading-relaxed text-white/85">
+                  {/* Link override — see the identical note on the datasheets
+                      page. RichText's `text-primary` is invisible on navy. */}
+                  <span className="[&_a]:text-white [&_a]:decoration-white/60">
+                    <RichText>{t(locale, "Safety data sheets for EID's diamond and CBN products, covering handling, storage, disposal, and regulatory information. No form, no login. If you need a document that isn't listed, or a specific regional format, [ask us](/contact).")}</RichText>
+                  </span>
+                </p>
+              </div>
+
+              {/* ⚠ THREE, AND THE NUMBER IS THE POINT. The build caution above
+                  says an entry with no current document behind it is left off
+                  rather than shipped stale, which is why this list is three and
+                  not the seven a speculative version once had. Deriving the
+                  figure from the registry means it can never claim more sheets
+                  than exist. */}
+              <dl className="mt-9 grid grid-cols-2 gap-px overflow-hidden rounded-control bg-white/15">
+                {[
+                  { v: String(safetySheets.length), k: 'Current sheets' },
+                  { v: '0', k: 'Forms to fill in' },
+                ].map((s) => (
+                  <div key={s.k} className="bg-primary px-4 py-4">
+                    <dd className="text-[26px] leading-none font-bold text-white lg:text-[30px]">{s.v}</dd>
+                    <dt className="mt-2 text-[10px] font-semibold tracking-[0.18em] text-white/75 uppercase">{t(locale, s.k)}</dt>
+                  </div>
+                ))}
+              </dl>
+            </div>
+
+            <div className="rounded-card relative min-h-[260px] overflow-hidden lg:col-span-5">
+              <Image
+                src="/eid/quality/10-chemical-rinse-beaker-diamonds.png"
+                alt={t(locale, 'Diamond crystals suspended in a beaker of clear chemical rinse under a fume hood')}
+                fill
+                sizes="(min-width: 1024px) 42vw, 100vw"
+                className="object-cover object-center"
+              />
+            </div>
+          </div>
+
+          <div className="mt-14 lg:mt-16">
+            {/* A shield rather than a document icon: these are the safety set,
+                and the distinction is worth keeping at a glance when the two
+                resources pages otherwise look identical. */}
+            <DocList groups={[{ sheets: safetySheets }]} icon="tabler:shield" />
           </div>
         </div>
       </section>
@@ -81,7 +122,7 @@ not a lead magnet. */}
       <QuoteSection
         eyebrow={t(locale, 'Need a safety document not listed?')}
         title={t(locale, "Need a safety document that isn't listed?")}
-        desc={t(locale, 'Tell us the product and the regional format you need, and we will send the current MSDS. Replies within one business day.')}
+        desc={t(locale, 'Tell us the product and the regional format you need, and we will send the current MSDS.')}
       />
     </>
   )

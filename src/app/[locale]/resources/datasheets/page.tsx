@@ -1,14 +1,14 @@
+import Image from 'next/image'
 import { RichText } from '@/components/RichText'
+import DocList from '@/components/resources/DocList'
+import SectionBanner from '@/components/SectionBanner'
 import { PageHero, QuoteSection } from '@/components/sections'
-import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { datasheets } from '@/lib/documents'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
-import { Icon } from '@iconify/react'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
-import Link from 'next/link'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params
@@ -36,43 +36,78 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
         variant="band"
       />
 
+      {/* The blue cut. Every content page on this site runs
+          SectionBanner -> section, and the resources pages were the last that
+          did not — which is why they read as a hero followed by a list rather
+          than as pages with a structure. */}
+      <SectionBanner
+        label={t(locale, 'Datasheets')}
+        body={t(locale, 'Every grade on file — specifications, sizing, coatings and packaging. Ungated.')}
+        shade={1}
+      />
+
       <section data-note="downloads" className="py-16 lg:py-24">
         <div className="container">
-          {/* Deliberately ungated: no form, no login, no gate on a spec sheet. */}
-          <SectionHeading eyebrow={t(locale, 'No form, no login')} title={t(locale, 'Product datasheets, free to download.')} />
-          <p className="text-default-600 mt-5 max-w-3xl text-base">
-            <RichText>{t(locale, 'Technical specifications for every EID product: grades, sizes, crystal types, coating options, and packaging. No form, no login. Download what you need, and if the exact spec you are after is not here, [ask us](/contact).')}</RichText>
-          </p>
-          <div className="mt-14 grid gap-10">
-            {datasheets.map(({ group, sheets }) => (
-              <div key={group}>
-                <div className="border-default-200 text-default-500 border-b pb-2.5 text-sm tracking-[0.2em] uppercase">{t(locale, group)}</div>
-                <div className="divide-default-200 divide-y">
-                  {sheets.map((sheet) => (
-                    <Link
-                      key={sheet.key}
-                      href={sheet.file}
-                      // Native download rather than an in-tab PDF viewer: these
-                      // are reference documents an engineer files, not reads once.
-                      download
-                      className="group flex flex-wrap items-center justify-between gap-4 py-5"
-                    >
-                      <div className="flex items-start gap-4">
-                        <Icon icon="tabler:file-text" className="text-primary mt-0.5 size-6 shrink-0" />
-                        <div>
-                          <h3 className="text-default-900 group-hover:text-primary text-base font-semibold">{t(locale, sheet.title)}</h3>
-                          <p className="text-default-600 mt-1 text-base">{t(locale, sheet.desc)}</p>
-                        </div>
-                      </div>
-                      <span className="border-default-300 text-default-800 group-hover:border-primary group-hover:text-primary inline-flex items-center gap-2 border px-3.5 py-1.5 text-sm font-semibold transition-colors">
-                        <Icon icon="tabler:download" className="text-primary size-5" />
-                        PDF
-                      </span>
-                    </Link>
-                  ))}
+          {/* ── INTRO, AS A BENTO ────────────────────────────────────────────
+              Was a SectionHeading and a paragraph on white: correct, and flat.
+              The page's whole proposition — that nothing here is gated — was a
+              10px eyebrow above a heading, which is the least emphasis the
+              system has.
+
+              7/5: the claim on brand navy, the shelf of graded samples beside
+              it. The dark panel is what gives this page a floor; without it
+              the page is white from the hero to the footer. */}
+          <div className="grid gap-6 lg:grid-cols-12">
+            <div className="rounded-card bg-primary flex flex-col justify-between p-7 lg:col-span-7 lg:p-10">
+              <div>
+                <div className="rounded-control inline-flex w-fit items-center gap-1.5 border border-white/25 px-3.5 py-1.25">
+                  <span className="bg-primary-1 size-2" />
+                  <span className="text-sm text-white">{t(locale, 'No form, no login')}</span>
                 </div>
+
+                <h2 className="mt-5 text-2xl font-bold text-white md:text-[30px] lg:text-[34px]">{t(locale, 'Product datasheets, free to download.')}</h2>
+
+                <p className="mt-4 max-w-[56ch] text-base leading-relaxed text-white/85">
+                  {/* ⚠ RichText renders links `text-primary` — brand navy, which
+                      on this brand-navy panel is invisible. Same trap as the
+                      FAQ cards; overridden locally rather than globally,
+                      because every other consumer of RichText is on white. */}
+                  <span className="[&_a]:text-white [&_a]:decoration-white/60">
+                    <RichText>{t(locale, 'Technical specifications for every EID product: grades, sizes, crystal types, coating options, and packaging. No form, no login. Download what you need, and if the exact spec you are after is not here, [ask us](/contact).')}</RichText>
+                  </span>
+                </p>
               </div>
-            ))}
+
+              {/* The count is the argument. "Ungated" is a promise; a number is
+                  the evidence for it, and it is derived rather than typed so it
+                  cannot drift from the registry. */}
+              <dl className="mt-9 grid grid-cols-3 gap-px overflow-hidden rounded-control bg-white/15">
+                {[
+                  { v: String(datasheets.reduce((n, g) => n + g.sheets.length, 0)), k: 'Datasheets' },
+                  { v: String(datasheets.length), k: 'Product groups' },
+                  { v: '0', k: 'Forms to fill in' },
+                ].map((s) => (
+                  <div key={s.k} className="bg-primary px-4 py-4">
+                    <dd className="text-[26px] leading-none font-bold text-white lg:text-[30px]">{s.v}</dd>
+                    <dt className="mt-2 text-[10px] font-semibold tracking-[0.18em] text-white/75 uppercase">{t(locale, s.k)}</dt>
+                  </div>
+                ))}
+              </dl>
+            </div>
+
+            <div className="rounded-card relative min-h-[260px] overflow-hidden lg:col-span-5">
+              <Image
+                src="/eid/qc-samples.jpg"
+                alt={t(locale, 'A laboratory shelf of labelled sample jars, coarse grit at the front graduating to fine powder along the row')}
+                fill
+                sizes="(min-width: 1024px) 42vw, 100vw"
+                className="object-cover object-center"
+              />
+            </div>
+          </div>
+
+          <div className="mt-14 lg:mt-16">
+            <DocList groups={datasheets} icon="tabler:file-text" />
           </div>
         </div>
       </section>
@@ -83,7 +118,7 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
       <QuoteSection
         eyebrow={t(locale, 'Need a spec not listed?')}
         title={t(locale, "Need a spec that isn't listed here?")}
-        desc={t(locale, 'Tell us the product and the parameters you need, and we will send the datasheet or confirm a custom specification. Replies within one business day.')}
+        desc={t(locale, 'Tell us the product and the parameters you need, and we will send the datasheet or confirm a custom specification.')}
       />
     </>
   )
