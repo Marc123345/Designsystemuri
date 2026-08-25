@@ -1108,7 +1108,28 @@ export const QuoteSection = ({
   title,
   desc,
   formTitle = 'Request a Quote',
-  formDesc = 'Tell us the product, grade, size, and quantity you need. A specialist who understands the material replies within one business day.',
+  /**
+   * ⚠ THIS DEFAULT CARRIED TWO THINGS URI STRUCK IN F5, AND IT CARRIED THEM
+   * ONTO EVERY PAGE THAT USES QuoteSection — datasheets, MSDS, blog,
+   * products/[slug], mesh-qc and micron-qc.
+   *
+   * It read: "Tell us the product, grade, size, and quantity you need. A
+   * specialist who understands the material replies within one business day."
+   *
+   *   · "replies within one business day" — he asked for the promise to come
+   *     off the site. It was removed from /contact at the time; nobody noticed
+   *     it was also the default here, so it stayed live on six other pages.
+   *   · "grade, size, and quantity" — those three come OUT of the form
+   *     entirely and go in the message. Instructing a reader to supply three
+   *     fields the form no longer asks for is worse than no instruction.
+   *
+   * Found while reworking the resources pages: removing it from their own
+   * `desc` strings did nothing, because this is what actually renders.
+   *
+   * Do not reinstate a turnaround time here without Uri confirming it. A
+   * response-time promise on a page is a commitment the sales team has to keep.
+   */
+  formDesc = 'Tell us the material you are working and the finish you need. Anything else can go in the message.',
 }: {
   eyebrow: string
   title: string
