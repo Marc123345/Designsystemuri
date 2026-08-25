@@ -43,8 +43,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
  * building, an early grading ledger, or a part from a customer who has been
  * buying since the seventies.
  *
- * /eid/surface-enhancements.jpg is no longer used anywhere after this change.
- * It is a real EID SEM and worth keeping on disk for /quality.
+ * /eid/surface-enhancements.jpg came free in that change, and the note here
+ * said it was worth keeping on disk for /quality. It is now control 03 on that
+ * page, so it is in use again — see components/quality/TheControls.
  */
 /**
  * SHELVED, NOT DELETED. Uri's F2 note on the people section is "remove it for
