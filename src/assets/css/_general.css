@@ -286,6 +286,55 @@ textarea {
   }
 }
 
+/* ── QC FLOW CONNECTOR ───────────────────────────────────── */
+/* The pulse that travels between the two QC panels. It runs left to right on
+   desktop and top to bottom below lg, so there are two keyframe sets rather
+   than one rotated element — rotating would also rotate the easing, and a
+   pulse that accelerates sideways reads wrong travelling downward.
+
+   Deliberately slow (2.6s) and low contrast. This is a connector, not a
+   loading indicator; if it draws the eye away from the copy it has failed. */
+
+@keyframes qc-flow-x {
+  0% {
+    transform: translate(-50%, -50%) translateX(-50%);
+    opacity: 0;
+  }
+  18%,
+  72% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) translateX(50%);
+    opacity: 0;
+  }
+}
+
+@keyframes qc-flow-y {
+  0% {
+    transform: translate(-50%, -50%) translateY(-50%);
+    opacity: 0;
+  }
+  18%,
+  72% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) translateY(50%);
+    opacity: 0;
+  }
+}
+
+.qc-flow-dot {
+  animation: qc-flow-y 2.6s cubic-bezier(0.45, 0, 0.35, 1) infinite;
+}
+
+@media (min-width: 1024px) {
+  .qc-flow-dot {
+    animation-name: qc-flow-x;
+  }
+}
+
 /* ── SCROLL CUE ──────────────────────────────────────────── */
 /* The wheel dot in ScrollCue. Defined here rather than inline so the
    reduced-motion block below governs it like every other animation. */
@@ -338,6 +387,14 @@ textarea {
      Cancelled outright so the dot rests where it starts, at the top of the
      wheel, which still reads as "scroll down". */
   .scroll-cue-dot {
+    animation: none !important;
+  }
+
+  /* And again for the QC connector: `qc-flow` ends at opacity 0 and fully
+     travelled, so one instant iteration would park an invisible dot at the far
+     end of the rail. Cancelled, which leaves it resting mid-rail where the
+     static transform puts it — still reading as a link between the panels. */
+  .qc-flow-dot {
     animation: none !important;
   }
 }
