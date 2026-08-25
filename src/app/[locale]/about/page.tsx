@@ -107,7 +107,6 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
       <VideoHero
         title={t(locale, 'About EID — Industrial Diamond Manufacturer')}
         video="https://ik.imagekit.io/qcvroy8xpd/EID%20NEW.mp4"
-        poster="https://ik.imagekit.io/qcvroy8xpd/EID%20NEW.mp4/ik-thumbnail.jpg?tr=so-3"
         minHeight="min-h-[48svh]"
         objectPosition="object-center"
       />

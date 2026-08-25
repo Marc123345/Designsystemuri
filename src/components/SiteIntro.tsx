@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { releaseHeroVideo } from '@/components/releaseHeroVideo'
+import { videoSources, videoPoster } from '@/components/videoSources'
 
 /**
  * The brand intro: the EID film, then a swoosh into the page.
@@ -55,10 +56,28 @@ import { releaseHeroVideo } from '@/components/releaseHeroVideo'
  */
 
 const VIDEO = 'https://ik.imagekit.io/qcvroy8xpd/EID%20NEW.mp4'
-const POSTER = 'https://ik.imagekit.io/qcvroy8xpd/EID%20NEW.mp4/ik-thumbnail.jpg?tr=so-2'
+const SOURCES = videoSources(VIDEO)
+const POSTER = videoPoster(VIDEO, 2)
 
-/** How long the film holds before the swoosh begins. */
+/**
+ * How long the film holds ONCE IT IS ACTUALLY PLAYING.
+ *
+ * Previously this ran from mount, which meant the intro's length had nothing
+ * to do with whether anyone saw any film. On a slow connection the panel sat
+ * on the poster frame for three seconds and then swooshed away having played
+ * nothing — a splash screen with no splash. The timer now starts on the
+ * video's `playing` event.
+ */
 const HOLD = 3000
+/**
+ * Hard ceiling from mount, whatever the video does.
+ *
+ * The counterpart to starting HOLD late: a clip that never plays — blocked
+ * autoplay, a failed fetch, a codec nothing on the device supports — must not
+ * be able to hold the page. Whichever of the two fires first wins, and
+ * finish() is idempotent.
+ */
+const MAX_TOTAL = 4200
 /** The swoosh itself. Matches the duration in the CSS transition below. */
 const SWOOSH = 820
 /** Session key. Bump it if the intro changes enough to be worth showing again. */
@@ -70,6 +89,7 @@ const SiteIntro = () => {
   const done = useRef(false)
   /** The dismissal, hoisted so the Skip button can call it directly. */
   const finishRef = useRef<() => void>(() => {})
+  const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
     // Second visit this session, or someone who does not want motion.
@@ -95,6 +115,7 @@ const SiteIntro = () => {
     root.style.overflow = 'hidden'
 
     let holdTimer = 0
+    let ceilingTimer = 0
     let swooshTimer = 0
 
     /** Take the panel down. Idempotent — every dismissal path lands here. */
@@ -102,6 +123,7 @@ const SiteIntro = () => {
       if (done.current) return
       done.current = true
       window.clearTimeout(holdTimer)
+      window.clearTimeout(ceilingTimer)
       setLeaving(true)
 
       swooshTimer = window.setTimeout(() => {
@@ -114,7 +136,16 @@ const SiteIntro = () => {
     }
 
     finishRef.current = finish
-    holdTimer = window.setTimeout(finish, HOLD)
+
+    // The ceiling runs from now; the hold runs from first frame.
+    ceilingTimer = window.setTimeout(finish, MAX_TOTAL)
+
+    const video = videoRef.current
+    const onPlaying = () => {
+      window.clearTimeout(holdTimer)
+      holdTimer = window.setTimeout(finish, HOLD)
+    }
+    video?.addEventListener('playing', onPlaying, { once: true })
 
     // Any intent to interact ends it. `once` on each, and all removed below.
     const opts = { once: true, passive: true } as const
@@ -131,7 +162,9 @@ const SiteIntro = () => {
 
     return () => {
       window.clearTimeout(holdTimer)
+      window.clearTimeout(ceilingTimer)
       window.clearTimeout(swooshTimer)
+      video?.removeEventListener('playing', onPlaying)
       window.removeEventListener('pointerdown', finish)
       window.removeEventListener('keydown', finish)
       window.removeEventListener('wheel', finish)
@@ -151,25 +184,49 @@ const SiteIntro = () => {
       aria-hidden
       className="bg-primary-3 fixed inset-0 z-[300] overflow-hidden"
       style={{
-        // THE SWOOSH. The panel lifts and its bottom corners round to the
-        // site's 24px as it goes, so the intro leaves in the shape the hero
-        // arrives in. `transform` and `border-radius` only — both compositor
-        // friendly, and nothing under here reflows.
+        // THE SWOOSH — transform only.
+        //
+        // ⚠ CORRECTION. The first version animated `border-radius` alongside
+        // the transform and the comment claimed both were "compositor
+        // friendly". That is wrong: transform is, border-radius is not. A
+        // transitioning radius forces a repaint of the element every frame,
+        // and this element is the full viewport with a playing video inside
+        // it — the single most expensive thing on the page to repaint, for
+        // 820ms, during the one animation a first-time visitor will judge the
+        // site on.
+        //
+        // The rounded corner is kept, because it is a nice detail: it is just
+        // applied in one step as the leave begins rather than interpolated.
+        // At this speed nobody can tell the difference, and the animation runs
+        // entirely on the compositor.
+        //
+        // `will-change` only while leaving. Declaring it permanently would
+        // hold a composited layer for the whole visit to pay for one 820ms
+        // move.
         transform: leaving ? 'translateY(-100%)' : 'translateY(0)',
         borderBottomLeftRadius: leaving ? 'var(--radius-card)' : '0px',
         borderBottomRightRadius: leaving ? 'var(--radius-card)' : '0px',
-        transition: `transform ${SWOOSH}ms cubic-bezier(0.76, 0, 0.24, 1), border-radius ${SWOOSH}ms ease-out`,
+        transition: `transform ${SWOOSH}ms cubic-bezier(0.76, 0, 0.24, 1)`,
+        willChange: leaving ? 'transform' : undefined,
       }}
     >
+      {/* `preload="auto"` is right here and wrong on the hero: this clip has
+          to be playing within a second of arrival or the intro is a static
+          poster, whereas the hero has time. WebM first — 473 KB against the
+          MP4's 952 KB; see components/videoSources. */}
       <video
+        ref={videoRef}
         className="size-full object-cover"
-        src={VIDEO}
         poster={POSTER}
         autoPlay
         muted
         playsInline
         preload="auto"
-      />
+      >
+        {SOURCES.map((s) => (
+          <source key={s.type} src={s.src} type={s.type} />
+        ))}
+      </video>
 
       {/* A visible way out, for anyone who does not know the whole screen is
           clickable. Bottom-right so it is nowhere near the film's subject. */}

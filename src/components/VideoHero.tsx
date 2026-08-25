@@ -1,6 +1,7 @@
 import HeroMark from '@/components/HeroMark'
 import HeroTitle from '@/components/HeroTitle'
 import ScrollCue from '@/components/ScrollCue'
+import { videoSources, videoPoster } from '@/components/videoSources'
 
 /**
  * The hero: type on the film.
@@ -45,7 +46,7 @@ const VideoHero = ({
   title,
   desc,
   video,
-  poster,
+  posterAt = 3,
   /** Minimum height for the band. About runs shorter than home. */
   minHeight = 'min-h-[60svh]',
   /** Crop bias. Defaults to slightly above centre. */
@@ -55,12 +56,17 @@ const VideoHero = ({
   title: string
   /** Optional. About runs without one — the headline carries the page. */
   desc?: string
+  /** ImageKit MP4 URL. WebM and the poster are derived from it. */
   video: string
-  poster: string
+  /** Second to pull the poster frame from. */
+  posterAt?: number
   minHeight?: string
   objectPosition?: string
   scrollCue?: boolean
 }) => {
+  const sources = videoSources(video)
+  const poster = videoPoster(video, posterAt)
+
   return (
     /* `rounded-b-card` — Uri's 24px, bottom corners only. The band runs under
        the navbar to the top of the viewport, where there is nothing for a
@@ -93,7 +99,6 @@ const VideoHero = ({
           an error. */}
       <video
         className={`absolute inset-0 -z-20 size-full object-cover ${objectPosition} motion-reduce:hidden`}
-        src={video}
         poster={poster}
         data-hero-video
         loop
@@ -101,7 +106,11 @@ const VideoHero = ({
         playsInline
         preload="metadata"
         aria-hidden
-      />
+      >
+        {sources.map((s) => (
+          <source key={s.type} src={s.src} type={s.type} />
+        ))}
+      </video>
 
       {/* Reduced motion gets the poster and nothing else — same box, same
           crop, no JavaScript and no layout shift. */}
