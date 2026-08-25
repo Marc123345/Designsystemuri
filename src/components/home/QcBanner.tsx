@@ -3,40 +3,49 @@ import { Icon } from '@iconify/react'
 import { ArrowButton } from '@/components/ui'
 
 /**
- * The QC band, as two connected panels.
+ * The QC band: two cards, each carrying its own photograph.
  *
- * ── What it was ────────────────────────────────────────────────────────────
+ * ── What changed, and why the old arrangement was wrong ─────────────────────
  *
- * One block: eyebrow, heading and paragraph across seven columns, the CTA
- * floated off to the right of them, and the four checkpoints as a rule-
- * separated row underneath. Everything at one level, so the four things EID
- * actually measures read as a footnote to the argument rather than as its
- * evidence.
+ * This was one full-bleed photograph across the whole band, washed to navy,
+ * with two translucent panels floated on top of it. Marc's instruction is to
+ * drop the background and put the pictures inside the cards instead.
  *
- * ── What it is now ─────────────────────────────────────────────────────────
+ * That is the site rule catching up with this block rather than a new idea.
+ * Images are full cover with the text over them, and the unit that carries an
+ * image is the CARD — that is how CoreValues, the four controls, the entry
+ * cards and every PhotoCard on the site work. A photograph behind two
+ * translucent boxes is a different pattern: the panels read as glass laid over
+ * a picture neither of them owns, and the picture itself gets cropped by
+ * whatever height the copy happens to need.
  *
- * Two panels, and the split is by KIND rather than by length:
+ * With a photograph per card each one is a thing with a subject:
  *
- *   Left  — the claim. Every production run is tested; here is why that is a
- *           process rather than a promise; here is where to read the detail.
- *   Right — the evidence. The four things measured on every run, numbered.
+ *   left   the check being made — a slide under the objective, a gloved hand
+ *          on the stage. The claim card, so it shows the claim happening.
+ *   right  the optical measurement rig with a crystal magnified and its
+ *          dimensions read out beside it. The evidence card, and this is the
+ *          only frame in the library of a machine in the act of measuring,
+ *          which is exactly what "measured on every run" asserts.
  *
- * That division is what makes the connector meaningful: it runs from the
- * statement to the measurements, which is the direction the argument travels.
- * A connector between two arbitrary halves of one paragraph would be
- * decoration.
+ * ── Height fits the content now ─────────────────────────────────────────────
  *
- * ── The connector ──────────────────────────────────────────────────────────
+ * Also Marc's note. The band used to be sized by a background photograph it
+ * had to keep looking like a photograph, so it carried height the copy did not
+ * need. The cards are `min-h` with `items-stretch`: they take the room the
+ * words want and the two stay level with each other, and nothing is padded out
+ * to protect a picture that is no longer behind them.
  *
- * A hairline rail with a slow pulse travelling along it — right on desktop,
- * down on mobile, which is the reading order in both cases. It is
- * `aria-hidden`: the relationship is already carried by the copy and the
- * layout, and "dot moving along a line" announces nothing useful.
+ * ── The connector stays ─────────────────────────────────────────────────────
  *
- * 2.6s and low contrast on purpose. This is a connector, not a loading
- * indicator; if it pulls the eye off the copy it has failed. Keyframes live in
- * _general.css so the reduced-motion block governs them — see the note there
- * about why it is cancelled outright rather than collapsed.
+ * The rail and its travelling dot were an explicit earlier request and were
+ * not part of this one, so they are kept. They are recoloured: they were white
+ * at low opacity because they sat on a dark band, and on the page's own white
+ * ground that is invisible. Same geometry, ink instead of light.
+ *
+ * Keyframes live in _general.css so the reduced-motion block governs them —
+ * see the note there about why they are cancelled outright rather than
+ * collapsed.
  */
 const QcBanner = ({
   eyebrow,
@@ -53,67 +62,93 @@ const QcBanner = ({
   ctaLabel: string
   ctaHref: string
 }) => (
-  /* `rounded-card` — every other full-bleed band on the site carries the 24px
-     corner, and `overflow-hidden` was already here for the photograph, so the
-     radius clips the image and both scrims for free. */
-  <section data-note="qc-banner" className="rounded-card relative isolate overflow-hidden">
-    <Image src="/eid/home/qc.jpg" alt="" fill sizes="100vw" className="-z-20 object-cover object-center" />
-    {/* Two layers, not one: a flat brand wash to pull the photograph onto the
-        palette, then a left-weighted gradient so the copy clears contrast
-        without flattening the whole frame to a solid colour. */}
-    <div aria-hidden className="bg-primary-3/82 absolute inset-0 -z-10" />
-    <div aria-hidden className="from-default-950 absolute inset-0 -z-10 bg-linear-to-r to-transparent to-70%" />
-
+  <section data-note="qc-banner" className="py-16 lg:py-24">
     <div className="container">
-      <div className="py-14 lg:py-16">
-        {/* 12 columns split 6 / 1 / 5: the connector gets a column of its own
-            rather than being absolutely positioned across a gap, so it stays
-            centred at every width without a magic number. */}
-        <div className="grid items-stretch gap-8 lg:grid-cols-12 lg:gap-0">
-          {/* ── PANEL ONE: the claim ── */}
-          <div className="rounded-card flex flex-col border border-white/12 bg-white/[0.04] p-7 lg:col-span-6 lg:p-9">
-            <div className="rounded-control inline-flex w-fit items-center gap-1.5 border border-white/20 px-3.5 py-1.25">
-              <span className="bg-primary-1 size-2" />
-              <span className="text-sm text-white">{eyebrow}</span>
-            </div>
+      {/* 6 / 1 / 5, unchanged: the connector keeps a column of its own rather
+          than being absolutely positioned across a gap, so it stays centred at
+          every width without a magic number. */}
+      <div className="grid items-stretch gap-6 lg:grid-cols-12 lg:gap-0">
+        {/* ── CARD ONE: the claim ── */}
+        <article className="rounded-card relative isolate flex min-h-[420px] flex-col justify-end overflow-hidden p-7 lg:col-span-6 lg:min-h-[460px] lg:p-9">
+          <Image
+            src="/eid/home/qc.jpg"
+            alt="A gloved hand adjusting the stage of a laboratory microscope with a prepared sample slide under the objective"
+            fill
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            className="-z-20 object-cover object-center"
+          />
+          {/* PhotoCard's heavy scrim, to the value. This card carries an
+              eyebrow, a heading, a paragraph and a button — more copy than a
+              value tile, so it needs the cover a `weight="heavy"` PhotoCard
+              gets rather than the light one. */}
+          <span aria-hidden className="from-primary-3/95 via-primary-3/72 to-primary-3/8 absolute inset-0 -z-10 bg-linear-to-t via-62%" />
 
-            <h2 className="mt-5 text-2xl font-bold text-white md:text-[30px] lg:text-[34px]">{title}</h2>
-            <p className="mt-4 max-w-[52ch] text-base leading-relaxed text-white/80">{desc}</p>
-
-            {/* `mt-auto` pins the CTA to the foot so both panels end level
-                whatever the copy does. */}
-            <div className="mt-auto pt-8">
-              <ArrowButton href={ctaHref} label={ctaLabel} variant="light" />
-            </div>
+          <div className="rounded-control inline-flex w-fit items-center gap-1.5 border border-white/25 px-3.5 py-1.25">
+            <span className="bg-primary-1 size-2" />
+            <span className="text-sm text-white">{eyebrow}</span>
           </div>
 
-          {/* ── THE CONNECTOR ──
-              A vertical rail below lg, horizontal at lg. The dot is centred by
-              transform and animated from there, which is why both keyframe
-              sets re-state the centring translate. */}
-          <div aria-hidden className="relative flex items-center justify-center lg:col-span-1">
-            <span className="absolute inset-x-1/2 top-0 bottom-0 w-px -translate-x-1/2 bg-white/15 lg:inset-x-0 lg:top-1/2 lg:bottom-auto lg:h-px lg:w-full lg:translate-x-0 lg:-translate-y-1/2" />
-            <span className="qc-flow-dot bg-primary-1 absolute left-1/2 top-1/2 size-1.5 rounded-full shadow-[0_0_10px_2px_rgba(61,82,144,0.8)]" />
-          </div>
+          <h2 className="mt-5 text-2xl font-bold text-white md:text-[30px] lg:text-[34px]">{title}</h2>
+          <p className="mt-4 max-w-[52ch] text-base leading-relaxed text-white/85">{desc}</p>
 
-          {/* ── PANEL TWO: the evidence ── */}
-          <div className="rounded-card border border-white/12 bg-white/[0.04] p-7 lg:col-span-5 lg:p-9">
-            <p className="font-mono text-[11px] tracking-[0.2em] text-white/55 uppercase">Measured on every run</p>
-
-            <ul className="mt-5">
-              {checks.map((check, i) => (
-                <li
-                  key={check}
-                  className="grid grid-cols-[auto_auto_1fr] items-start gap-x-3 border-t border-white/10 py-3.5 last:border-b"
-                >
-                  <span className="font-mono text-[11px] text-white/40 tabular-nums">{String(i + 1).padStart(2, '0')}</span>
-                  <Icon icon="tabler:circle-check" className="text-primary-1 mt-0.5 size-4 shrink-0" />
-                  <span className="text-[0.95rem] leading-snug text-white/85">{check}</span>
-                </li>
-              ))}
-            </ul>
+          <div className="mt-7">
+            <ArrowButton href={ctaHref} label={ctaLabel} variant="light" />
           </div>
+        </article>
+
+        {/* ── THE CONNECTOR ──
+            Vertical below lg, horizontal at lg. The dot is centred by transform
+            and animated from there, which is why both keyframe sets re-state
+            the centring translate. */}
+        <div aria-hidden className="relative flex items-center justify-center lg:col-span-1">
+          <span className="bg-default-200 absolute inset-x-1/2 top-0 bottom-0 w-px -translate-x-1/2 lg:inset-x-0 lg:top-1/2 lg:bottom-auto lg:h-px lg:w-full lg:translate-x-0 lg:-translate-y-1/2" />
+          <span className="qc-flow-dot bg-primary absolute top-1/2 left-1/2 size-1.5 rounded-full shadow-[0_0_10px_2px_rgba(44,60,108,0.35)]" />
         </div>
+
+        {/* ── CARD TWO: the evidence ── */}
+        <article className="rounded-card relative isolate flex min-h-[420px] flex-col justify-end overflow-hidden p-7 lg:col-span-5 lg:min-h-[460px] lg:p-9">
+          <Image
+            src="/eid/qc-inspection.jpg"
+            alt="An optical measurement system with a diamond crystal magnified on screen and its dimensions read out alongside"
+            fill
+            sizes="(min-width: 1024px) 42vw, 100vw"
+            className="-z-20 object-cover object-center"
+          />
+          {/* ⚠ A HEAVIER SCRIM THAN CARD ONE, AND IT IS MEASURED, NOT TASTE.
+              This frame is a lit monitor; card one's is a microscope body in
+              shadow. Under card one's scrim the copy here came out at 2.3-2.5:1
+              against the brightest part of the image — the eyebrow and all four
+              numerals failed 1.4.3 outright, while the identical treatment on
+              card one passed.
+
+              Two cards with the same scrim is only correct if they have
+              similarly lit photographs. Re-measure if either image changes;
+              the check is compositing image + scrim to a canvas and sampling
+              the worst-case ground behind each text box, not eyeballing it. */}
+          <span aria-hidden className="from-primary-3/96 via-primary-3/88 to-primary-3/45 absolute inset-0 -z-10 bg-linear-to-t via-55%" />
+
+          <p className="font-mono text-[11px] tracking-[0.2em] text-white/75 uppercase">Measured on every run</p>
+
+          {/* Rules at white/15 rather than white/10. On a photograph the
+              hairlines have texture behind them instead of flat navy, and at
+              10% they disappear over the lighter passages of the frame. */}
+          <ul className="mt-5">
+            {checks.map((check, i) => (
+              <li
+                key={check}
+                className="grid grid-cols-[auto_auto_1fr] items-start gap-x-3 border-t border-white/15 py-3.5 last:border-b"
+              >
+                <span className="font-mono text-[11px] text-white/70 tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                {/* primary-1 (#3d5290) is a mid navy and was chosen when this
+                    card sat on a flat dark band. Over a photograph it drops
+                    into the image; white/70 keeps the tick readable as a mark
+                    rather than as a smudge. */}
+                <Icon icon="tabler:circle-check" className="mt-0.5 size-4 shrink-0 text-white/70" />
+                <span className="text-[0.95rem] leading-snug text-white">{check}</span>
+              </li>
+            ))}
+          </ul>
+        </article>
       </div>
     </div>
   </section>

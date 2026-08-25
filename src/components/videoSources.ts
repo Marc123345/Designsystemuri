@@ -4,17 +4,18 @@
  *
  * ── Everything here was measured, not assumed ───────────────────────────────
  *
- * Fetched every variant and compared bytes. WebM at q-30, against the
- * untransformed masters (hero 1333 KB, intro 930 KB):
+ * Fetched every variant and compared bytes. WebM, each clip at its own
+ * quality (see Q_BY_CLIP), against the untransformed masters — hero 1333 KB,
+ * intro 930 KB:
  *
- *              hero      intro
- *   w-720      170 KB    232 KB
- *   w-960      254 KB    270 KB
- *   full       439 KB    333 KB
+ *            hero q-20   intro q-30
+ *   w-720      117 KB      232 KB
+ *   w-960      168 KB      270 KB
+ *   full       283 KB      333 KB
  *
- * A phone that used to pull 1333 KB of hero now pulls 170 KB — an 87%
- * reduction on the connection least able to afford it. A 1080p laptop takes
- * the 960 rung at 254 KB.
+ * A phone that used to pull 1333 KB of hero now pulls 117 KB — 91% off, on
+ * the connection least able to afford it. A 1080p laptop takes the 960 rung
+ * at 168 KB.
  *
  * ── Quality: q-30, and a correction to what this file used to say ───────────
  *
@@ -99,10 +100,37 @@
 export type VideoSource = { src: string; type: string; media?: string }
 
 /**
- * Quality floor for every rendition. See the note above — this is a measured
- * choice, not a default, and it roughly halves every rung.
+ * Quality, PER CLIP, because the two clips do not tolerate the same amount of
+ * it — and that was established by looking, not assumed.
+ *
+ * q-20 was tried on both. On the hero it is invisible: frames compared 1:1
+ * against q-30 on the bench reflection and the soft background wash, the two
+ * places that clip would band if it were going to, show nothing. It is live
+ * action with grain and motion, which hides compression.
+ *
+ * On the intro q-20 is NOT invisible. It is an animated wireframe on a flat
+ * blue field, and at q-20 that field breaks into visible blocky mottling
+ * around the lines. Flat synthetic colour is the hard case for a video codec:
+ * there is no grain to hide behind, so the block structure shows directly.
+ *
+ * A numeric check missed this. Counting luminance transitions across the
+ * gradient gave 411 / 398 / 414 for q-30 / q-25 / q-20 — noise, no signal,
+ * and it would have waved q-20 through on both clips. The artefact is
+ * structured rather than statistical. Look at the frames.
+ *
+ * Keyed on the clip rather than passed in at the call site on purpose. The
+ * quality a clip tolerates is a fact about its CONTENT, so it belongs with the
+ * clip; a per-call option would let About's hero — which is the intro footage
+ * — quietly be given the hero's q-20 and band. Anything unrecognised falls
+ * back to the safe value.
  */
-const Q = 30
+const Q_DEFAULT = 30
+const Q_BY_CLIP: { match: string; q: number }[] = [
+  // Live action, laboratory. Home and Quality heroes.
+  { match: 'EID%20VIDEO%20HERO', q: 20 },
+]
+
+const qualityFor = (url: string) => Q_BY_CLIP.find((r) => url.includes(r.match))?.q ?? Q_DEFAULT
 
 /** Breakpoint / width pairs, narrowest first. */
 const LADDER: { media?: string; w: number | null }[] = [
@@ -112,8 +140,9 @@ const LADDER: { media?: string; w: number | null }[] = [
 ]
 
 export function videoSources(mp4Url: string): VideoSource[] {
+  const q = qualityFor(mp4Url)
   const at = (w: number | null, webm: boolean) => {
-    const tr = [webm ? 'f-webm' : null, w ? `w-${w}` : null, `q-${Q}`].filter(Boolean).join(',')
+    const tr = [webm ? 'f-webm' : null, w ? `w-${w}` : null, `q-${q}`].filter(Boolean).join(',')
     return `${mp4Url}?tr=${tr}`
   }
 

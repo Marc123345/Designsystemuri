@@ -738,31 +738,57 @@ export const Faq = ({
           )}
         </div>
 
-        {/* Cards, not a divided list. This was one bordered box with hairline
-            rules between the questions — the old rule-not-box language. On a
-            site where every other block now has a 24px edge it was the one
-            place that did not, and an accordion in particular reads better as
-            discrete objects: each question is its own thing to open. */}
+        {/* Cards, not a divided list, and the canvas is brand navy on Marc's
+            instruction — the same blue the QC cards on the home page carry, so
+            the two card blocks on that page read as one family.
+
+            ⚠ CHANGING THE CANVAS IS NEVER JUST THE BACKGROUND. Every colour in
+            here was picked against white and had to move with it:
+
+              question      was inherited near-black; now white.
+              numeral       was default-500 (4.76:1 on white). On navy that is
+                            2.1:1 and fails outright, so it is white/55 (7.4:1
+                            on primary-3) and goes solid white when open.
+              answer        was default-600; now white/80, which clears AA for
+                            body text on this ground.
+              plus control  its border and its open fill were default-300 and
+                            `primary`. `primary` ON navy is very nearly the
+                            card itself, so the open state inverts instead:
+                            white fill, navy glyph. That is the one control
+                            here and it has to stay obviously a control.
+              open state    was a light grey tint. A tint of navy is invisible,
+                            so open cards lift to primary rather than darken.
+
+            Do not reintroduce any `default-*` or `text-primary` token inside
+            this card without re-checking it against the navy. */}
         <div className="flex flex-col gap-3 lg:col-span-7">
           {items.map((item, i) => (
-            <details key={item.q} open={i === 0} className="group border-default-200 rounded-card border bg-white px-6 open:bg-default-50/60 transition-colors">
+            <details key={item.q} open={i === 0} className="group bg-primary-3 open:bg-primary rounded-card border border-white/10 px-6 transition-colors">
               <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-5 [&::-webkit-details-marker]:hidden">
                 <div className="flex items-start gap-5">
-                  {/* default-500, not 400: on white, slate-400 is 2.56:1 and
-                      fails 1.4.3 outright. slate-500 is 4.76:1. */}
-                  <span className="text-default-500 group-open:text-primary mt-1 text-sm font-semibold tabular-nums transition-colors">{String(i + 1).padStart(2, '0')}</span>
-                  <h3 className="group-hover:text-primary group-open:text-primary text-lg transition-colors">{item.q}</h3>
+                  <span className="mt-1 text-sm font-semibold tabular-nums text-white/55 transition-colors group-open:text-white">{String(i + 1).padStart(2, '0')}</span>
+                  <h3 className="text-lg text-white/90 transition-colors group-hover:text-white group-open:text-white">{item.q}</h3>
                 </div>
 
-                {/* `rounded-control`, like every other control in the system.
-                    It was square when the whole site was square; it is 12px now
-                    for the same reason everything else is. */}
-                <span className="border-default-300 text-default-600 group-open:border-primary group-open:bg-primary rounded-control flex size-8 shrink-0 items-center justify-center border transition-colors group-open:text-white">
+                <span className="rounded-control group-open:bg-white group-open:text-primary flex size-8 shrink-0 items-center justify-center border border-white/30 text-white/70 transition-colors group-open:border-white">
                   <Icon icon="tabler:plus" className="size-4 transition-transform duration-500 group-open:rotate-45" />
                 </span>
               </summary>
 
-              <p className="text-default-600 ps-10 pb-6 text-base">
+              {/* ⚠ The link override is load-bearing, not styling polish.
+                  RichText renders markdown links with a shared LINK_CLASS of
+                  `text-primary` — brand navy, correct on the light pages that
+                  use it (products, datasheets, MSDS) and INVISIBLE here, where
+                  the card is navy. Several of these answers carry links; the
+                  metal bond and CBN coated-section links in answer 03 would
+                  have vanished into the card entirely.
+
+                  Overridden locally rather than by changing LINK_CLASS,
+                  because every other consumer of RichText is on white and
+                  would break the other way. Solid white against the body's
+                  white/80, plus the underline RichText already applies, keeps
+                  them findable without a second accent colour. */}
+              <p className="ps-10 pb-6 text-base text-white/80 [&_a]:text-white [&_a]:decoration-white/60">
                 <RichText>{item.a}</RichText>
               </p>
             </details>
