@@ -1,6 +1,6 @@
 import ContactStrip from '@/components/home/ContactStrip'
 import EntryCards from '@/components/home/EntryCards'
-import Hero from '@/components/home/Hero'
+import VideoHero from '@/components/VideoHero'
 import ProofPanel from '@/components/home/ProofPanel'
 import QcBanner from '@/components/home/QcBanner'
 import CurtainGrid from '@/components/CurtainGrid'
@@ -143,7 +143,13 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 
   return (
     <>
-      <Hero title={t(locale, hero.title)} desc={t(locale, hero.desc)} />
+      <VideoHero
+        title={t(locale, hero.title)}
+        desc={t(locale, hero.desc)}
+        video="https://ik.imagekit.io/qcvroy8xpd/EID%20VIDEO%20HERO.mp4"
+        poster="https://ik.imagekit.io/qcvroy8xpd/EID%20VIDEO%20HERO.mp4/ik-thumbnail.jpg?tr=so-3"
+        scrollCue
+      />
 
       {/* The two doors, 50/50, still on the hero's navy ground so they read as
           the foot of the hero rather than as the page's first section — which

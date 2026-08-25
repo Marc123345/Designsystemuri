@@ -286,6 +286,32 @@ textarea {
   }
 }
 
+/* ── SCROLL CUE ──────────────────────────────────────────── */
+/* The wheel dot in ScrollCue. Defined here rather than inline so the
+   reduced-motion block below governs it like every other animation. */
+
+@keyframes scroll-cue {
+  0% {
+    transform: translate(-50%, 0);
+    opacity: 0;
+  }
+  22% {
+    opacity: 1;
+  }
+  70% {
+    transform: translate(-50%, 6px);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, 10px);
+    opacity: 0;
+  }
+}
+
+.scroll-cue-dot {
+  animation: scroll-cue 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -303,6 +329,15 @@ textarea {
      Cancel the animation outright so both copies sit where they start. */
   .infinite-scroll,
   .infinite-scroll-inverse {
+    animation: none !important;
+  }
+
+  /* Same trap, different element. `scroll-cue` ends on opacity 0 and a 10px
+     drop, so collapsing it to one instant iteration would leave the mouse
+     with no dot in it at all — an empty outline is not a scroll hint.
+     Cancelled outright so the dot rests where it starts, at the top of the
+     wheel, which still reads as "scroll down". */
+  .scroll-cue-dot {
     animation: none !important;
   }
 }

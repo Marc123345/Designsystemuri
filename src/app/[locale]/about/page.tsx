@@ -2,7 +2,7 @@ import GlobeSection from '@/components/GlobeSection'
 import AboutMosaic from '@/components/about/AboutMosaic'
 import CoreValues from '@/components/about/CoreValues'
 import TheCompany from '@/components/about/TheCompany'
-import { PageHero } from '@/components/sections'
+import VideoHero from '@/components/VideoHero'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
@@ -72,26 +72,41 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
 
   return (
     <>
-      {/* Two corrections and a demotion.
+      {/* The same hero system as the home page, one step shorter.
 
+          It was a PageHero: a photographic band with the type laid over it,
+          which is the arrangement the home page moved away from. Two heroes
+          built on two different systems is how the interior pages drifted
+          before the V1 pass, so About now runs the shared VideoHero and the
+          two can only change together.
+
+          ── The film ──
+          A different clip from the home page — an animated wireframe diamond
+          on brand blue rather than the laboratory footage. It suits About for
+          a reason beyond variety: this page is about the company rather than
+          the work, so an abstract mark is honest where a photograph of a
+          process would be borrowed.
+
+          ── Shorter ──
+          38/42svh against the home page's 46/50. About's job is to get to The
+          Company block quickly; the home hero is the one that has to hold the
+          frame. `object-center` rather than the home page's upward bias,
+          because this composition is centred by construction.
+
+          ── Two corrections carried over from the old hero copy ──
           The eyebrow said "made and graded in-house" and the lede said the
           range is manufactured "from London". Uri's F1/F2 note is explicit
           that London is the sales headquarters and that "manufacturing in UK,
           London" is wrong wherever it appears, so the sentence no longer
-          places manufacture anywhere — see the ⚠ in the page docblock, because
-          the positive version of that claim is still an open question for him.
-
-          "Over 50 years" becomes "Since 1970", which is the anniversary his own
-          approved home-page hero copy uses. Both were true and the site was
-          saying them in different places. */}
-      <PageHero
-        eyebrow={t(locale, 'Since 1970 · the full range · graded and QC-passed in-house')}
+          places manufacture anywhere. "Over 50 years" became "Since 1970",
+          which is the anniversary his approved home-page hero copy uses. */}
+      <VideoHero
         title={t(locale, 'About EID — Industrial Diamond Manufacturer')}
         desc={t(locale, 'EID has manufactured and quality-controlled the full industrial diamond and CBN range since 1970, supplying tool makers on five continents from its London headquarters.')}
-        // ⚠ PLACEHOLDER. Openly-licensed stock, wide and short per Uri's note
-        // that the top of this page wants a generic background picture. Swap the
-        // file, not the code, when EID supplies its own.
-        bgImage="/eid/home/about-hero.jpg"
+        video="https://ik.imagekit.io/qcvroy8xpd/EID%20NEW.mp4"
+        poster="https://ik.imagekit.io/qcvroy8xpd/EID%20NEW.mp4/ik-thumbnail.jpg?tr=so-3"
+        filmHeight="h-[38svh] lg:h-[42svh]"
+        objectPosition="object-center"
       />
 
       {/* ── WHAT CAME OUT OF THIS PAGE, AND WHY ─────────────────────────
