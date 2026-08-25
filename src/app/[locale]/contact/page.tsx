@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { Icon } from '@iconify/react'
 import SalesLocations from '@/components/SalesLocations'
 import QuoteForm from '@/components/QuoteForm'
-import { PageHero } from '@/components/sections'
+import VideoHero from '@/components/VideoHero'
 import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
@@ -29,22 +29,53 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
 
   return (
     <>
-      {/* No photograph, and that is the whole brief for this page.
+      {/* The shared VideoHero, on Marc's instruction that Contact carries the
+          same hero as the rest of the site. Interior configuration exactly:
+          48svh like About and Quality rather than the home page's 60, no
+          supporting line, no scroll cue — the heading carries it.
 
-          Uri's F5/F6 note is the strictest on the site: Contact is one screen,
-          zero scrolling, everything above the footer in one view, on the
-          Strauss model. A 52svh photographic hero spends more than half of that
-          budget on a picture of a laboratory before the reader reaches a field.
+          ── ⚠ THIS REVERSES A DELIBERATE DECISION, SO IT IS RECORDED ────────
 
-          Dropping `bgImage` falls back to PageHero's compact bordered header,
-          which is the same header the product and resource pages use — about
-          200px, and it leaves the form the rest of the screen.
+          This page ran a compact bordered PageHero with no photograph, and the
+          reason was Uri's F5/F6 note — the strictest brief on the site:
+          Contact is one screen, zero scrolling, everything above the footer in
+          one view. A film band spends roughly 400px of that budget before the
+          reader reaches a field.
 
-          Title is "Contact Us" per F5: "Tell us the grade you need" was too
-          one-dimensional, and it turned away anyone with a technical question
-          or a sample request. The eyebrow's one-business-day promise came off
-          with it — he asked for that wording to go. */}
-      <PageHero title={t(locale, 'Contact Us')} desc={t(locale, 'Request a quote, order a sample, or ask a technical question. One form, routed to someone who works with the material.')} />
+          Marc's call is the shared hero, and consistency across five pages is
+          a real argument against a one-page exception. But the one-screen
+          brief is Uri's and it is now definitively not met. Worth him seeing
+          it rather than discovering it — and if it comes back, the fix is this
+          block, not the split below, which is what bought the height back in
+          the first place.
+
+          ── The clip ────────────────────────────────────────────────────────
+
+          The wireframe rather than the laboratory footage, for two reasons.
+          The lab clip already runs on Home and Quality, and a third page would
+          make it wallpaper. And this page is not about a process — it is about
+          reaching the company — so the abstract brand mark is the honest
+          choice where a picture of grading would be borrowed.
+
+          `object-center` because that composition is centred by construction,
+          the same reason About sets it.
+
+          ── The lede came off ───────────────────────────────────────────────
+
+          "Request a quote, order a sample, or ask a technical question. One
+          form, routed to someone who works with the material." About and
+          Quality carry a headline alone, so matching them means dropping it —
+          and it was already half-duplicated by the panel below, whose eyebrow
+          is literally "One form". The file has a standing note about this page
+          saying the same sentence twice; this is that note being honoured
+          rather than worked around. The metadata description keeps the wording
+          for search. */}
+      <VideoHero
+        title={t(locale, 'Contact Us')}
+        video="https://ik.imagekit.io/qcvroy8xpd/EID%20NEW.mp4"
+        minHeight="min-h-[48svh]"
+        objectPosition="object-center"
+      />
 
       {/* ── THE SPLIT: presence on the left, the form on the right ──────────
           Marc's brief, off Strauss's contacts page: half the page a picture,
