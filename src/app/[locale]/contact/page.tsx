@@ -1,5 +1,6 @@
-import Image from 'next/image'
 import { Icon } from '@iconify/react'
+import Backdrop from '@/components/Backdrop'
+import Globe from '@/components/Globe'
 import SalesLocations from '@/components/SalesLocations'
 import QuoteForm from '@/components/QuoteForm'
 import VideoHero from '@/components/VideoHero'
@@ -77,122 +78,79 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
         objectPosition="object-center"
       />
 
-      {/* ── THE SPLIT: presence on the left, the form on the right ──────────
-          Marc's brief, off Strauss's contacts page: half the page a picture,
-          half the form, with the sales locations in a cube on the left.
+      {/* ── THE SPLIT: the globe on the left, the ask on the right ─────────
 
-          ── What was taken from Strauss, and what deliberately was not ──────
+          Marc's revision: the whole left half is one visual, and that visual is
+          the globe rather than a photograph with information laid over it.
 
-          Their page is credibility-first: it establishes the company as real
-          places before it asks for anything, and it repeats identical location
-          blocks so geography reads as a grid. That principle is the whole
-          reason the left half exists here — a buyer sees a London laboratory,
-          a London address and eleven territories before reaching a field.
+          ── What moved, and why it had to ───────────────────────────────────
 
-          Three things from that model are NOT here, and none of them is an
-          oversight:
+          The left panel used to carry the address, four contact lines and the
+          eleven territories over a photograph. All of that came off. The
+          address and the contact lines are now in the right column, in dark
+          type on the light ground — NOT the same components recoloured: they
+          were white-on-photograph and every colour in them had to change with
+          the ground.
 
-           · A CARD PER OFFICE WITH ADDRESS, PHONE, FAX AND EMAIL. Strauss has
-             three offices and publishes all three. EID has one — London — and
-             the other eleven entries are sales territories we hold no
-             addresses for. Building eleven identical cards would mean
-             inventing ten sets of contact details. Uri also ruled it out
-             directly in F6: "I'm not going to do that with the full
-             information for all our sales locations… just showing the
-             locations they could buy from."
-           · INTENT-SEGMENTED ROUTES (general / technical / distributor).
-             Uri's F5 is one form, and the form is a single Jotform endpoint.
-             Three routes would mean three forms or a router field he has not
-             asked for.
-           · OFFICE PHOTOGRAPHY PER LOCATION. We hold one interior, of London.
+          The eleven territories stayed on the left, as chips at the foot of the
+          globe, and that pairing is deliberate. The globe shows reach — London
+          hub, arcs to five continents — but it NAMES NOTHING. A buyer scanning
+          for "do you sell in Taiwan" gets no answer from an arc. The picture
+          and the fact have to sit together or the panel is decoration.
 
-          ── Why this photograph ─────────────────────────────────────────────
+          ── Why <Globe> and not <GlobeSection> ──────────────────────────────
 
-          A grader checking a tray of grit through a loupe, with the Shard and
-          the City through the window behind her. On a page whose job is to
-          prove a London company is real before it asks for an enquiry, having
-          London actually in the frame does more than any caption would. It is
-          also portrait (725x1080), which is the shape this column is.
+          ⚠ GlobeSection cannot go here and it is worth knowing before trying.
+          It is itself a two-column layout — copy left, globe right, inside a
+          full-bleed container — so dropping it into half a canvas gives two
+          columns inside one column, at half the width each. What this uses is
+          the <Globe> underneath it, which is standalone, square, and sizes to
+          its box.
 
-          It carries a second thing the copy claims elsewhere: About's core
-          values say the person who answers a specification question is the
-          person who grades against it. This is that person, on the page where
-          you write to her.
+          Backdrop is the same dark surface every full-bleed band on the site
+          sits on, so the panel is the site's dark ground rather than a new one.
 
-          ── One screen still ────────────────────────────────────────────────
+          ── Cost, stated plainly ────────────────────────────────────────────
 
-          Uri's F5: contact is one view, no scrolling. Putting the locations
-          beside the form instead of below it is what buys that back — the band
-          they used to sit in was a whole extra section of height. Nothing was
-          added to the page's height here; it was moved sideways. */}
+          This puts WebGL on the contact page. Globe defers all three.js work to
+          a client effect and gates itself below 1024px, so the server render is
+          two divs and a phone never starts a context — but on desktop this page
+          now initialises a globe it previously did not. It is the same
+          component About already pays for, and the visitor here has usually
+          come from a page that loaded it. */}
       <section data-note="contact-split" className="py-12 lg:py-16">
         <div className="container">
           <div className="grid items-start gap-6 lg:grid-cols-2">
-            {/* ── LEFT: the picture, with presence over it ── */}
-            {/* ⚠ `items-start` on the grid and `sticky` here, NOT `items-stretch`.
-                Stretching was the obvious thing and it was wrong: the Jotform
-                iframe auto-resizes to its content and measures 2024px, so the
-                photograph column stretched to 2024px too — a two-metre-tall
-                picture of a laboratory beside a form.
+            {/* ── LEFT: the globe, and the territories it cannot name ── */}
+            <div className="rounded-card relative isolate flex flex-col overflow-hidden p-6 lg:sticky lg:top-28 lg:p-8 [@media(max-height:820px)]:!static">
+              <Backdrop />
 
-                Sticky instead, on the same `top-28` the FAQ's heading column
-                uses. The panel sizes to its own content and holds while the
-                form scrolls past, which is also the more useful behaviour: the
-                address and the territories stay on screen the whole time
-                someone is filling the form in.
+              {/* The globe takes the room, the chips take the foot. `flex-1`
+                  with `min-h-0` so the globe absorbs the slack rather than the
+                  gap above the chips growing. */}
+              <div className="relative z-10 flex min-h-0 flex-1 items-center justify-center py-2">
+                <Globe size={420} />
+              </div>
 
-                ⚠ A STICKY PANEL TALLER THAN THE WINDOW PINS AT ITS TOP AND
-                HIDES ITS OWN BOTTOM EDGE — here that would permanently clip the
-                cube, which is the whole point of the column. Same trap as the
-                FAQ plate.
+              <div className="relative z-10 mt-6 border-t border-white/12 pt-6">
+                <SalesLocations />
+              </div>
+            </div>
 
-                The panel is 602px and the sticky offset is 112px, so it needs
-                714px of window. Measured: 812px window clears with 98px to
-                spare, 767px with 53px, and a 700px window MISSES BY 14px. That
-                last one is not hypothetical — it is a small laptop, or any
-                window that is not maximised.
-
-                So the height query, rather than shaving another 14px off and
-                calling it fixed: below 740px of viewport height the panel stops
-                being sticky and simply scrolls with the page. Nothing is
-                clipped, nothing is lost, and the behaviour degrades where it
-                cannot fit instead of failing silently. If the content here
-                grows, raise the 740 to match — panel height plus 112 plus a
-                little slack. */}
-              <div className="rounded-card relative isolate flex flex-col justify-between overflow-hidden p-6 lg:sticky lg:top-28 lg:p-8 [@media(max-height:740px)]:!static">
-              <Image
-                src="/eid/facility/diamond-grading-loupe.png"
-                alt={t(locale, 'A grader examining a tray of diamond grit through a loupe in the London laboratory, the City skyline through the window behind')}
-                fill
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                className="-z-20 object-cover object-center"
-              />
-              {/* Two scrims, not one. A single bottom-up gradient would leave
-                  the address at the top of the panel on bare photograph — and
-                  the top of this frame is a lit ceiling panel, the brightest
-                  part of it. So: a flat wash for the whole panel, then a
-                  bottom-weighted one under the cube where the copy is densest. */}
-              <span aria-hidden className="bg-primary-3/62 absolute inset-0 -z-10" />
-              <span aria-hidden className="from-primary-3/85 absolute inset-0 -z-10 bg-linear-to-t via-transparent via-60% to-transparent" />
-              {/* ⚠ A THIRD SCRIM, TOP-DOWN, AND IT IS NOT DECORATION. The
-                  brightest thing in this frame is the lit ceiling panel across
-                  the top — exactly where the address block sits. Under the
-                  flat wash and the bottom gradient alone, "Headquarters"
-                  measured 3.25:1 and the address itself 4.35:1 even in solid
-                  white, both under the 4.5:1 floor. Measured by compositing
-                  image plus every scrim to a canvas and sampling the worst
-                  ground behind each line. */}
-              <span aria-hidden className="from-primary-3/58 absolute inset-0 -z-10 bg-linear-to-b via-transparent via-45% to-transparent" />
-
-              {/* TOP: the one office that is real, and the ways in. Strauss's
-                  icon-labelled contact lines, with our set — fax included,
-                  because EID publishes one and a technical buyer's purchasing
-                  department still occasionally wants it. */}
+            {/* ── RIGHT: who to reach, then the form ── */}
+            <div className="flex flex-col gap-8">
+              {/* ⚠ Dark type, not the white it carried on the photograph.
+                  Moving a block off an image onto a light ground is not a
+                  reposition — `text-white` here would be invisible. */}
               <div>
-                <p className="font-mono text-[11px] tracking-[0.22em] text-white/85 uppercase">{t(locale, 'Headquarters')}</p>
-                <p className="mt-2.5 max-w-[26ch] text-[1.02rem] leading-snug font-semibold text-white">{site.address}</p>
+                {/* default-600, not the default-500 this eyebrow uses over on
+                    the dark panels. On white, slate-500 measures 4.55:1 at
+                    11px — it clears 4.5 by five hundredths, which is not a
+                    margin, it is a rounding error. slate-600 is 7.0:1. */}
+                <p className="text-default-600 font-mono text-[11px] tracking-[0.22em] uppercase">{t(locale, 'Headquarters')}</p>
+                <p className="text-default-900 mt-2.5 max-w-[30ch] text-[1.05rem] leading-snug font-semibold">{site.address}</p>
 
-                <dl className="mt-5 flex flex-col gap-2">
+                <dl className="mt-5 grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
                   {[
                     { icon: 'tabler:mail', label: t(locale, 'Email'), value: site.email, href: `mailto:${site.email}` },
                     { icon: 'tabler:phone', label: t(locale, 'Phone'), value: site.phone, href: site.phoneHref },
@@ -200,11 +158,11 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
                     { icon: 'tabler:printer', label: t(locale, 'Fax'), value: site.fax },
                   ].map((row) => (
                     <div key={row.label} className="flex items-center gap-3">
-                      <Icon icon={row.icon} className="size-4 shrink-0 text-white/70" aria-hidden />
+                      <Icon icon={row.icon} className="text-primary size-4 shrink-0" aria-hidden />
                       <dt className="sr-only">{row.label}</dt>
-                      <dd className="text-[0.95rem] text-white">
+                      <dd className="text-default-800 text-[0.95rem]">
                         {row.href ? (
-                          <a href={row.href} className="underline-offset-4 hover:underline">
+                          <a href={row.href} className="hover:text-primary underline-offset-4 transition-colors hover:underline">
                             {row.value}
                           </a>
                         ) : (
@@ -216,29 +174,19 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
                 </dl>
               </div>
 
-              {/* BOTTOM: the cube. */}
-              <div className="mt-8">
-                <SalesLocations />
-              </div>
-            </div>
+              <div className="border-default-200 bg-default-50 rounded-card border p-6 lg:p-10">
+                <SectionHeading eyebrow={t(locale, 'One form')} title={t(locale, 'Tell us what you need.')} />
 
-            {/* ── RIGHT: the form ── */}
-            <div className="border-default-200 bg-default-50 rounded-card border p-6 lg:p-10">
-              <SectionHeading eyebrow={t(locale, 'One form')} title={t(locale, 'Tell us what you need.')} />
-
-              <div className="mt-8">
-                <QuoteForm
-                  formTitle={t(locale, 'Your requirement')}
-                  /* ⚠ THE FIELDS ARE NOT IN THIS REPO. There is not a native
-                     form control anywhere in src/ — this is Jotform
-                     262084626654058 in a cross-origin iframe. Cutting the field
-                     set down, restyling the inputs, matching the brand navy and
-                     the 12px control radius all have to be done in the Jotform
-                     builder; no amount of CSS here reaches inside that frame.
-                     See the note in JotformEmbed for exactly what to change
-                     there. This line is the most the codebase can do. */
-                  formDesc={t(locale, 'Tell us the material you are working and the finish you need. Anything else — grade, size, quantity — can go in the message.')}
-                />
+                <div className="mt-8">
+                  <QuoteForm
+                    formTitle={t(locale, 'Your requirement')}
+                    /* ⚠ THE FIELDS ARE NOT IN THIS REPO — Jotform
+                       262084626654058 in a cross-origin iframe. Cutting the
+                       field set down and restyling the controls are both
+                       builder-side; see the note in JotformEmbed. */
+                    formDesc={t(locale, 'Tell us the material you are working and the finish you need. Anything else — grade, size, quantity — can go in the message.')}
+                  />
+                </div>
               </div>
             </div>
           </div>
