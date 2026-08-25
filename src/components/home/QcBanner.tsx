@@ -23,7 +23,18 @@ import Image from 'next/image'
  * sentences belong. Only the homepage call site changed.
  */
 const QcBanner = ({ eyebrow, title, desc, checks, ctaLabel, ctaHref }: { eyebrow: string; title: string; desc: string; checks: string[]; ctaLabel: string; ctaHref: string }) => (
-  <section data-note="qc-banner" className="relative isolate overflow-hidden">
+  /* `rounded-card` — the last full-bleed band on the site that did not have
+     it, and it showed.
+  
+     Every other dark block now carries the 24px corner: the hero has
+     `rounded-b-card`, the reach band on About has all four, and every card on
+     every page has it. This one was a dark rectangle with square corners
+     sitting on a white page, which read as the one section the design system
+     had missed rather than as a deliberate exception.
+  
+     `overflow-hidden` was already here for the photograph, so the radius clips
+     the image and both scrims for free. */
+  <section data-note="qc-banner" className="rounded-card relative isolate overflow-hidden">
     <Image src="/eid/home/qc.jpg" alt="" fill sizes="100vw" className="-z-20 object-cover object-center" />
     {/* Two layers, not one: a flat brand wash to pull the photograph onto the
         palette, then a left-weighted gradient so the copy column clears

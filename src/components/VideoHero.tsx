@@ -80,13 +80,22 @@ const VideoHero = ({
 
           muted + playsInline  — autoplay is refused without both, and on iOS
                                  playsInline stops it going fullscreen.
-          autoPlay + loop      — background film, no controls, no end state.
-          preload="metadata"   — the poster covers first paint. */}
+          loop                 — background film, no controls, no end state.
+          preload="metadata"   — the poster covers first paint.
+
+          NO `autoPlay`, and that is the point. With it the clip starts as soon
+          as the browser can play it, which is behind the full-screen loading
+          panel — several seconds of a short loop spent where nobody can see
+          it, so the first thing a visitor actually sees is the middle of a
+          shot. `data-hero-video` hands the start over to SiteLoader, which
+          rewinds and plays once the panel has finished fading. See
+          releaseHeroVideo there, including why a refused play() is swallowed
+          rather than treated as an error. */}
       <video
         className={`absolute inset-0 -z-20 size-full object-cover ${objectPosition} motion-reduce:hidden`}
         src={video}
         poster={poster}
-        autoPlay
+        data-hero-video
         loop
         muted
         playsInline

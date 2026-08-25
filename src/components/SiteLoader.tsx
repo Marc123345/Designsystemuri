@@ -59,6 +59,40 @@ const LOADING_CEILING = 92
 /** How long the opacity transition on the wrapper runs, in ms. */
 const FADE = 520
 
+/**
+ * Start the hero film once the loader is out of the way.
+ *
+ * `autoPlay` on the <video> means the clip begins the moment the browser can
+ * play it — which is *behind* a full-screen loading panel. On a 15-second loop
+ * that is several seconds of the film spent where nobody can see it, so the
+ * first thing a visitor actually sees is the middle of a shot rather than its
+ * opening. It also spends bandwidth competing with the load the panel is
+ * waiting on.
+ *
+ * So the hero now carries `data-hero-video` and starts paused, and this runs
+ * when the panel finishes fading: rewind to zero, then play.
+ *
+ * Deliberately forgiving. `play()` returns a promise that rejects when a
+ * browser refuses autoplay, and that rejection is expected rather than
+ * exceptional — a muted inline video is normally allowed, but policy varies
+ * and Low Power Mode on iOS blocks it outright. Swallowing it is correct: the
+ * poster frame is a real frame of the real video, so a hero that never plays
+ * still looks finished.
+ *
+ * Exported so the same handoff can be reused if another route ever needs it.
+ */
+export function releaseHeroVideo() {
+  document.querySelectorAll<HTMLVideoElement>('video[data-hero-video]').forEach((v) => {
+    try {
+      v.currentTime = 0
+    } catch {
+      /* Seeking before metadata has arrived throws; the clip will start from
+         wherever it is, which is still the right side of the loader. */
+    }
+    void v.play().catch(() => {})
+  })
+}
+
 const SiteLoader = ({ text = 'Loading' }: { text?: string }) => {
   // Starts false so nothing renders on the server or on the first client
   // render. The effect below is the only thing that can turn it on, and it
@@ -68,8 +102,12 @@ const SiteLoader = ({ text = 'Loading' }: { text?: string }) => {
   const [fading, setFading] = useState(false)
 
   useEffect(() => {
-    // Already done: the content is on screen and ready. Do nothing at all.
-    if (document.readyState === 'complete') return
+    // Already done: the content is on screen and ready. No panel — but the
+    // hero is still paused waiting for one, so release it before returning.
+    if (document.readyState === 'complete') {
+      releaseHeroVideo()
+      return
+    }
 
     setVisible(true)
 
@@ -96,6 +134,7 @@ const SiteLoader = ({ text = 'Loading' }: { text?: string }) => {
       fadeTimer = window.setTimeout(() => {
         root.style.overflow = prevOverflow
         setVisible(false)
+        releaseHeroVideo()
       }, FADE)
     }
 
