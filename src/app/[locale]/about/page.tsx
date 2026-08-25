@@ -87,11 +87,15 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
           the work, so an abstract mark is honest where a photograph of a
           process would be borrowed.
 
-          ── Shorter ──
-          38/42svh against the home page's 46/50. About's job is to get to The
-          Company block quickly; the home hero is the one that has to hold the
-          frame. `object-center` rather than the home page's upward bias,
-          because this composition is centred by construction.
+          ── Shorter, and no supporting line ──
+          48svh against the home page's 60. About's job is to reach The Company
+          block quickly, and the heading carries the page on its own — the
+          paragraph that used to sit here ("EID has manufactured and
+          quality-controlled the full range since 1970...") restated in the
+          hero what The Company block says properly two sections later.
+
+          `object-center` rather than the home page's upward bias, because this
+          composition is centred by construction.
 
           ── Two corrections carried over from the old hero copy ──
           The eyebrow said "made and graded in-house" and the lede said the
@@ -102,10 +106,9 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
           which is the anniversary his approved home-page hero copy uses. */}
       <VideoHero
         title={t(locale, 'About EID — Industrial Diamond Manufacturer')}
-        desc={t(locale, 'EID has manufactured and quality-controlled the full industrial diamond and CBN range since 1970, supplying tool makers on five continents from its London headquarters.')}
         video="https://ik.imagekit.io/qcvroy8xpd/EID%20NEW.mp4"
         poster="https://ik.imagekit.io/qcvroy8xpd/EID%20NEW.mp4/ik-thumbnail.jpg?tr=so-3"
-        filmHeight="h-[38svh] lg:h-[42svh]"
+        minHeight="min-h-[48svh]"
         objectPosition="object-center"
       />
 

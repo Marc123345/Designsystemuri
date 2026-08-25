@@ -3,59 +3,61 @@ import HeroTitle from '@/components/HeroTitle'
 import ScrollCue from '@/components/ScrollCue'
 
 /**
- * The hero: a film, then the statement under it.
+ * The hero: type on the film.
  *
- * Extracted from components/home/Hero so About can use the same system.
- * Two pages sharing a composition is the point — a hero that is "the same
- * idea, rebuilt" on each route is how the two drift apart, which is exactly
- * what happened to the interior heroes before the V1 pass.
+ * ── What changed, and what it bought ────────────────────────────────────────
  *
- * ── Why the type is off the footage ─────────────────────────────────────────
+ * This was a stack — film on top, statement underneath on flat navy, joined by
+ * a gradient. That arrangement spent a lot of the frame on treatment rather
+ * than on picture:
  *
- * This has been built both ways. Strauss lays their type over the film, and
- * that version existed here and looked like theirs. Marc's call is the stack:
+ *   navbar scrim      112-128px
+ *   join gradient      96-112px
+ *   the navy block    ~300px of solid colour under the film
  *
- *  · The clip plays clean. Nothing sits on it, so it needs no scrim, and it
- *    shows at full strength instead of through a 45% brand wash. On a 720p
- *    source that is the difference between a video you can see and one you
- *    can tell is there.
- *  · The type gets a flat ground, so it is legible whatever the frame is
- *    doing behind it — which matters on a short loop nobody graded for text.
+ * Marc's call is to drop all of it and put the words on the video. The join
+ * gradient goes entirely — with no navy block beneath, it has nothing to join
+ * to — and the section is one full-bleed film again.
  *
- * ── The join, and the two gradients ─────────────────────────────────────────
+ * ── The one treatment that stays, and why ───────────────────────────────────
  *
- * A video band with a coloured box under it reads as two sections. Three
- * things stop it: the section carries `bg-primary-3` and the copy block paints
- * no ground of its own; the foot of the film dissolves INTO that ground; and
- * the mark, headline and lede sit on the film's own centre axis.
+ * A single bottom-up scrim behind the copy. Not the old 45% brand wash over
+ * the whole frame: this is transparent across the top two thirds so the film
+ * plays clean, and only firms up under the words.
  *
- * ⚠ THE TWO GRADIENTS HAVE TO BE BUDGETED TOGETHER. They were once 192px and
- * 176px against a ~373px band — the pair covered essentially the whole film,
- * which is why it looked washed rather than lit. Before changing either, add
- * them and compare against `filmHeight`.
+ * It is not optional. The home clip is a laboratory scene with white coats and
+ * bright benches, and white type dropped straight onto that is unreadable at
+ * several points in a 15-second loop. The test is not whether it reads on the
+ * poster frame — it is whether it reads on every frame. The scrim is the
+ * cheapest thing that guarantees that, and at these stops it costs the picture
+ * very little.
  *
- * ── The mark has no blend here ──────────────────────────────────────────────
+ * `primary-3` rather than black: against cool blue-grey footage a black scrim
+ * is a foreign colour and reads as a bar laid on top rather than as shading.
  *
- * `mix-blend-mode: overlay` is the point of HeroMark: the footage reads
- * through the star. Over flat navy there is nothing to read through and
- * overlay renders it muddy, so `blend={false}`.
+ * ── Height is a floor ───────────────────────────────────────────────────────
+ *
+ * `min-h`, not `h`. A longer headline takes the room it needs rather than
+ * clipping, and the next section still shows above the fold at these values —
+ * which is the mechanism behind the whole rhythm brief.
  */
 const VideoHero = ({
   title,
   desc,
   video,
   poster,
-  /** Tailwind height classes for the film band. About runs shorter than home. */
-  filmHeight = 'h-[46svh] lg:h-[50svh]',
+  /** Minimum height for the band. About runs shorter than home. */
+  minHeight = 'min-h-[60svh]',
   /** Crop bias. Defaults to slightly above centre. */
   objectPosition = 'object-[50%_45%]',
   scrollCue = false,
 }: {
   title: string
-  desc: string
+  /** Optional. About runs without one — the headline carries the page. */
+  desc?: string
   video: string
   poster: string
-  filmHeight?: string
+  minHeight?: string
   objectPosition?: string
   scrollCue?: boolean
 }) => {
@@ -63,99 +65,88 @@ const VideoHero = ({
     /* `rounded-b-card` — Uri's 24px, bottom corners only. The band runs under
        the navbar to the top of the viewport, where there is nothing for a
        radius to be a radius against. */
-    <section data-note="hero" className="bg-primary-3 rounded-b-card relative isolate w-full overflow-hidden">
-      {/* ── THE FILM ─────────────────────────────────────────────────────────
-          Sized in svh rather than by aspect ratio: the sources are 16:9, and
-          full-bleed on a wide desktop a 16:9 box is over 800px tall on its own
-          — the whole hero before a word is read. A viewport fraction crops it
-          instead, which is what `object-cover` is for. */}
-      <div className={`relative w-full ${filmHeight}`}>
-        {/* Streaming from EID's own ImageKit account rather than committed, so
-            a clip can be recut and swapped without a deploy, and ImageKit
-            answers range requests so the browser streams instead of blocking
-            on the whole file.
+    <section
+      data-note="hero"
+      className={`bg-primary-3 rounded-b-card relative isolate flex w-full items-end overflow-hidden ${minHeight}`}
+    >
+      {/* Streaming from EID's own ImageKit account rather than committed, so a
+          clip can be recut and swapped without a deploy, and ImageKit answers
+          range requests so the browser streams instead of blocking on the
+          whole file.
 
-            `poster` is a frame generated by ImageKit from the same file
-            (`/ik-thumbnail.jpg?tr=so-N`). First paint is a real frame of the
-            real video and there is no second asset to keep in sync.
+          `poster` is a frame generated by ImageKit from the same file
+          (`/ik-thumbnail.jpg?tr=so-N`). First paint is a real frame of the
+          real video and there is no second asset to keep in sync.
 
-            muted + playsInline  — autoplay is refused without both, and on iOS
-                                   playsInline stops it going fullscreen.
-            autoPlay + loop      — background film, no controls, no end state.
-            preload="metadata"   — the poster covers first paint, so there is
-                                   no reason to spend the connection on the
-                                   whole file before the page below renders. */}
-        <video
-          className={`size-full object-cover ${objectPosition} motion-reduce:hidden`}
-          src={video}
-          poster={poster}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          aria-hidden
-        />
+          muted + playsInline  — autoplay is refused without both, and on iOS
+                                 playsInline stops it going fullscreen.
+          autoPlay + loop      — background film, no controls, no end state.
+          preload="metadata"   — the poster covers first paint. */}
+      <video
+        className={`absolute inset-0 -z-20 size-full object-cover ${objectPosition} motion-reduce:hidden`}
+        src={video}
+        poster={poster}
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        aria-hidden
+      />
 
-        {/* Reduced motion gets the poster and nothing else. A background film
-            is exactly the kind of unrequested movement that setting exists
-            for, and `motion-reduce:` on the pair swaps them with no JavaScript
-            and no layout shift — same box, same crop. */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          className={`absolute inset-0 hidden size-full object-cover ${objectPosition} motion-reduce:block`}
-          src={poster}
-          alt=""
-          aria-hidden
-        />
+      {/* Reduced motion gets the poster and nothing else — same box, same
+          crop, no JavaScript and no layout shift. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        className={`absolute inset-0 -z-20 hidden size-full object-cover ${objectPosition} motion-reduce:block`}
+        src={poster}
+        alt=""
+        aria-hidden
+      />
 
-        {/* A ground for the navbar, which is transparent over this hero and
-            has white links. Brand navy rather than near-black: against cool
-            blue-grey footage black is a foreign colour and reads as a bar laid
-            on top rather than as shading. */}
-        <div aria-hidden className="from-primary-3/70 via-primary-3/14 absolute inset-x-0 top-0 h-28 bg-linear-to-b via-50% to-transparent lg:h-32" />
+      {/* Legibility, and only that. Clear from the top through 45%, so the
+          upper frame is untouched picture; firms up under the copy. */}
+      <div
+        aria-hidden
+        className="from-primary-3/88 via-primary-3/30 absolute inset-0 -z-10 bg-linear-to-t via-45% to-transparent"
+      />
 
-        {/* THE JOIN, and the numbers here are load-bearing.
+      {/* A ground for the navbar, which is transparent over this hero and has
+          white links. Short and light — enough for the links, not enough to
+          read as a bar across the top of the film. */}
+      <div
+        aria-hidden
+        className="from-primary-3/55 absolute inset-x-0 top-0 -z-10 h-24 bg-linear-to-b via-transparent to-transparent lg:h-28"
+      />
 
-            A two-stop ramp only reaches full opacity on its very last pixel
-            row, so the stretch above it stays slightly translucent and a
-            bright edge in the footage shows through as a pale streak —
-            precisely the seam the fade exists to prevent. A mid stop alone was
-            not enough either; 99% opaque over a bright edge is still not 100%.
+      {/* THE LOCKUP. Mark, then headline at `mt-1.5` — Strauss's `row-gap:
+          5px`, and the measurement the composition turns on: their monogram is
+          not above the headline, it is part of it.
 
-            So: 92% at 60% down, then fully solid at `to-86%` rather than at
-            the boundary. Those two percentages are proportional, so they
-            survived the ramp being shortened once already. */}
-        <div aria-hidden className="from-primary-3/0 via-primary-3/92 to-primary-3 absolute inset-x-0 bottom-0 h-24 bg-linear-to-b via-60% to-86% lg:h-28" />
-      </div>
+          `blend={false}`, and this is the second time that call has been
+          re-made. `mix-blend-mode: overlay` is the point of HeroMark and it
+          works beautifully over consistently dark footage — but the mark sits
+          high in the frame, above where the legibility scrim starts, so on the
+          home clip it lands on a white lab coat. Overlay against a bright
+          ground turns the white star into a blue smudge, and it does it on
+          some frames of the loop and not others, which is worse than a
+          consistent result either way.
 
-      {/* ── THE STATEMENT ────────────────────────────────────────────────────
-          The lockup is Strauss's: mark, then headline at `mt-1.5`, which is
-          their `row-gap: 5px` and the measurement the composition turns on —
-          their monogram is not above the headline, it is part of it.
-
-          The type scale is the site's own: `clamp(1.9rem, 4.4vw, 3.5rem)` is
-          what PageHero's `full` variant renders, so this matches the interior
-          pages rather than a competitor's fixed steps. */}
-      <div className="relative z-10 pt-10 pb-14 lg:pt-12 lg:pb-20">
+          A background film cannot be relied on to be dark where a blended
+          element needs it to be. Solid white is correct on both clips. */}
+      <div className="relative z-10 w-full pt-32 pb-14 lg:pt-36 lg:pb-16">
         <div className="container flex flex-col items-center text-center">
           <HeroMark blend={false} />
 
           <HeroTitle title={title} className="mt-1.5 text-[clamp(1.9rem,4.4vw,3.5rem)]" />
 
-          {/* `text-pretty` because the line runs to two at this measure and
-              was ending on a single word.
+          {desc && (
+            <p className="mt-6 max-w-[64ch] text-[0.95rem] leading-relaxed text-pretty text-white/85 md:text-base">
+              {desc}
+            </p>
+          )}
 
-              mt-6 rather than the lockup's 6px, and that gap is doing work: it
-              tells the eye the mark and the headline are one object and this
-              sentence is a second one.
-
-              64ch, not 52: at the narrower measure the line broke three ways
-              and left "end users." alone on the last one, which is the one
-              phrase in the hero that should not read as an afterthought. */}
-          <p className="mt-6 max-w-[64ch] text-[0.95rem] leading-relaxed text-pretty text-white/80 md:text-base">{desc}</p>
-
-          {scrollCue && <ScrollCue className="mt-10" />}
+          {scrollCue && <ScrollCue className="mt-9" />}
         </div>
       </div>
     </section>

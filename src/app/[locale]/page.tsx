@@ -148,6 +148,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
         desc={t(locale, hero.desc)}
         video="https://ik.imagekit.io/qcvroy8xpd/EID%20VIDEO%20HERO.mp4"
         poster="https://ik.imagekit.io/qcvroy8xpd/EID%20VIDEO%20HERO.mp4/ik-thumbnail.jpg?tr=so-3"
+        minHeight="min-h-[60svh]"
         scrollCue
       />
 
