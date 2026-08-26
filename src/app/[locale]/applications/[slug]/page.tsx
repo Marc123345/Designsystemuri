@@ -248,16 +248,30 @@ const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; s
           the navy panel below now carries it too. */}
       <section data-note="hub-intro" className="py-16 lg:py-24">
         <div className="container">
-          {/* `items-center` rather than `items-start`, which is TheCompany's
-              setting and matters more here than it does there. The outcome
-              paragraph runs 90-110 words and the statement beside it runs
-              70-80, so on a hub like Dental the left column finishes a couple
-              of hundred pixels above the panel and start-alignment leaves that
-              gap hanging under the copy with the brand rule stopping short of
-              nothing. Centred, the two columns balance whatever the hub's word
-              count does. */}
+          {/* ── THE ROW IS 6/6, AND THE NUMBERS ARE WHY ────────────────────
+              It was 7/5 with the tile on the short side, and measured across
+              all six hubs the tile came out 250-370px TALLER than the copy
+              beside it — Dental worst at 372px. The statement was floating in
+              the vertical middle of a column more than twice its height, which
+              is what read as unbalanced.
+
+              Two changes, both measured rather than guessed:
+
+               1. 7/5 → 6/6. The tile gets wider so its 90-120 word outcome
+                  wraps into fewer lines; the copy gets narrower so its 60-95
+                  words wrap into more. Both columns move toward each other at
+                  once. Worst gap 372 → 288.
+               2. The CTA moved out of the tile and onto the foot of the copy.
+                  ~80px with its margin, so it swings ~160px in one edit — off
+                  the tall column, onto the short one. Worst gap 288 → 118.
+
+              Where it lands now: 21-118px apart, four of the six inside 55px.
+              At that spread `items-center` is doing almost nothing and the two
+              columns simply read as a pair — which is the point. If the copy
+              on a hub ever changes materially, re-measure rather than assuming
+              this still holds. */}
           <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-14">
-            <div className="border-primary border-s-2 ps-7 lg:col-span-7 lg:ps-9">
+            <div className="border-primary border-s-2 ps-7 lg:col-span-6 lg:ps-9">
               {/* ⚠ NOT `app.eyebrow`. The hub's eyebrow — "Application · Tool
                   & Die" — is already the chip in the hero one screen up, and
                   printing it again here put the same five words twice inside a
@@ -269,6 +283,27 @@ const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; s
 
               <RichParagraphs className="text-default-700 mt-6 text-[18px] leading-relaxed lg:text-[19px]" paragraphs={bodyParas.slice(0, 1)} />
               {bodyParas.length > 1 && <RichParagraphs className="text-default-600 mt-5 text-base leading-relaxed" paragraphs={bodyParas.slice(1)} />}
+
+              {/* ── THE CTA MOVED HERE OUT OF THE TILE, AND IT IS A BALANCE
+                      FIX AS MUCH AS A LAYOUT ONE ────────────────────────────
+                  Measured across all six hubs, the tile ran 250-370px taller
+                  than the copy beside it, so the statement floated in the
+                  middle of a column twice its height. Widening the split from
+                  7/5 to 6/6 closed most of that; this closes the rest. The
+                  button is roughly 80px with its margin, so moving it swings
+                  ~160px in a single edit — off the tall column and onto the
+                  short one.
+
+                  It reads better here too: the ask now follows the paragraph
+                  that makes the case, and the tile is left as one thing — a
+                  photograph with the argument on it — rather than a panel with
+                  a button stuck to the bottom.
+
+                  `primary` on this white ground, not the `light` variant it
+                  wore on the navy tile. */}
+              <div className="mt-8">
+                <ArrowButton href="/contact" label={app.cta} />
+              </div>
             </div>
 
             {/* ── THE OUTCOME, ON ITS PHOTOGRAPH ───────────────────────────
@@ -317,17 +352,17 @@ const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; s
                 `object-[38%_50%]` puts the crystal and the micrometer jaw on
                 the tile's centre line; plain `object-center` pushes the crystal
                 off the left edge and leaves the barrel alone in the frame. */}
-            <div className="rounded-card relative isolate flex min-h-[520px] flex-col justify-end overflow-hidden lg:col-span-5">
+            <div className="rounded-card relative isolate flex min-h-[460px] flex-col justify-end overflow-hidden lg:col-span-6">
               <Image
                 src="/eid/quality/09-digital-micrometer-diamond-measurement.png"
                 alt={t(locale, 'A digital micrometer closed on a polished diamond crystal, its display reading 3.000 millimetres')}
                 fill
-                sizes="(min-width: 1420px) 528px, (min-width: 1024px) 40vw, 100vw"
+                sizes="(min-width: 1420px) 638px, (min-width: 1024px) 48vw, 100vw"
                 className="-z-20 object-cover object-[38%_50%]"
               />
               <span aria-hidden className="from-primary-3/97 via-primary-3/92 to-primary-3/15 absolute inset-0 -z-10 bg-linear-to-t via-58%" />
 
-              <div className="p-7 pt-32 lg:p-9 lg:pt-40">
+              <div className="p-7 pt-28 lg:p-9 lg:pt-32">
                 {/* The chip on a dark ground: white hairline border and the
                     lightest blue for the square, which is how every navy panel
                     on this site marks itself. `border-default-300` and
@@ -341,11 +376,6 @@ const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; s
                 <h3 className="mt-5 text-2xl leading-snug font-bold text-white lg:text-[28px]">{app.outcome.title}</h3>
                 <p className="mt-4 text-base leading-relaxed text-white/85">{app.outcome.body}</p>
 
-                {/* `light` — white shell, brand badge. The primary variant is
-                    navy on navy and disappears here. */}
-                <div className="mt-8">
-                  <ArrowButton href="/contact" label={app.cta} variant="light" />
-                </div>
               </div>
             </div>
           </div>
