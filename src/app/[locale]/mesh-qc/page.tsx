@@ -1,7 +1,6 @@
 import { RichText } from '@/components/RichText'
-import { CrossLinks, DarkFeatureList, PageHero } from '@/components/sections'
+import { CrossLinks, DarkFeatureList, LabPhoto, PageHero } from '@/components/sections'
 import { SectionHeading } from '@/components/ui'
-import Wireframe from '@/components/Wireframe'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
@@ -77,10 +76,13 @@ different problems, and a buyer arrives already in one of them. */}
             </p>
             <p className="text-default-500 mt-5 font-mono text-sm">Instrument makes, models, and calibration intervals to be confirmed with Uri before launch, together with photographs of the laboratory.</p>
 
-            {/* Photography of the actual grading equipment is still outstanding. */}
+            {/* ⚠ ILLUSTRATIVE. These show the class of equipment mesh grading
+                is verified on, not EID's own bench — see LabPhoto. The line
+                above still asks Uri for photographs of the laboratory, and it
+                stays there until he supplies them. */}
             <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
-              <Wireframe label="Calibrated sieve stack & shaker — lab photo pending from Uri" />
-              <Wireframe label="Optical & stereo microscopy — lab photo pending from Uri" />
+              <LabPhoto src="/eid/quality/mesh-qc-sieve-stack-shaker.jpg" alt={t(locale, 'A calibrated test-sieve stack clamped on a laboratory sieve shaker, with a loose sieve of diamond grit beside it')} />
+              <LabPhoto src="/eid/quality/mesh-qc-stereo-microscopy.jpg" alt={t(locale, 'A technician examining a sample of diamond grit under a binocular stereo microscope')} />
             </div>
           </div>
         </div>

@@ -226,8 +226,8 @@ const products: Record<string, ImageSpec> = {
     'Single crystal',
     'CVD and MCD single crystal plates.',
     ['Several plates, showing the cut faces', 'Light raked so the transparency and edges read'],
-    1,
-    'The file currently used here is a scanned sales flyer carrying a partner company’s branding and an “exclusive global sales partner” line — it cannot go on an EID page under an EID product name. This shot is required, not optional.',
+    2,
+    '⚠ This note used to say the file here was a scanned partner sales flyer. That has not been true since the card set was regenerated — the slot holds a tray of CVD and MCD plates under tweezers, which works. A wide lab-bench alternative was tried and rejected for cropping to empty bench at 4:5. Downgraded from 1 to 2: a better shot is wanted, not blocking.',
   ),
   'Natural Tool Stones': productShot('Tool stones', 'Rough and shaped natural tool stones.', ['A handful of stones, showing both rough and shaped', 'The existing shot of these is the reference for the whole set']),
   'Metal Bond Diamond': productShot('Metal bond', 'Metal bond diamond — a representative sample.', ['Close enough to see the coating', 'If coated and uncoated can be shown together, better']),
@@ -236,8 +236,8 @@ const products: Record<string, ImageSpec> = {
     'PCD',
     'PCD blanks and CVD dressing logs.',
     ['Several blanks or logs together', 'The granular sintered surface visible'],
-    1,
-    'The file currently used here is a grade-selection table, not a photograph — a wall of small text, unreadable at card size. This shot is required, not optional.',
+    2,
+    '⚠ This note used to say the file here was a grade-selection table. That has not been true since the card set was regenerated — the slot holds blanks and inserts on a white bench, which works. A wide lab-bench alternative that also showed CVD dressing logs was tried and rejected for cropping to empty bench at 4:5; the dressing logs are still missing from the shot that ships. Downgraded from 1 to 2: a better shot is wanted, not blocking.',
   ),
   'Polycrystalline Diamond Powder': productShot('Polycrystalline powder', 'Polycrystalline micron powder.', [
     'Powder in quantity — a dish or a mound rather than a scatter',
@@ -333,6 +333,12 @@ const evidence: Record<string, ImageSpec> = {
     priority: 2,
   },
 
+  /* ⚠ The four instrument slots below are FILLED as of this pass — the mesh-QC
+     and micron-QC pages now render LabPhoto rather than a Wireframe, so these
+     keys no longer resolve to anything on the site. They are kept because the
+     brief is what the replacement has to beat: the images in the slots today
+     are illustrative, and the day Uri sends photographs of EID's own bench,
+     these are the shots to ask him for. */
   'Calibrated sieve stack & shaker — lab photo pending from Uri': {
     shot: 'The calibrated sieve stack assembled on the shaker, ideally running.',
     inFrame: ['The full stack, showing several mesh sizes', 'The shaker', 'Calibration labels or certificates if visible'],

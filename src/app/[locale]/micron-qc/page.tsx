@@ -1,7 +1,6 @@
 import { RichText } from '@/components/RichText'
-import { CrossLinks, DarkFeatureList, PageHero } from '@/components/sections'
+import { CrossLinks, DarkFeatureList, LabPhoto, PageHero } from '@/components/sections'
 import { SectionHeading } from '@/components/ui'
-import Wireframe from '@/components/Wireframe'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
@@ -87,10 +86,12 @@ claim to control it. */}
             </div>
             <p className="text-default-500 mt-5 font-mono text-sm">Instrument makes, models, calibration intervals, and the real D-value tolerances to be confirmed with Uri before launch.</p>
 
-            {/* Photography of the actual measurement equipment is still outstanding. */}
+            {/* ⚠ ILLUSTRATIVE. These show the class of instrument micron sizing
+                is measured on, not EID's own bench — see LabPhoto. The line
+                above still asks Uri for the real makes and models. */}
             <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
-              <Wireframe label="Laser diffraction analyser — lab photo pending from Uri" />
-              <Wireframe label="Particle counter — lab photo pending from Uri" />
+              <LabPhoto src="/eid/quality/micron-qc-laser-diffraction.jpg" alt={t(locale, 'A benchtop laser diffraction particle size analyser mid-measurement, with its wet dispersion unit alongside')} />
+              <LabPhoto src="/eid/quality/micron-qc-particle-counter.jpg" alt={t(locale, 'A benchtop liquid particle counter with a sample vial being loaded into its carousel')} />
             </div>
           </div>
         </div>

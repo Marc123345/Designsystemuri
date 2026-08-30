@@ -44,6 +44,15 @@ const PRODUCT_IMAGES: Record<string, string> = {
   'metal-bond': '/eid/products/metal-bond.png',
   'resin-bond': '/eid/products/resin-bond.png',
   cbn: '/eid/products/cbn.png',
+  /* ⚠ A lab-bench alternative for these two was generated and REJECTED — the
+     files are still in the folder as *-lab-bench-alt.jpg if anyone wants to
+     look. Both were 16:9 frames of the material sitting on a stainless bench
+     in a wide blue laboratory, and they failed for the reason the brief in
+     image-specs.ts gives: these render as a 4:5 portrait tile, so a landscape
+     frame with its subject in the bottom third crops to two thirds empty bench
+     with the material tucked behind the title scrim. Six of the eight cards
+     are material filling the frame; those two read as photographs of a room.
+     Any replacement has to be shot square-ish with the material large. */
   'single-crystal': '/eid/products/single-crystal.png',
   'polycrystalline-diamond': '/eid/products/polycrystalline-diamond.png',
   'tool-stones': '/eid/products/tool-stones.png',
@@ -51,10 +60,15 @@ const PRODUCT_IMAGES: Record<string, string> = {
 }
 
 /**
- * ⚠ PLACEHOLDER PHOTOGRAPHY. Openly-licensed stock, one per hub, standing in
- * until EID supplies application imagery. Each file is named for its hub, so
- * the swap is a file replace under /public/eid/home/ with no code change.
- * Nothing here depicts EID's own premises, staff or customers.
+ * ⚠ ILLUSTRATIVE, and still not evidence. These replaced the openly-licensed
+ * stock that stood here — a set generated to the briefs in image-specs.ts, one
+ * per hub, each showing the tool or the process that hub's material goes into
+ * rather than a generic factory. The file names are unchanged, which is what
+ * made the swap a file replace under /public/eid/home/ with no code change;
+ * keep that property for whatever replaces them next.
+ *
+ * Nothing here depicts EID's own premises, staff or customers, and none of it
+ * belongs anywhere that argues a claim. Same rule as PRODUCT_IMAGES above.
  */
 const APPLICATION_IMAGES: Record<string, string> = {
   dental: '/eid/home/app-dental.jpg',
