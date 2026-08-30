@@ -125,8 +125,35 @@ const EntryCards = () => {
 
               {/* Same bottom-up scrim every photographic card on this site puts
                   under its copy. Heavier here than on a catalogue tile because
-                  there are three lines to hold, not one. */}
-              <span aria-hidden className="from-default-950/92 via-default-950/45 absolute inset-0 bg-linear-to-t to-transparent to-72%" />
+                  there are three lines to hold, not one.
+
+                  ⚠ IT WAS NOT HEAVY ENOUGH, and the numbers say so. The old
+                  profile — 92% at the foot, 45% at the midpoint, nothing above
+                  72% — was measured against the two photographs that actually
+                  run here, sampling the brightest 2% of pixels in the band each
+                  line sits in:
+
+                                          kicker / qualifier (white/85, 15px)
+                    Applications card                    3.18  ← needs 4.5
+                    Products card                        3.85  ← needs 4.5
+
+                  The lockup is four lines tall and reaches halfway up the card,
+                  but the scrim had already faded to 47% by the time it got
+                  there. The bottom line was always fine; it is the top of the
+                  block that sits on open picture — on the Applications card
+                  that is a spray of sparks whose brightest pixels are
+                  (240,243,248), which is white in all but name.
+
+                  Now: 95% at the foot, still 75% at the midpoint, gone by 88%.
+                  That holds every line at 8:1 or better on both photographs.
+                  The cost is a darker lower half, which is the correct trade on
+                  a card whose whole job is the four words on top of it.
+
+                  The rule this encodes, for the next photographic card: a scrim
+                  must not fall below about 65% anywhere small white text sits.
+                  Measure it against the brightest part of the actual image, not
+                  against how the poster frame looks. */}
+              <span aria-hidden className="from-default-950/95 via-default-950/75 absolute inset-0 bg-linear-to-t via-50% to-transparent to-88%" />
 
               <div className="absolute inset-x-0 bottom-0 p-6 lg:p-9">
                 {/* Three weights, one lockup — the reference's move, and the

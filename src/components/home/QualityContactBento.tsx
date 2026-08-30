@@ -110,8 +110,18 @@ const QualityContactBento = () => {
             <ul className="mt-5">
               {CHECKS.map((check, i) => (
                 <li key={check} className="grid grid-cols-[auto_auto_1fr] items-start gap-x-3 border-t border-white/15 py-3.5 last:border-b">
-                  <span className="font-mono text-[11px] text-white/70 tabular-nums">{String(i + 1).padStart(2, '0')}</span>
-                  <Icon icon="tabler:circle-check" className="mt-0.5 size-4 shrink-0 text-white/70" />
+                  {/* white/85, not white/70, and it is the same finding as the
+                      label above rather than a new one. The label was lifted to
+                      solid white because white/90 measured 4.54:1 — "a rounding
+                      error rather than a margin". These two sit one line lower,
+                      at roughly 65% up the frame where the scrim is 77%, and at
+                      white/70 they measure 4.49:1 against the same 4.5 floor:
+                      the identical rounding error, missed because the fix went
+                      to the line above them and stopped. white/85 is 5.73:1 and
+                      keeps them quieter than the label, which is the point of
+                      dimming them at all. */}
+                  <span className="font-mono text-[11px] text-white/85 tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                  <Icon icon="tabler:circle-check" className="mt-0.5 size-4 shrink-0 text-white/85" />
                   <span className="text-[0.95rem] leading-snug text-white">{t(locale, check)}</span>
                 </li>
               ))}
