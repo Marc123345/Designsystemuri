@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { releaseHeroVideo, warmHeroVideo } from '@/components/releaseHeroVideo'
+import { releaseHeroVideo, warmHeroVideo, wantsLightMedia } from '@/components/releaseHeroVideo'
 import { videoSources, videoPoster } from '@/components/videoSources'
 
 /**
@@ -109,7 +109,17 @@ const SiteIntro = () => {
     }
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    if (seen || reduced) {
+    /* Save-Data, or a connection the browser measures as 2g, takes the same
+       exit as a second visit. The intro is the most expensive thing on the
+       site and the least necessary — a brand moment, in front of a page the
+       visitor asked for — and it is precisely the visitor who cannot afford
+       its ~212 KB who is made to wait longest for it: the panel holds until
+       the clip plays or until MAX_TOTAL, so a slow connection buys four
+       seconds of flat navy and then the site, which is worse than no intro in
+       every way. Skipping releases the page immediately. See wantsLightMedia
+       in releaseHeroVideo, which keeps the hero on its poster on the same
+       terms. */
+    if (seen || reduced || wantsLightMedia()) {
       releaseHeroVideo()
       return
     }
@@ -271,8 +281,10 @@ const SiteIntro = () => {
     >
       {/* `preload="auto"` is right here and wrong on the hero: this clip has
           to be playing within a second of arrival or the intro is a static
-          poster, whereas the hero has time. WebM first — 473 KB against the
-          MP4's 952 KB; see components/videoSources. */}
+          poster, whereas the hero has time. WebM first, and with `ac-none`
+          the clip a phone pulls is 110 KB rather than the 232 KB it was —
+          the audio track on a video that is muted by definition was more than
+          half of it. See components/videoSources. */}
       <video
         ref={videoRef}
         className="size-full object-cover"
@@ -281,6 +293,8 @@ const SiteIntro = () => {
         muted
         playsInline
         preload="auto"
+        disableRemotePlayback
+        disablePictureInPicture
       >
         {SOURCES.map((s) => (
           <source key={s.src} src={s.src} type={s.type} media={s.media} />

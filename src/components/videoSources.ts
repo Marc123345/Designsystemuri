@@ -124,6 +124,39 @@ export type VideoSource = { src: string; type: string; media?: string }
  * — quietly be given the hero's q-20 and band. Anything unrecognised falls
  * back to the safe value.
  */
+/**
+ * Every clip on this site is a muted background film, so the audio track is
+ * dead weight on the wire — `ac-none` tells ImageKit to drop it.
+ *
+ * This is the single largest saving in the file and it was sitting in plain
+ * sight, because the ladder above was measured on the hero clip, which happens
+ * to have been exported without audio. The intro clip was not. Measured, both
+ * clips, every rung, at the quality each one ships at:
+ *
+ *                     hero q-20            intro q-30
+ *                   now    ac-none      now    ac-none
+ *   webm w-720     117 KB   117 KB     232 KB   110 KB   − 53%
+ *   webm w-960     168 KB   168 KB     270 KB   148 KB   − 45%
+ *   webm full      283 KB   283 KB     333 KB   212 KB   − 36%
+ *   mp4  w-720     117 KB   117 KB     253 KB    92 KB   − 64%
+ *   mp4  w-960     179 KB   179 KB     303 KB   142 KB   − 53%
+ *   mp4  full      288 KB   288 KB     395 KB   234 KB   − 41%
+ *
+ * The hero clip does not move a byte because it has no audio to remove. The
+ * intro clip was carrying roughly 132 kbps of it — more than its own video
+ * bitrate of 76 kbps — on the one asset whose whole job is to be playing
+ * within a second of arrival, and on About's and Contact's heroes, which use
+ * the same file. Confirmed by parsing the returned MP4: same 10.0s duration,
+ * `soun` track gone, `vide` track untouched.
+ *
+ * Applied to every variant rather than keyed per clip, unlike quality. There
+ * is no content for which a track nobody can hear is worth its bytes, so the
+ * right default for any clip added later is the same one — and a future
+ * upload straight off a camera is exactly the case that would otherwise
+ * reintroduce this silently.
+ */
+const AUDIO_OFF = 'ac-none'
+
 const Q_DEFAULT = 30
 const Q_BY_CLIP: { match: string; q: number }[] = [
   // Live action, laboratory. Home and Quality heroes.
@@ -142,18 +175,19 @@ const LADDER: { media?: string; w: number | null }[] = [
 export function videoSources(mp4Url: string): VideoSource[] {
   const q = qualityFor(mp4Url)
   const at = (w: number | null, webm: boolean) => {
-    const tr = [webm ? 'f-webm' : null, w ? `w-${w}` : null, `q-${q}`].filter(Boolean).join(',')
+    const tr = [webm ? 'f-webm' : null, w ? `w-${w}` : null, `q-${q}`, AUDIO_OFF].filter(Boolean).join(',')
     return `${mp4Url}?tr=${tr}`
   }
 
   return [
     // WebM ladder — what almost everything takes.
     ...LADDER.map((r) => ({ src: at(r.w, true), type: 'video/webm', media: r.media })),
-    // MP4 fallback for Safari below Big Sur / iOS 15. Two rungs rather than
-    // three: the population is small and old, and the phone rung is the one
-    // that actually matters for it.
-    { src: at(720, false), type: 'video/mp4', media: '(max-width: 768px)' },
-    { src: at(null, false), type: 'video/mp4' },
+    // MP4 fallback for Safari below Big Sur / iOS 15, and for anything else
+    // that cannot take VP9. Same three rungs as the WebM ladder rather than
+    // the two it used to carry: the middle rung is one line, and with the
+    // audio track gone it is the difference between 142 KB and 234 KB for a
+    // laptop on that path.
+    ...LADDER.map((r) => ({ src: at(r.w, false), type: 'video/mp4', media: r.media })),
   ]
 }
 

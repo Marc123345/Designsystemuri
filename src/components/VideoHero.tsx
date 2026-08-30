@@ -1,3 +1,5 @@
+import { preload } from 'react-dom'
+
 import HeroMark from '@/components/HeroMark'
 import HeroTitle from '@/components/HeroTitle'
 import ScrollCue from '@/components/ScrollCue'
@@ -67,6 +69,18 @@ const VideoHero = ({
   const sources = videoSources(video)
   const poster = videoPoster(video, posterAt)
 
+  /* The poster is the hero's LCP element, and Chrome fetches a <video poster>
+     at LOW priority — it treats it as decoration, which is exactly wrong here:
+     it is the picture the page is judged on, and under preload="none" plus the
+     intro it is the ONLY thing in the hero for the first seconds of a visit.
+     This emits a <link rel="preload" fetchpriority="high"> into the head, so
+     it is discovered with the document rather than when the parser reaches the
+     element, and it outranks the images further down the page.
+
+     Same URL as the `poster` attribute below — a preload that does not match
+     byte for byte is a second download, not a head start. */
+  preload(poster, { as: 'image', fetchPriority: 'high' })
+
   return (
     /* `rounded-b-card` — Uri's 24px, bottom corners only. The band runs under
        the navbar to the top of the viewport, where there is nothing for a
@@ -110,7 +124,13 @@ const VideoHero = ({
           shot. `data-hero-video` hands the start over to SiteIntro, which rewinds
           and plays it once the swoosh has finished. See releaseHeroVideo,
           including why a refused play() is swallowed rather than treated as
-          an error. */}
+          an error.
+
+          disableRemotePlayback / disablePictureInPicture — decoration, not
+          content. Without them Chrome and Android offer a silent background
+          loop to Cast and to picture-in-picture and register it with the OS
+          media session: controls a visitor can hit by accident, over a film
+          with nothing to control, on every hero on the site. */}
       <video
         className={`absolute inset-0 -z-20 size-full object-cover ${objectPosition} motion-reduce:hidden`}
         poster={poster}
@@ -119,6 +139,8 @@ const VideoHero = ({
         muted
         playsInline
         preload="none"
+        disableRemotePlayback
+        disablePictureInPicture
         aria-hidden
       >
         {sources.map((s) => (

@@ -1,3 +1,8 @@
+/** Every hero film on the page. All three call sites want the same set. */
+function eachHero(fn: (v: HTMLVideoElement) => void) {
+  document.querySelectorAll<HTMLVideoElement>('video[data-hero-video]').forEach(fn)
+}
+
 /**
  * Start the hero film once whatever is covering it has gone.
  *
@@ -22,8 +27,45 @@
  * Its own module rather than an export from SiteIntro, so importing it does
  * not drag a client component into a server one.
  */
+/**
+ * Do not fetch the film at all when the visitor has asked us not to.
+ *
+ * `Save-Data` is an explicit request — Chrome's Lite mode, Android's Data
+ * Saver, most carrier-managed handsets — and `effectiveType` of 2g or slow-2g
+ * is the browser's own measurement of a connection on which a 117 KB
+ * background loop is the wrong thing to spend the visitor's first seconds on.
+ * On either, the hero stays at preload="none" and never plays.
+ *
+ * Nothing looks broken, and that is why this is safe to do silently: `poster`
+ * is a 27 KB frame of the same film, it is an image attribute so preload does
+ * not gate it, and it is already what fills the hero for the first moments of
+ * every visit. The result is the reduced-motion treatment — a still, correctly
+ * cropped, with the type over it — reached by a different door.
+ *
+ * Read at call time rather than cached. A connection can change between
+ * arrival and a tab coming back into the foreground, and `saveData` is a
+ * setting the visitor can toggle mid-session.
+ *
+ * Exported because SiteIntro asks the same question about the intro clip, and
+ * two copies of a rule like this drift — one of them gets a new effectiveType
+ * and the other does not.
+ */
+type NetworkInformation = { saveData?: boolean; effectiveType?: string }
+
+export function wantsLightMedia() {
+  const c = (navigator as Navigator & { connection?: NetworkInformation }).connection
+  if (!c) return false
+  return c.saveData === true || c.effectiveType === '2g' || c.effectiveType === 'slow-2g'
+}
+
 function playAll(rewind: boolean) {
-  document.querySelectorAll<HTMLVideoElement>('video[data-hero-video]').forEach((v) => {
+  if (wantsLightMedia()) return
+  eachHero((v) => {
+    /* Scrolled past. The observer below owns this flag; playing here would
+       undo it on every tab return and hand the visitor a decoding video
+       somewhere above the fold they are not looking at. */
+    if (v.dataset.heroOffscreen === '1') return
+
     /* The hero ships with preload="none" so it does not compete with the intro
        for bandwidth while it is hidden behind it — see the note in VideoHero.
        Releasing it is therefore two steps, not one: permit the fetch, then
@@ -67,8 +109,53 @@ function bindResume() {
   })
 }
 
+/**
+ * Stop decoding once the hero has been scrolled past.
+ *
+ * A `loop`ing background video runs for as long as the page is open. The hero
+ * is one viewport tall and the pages under it are long, so on a normal read
+ * the film spends most of its life decoding a frame every 40ms into a box
+ * nobody can see — main-thread and GPU work, and on a phone battery and heat,
+ * competing with the images and the animations further down that the visitor
+ * IS looking at. The browser suspends this for a hidden TAB; it does not do it
+ * for an element scrolled out of view.
+ *
+ * `rootMargin` of 200px so it resumes just before it is back on screen, and no
+ * `threshold`, so it is the default: any pixel showing counts as visible.
+ * Pausing also stops the buffer filling, which is the second saving on a
+ * connection that was going to keep pulling the loop.
+ *
+ * It never rewinds. Scrolling back up to a film that jump-cuts to its first
+ * frame is more noticeable than one that has simply carried on.
+ */
+let offscreenBound = false
+
+function bindOffscreenPause() {
+  if (offscreenBound || typeof IntersectionObserver === 'undefined') return
+  offscreenBound = true
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        const v = e.target as HTMLVideoElement
+        if (e.isIntersecting) {
+          delete v.dataset.heroOffscreen
+          if (!wantsLightMedia()) void v.play().catch(() => {})
+        } else {
+          v.dataset.heroOffscreen = '1'
+          v.pause()
+        }
+      })
+    },
+    { rootMargin: '200px 0px' },
+  )
+
+  eachHero((v) => observer.observe(v))
+}
+
 export function releaseHeroVideo() {
   bindResume()
+  bindOffscreenPause()
   playAll(true)
 }
 
@@ -91,7 +178,8 @@ export function releaseHeroVideo() {
  * arrangement exists to prevent — see the note at the top of this file.
  */
 export function warmHeroVideo() {
-  document.querySelectorAll<HTMLVideoElement>('video[data-hero-video]').forEach((v) => {
+  if (wantsLightMedia()) return
+  eachHero((v) => {
     if (v.preload !== 'auto') v.preload = 'auto'
   })
 }
