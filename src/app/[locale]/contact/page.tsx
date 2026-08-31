@@ -3,12 +3,9 @@ import Globe from '@/components/Globe'
 import QuoteForm from '@/components/QuoteForm'
 import SalesLocations from '@/components/SalesLocations'
 import VideoHero from '@/components/VideoHero'
-import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
-import { site } from '@/lib/site'
-import { Icon } from '@iconify/react'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
@@ -132,56 +129,29 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
               </div>
             </div>
 
-            {/* ── RIGHT: who to reach, then the form ── */}
+            {/* ── RIGHT: the form, and nothing above it ──────────────────────
+                ⚠ THE HEADQUARTERS BLOCK THAT SAT HERE IS GONE, at Marc's
+                request: the address, the email, phone, WhatsApp and fax rows,
+                the "One form" eyebrow, the "Tell us what you need." heading and
+                the form's own title and description. The card below is now the
+                whole column.
+
+                None of that contact detail is lost to the site — the footer
+                carries address, phone, email and WhatsApp on every page
+                including this one, and the organisation schema in the locale
+                layout carries the same NAP for search. What changed is that
+                this page leads with the form rather than with a directory the
+                reader has already scrolled past on the way down. */}
             <div className="flex flex-col gap-8">
-              {/* ⚠ Dark type, not the white it carried on the photograph.
-                  Moving a block off an image onto a light ground is not a
-                  reposition — `text-white` here would be invisible. */}
-              <div>
-                {/* default-600, not the default-500 this eyebrow uses over on
-                    the dark panels. On white, slate-500 measures 4.55:1 at
-                    11px — it clears 4.5 by five hundredths, which is not a
-                    margin, it is a rounding error. slate-600 is 7.0:1. */}
-                <p className="text-default-600 font-mono text-[11px] tracking-[0.22em] uppercase">{t(locale, 'Headquarters')}</p>
-                <p className="text-default-900 mt-2.5 max-w-[30ch] text-[1.05rem] leading-snug font-semibold">{site.address}</p>
-
-                <dl className="mt-5 grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
-                  {[
-                    { icon: 'tabler:mail', label: t(locale, 'Email'), value: site.email, href: `mailto:${site.email}` },
-                    { icon: 'tabler:phone', label: t(locale, 'Phone'), value: site.phone, href: site.phoneHref },
-                    { icon: 'tabler:brand-whatsapp', label: t(locale, 'WhatsApp'), value: t(locale, 'Message us'), href: site.whatsappHref },
-                    { icon: 'tabler:printer', label: t(locale, 'Fax'), value: site.fax },
-                  ].map((row) => (
-                    <div key={row.label} className="flex items-center gap-3">
-                      <Icon icon={row.icon} className="text-primary size-4 shrink-0" aria-hidden />
-                      <dt className="sr-only">{row.label}</dt>
-                      <dd className="text-default-800 text-[0.95rem]">
-                        {row.href ? (
-                          <a href={row.href} className="hover:text-primary underline-offset-4 transition-colors hover:underline">
-                            {row.value}
-                          </a>
-                        ) : (
-                          row.value
-                        )}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-
               <div className="border-default-200 bg-default-50 rounded-card border p-6 lg:p-10">
-                <SectionHeading eyebrow={t(locale, 'One form')} title={t(locale, 'Tell us what you need.')} />
+                {/* `heading={false}` hides the h3 and the description; the
+                    title stays as the iframe's accessible name. See QuoteForm.
 
-                <div className="mt-8">
-                  <QuoteForm
-                    formTitle={t(locale, 'Your requirement')}
-                    /* ⚠ THE FIELDS ARE NOT IN THIS REPO — Jotform
-                       262084626654058 in a cross-origin iframe. Cutting the
-                       field set down and restyling the controls are both
-                       builder-side; see the note in JotformEmbed. */
-                    formDesc={t(locale, 'Tell us the material you are working and the finish you need. Anything else — grade, size, quantity — can go in the message.')}
-                  />
-                </div>
+                    ⚠ THE FIELDS ARE NOT IN THIS REPO — Jotform 262084626654058
+                    in a cross-origin iframe. Cutting the field set down and
+                    restyling the controls are both builder-side; see the note
+                    in JotformEmbed. */}
+                <QuoteForm formTitle={t(locale, 'Your requirement')} heading={false} />
               </div>
             </div>
           </div>

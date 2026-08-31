@@ -14,12 +14,23 @@ import JotformEmbed from '@/components/JotformEmbed'
  * Prefill from the grade selector still works: /contact?product=…&grade=… is
  * read by JotformEmbed and passed to the form.
  */
-const QuoteForm = ({ formTitle, formDesc }: { formTitle: string; formDesc: string }) => (
+/**
+ * ⚠ `formTitle` IS STILL REQUIRED WHEN `heading` IS FALSE, and that is the
+ * point of splitting them. It stops being a visible <h3> and stays the
+ * iframe's `title`, which is the form's accessible name — a cross-origin
+ * iframe with no title is announced as "frame" and nothing else, so dropping
+ * the heading from the page must not drop the label from the embed.
+ */
+const QuoteForm = ({ formTitle, formDesc, heading = true }: { formTitle: string; formDesc?: string; heading?: boolean }) => (
   <div>
-    <h3 className="text-2xl">{formTitle}</h3>
-    <p className="text-default-600 mt-3 text-base">{formDesc}</p>
+    {heading && (
+      <>
+        <h3 className="text-2xl">{formTitle}</h3>
+        {formDesc && <p className="text-default-600 mt-3 text-base">{formDesc}</p>}
+      </>
+    )}
 
-    <div className="mt-8">
+    <div className={heading ? 'mt-8' : ''}>
       <JotformEmbed title={formTitle} />
     </div>
   </div>
