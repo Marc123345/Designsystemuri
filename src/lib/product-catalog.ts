@@ -280,6 +280,7 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
       ],
     },
     coated: {
+      image: 'nickel-coated',
       coatings: ['Nickel 30%', 'Nickel 56%', 'Nickel 60%', 'Custom % on request'],
     },
   },
@@ -324,6 +325,7 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
       micronSizes: MICRON_STD,
     },
     coated: {
+      image: 'nickel-coated',
       coatings: ['Nickel 30 / 56 / 60%', 'Copper', 'Custom % on request'],
     },
   },
@@ -374,6 +376,7 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
       properties: [{ label: 'Suited to', value: 'Hard tool steels, alloyed steels and super-alloys' }],
     },
     coated: {
+      image: 'nickel-coated',
       coatings: ['Available on mesh grades for single-layer and metal/vitrified bonds'],
     },
     pcbn: {

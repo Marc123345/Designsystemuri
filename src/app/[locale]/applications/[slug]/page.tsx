@@ -6,6 +6,8 @@ import { ArrowButton } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { applications } from '@/lib/applications'
 import { applicationImage, productImage } from '@/lib/card-media'
+import { getSectionCatalog } from '@/lib/product-catalog'
+import { getProductImage } from '@/lib/product-images'
 import { localeAlternates } from '@/lib/hreflang'
 import { getApplication, getApplications, t } from '@/lib/i18n-content'
 import type { Metadata } from 'next'
@@ -196,9 +198,33 @@ const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; s
   // the product record. The tile only needs a title, a href and a picture; the
   // icon and one-line note this used to build were computed and then dropped on
   // the floor by CurtainGrid, so they are no longer built.
+  /* ⚠ THE ANCHOR IS THE POINT, AND IT USED TO BE THROWN AWAY.
+     This split the href on '#' and resolved the image from the parent slug
+     alone, which meant every grade of a product got the same picture. On the
+     dental hub that produced four cards carrying two images:
+
+       Natural Diamond Grit, mesh     /products/natural-grit-powder#grit
+       Metal Bond Diamond             /products/metal-bond
+       Coated metal bond diamond      /products/metal-bond#coated    <- same as above
+       Natural Diamond Micron Powder  /products/natural-grit-powder#micron  <- same as first
+
+     The third one was the real fault. "Coated metal bond diamond" is a card
+     whose entire job is to show that the grit is plated, and it was showing
+     uncoated metal bond — the buyer was being told the difference in words and
+     shown a picture that contradicted it.
+
+     The catalogue already knows better. Every section carries an `image` key
+     resolving to EID's own photography, so the anchor is looked up first and
+     the parent card render is only the fallback for a link with no anchor.
+     Duplication WITHIN a material family is still expected and fine: mesh grit
+     and micron powder of the same material are the same material at two sizes,
+     which is the rule product-images.ts is built on. Coated versus uncoated is
+     not that — it is a visible difference with a photograph of its own. */
   const productTiles = app.products.map((ap) => {
-    const parentSlug = ap.href.replace('/products/', '').split('#')[0]
-    return { title: ap.label, href: ap.href, image: { src: productImage(parentSlug) ?? '', alt: ap.label } }
+    const [parentSlug, anchor] = ap.href.replace('/products/', '').split('#')
+    const sectionKey = anchor ? getSectionCatalog(parentSlug, anchor)?.image : undefined
+    const sectionPhoto = sectionKey ? getProductImage(sectionKey)?.src : undefined
+    return { title: ap.label, href: ap.href, image: { src: sectionPhoto ?? productImage(parentSlug) ?? '', alt: ap.label } }
   })
 
   const productLinks = app.products.map((ap) => ({ label: ap.label, href: ap.href }))

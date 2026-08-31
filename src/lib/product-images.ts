@@ -75,6 +75,24 @@ export const productImages: Record<string, StaticImageData> = {
   // resin-bond-diamond-uncoated-nickel-coated-hero
   'resin-bond-mesh': resinBondMesh,
 
+  /* THE COATING, rather than a product. This frame is a pile of uncoated
+     diamond beside the same grit nickel-coated, on one dish — it is the only
+     photograph on the site whose subject is the coating and not the grade
+     underneath it, which is why every `coated` section across metal bond,
+     resin bond and CBN points at it.
+
+     Reusing the resin-bond frame for metal bond and CBN is deliberate and it
+     is the file's own rule applied to a fourth axis: the photography is of
+     MATERIALS, not of grades, and nickel plating on 40/50 grit looks the same
+     whichever bond it is destined for. What the buyer needs to see is the
+     silver against the dark, and that is what this shows.
+
+     ⚠ Before this existed, a `coated` section fell through to its parent
+     product's shot, so "Coated metal bond diamond" on the dental hub was
+     showing UNCOATED metal bond — the one thing the card exists to
+     distinguish. */
+  'nickel-coated': resinBondMesh,
+
   // resin-bond-diamond-uncoated-nickel-coated-alt-square
   'erd-um': resinBondMicron,
 
