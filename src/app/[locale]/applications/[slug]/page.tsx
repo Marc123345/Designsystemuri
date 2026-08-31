@@ -6,7 +6,7 @@ import { ArrowButton } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { applications } from '@/lib/applications'
 import { applicationImage, productImage } from '@/lib/card-media'
-import { getSectionCatalog } from '@/lib/product-catalog'
+import { catalog, getSectionCatalog } from '@/lib/product-catalog'
 import { getProductImage } from '@/lib/product-images'
 import { localeAlternates } from '@/lib/hreflang'
 import { getApplication, getApplications, t } from '@/lib/i18n-content'
@@ -184,6 +184,8 @@ const BENTO: Record<number, { span: string; minHeight: string }[] | undefined> =
    adjacent tiles share a width and the row break moves. */
 const SPANS = ['lg:col-span-7', 'lg:col-span-5', 'lg:col-span-5', 'lg:col-span-7']
 
+const parentSlugOf = (href: string) => href.replace('/products/', '').split('#')[0]
+
 const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; slug: string }> }) => {
   const { locale, slug } = await params
   setRequestLocale(locale)
@@ -201,31 +203,65 @@ const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; s
   /* ⚠ THE ANCHOR IS THE POINT, AND IT USED TO BE THROWN AWAY.
      This split the href on '#' and resolved the image from the parent slug
      alone, which meant every grade of a product got the same picture. On the
-     dental hub that produced four cards carrying two images:
+     dental hub that produced four cards carrying two images, and the worst of
+     them was "Coated metal bond diamond" showing UNCOATED metal bond — a card
+     whose entire job is to show the grit is plated, contradicted by its own
+     photograph.
 
-       Natural Diamond Grit, mesh     /products/natural-grit-powder#grit
-       Metal Bond Diamond             /products/metal-bond
-       Coated metal bond diamond      /products/metal-bond#coated    <- same as above
-       Natural Diamond Micron Powder  /products/natural-grit-powder#micron  <- same as first
+     ── Every tile here is now EID's own photography ──────────────────────────
 
-     The third one was the real fault. "Coated metal bond diamond" is a card
-     whose entire job is to show that the grit is plated, and it was showing
-     uncoated metal bond — the buyer was being told the difference in words and
-     shown a picture that contradicted it.
+     These tiles used to fall back to `productImage(slug)` from card-media.ts,
+     which is the studio RENDER set — that file says so itself: "studio renders
+     of the material types, not photographs of EID's own output… nowhere that
+     argues a claim". An application hub is exactly somewhere that argues a
+     claim; it tells a dental buyer which grades go into their burs. So the
+     renders are gone from this page and every tile resolves to the catalogue's
+     own photography, the frames taken from eid-ltd.com and registered in
+     product-images.ts.
 
-     The catalogue already knows better. Every section carries an `image` key
-     resolving to EID's own photography, so the anchor is looked up first and
-     the parent card render is only the fallback for a link with no anchor.
-     Duplication WITHIN a material family is still expected and fine: mesh grit
-     and micron powder of the same material are the same material at two sizes,
-     which is the rule product-images.ts is built on. Coated versus uncoated is
-     not that — it is a visible difference with a photograph of its own. */
-  const productTiles = app.products.map((ap) => {
-    const [parentSlug, anchor] = ap.href.replace('/products/', '').split('#')
-    const sectionKey = anchor ? getSectionCatalog(parentSlug, anchor)?.image : undefined
-    const sectionPhoto = sectionKey ? getProductImage(sectionKey)?.src : undefined
-    return { title: ap.label, href: ap.href, image: { src: sectionPhoto ?? productImage(parentSlug) ?? '', alt: ap.label } }
-  })
+     ── Two passes, and the order matters ────────────────────────────────────
+
+     1. A link WITH an anchor takes its section's photograph, always. The
+        anchor names the exact thing the card is about, so accuracy wins here
+        even where it produces a repeat.
+     2. A link with NO anchor points at a whole product, so nothing tells us
+        which of its sections to show. It takes the first section photograph
+        not already claimed in pass one.
+
+     Running the anchored tiles first is what makes pass two useful rather than
+     arbitrary. Done in one pass, Grinding's "Metal Bond Diamond" grabbed the
+     mesh frame before "Natural Diamond Grit" could claim it by anchor, and the
+     two sat side by side showing the same pile.
+
+     ⚠ ONE DUPLICATE SURVIVES AND IT IS NOT A BUG IN THIS CODE. On Automotive
+     & Aerospace, "PCBN Discs & Blanks" and "CVD Polycrystalline Dressing Logs"
+     both resolve to the segment tray, because both catalogue keys map to it —
+     there are 13 photographs for 41 keys and no frame of a dressing log. The
+     fix is a photograph, not a lookup; anything else here would be showing a
+     buyer a picture of the wrong product. */
+  const productTiles = (() => {
+    const claimed = new Set<string>()
+    const resolved: (string | undefined)[] = app.products.map((ap) => {
+      const [parentSlug, anchor] = ap.href.replace('/products/', '').split('#')
+      const key = anchor ? getSectionCatalog(parentSlug, anchor)?.image : undefined
+      const src = key ? getProductImage(key)?.src : undefined
+      if (src) claimed.add(src)
+      return src
+    })
+
+    return app.products.map((ap, i) => {
+      let src = resolved[i]
+      if (!src) {
+        const [parentSlug] = ap.href.replace('/products/', '').split('#')
+        const options = Object.values(catalog[parentSlug] ?? {})
+          .map((section) => (section.image ? getProductImage(section.image)?.src : undefined))
+          .filter((u): u is string => Boolean(u))
+        src = options.find((u) => !claimed.has(u)) ?? options[0]
+        if (src) claimed.add(src)
+      }
+      return { title: ap.label, href: ap.href, image: { src: src ?? productImage(parentSlugOf(ap.href)) ?? '', alt: ap.label } }
+    })
+  })()
 
   const productLinks = app.products.map((ap) => ({ label: ap.label, href: ap.href }))
   const guideLinks = (app.guides ?? []).map((g) => ({ label: g, href: '/resources/blog' }))
