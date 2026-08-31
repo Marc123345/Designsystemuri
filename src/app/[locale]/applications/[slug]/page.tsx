@@ -112,32 +112,82 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
  * them. If a photograph here is swapped, re-measure before assuming the scrim
  * still covers it.
  */
+/**
+ * The four claims. Same four on every hub, in the same order — they are what
+ * EID sells, not what the industry does, so varying them would be varying the
+ * argument rather than the page.
+ */
 const WHY_CARDS = [
-  {
-    title: 'Batch-to-batch consistency',
-    desc: 'Re-order and get the same material, tested on every production run.',
-    image: '/eid/qc-batch-to-batch.jpg',
-    alt: 'Side-by-side scanning electron micrographs of two production lots of the same grade at matching magnification, each with a 1 micrometre scale bar',
-  },
-  {
-    title: 'Full range, one supplier',
-    desc: 'Everything this application needs from a single relationship and standard.',
-    image: '/eid/qc-samples.jpg',
-    alt: 'A laboratory shelf of sample jars, coarse grit at the front graduating to fine powder along the row',
-  },
-  {
-    title: 'In-house QC laboratory',
-    desc: 'Size distribution, crystal strength, morphology, and coating coverage.',
-    image: '/eid/qc-lab.jpg',
-    alt: 'A technician at an optical inspection system in the EID quality laboratory',
-  },
-  {
-    title: 'ISO 9001 & traceability',
-    desc: 'Certificate of analysis and retention samples available on request.',
-    image: '/eid/quality/05-labeled-sample-storage-cabinet.png',
-    alt: 'A storage cabinet of labelled sample containers, one retained from every batch',
-  },
+  { title: 'Batch-to-batch consistency', desc: 'Re-order and get the same material, tested on every production run.' },
+  { title: 'Full range, one supplier', desc: 'Everything this application needs from a single relationship and standard.' },
+  { title: 'In-house QC laboratory', desc: 'Size distribution, crystal strength, morphology, and coating coverage.' },
+  { title: 'ISO 9001 & traceability', desc: 'Certificate of analysis and retention samples available on request.' },
 ] as const
+
+/**
+ * The photographs behind those claims, PER HUB.
+ *
+ * ⚠ The four images used to be hardcoded into WHY_CARDS, so all six hubs ran
+ * the identical set. Combined with the outcome tile — which ran one micrometer
+ * shot on all six — a buyer moving between two hubs saw five of the same
+ * pictures twice and had no way to tell the pages apart below the fold.
+ *
+ * Each set is drawn from EID's own QC and laboratory photography, and every
+ * alt below is the description already on record against that file elsewhere in
+ * this codebase, copied verbatim. That is deliberate: an alt is a claim about
+ * what a photograph contains, and the way to get one wrong is to write a fresh
+ * one for a file you have not opened.
+ *
+ * ── What varies and what cannot ─────────────────────────────────────────────
+ *
+ * Cards 01 and 03 vary freely — there is a lot of measurement and laboratory
+ * photography, and each hub gets a frame that leans toward how ITS material is
+ * checked: impact testing for grinding, laser diffraction for polishing, the
+ * micrometer for semiconductor.
+ *
+ * Cards 02 and 04 have a thin bench. Only three frames genuinely show a full
+ * range (the jar shelf, the sixteen dishes, the graded grit), and only two say
+ * traceability at all (the retention cabinet and the labelled jars). They are
+ * split three and three across the hubs rather than pretending otherwise. If
+ * more range-and-records photography ever arrives, this is where it goes.
+ *
+ * No image repeats WITHIN a hub. Repeats across hubs are fine and expected.
+ */
+type WhyMedia = { image: string; alt: string }
+
+const M = {
+  semTwoLots: { image: '/eid/qc-batch-to-batch.jpg', alt: 'Side-by-side scanning electron micrographs of two production lots at the same magnification, each with a 1 micrometre scale bar' },
+  micrometer: { image: '/eid/quality/09-digital-micrometer-diamond-measurement.png', alt: 'A digital micrometer closed on a diamond crystal, its display reading 3.000 mm' },
+  balance: { image: '/eid/quality/06-precision-scale-diamond-grit.png', alt: 'A dish of diamond grit on a precision balance reading 0.0456 grams, with a microscope on the bench behind' },
+  opticalReadout: { image: '/eid/qc-inspection.jpg', alt: 'An optical measurement system with a diamond crystal magnified on screen and its dimensions read out alongside' },
+  impactTest: { image: '/eid/quality/01-automated-hardness-test-station.png', alt: 'An automated impact test station, its indenter lowered over the sample stage inside a guarded enclosure' },
+  laserDiffraction: { image: '/eid/quality/micron-qc-laser-diffraction.jpg', alt: 'A benchtop laser diffraction particle size analyser mid-measurement, with its wet dispersion unit alongside' },
+
+  jarShelf: { image: '/eid/qc-samples.jpg', alt: 'A laboratory shelf of labelled sample jars, coarse grit at the front graduating to fine powder along the row' },
+  sixteenDishes: { image: '/eid/quality/08-micron-powder-grade-comparison.png', alt: 'Sixteen dishes of micron diamond powder laid out in order from finest to coarsest' },
+  gradedGrit: { image: '/eid/home/hero-grit.jpg', alt: 'Graded industrial diamond grit, coarse crystals through to fine powder' },
+
+  qcTechnician: { image: '/eid/qc-lab.jpg', alt: 'A technician at an optical measurement system in the EID quality laboratory' },
+  metrologyLab: { image: '/eid/facility/hero-metrology-lab.png', alt: 'Two technicians at a measuring microscope in the EID metrology laboratory' },
+  microscopeStage: { image: '/eid/home/qc.jpg', alt: 'A gloved hand adjusting the stage of a laboratory microscope with a prepared sample slide under the objective' },
+  morphology: { image: '/eid/facility/crystal-microscopy.png', alt: 'Diamond crystals under the microscope during morphology inspection' },
+  stereoScope: { image: '/eid/quality/mesh-qc-stereo-microscopy.jpg', alt: 'A technician examining a sample of diamond grit under a binocular stereo microscope' },
+  pipette: { image: '/eid/quality/03-sample-preparation-pipette.png', alt: 'A gloved hand pipetting into a test tube of micron diamond powder, a centrifuge on the bench behind' },
+
+  retentionCabinet: { image: '/eid/quality/05-labeled-sample-storage-cabinet.png', alt: 'A storage cabinet of labelled sample containers, one retained from every batch' },
+} satisfies Record<string, WhyMedia>
+
+const WHY_MEDIA: Record<string, readonly [WhyMedia, WhyMedia, WhyMedia, WhyMedia]> = {
+  dental: [M.semTwoLots, M.jarShelf, M.qcTechnician, M.retentionCabinet],
+  'semiconductor-electronics': [M.micrometer, M.sixteenDishes, M.metrologyLab, M.retentionCabinet],
+  'automotive-aerospace': [M.balance, M.gradedGrit, M.microscopeStage, M.jarShelf],
+  'tool-and-die': [M.opticalReadout, M.jarShelf, M.morphology, M.retentionCabinet],
+  'grinding-cutting-sawing-drilling': [M.impactTest, M.sixteenDishes, M.stereoScope, M.jarShelf],
+  'polishing-lapping': [M.laserDiffraction, M.gradedGrit, M.pipette, M.jarShelf],
+}
+
+/** A hub added later renders the dental set rather than four empty cards. */
+const whyMediaFor = (slug: string) => WHY_MEDIA[slug] ?? WHY_MEDIA.dental
 
 /**
  * PRODUCT GRID SHAPES, BY COUNT.
@@ -297,14 +347,24 @@ const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; s
           was previously the quietest thing on the page — body type under a
           hairline, below the fold of an F-pattern scan.
 
-          ── The photograph that used to sit here is gone, deliberately ──────
+          ── The hub's own photograph is back, per Marc ──────────────────────
 
-          This slot held `applicationImage(slug)` at 4:5. That is the same
-          frame the hero above is already running full-bleed, and there is only
-          one per hub — so the page opened with a photograph and then showed it
-          again a screen later. The product renders are two sections down and
-          the laboratory frames are three. Nothing is missing from this page;
-          the picture was just being shown twice.
+          ⚠ This comment used to explain why `applicationImage(slug)` had been
+          REMOVED from this slot: it is the same frame the hero runs full-bleed,
+          so the page opened on a photograph and showed it again a screen later.
+          That reasoning was sound and it lost. What replaced it was a single
+          hardcoded micrometer shot behind the outcome on ALL SIX hubs — so the
+          dental buyer, the aerospace buyer and the semiconductor buyer were all
+          reading their own argument over an identical picture, and the panel
+          stopped saying anything about the industry it was addressing.
+
+          One frame repeated across six pages is a worse failure than one frame
+          repeated twice on a page, and the repeat is softer than it sounds: the
+          hero is a 52svh letterbox and this is a portrait tile, so cover takes
+          two genuinely different crops of the same source, both under heavy
+          primary-3. If it still reads as a double on any hub, the fix is to
+          drop `bgImage` from the hero rather than to go back to one shared
+          picture.
 
           The intro CTA stays dropped: the hero one screen up carries it, and
           the navy panel below now carries it too. */}
@@ -415,12 +475,18 @@ const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; s
                 the tile's centre line; plain `object-center` pushes the crystal
                 off the left edge and leaves the barrel alone in the frame. */}
             <div className="rounded-card relative isolate flex min-h-[460px] flex-col justify-end overflow-hidden lg:col-span-6">
+              {/* `object-center`, not the micrometer's `object-[38%_50%]`. That
+                  offset existed to keep one specific crystal on the tile's
+                  centre line; against six different sources it would crop an
+                  arbitrary third off each one. Every hub frame is landscape
+                  into a portrait tile, so cover trims the sides evenly and the
+                  subject — which is centred in all six — survives. */}
               <Image
-                src="/eid/quality/09-digital-micrometer-diamond-measurement.png"
-                alt={t(locale, 'A digital micrometer closed on a polished diamond crystal, its display reading 3.000 millimetres')}
+                src={applicationImage(app.slug) ?? '/eid/quality/09-digital-micrometer-diamond-measurement.png'}
+                alt=""
                 fill
                 sizes="(min-width: 1420px) 638px, (min-width: 1024px) 48vw, 100vw"
-                className="-z-20 object-cover object-[38%_50%]"
+                className="-z-20 object-cover object-center"
               />
               <span aria-hidden className="from-primary-3/97 via-primary-3/92 to-primary-3/15 absolute inset-0 -z-10 bg-linear-to-t via-58%" />
 
@@ -499,7 +565,7 @@ const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; s
 
           <div className="mt-10 grid gap-6 lg:mt-14 lg:grid-cols-12">
             {WHY_CARDS.map((c, i) => (
-              <PhotoCard key={c.title} className={SPANS[i]} minHeight="min-h-[320px] lg:min-h-[360px]" weight="heavy" eyebrow={String(i + 1).padStart(2, '0')} title={t(locale, c.title)} body={t(locale, c.desc)} image={c.image} alt={t(locale, c.alt)} />
+              <PhotoCard key={c.title} className={SPANS[i]} minHeight="min-h-[320px] lg:min-h-[360px]" weight="heavy" eyebrow={String(i + 1).padStart(2, '0')} title={t(locale, c.title)} body={t(locale, c.desc)} image={whyMediaFor(app.slug)[i].image} alt={t(locale, whyMediaFor(app.slug)[i].alt)} />
             ))}
           </div>
 
