@@ -119,15 +119,41 @@ const V_MASK = 'linear-gradient(to bottom, transparent 0%, black 16%, black 84%,
 /** Clears the middle, where `.container` puts the content. */
 const H_MASK = 'linear-gradient(to right, black 0%, black 12%, transparent 26%, transparent 74%, black 88%, black 100%)'
 
+/* THE MARK, as a mask rather than as a picture.
+   /eid/logo-white.png is white ink on transparent, so dropped onto a white
+   canvas it is invisible. Masking with its alpha instead and filling the shape
+   with a colour means the one asset the site already ships works on any ground
+   — white here, and it would work just as well on navy without a second file.
+
+   `auto 100%` at `left center` crops the 650x221 lockup to its leftmost 232px,
+   which is the mark on its own. That is not a magic number: it is exactly what
+   HeroMark does with overflow-hidden and `aspectRatio: 232 / 221`, and the two
+   need to stay in step. The wordmark is deliberately left out — "E.I.D. LTD /
+   INDUSTRIAL DIAMONDS" ghosted at this scale reads as a stray watermark
+   somebody forgot to delete, where the mark alone reads as geometry. */
+const MARK = {
+  maskImage: 'url(/eid/logo-white.png)',
+  WebkitMaskImage: 'url(/eid/logo-white.png)',
+  maskSize: 'auto 100%',
+  WebkitMaskSize: 'auto 100%',
+  maskPosition: 'left center',
+  WebkitMaskPosition: 'left center',
+  maskRepeat: 'no-repeat',
+  WebkitMaskRepeat: 'no-repeat',
+} as const
+
 const CanvasField = ({
   density = 'medium',
   grain = true,
+  mark = false,
   className = '',
 }: {
   /** Sieve aperture. See the table above — it is meant to match the page. */
   density?: 'coarse' | 'medium' | 'fine'
   /** The grain covers the whole section; only the mesh is confined to the margins. */
   grain?: boolean
+  /** Ghost the EID mark off one edge. Off by default — it is a feature spot, not a default. */
+  mark?: false | 'start' | 'end'
   className?: string
 }) => {
   const cell = CELL[density]
@@ -155,6 +181,49 @@ const CanvasField = ({
           }}
         />
       </div>
+
+      {/* THE MARK, ghosted off one edge.
+
+          ⚠ 14% IS A MEASURED CEILING, NOT A TASTE SETTING. The mesh gets away
+          with more because it is hairlines: at 6-10% area coverage a glyph over
+          it mostly sits on plain ground, and the honest cost is about 0.04. The
+          mark is a SOLID shape covering 28% of its box, so a glyph landing on
+          it sits entirely on that tone and the pessimistic test applies for
+          real. `text-default-500` is 4.759:1 on white with a quarter point of
+          headroom over the floor. Stacked on the grain already running here:
+
+            default-200/45   #f1f4f7   4.300   FAIL   ← first attempt
+            default-200/30   #f5f7f9   4.425   FAIL
+            default-200/22   #f7f8fa   4.493   FAIL
+            default-200/18   #f8f9fb   4.527   the floor, not a margin
+            default-200/14   #f9fafb   4.561   ok     ← what ships
+
+          The first version was 45% and masked out of the copy column to make
+          that safe. It did not work: the container leaves roughly 107px of
+          margin on a 1512 viewport, so a 480px mark either got clipped to a
+          sliver or reached under the first 260px of the text. Taking the tone
+          down instead means it can sit wherever it looks best and the contrast
+          question stops existing. Five values off white is a shadow, which is
+          what was asked for.
+
+          Bled rather than centred. A whole mark floating in a section is a
+          watermark; a mark running off the edge is a crop, and a crop is what
+          the rest of this site already does — the hero lockup, the tile
+          numerals, the photography.
+
+          `lg:block` only: below lg the section is the full viewport and there
+          is no margin for it to bleed into. */}
+      {mark && (
+        <div
+          /* One mask, not two. Compositing the section fade over the mark's own
+             mask would apply the mark's `mask-size: auto 100%` to the gradient
+             as well and break it — and the fade is not needed here anyway: the
+             wrapper is `overflow-hidden`, so the section edge already clips it,
+             and at five values off white there is no seam to soften. */
+          style={MARK}
+          className={`bg-default-200/14 absolute top-1/2 hidden aspect-[232/221] w-[30rem] -translate-y-1/2 lg:block xl:w-[38rem] ${mark === 'end' ? '-end-28 xl:-end-24' : '-start-28 xl:-start-24'}`}
+        />
+      )}
     </div>
   )
 }

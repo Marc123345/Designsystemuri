@@ -67,7 +67,7 @@ different problems, and a buyer arrives already in one of them. */}
       {/* Coarse screen: this page is about grading against a sieve stack, so the
           background is the instrument it describes. See CanvasField. */}
       <section className="relative isolate py-16 lg:py-24">
-        <CanvasField density="coarse" />
+        <CanvasField density="coarse" mark="start" />
         {/* Mesh QC is 01 and Micron QC is 02 — they are a pair, and the site
             says so in the copy ("mesh and micron are different problems") long
             before it says so anywhere else. This is the only place on the site

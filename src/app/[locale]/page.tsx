@@ -178,7 +178,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           `/micron-qc` runs the fine one, and the two are meant to be noticeably
           different if you ever see them side by side. See CanvasField. */}
       <section id="products" data-note="range" className="relative isolate py-20 lg:py-30">
-        <CanvasField density="coarse" />
+        <CanvasField density="coarse" mark="end" />
         <div className="container">
           <div className="grid items-end gap-8 lg:grid-cols-12 lg:gap-14">
             {/* No eyebrow chip and no restatement of the band's sentence —
