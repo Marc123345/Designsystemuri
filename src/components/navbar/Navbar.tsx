@@ -57,8 +57,6 @@ const TRANSPARENT_ON = [
   // The /applications index is gone; the per-hub pages under it remain and
   // still open on a photograph.
   '/applications/',
-  '/mesh-qc',
-  '/micron-qc',
   '/products/',
   '/resources/blog',
   '/resources/datasheets',

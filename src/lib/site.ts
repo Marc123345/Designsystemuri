@@ -104,8 +104,6 @@ export const footerColumns = [
     links: [
       { label: 'Products Overview', href: '/#products' },
       { label: 'Quality, QC & ISO 9001', href: '/quality' },
-      { label: 'Mesh QC', href: '/mesh-qc' },
-      { label: 'Micron QC', href: '/micron-qc' },
       { label: 'Blog', href: '/resources/blog' },
       { label: 'Datasheets', href: '/resources/datasheets' },
       { label: 'MSDS', href: '/resources/msds' },

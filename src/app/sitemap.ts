@@ -39,8 +39,6 @@ const paths: Record<string, Meta> = {
   ...Object.fromEntries(products.map((p) => [`/products/${p.slug}`, { priority: 0.8, changeFrequency: 'monthly' } as Meta])),
   ...Object.fromEntries(applications.map((a) => [`/applications/${a.slug}`, { priority: 0.8, changeFrequency: 'monthly' } as Meta])),
   '/quality': { priority: 0.7, changeFrequency: 'monthly' },
-  '/mesh-qc': { priority: 0.5, changeFrequency: 'monthly' },
-  '/micron-qc': { priority: 0.5, changeFrequency: 'monthly' },
   '/about': { priority: 0.6, changeFrequency: 'monthly' },
   '/contact': { priority: 0.7, changeFrequency: 'monthly' },
   '/resources/datasheets': { priority: 0.6, changeFrequency: 'monthly' },

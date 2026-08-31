@@ -1,5 +1,6 @@
 import QualityMosaic from '@/components/quality/QualityMosaic'
 import TheControls from '@/components/quality/TheControls'
+import TheCertificate from '@/components/quality/TheCertificate'
 import TheLaboratory from '@/components/quality/TheLaboratory'
 import VideoHero from '@/components/VideoHero'
 import type { Locale } from '@/i18n/routing'
@@ -83,6 +84,7 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
       <TheLaboratory />
       <QualityMosaic />
       <TheControls />
+      <TheCertificate />
     </>
   )
 }

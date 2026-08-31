@@ -19,17 +19,20 @@
  * A square grid on a white page is graph paper, and graph paper is what every
  * template does. This one is a TEST SIEVE, drawn at the aperture of a real mesh
  * count — which on this site is not decoration, it is the instrument the
- * product is graded on. `/mesh-qc` is a whole page about it.
+ * product is graded on.
  *
- * That is also why `density` exists rather than one fixed cell. A page about
- * coarse natural grit gets a coarse screen; `/micron-qc` gets a fine one. The
- * ornament then carries a fact, and a reader who knows the trade will notice
- * the pages are screened differently before they work out why.
+ * That is also why `density` exists rather than one fixed cell: a section about
+ * coarse grit can carry a coarse screen and one about micron powder a fine one,
+ * so the ornament carries a fact rather than just filling space.
  *
  *   density   cell    stands for            where it runs
- *   coarse    32px    ~60 mesh, 250µm       home range band, /mesh-qc
+ *   coarse    32px    ~60 mesh, 250µm       home range band
  *   medium    20px    ~120 mesh, 125µm      the default; applications
- *   fine      12px    ~325 mesh, 45µm       /micron-qc
+ *   fine      12px    ~325 mesh, 45µm       unused since the QC pages went
+ *
+ * ⚠ `fine` has no caller. It is kept because the whole point of the prop is to
+ * match the screen to the page, and the next section that talks about micron
+ * powder should take it. Delete it if that never happens.
  *
  * The px figures are a legible scale, not a literal one. Drawing 45µm to true
  * scale against 250µm would put the fine mesh at sub-pixel spacing, where it
@@ -41,7 +44,7 @@
  * `text-default-500` is the smallest grey this site puts on a light ground, and
  * it is 4.759:1 on white — a quarter of a point over the 4.5 floor. Everything
  * layered under it spends that quarter point, and both QC pages put it directly
- * over this field, so none of this is hypothetical.
+ * over this field on the pages that carry it, so none of this is hypothetical.
  *
  * Measured as the effective background under a glyph — coverage (2c−1)/c² for
  * 1px lines on a c-pixel cell, so 6.2% coarse, 9.8% medium, 16% fine. AS FIRST
@@ -71,8 +74,8 @@
  *    The tint alone leaves 4.603, and no grain or mesh setting recovers a real
  *    margin on top of it — at 1% grain the stack is still only 4.46 to 4.52.
  *    Tint OR texture where that grey appears, not both. The applications band
- *    is tinted because it has no `text-default-*` at all; the range band and
- *    both QC pages stay white because they do. Check before tinting a section.
+ *    is tinted because it has no `text-default-*` at all; the range band stays
+ *    white because it does. Check before tinting a section.
  *
  * An earlier draft of this comment claimed a glyph stroke landing on a hairline
  * drops the ratio to 4.09 and used that to justify the layout. That number is

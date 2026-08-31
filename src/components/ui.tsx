@@ -99,51 +99,6 @@ export const ChapterMarker = ({ index, label }: { index: string; label: string }
 )
 
 /** Section heading block: eyebrow, H2, optional lede. */
-/**
- * The chapter number, at the scale the section deserves.
- *
- * ⚠ It does NOT pair with ChapterMarker, and an earlier draft of this comment
- * said it did. ChapterMarker is exported from this file and rendered by
- * nothing — it has been dead since the section rhythm moved to SectionBanner.
- * The sequence this numeral indexes is the banner strips: Our Products, Why
- * EID, Applications, Quality, in that order down the home page. Number against
- * those, or the figure is counting something the reader cannot see.
- *
- * The technique is not new here: CurtainGrid has been drawing its tile numbers
- * this way since it was built — `text-transparent` with a
- * `-webkit-text-stroke`, so the glyph is a line rather than a shape. This
- * promotes that device from tile scale to section scale, which is the whole
- * reason to use it: at 92px an outline reads as a numeral, at 200px+ it reads
- * as architecture, and either way it costs one element and no colour.
- *
- * ⚠ `-webkit-text-stroke` IS the load-bearing property and it has no standard
- * equivalent that ships everywhere yet. Every engine this site supports
- * implements the prefixed version — it is one of the very few `-webkit-`
- * properties that is genuinely cross-browser. Where it is not implemented the
- * fill is `transparent`, so the numeral simply does not appear: the layout does
- * not move, nothing overlaps, and the section is exactly what it was before.
- * That is the right failure and it is why the fill is transparent rather than a
- * pale grey that would have to be undone.
- *
- * `aria-hidden`, and it must stay that way. There is no textual counterpart to
- * announce — this is ornament that happens to be a glyph, and read aloud it is
- * a bare number interrupting a heading. `lg:block` for the same reason at the
- * other end: below lg there is no margin for it to bleed into, and a decorative
- * numeral that has to fight for space has stopped being decorative.
- */
-export const ChapterNumeral = ({ index, side = 'end', className = '' }: { index: string; side?: 'start' | 'end'; className?: string }) => (
-  <span
-    aria-hidden
-    className={`pointer-events-none absolute -z-10 hidden select-none text-[13rem] leading-none font-bold text-transparent lg:block xl:text-[17rem] ${side === 'end' ? '-end-6 xl:-end-10' : '-start-6 xl:-start-10'} ${className}`}
-    /* 1px against CurtainGrid's 1px, but in default-200 rather than white/90 —
-       the tile draws on a photograph and this draws on the canvas, so the same
-       weight needs a far lighter colour to land at the same presence. */
-    style={{ WebkitTextStrokeWidth: '1px', WebkitTextStrokeColor: 'var(--color-default-200)' }}
-  >
-    {index}
-  </span>
-)
-
 export const SectionHeading = ({ eyebrow, title, desc, align = 'start', light = false }: { eyebrow?: string; title: string; desc?: string; align?: 'start' | 'center'; light?: boolean }) => (
   <div className={`max-w-3xl ${align === 'center' ? 'mx-auto text-center' : ''}`}>
     {eyebrow && (

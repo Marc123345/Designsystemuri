@@ -901,27 +901,6 @@ export const ProductPhoto = ({ image, alt }: { image: string; alt: string; galle
   )
 }
 
-/**
- * Laboratory equipment photograph, for the two QC method pages.
- *
- * Same box as ProductPhoto — `rounded-card`, 4:3, `object-cover` — because the
- * two sit on sibling pages and a different radius or ratio on one of them
- * reads as a different site.
- *
- * ⚠ ILLUSTRATIVE, NOT EVIDENCE, and the alt text is where that distinction is
- * kept. These are generated images of the class of instrument each method uses,
- * in the same visual family as /eid/quality and /eid/facility. They are NOT
- * EID's laboratory, so the alt says what the equipment is and never says whose
- * it is — the note about photographs still being outstanding stays on the page
- * beneath them for the same reason. The moment Uri supplies real photography of
- * the bench, swap the file and the alt can start making the claim.
- */
-export const LabPhoto = ({ src, alt }: { src: string; alt: string }) => (
-  <div className="rounded-card relative aspect-[4/3] overflow-hidden">
-    <Image src={src} alt={alt} fill sizes="(min-width: 768px) 46vw, 100vw" className="object-cover" />
-  </div>
-)
-
 /** The full grade / size / coating / property block for a catalogued section. */
 export const CatalogSpecs = ({ cat, sectionTitle, productName }: { cat: SectionCatalog; sectionTitle: string; productName: string }) => {
   const locale = useLocale() as Locale
@@ -1143,7 +1122,7 @@ export const QuoteSection = ({
   /**
    * ⚠ THIS DEFAULT CARRIED TWO THINGS URI STRUCK IN F5, AND IT CARRIED THEM
    * ONTO EVERY PAGE THAT USES QuoteSection — datasheets, MSDS, blog,
-   * products/[slug], mesh-qc and micron-qc.
+   * products/[slug] and the application hubs.
    *
    * It read: "Tell us the product, grade, size, and quantity you need. A
    * specialist who understands the material replies within one business day."

@@ -75,6 +75,15 @@ const nextConfig: NextConfig = {
     // were deployed, so both redirect rather than 404.
     { source: "/applications", destination: "/#applications", permanent: true },
     { source: "/:locale(de|es|it|ja|fr|ko|zh)/applications", destination: "/:locale#applications", permanent: true },
+    // Mesh QC and Micron QC are gone at Marc's request. They were deployed and
+    // linked from the footer on every page, so they redirect rather than 404 —
+    // same reasoning as the two above. /quality is the destination because it
+    // is the page that still makes the QC argument; sending them to the
+    // homepage would drop a reader who asked a specific question.
+    { source: "/mesh-qc", destination: "/quality", permanent: true },
+    { source: "/:locale(de|es|it|ja|fr|ko|zh)/mesh-qc", destination: "/:locale/quality", permanent: true },
+    { source: "/micron-qc", destination: "/quality", permanent: true },
+    { source: "/:locale(de|es|it|ja|fr|ko|zh)/micron-qc", destination: "/:locale/quality", permanent: true },
   ],
 };
 

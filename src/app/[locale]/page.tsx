@@ -175,8 +175,8 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 
       {/* White ground, coarse screen. This section is the whole catalogue from
           natural grit down to micron powder, so it takes the top of the range;
-          `/micron-qc` runs the fine one, and the two are meant to be noticeably
-          different if you ever see them side by side. See CanvasField. */}
+          the fine screen is unused now that the QC pages are gone. See
+          CanvasField. */}
       <section id="products" data-note="range" className="relative isolate py-20 lg:py-30">
         <CanvasField density="coarse" mark="end" />
         <div className="container">
