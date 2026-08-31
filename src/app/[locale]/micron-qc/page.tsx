@@ -1,4 +1,6 @@
 import { RichText } from '@/components/RichText'
+import CanvasField from '@/components/CanvasField'
+import { ChapterNumeral } from '@/components/ui'
 import { CrossLinks, DarkFeatureList, LabPhoto, PageHero } from '@/components/sections'
 import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
@@ -69,7 +71,20 @@ const MicronQcPage = async ({ params }: { params: Promise<{ locale: Locale }> })
 
       {/* D-values first: the page has to define the vocabulary before it can
 claim to control it. */}
-      <section className="py-16 lg:py-24">
+      {/* Fine screen, against Mesh QC’s coarse one. The two pages argue that
+          mesh and micron are different problems; their backgrounds now say so
+          before the copy does. See CanvasField. */}
+      <section className="relative isolate py-16 lg:py-24">
+        <CanvasField density="fine" />
+        {/* Mesh QC is 01 and Micron QC is 02 — they are a pair, and the site
+            says so in the copy ("mesh and micron are different problems") long
+            before it says so anywhere else. This is the only place on the site
+            with room for the device: the copy on both pages runs in a narrow
+            left column with roughly a third of the width empty beside it. It
+            was tried on the home range band first and pulled — the right edge
+            there is a text column, so the numeral landed behind body copy and
+            read as a smudge rather than as a crop. */}
+        <ChapterNumeral index="02" className="top-24" />
         <div className="container">
           <div className="max-w-4xl">
             <SectionHeading eyebrow={t(locale, 'The buying criterion')} title={t(locale, 'In fine finishing, the distribution is the specification.')} />

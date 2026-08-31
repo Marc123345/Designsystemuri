@@ -35,6 +35,45 @@
        the one hard-edged thing. */
     --radius-control: 12px;
 
+    /* ── The light canvas, in two steps ──────────────────────────────────
+       Every light section on this site was pure white, and every dark one was
+       navy. Nothing in between, which meant a run of light sections read as
+       one continuous field with content floating in it — the SectionBanner
+       strips were doing all the separating on their own.
+
+       `canvas` is white's neighbour: the brand navy at about 4% over white.
+       Deliberately NOT `default-50`. The slate ramp is a neutral grey and this
+       is a tint of the actual brand colour, so a light section sitting on it
+       is quietly related to the navy bands above and below it rather than just
+       being a bit dirtier than the section next door. The difference is under
+       three points per channel; it is meant to be felt rather than seen.
+
+       Use it the way the banners already walk their shades down the page: white
+       where the content is the subject, `canvas` where it is a supporting or
+       index-like band. Two steps only. A third would need a reason.
+
+       ⚠ 2% IS NOT A TASTE DECISION AND IT MUST NOT BE DEEPENED WITHOUT
+       RE-MEASURING. `text-default-500` — the smallest grey this site puts on a
+       light ground — is 4.759:1 on white, a quarter of a point above the 4.5
+       floor. Tinting the ground spends that headroom directly:
+
+         1%  #fdfdfe   4.680      3%  #f9f9fb   4.526   ← arithmetic ceiling
+         2%  #fbfbfd   4.603      4%  #f7f7f9   4.450   ← FAILS
+
+       A first pass shipped 4% and broke it. 3% technically clears, by 0.026,
+       which is the floor to two decimal places rather than a margin — this file
+       has been here before, with the label in QualityContactBento that measured
+       4.54 and got lifted for exactly that reason. 2% is the deepest value with
+       a real margin, and it is enough: the tint is doing its job alongside a
+       section boundary and a mesh, not on its own.
+
+       ⚠ AND IT STILL CANNOT CARRY `text-default-500`. 4.603 is a margin for the
+       tint on its own; put CanvasField's grain and mesh on top and the stack
+       falls to 4.39-4.45, under the floor, with no grain setting that recovers
+       it. Tint a section OR texture it where that grey appears, not both. See
+       the budget table in CanvasField. */
+    --color-canvas: #fbfbfd;
+
     --color-body-bg: var(--color-white);
     --color-body-color: var(--color-slate-600);
 

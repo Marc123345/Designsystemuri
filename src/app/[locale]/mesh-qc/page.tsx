@@ -1,4 +1,6 @@
 import { RichText } from '@/components/RichText'
+import CanvasField from '@/components/CanvasField'
+import { ChapterNumeral } from '@/components/ui'
 import { CrossLinks, DarkFeatureList, LabPhoto, PageHero } from '@/components/sections'
 import { SectionHeading } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
@@ -62,7 +64,19 @@ const MeshQcPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =
 
       {/* Why mesh is its own page: sieve grading and micron counting are two
 different problems, and a buyer arrives already in one of them. */}
-      <section className="py-16 lg:py-24">
+      {/* Coarse screen: this page is about grading against a sieve stack, so the
+          background is the instrument it describes. See CanvasField. */}
+      <section className="relative isolate py-16 lg:py-24">
+        <CanvasField density="coarse" />
+        {/* Mesh QC is 01 and Micron QC is 02 — they are a pair, and the site
+            says so in the copy ("mesh and micron are different problems") long
+            before it says so anywhere else. This is the only place on the site
+            with room for the device: the copy on both pages runs in a narrow
+            left column with roughly a third of the width empty beside it. It
+            was tried on the home range band first and pulled — the right edge
+            there is a text column, so the numeral landed behind body copy and
+            read as a smudge rather than as a crop. */}
+        <ChapterNumeral index="01" className="top-24" />
         <div className="container">
           <div className="max-w-4xl">
             <SectionHeading eyebrow={t(locale, 'Grading by form')} title={t(locale, 'Mesh grit is graded by sieve, not by counter.')} />

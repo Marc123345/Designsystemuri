@@ -4,6 +4,7 @@ import ProofPanel from '@/components/home/ProofPanel'
 import QualityContactBento from '@/components/home/QualityContactBento'
 import SectionBanner from '@/components/SectionBanner'
 import { Faq } from '@/components/sections'
+import CanvasField from '@/components/CanvasField'
 import VideoHero from '@/components/VideoHero'
 import type { Locale } from '@/i18n/routing'
 import { applicationImage, productImage } from '@/lib/card-media'
@@ -172,7 +173,12 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           the darkest ground of all. */}
       <SectionBanner label={t(locale, 'Our Products')} body={t(locale, 'Every industrial diamond and CBN product, from one source.')} shade={1} />
 
-      <section id="products" data-note="range" className="py-20 lg:py-30">
+      {/* White ground, coarse screen. This section is the whole catalogue from
+          natural grit down to micron powder, so it takes the top of the range;
+          `/micron-qc` runs the fine one, and the two are meant to be noticeably
+          different if you ever see them side by side. See CanvasField. */}
+      <section id="products" data-note="range" className="relative isolate py-20 lg:py-30">
+        <CanvasField density="coarse" />
         <div className="container">
           <div className="grid items-end gap-8 lg:grid-cols-12 lg:gap-14">
             {/* No eyebrow chip and no restatement of the band's sentence —
@@ -290,7 +296,14 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 
           The scroll offset comes from html's `scroll-padding-top`, the same way
           #products does, so no `scroll-mt` here or the two would add up. */}
-      <section id="applications" data-note="applications" className="py-14 lg:py-20">
+      {/* THE TINTED STEP. Everything light on this page was pure white, which
+          left the SectionBanner strips doing all of the separating on their
+          own — three navy rules with one continuous white field behind them.
+          This band takes `bg-canvas`, the brand navy at 4% over white, so the
+          page alternates rather than runs. Medium screen: the hubs are an index
+          into the range rather than a point on it. */}
+      <section id="applications" data-note="applications" className="bg-canvas relative isolate py-14 lg:py-20">
+        <CanvasField density="medium" />
         <div className="container">
           <div className="grid items-end gap-8 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-7">
