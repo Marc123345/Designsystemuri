@@ -47,7 +47,7 @@ const TheLaboratory = () => {
             <p className="text-default-700 mt-6 text-[18px] leading-relaxed lg:text-[19px]">
               {t(
                 locale,
-                'At E.I.D, every single batch of diamond and CBN powder undergoes strict laboratory validation to guarantee total product consistency, lot after lot.'
+                'At EID, every single batch of diamond and CBN powder undergoes strict laboratory validation to guarantee total product consistency, lot after lot.'
               )}
             </p>
             <p className="text-default-600 mt-5 text-base leading-relaxed">

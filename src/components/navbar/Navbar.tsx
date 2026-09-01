@@ -106,8 +106,14 @@ const Navbar = () => {
   // /products/cbn still lights up "Products".
   const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href))
 
+  /* `py-0.5` is a WCAG 2.5.8 fix, not spacing. These measured 23px — one pixel
+     under the 24px target minimum, and unlike the inline links in body copy
+     they get no help from the inline exception, because a nav item is not
+     running text. Four pixels of vertical padding takes the hit area to 27px
+     and moves nothing: the bar's height is set by the taller controls beside
+     these, so the row does not grow. */
   const navLink = (active: boolean) =>
-    `flex items-center gap-1.5 text-[0.94rem] font-semibold tracking-[0.01em] transition-colors hover:text-primary ${active ? 'text-primary' : 'text-default-700'}`
+    `flex items-center gap-1.5 py-0.5 text-[0.94rem] font-semibold tracking-[0.01em] transition-colors hover:text-primary ${active ? 'text-primary' : 'text-default-700'}`
 
   // One vertical panel anchored under its trigger, with the brand rule across
   // the top — the Supreme Home dropdown, minus the corner radius.

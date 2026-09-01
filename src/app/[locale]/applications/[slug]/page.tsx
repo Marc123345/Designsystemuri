@@ -309,7 +309,8 @@ const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; s
         src = options.find((u) => !claimed.has(u)) ?? options[0]
         if (src) claimed.add(src)
       }
-      return { title: ap.label, href: ap.href, image: { src: src ?? productImage(parentSlugOf(ap.href)) ?? '', alt: ap.label } }
+      // alt= — the tile's heading is `ap.label`; see the note on the home page.
+      return { title: ap.label, href: ap.href, image: { src: src ?? productImage(parentSlugOf(ap.href)) ?? '', alt: '' } }
     })
   })()
 

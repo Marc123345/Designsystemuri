@@ -42,7 +42,11 @@ const SalesLocations = () => {
 
   return (
     <div>
-      <p className="font-mono text-[11px] tracking-[0.22em] text-white/85 uppercase">{t(locale, 'Where you can buy from')}</p>
+      {/* h2, not p. It was already a section heading in everything except its
+          element, and /contact had no h2 at all — the page jumped h1 straight
+          to the footer's h3s (axe: heading-order). Nothing changes visually;
+          the type classes carry the whole appearance. */}
+      <h2 className="font-mono text-[11px] tracking-[0.22em] text-white/85 uppercase">{t(locale, 'Where you can buy from')}</h2>
 
       <ul className="mt-4 flex flex-wrap gap-1.5">
         {COUNTRIES.map((c) => (

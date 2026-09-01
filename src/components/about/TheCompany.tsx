@@ -57,13 +57,13 @@ const TheCompany = () => {
             <p className="text-default-700 mt-6 text-[18px] leading-relaxed lg:text-[19px]">
               {t(
                 locale,
-                'With its headquarters in London, England, and worldwide marketing partners, E.I.D has established a global reputation for quality, consistency and superior service.'
+                'With its headquarters in London, England, and worldwide marketing partners, EID has established a global reputation for quality, consistency and superior service.'
               )}
             </p>
             <p className="text-default-600 mt-5 text-base leading-relaxed">
               {t(
                 locale,
-                'Today E.I.D has customers on every continent. Our sales team speaks more than ten dialects, but we all speak the same language — the right product at the right price, when and where you require it.'
+                'Today EID has customers on every continent. Our sales team speaks more than ten dialects, but we all speak the same language — the right product at the right price, when and where you require it.'
               )}
             </p>
           </div>

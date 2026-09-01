@@ -25,7 +25,15 @@ const HeroTitle = ({ title, className = '' }: { title: string; className?: strin
     <h1 className={`leading-[1.1] tracking-tight text-white ${className}`}>
       {twoBeat ? (
         <>
-          <span className="block font-extralight">{beats[0].trim()}</span>
+          {/* ⚠ THE SPACE BETWEEN THESE TWO IS LOAD-BEARING AND INVISIBLE.
+              `block` gives the visual line break, but with the spans adjacent
+              in the markup there is no whitespace between them, so the h1's
+              text content ran together: "Industrial DiamondManufactured
+              In-House Since 1970". That is what a screen reader announces,
+              what a copy-paste produces, and what a crawler indexes as the
+              page's most important string. `{' '}` costs nothing visually —
+              the elements are block, so it collapses — and fixes all three. */}
+          <span className="block font-extralight">{beats[0].trim()}</span>{' '}
           <strong className="block font-bold">{beats[1].trim()}</strong>
         </>
       ) : (

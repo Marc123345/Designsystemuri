@@ -55,13 +55,13 @@ const Footer = () => {
             </li>
             <li className="flex items-center gap-3">
               <Icon icon="tabler:phone" className="size-4 shrink-0 text-white/50" />
-              <a href={site.phoneHref} className="transition-colors hover:text-white">
+              <a href={site.phoneHref} className="inline-block py-px transition-colors hover:text-white">
                 {site.phone}
               </a>
             </li>
             <li className="flex items-center gap-3">
               <Icon icon="tabler:mail" className="size-4 shrink-0 text-white/50" />
-              <a href={`mailto:${site.email}`} className="break-all transition-colors hover:text-white">
+              <a href={`mailto:${site.email}`} className="inline-block break-all py-px transition-colors hover:text-white">
                 {site.email}
               </a>
             </li>
@@ -101,10 +101,18 @@ const Footer = () => {
                 {group.map((column) => (
                   <div key={column.title}>
                     <h3 className="text-default-900 mb-5 text-lg font-semibold">{t(locale, column.title)}</h3>
-                    <ul className="space-y-2.5">
+                    {/* space-y-2.5 -> space-y-1 with padding on the links.
+                        WCAG 2.2 AA 2.5.8 wants a 24px target; these measured
+                        18px, and 28 of them stack in this block on every page,
+                        which was the single most repeated failure on the site.
+                        The padding grows the HIT AREA only — `inline-block` on
+                        a text link with py-[3px] leaves the type where it was
+                        and the rhythm of the column unchanged, because the
+                        list gap shrinks by what each link gained. */}
+                    <ul className="space-y-1">
                       {column.links.map((link) => (
                         <li key={link.href + link.label}>
-                          <Link href={link.href} className="text-default-500 hover:text-primary text-[0.88rem] transition-colors">
+                          <Link href={link.href} className="text-default-500 hover:text-primary inline-block py-[3px] text-[0.88rem] transition-colors">
                             {t(locale, link.label)}
                           </Link>
                         </li>
@@ -130,7 +138,7 @@ const Footer = () => {
           {legalLinks
             .filter((link) => link.ready)
             .map((link) => (
-              <a key={link.href} href={link.href} className="text-[0.8rem] text-white/80 transition-colors hover:text-white">
+              <a key={link.href} href={link.href} className="inline-block py-0.5 text-[0.8rem] text-white/80 transition-colors hover:text-white">
                 {link.label}
               </a>
             ))}

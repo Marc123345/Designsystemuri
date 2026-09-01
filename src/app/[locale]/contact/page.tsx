@@ -144,6 +144,15 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
                 reader has already scrolled past on the way down. */}
             <div className="flex flex-col gap-8">
               <div className="border-default-200 bg-default-50 rounded-card border p-6 lg:p-10">
+                {/* ⚠ sr-only, AND THAT IS THE POINT. Marc removed the visible
+                    "Tell us what you need." heading from above this form, which
+                    is a deliberate design decision and stays. But it was the
+                    only h2 in this page's main content, so removing it left the
+                    document jumping h1 -> h3 with nothing between (axe:
+                    heading-order), and a screen-reader user landing here had no
+                    named section for the form at all. This restores the
+                    structure without restoring the words on screen. */}
+                <h2 className="sr-only">{t(locale, 'Request a quote')}</h2>
                 {/* `heading={false}` hides the h3 and the description; the
                     title stays as the iframe's accessible name. See QuoteForm.
 

@@ -5,6 +5,7 @@ import SiteIntro from '@/components/SiteIntro'
 import WhatsAppButton from '@/components/WhatsAppButton'
 import AppProvidersWrapper from '@/components/wrappers/AppProvidersWrapper'
 import { routing } from '@/i18n/routing'
+import { t } from '@/lib/i18n-content'
 import { site } from '@/lib/site'
 import type { Metadata } from 'next'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
@@ -139,7 +140,16 @@ const LocaleLayout = async ({ children, params }: { children: React.ReactNode; p
               remounted on client navigation, this shows on a full page load and
               not again as you move around the site. */}
           <SiteIntro />
-          <WhatsAppButton />
+          {/* ⚠ WRAPPED IN A LANDMARK, and the wrapper is the whole point.
+              The button is fixed-position and mounted here rather than inside
+              any page, so it sat outside header, main and footer — axe flagged
+              it on all seven pages, and a screen-reader user navigating by
+              landmark never met the site's most persistent contact route. An
+              `aside` with a name puts it on that list. The link inside already
+              carries its own accessible name. */}
+          <aside aria-label={t(locale, 'Quick contact')}>
+            <WhatsAppButton />
+          </aside>
         </NextIntlClientProvider>
       </body>
     </html>

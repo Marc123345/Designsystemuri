@@ -132,7 +132,11 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
   const groupTiles = products.map((p) => ({
     title: p.name,
     href: `/products/${p.slug}`,
-    image: { src: productImage(p.slug) ?? '', alt: p.name },
+    /* alt="" — the card's own <h3> already says the product name, so an alt
+       repeating it made a screen reader announce "Metal Bond Diamond" twice in
+       a row. Fourteen instances on this page alone (axe: image-redundant-alt).
+       The photograph adds nothing the heading has not said. */
+    image: { src: productImage(p.slug) ?? '', alt: '' },
   }))
 
   // The same six hubs as curtain tiles: no description, because the card has
@@ -142,7 +146,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
     .map((a) => ({
       title: a.name,
       href: `/applications/${a.slug}`,
-      image: { src: applicationImage(a.slug) ?? '', alt: a.name },
+      image: { src: applicationImage(a.slug) ?? '', alt: '' },
     }))
 
   return (
