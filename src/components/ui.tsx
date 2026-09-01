@@ -18,12 +18,40 @@ import { Icon } from '@iconify/react'
  * the badge height, so both `top-7`/`top-9` pairs have to move together — that
  * is why the offsets below are derived from `size` rather than hard-coded.
  */
-export const ArrowButton = ({ href, label, variant = 'primary', size = 'md', external = false }: { href: string; label: string; variant?: 'primary' | 'dark' | 'light'; size?: 'md' | 'lg'; external?: boolean }) => {
+export const ArrowButton = ({
+  href,
+  label,
+  variant = 'primary',
+  size = 'md',
+  external = false,
+  onClick,
+  className: extra = '',
+}: {
+  /** Omit only when `onClick` is given — an action rather than a destination. */
+  href?: string
+  label: string
+  variant?: 'primary' | 'dark' | 'light'
+  size?: 'md' | 'sm' | 'lg'
+  /** Render a plain <a> rather than the locale-aware Link. */
+  external?: boolean
+  /** Makes it a <button>. For the one CTA on the site that does something
+      instead of going somewhere — error.tsx's "Try again", which calls the
+      route segment's reset(). Before this existed that button was hand-rolled
+      and sat directly beside an ArrowButton, two CTAs in one row wearing
+      different clothes. */
+  onClick?: () => void
+  className?: string
+}) => {
   const lg = size === 'lg'
-  const shellSize = lg ? 'gap-5 ps-8 pe-2 py-2 text-lg' : 'gap-4 ps-6 pe-1.5 py-1.5 text-base'
-  const badgeSize = lg ? 'size-12' : 'size-10'
-  const slide = lg ? { rest: 'top-9', hover: 'group-hover:-translate-y-9', arrowRest: 'end-9' } : { rest: 'top-7', hover: 'group-hover:-translate-y-7', arrowRest: 'end-7' }
-  const arrowSlide = lg ? 'group-hover:translate-x-9' : 'group-hover:translate-x-7'
+  const sm = size === 'sm'
+  /* `sm` exists for the navbar and nowhere else. At md this button is 52px
+     tall, which towers over the 36px language switcher beside it and makes the
+     bar top-heavy; at sm it is 40px and sits in the row. The animation, the
+     radius and the badge inset are identical — only the scale moves. */
+  const shellSize = lg ? 'gap-5 ps-8 pe-2 py-2 text-lg' : sm ? 'gap-3 ps-5 pe-1 py-1 text-[0.9rem]' : 'gap-4 ps-6 pe-1.5 py-1.5 text-base'
+  const badgeSize = lg ? 'size-12' : sm ? 'size-8' : 'size-10'
+  const slide = lg ? { rest: 'top-9', hover: 'group-hover:-translate-y-9', arrowRest: 'end-9' } : sm ? { rest: 'top-5', hover: 'group-hover:-translate-y-5', arrowRest: 'end-5' } : { rest: 'top-7', hover: 'group-hover:-translate-y-7', arrowRest: 'end-7' }
+  const arrowSlide = lg ? 'group-hover:translate-x-9' : sm ? 'group-hover:translate-x-5' : 'group-hover:translate-x-7'
 
   const shell = variant === 'primary' ? 'bg-primary text-white' : variant === 'dark' ? 'bg-default-900 text-white' : 'bg-white text-default-900 border border-default-200'
 
@@ -49,10 +77,10 @@ copy-pasted as "Request a Quote Request a Quote". */}
       <span aria-hidden="true" className={`flex ${badgeSize} shrink-0 items-center justify-center rounded-[calc(var(--radius-control)-4px)] ${badge}`}>
         <span className="relative block overflow-hidden">
           <span className={`block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] ${arrowSlide}`}>
-            <Icon icon="tabler:arrow-narrow-right" className="flex size-6" />
+            <Icon icon="tabler:arrow-narrow-right" className={sm ? 'flex size-5' : 'flex size-6'} />
           </span>
           <span className={`absolute ${slide.arrowRest} top-0 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:end-0`}>
-            <Icon icon="tabler:arrow-narrow-right" className="flex size-6" />
+            <Icon icon="tabler:arrow-narrow-right" className={sm ? 'flex size-5' : 'flex size-6'} />
           </span>
         </span>
       </span>
@@ -62,7 +90,15 @@ copy-pasted as "Request a Quote Request a Quote". */}
   // One uniform radius on the shell and a matching inset on the badge. The
   // previous mismatched corner radii ( shell,
   // badge) made the badge appear to break out of the button's corner.
-  const className = `group rounded-control inline-flex items-center ${shellSize} font-medium leading-none transition-all ${shell}`
+  const className = `group rounded-control inline-flex items-center ${shellSize} font-medium leading-none transition-all ${shell} ${extra}`
+
+  if (onClick) {
+    return (
+      <button type="button" onClick={onClick} className={className}>
+        {inner}
+      </button>
+    )
+  }
 
   if (external) {
     return (
@@ -73,7 +109,7 @@ copy-pasted as "Request a Quote Request a Quote". */}
   }
 
   return (
-    <Link href={href} className={className}>
+    <Link href={href ?? '/'} className={className}>
       {inner}
     </Link>
   )

@@ -4,6 +4,7 @@ import { Link, usePathname } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
 import { applicationMenu, primaryNav, productMenu, resourceMenu, site } from '@/lib/site'
+import { ArrowButton } from '@/components/ui'
 import { Icon } from '@iconify/react'
 import { useLocale } from 'next-intl'
 import Image from 'next/image'
@@ -260,10 +261,17 @@ const Navbar = () => {
                 visitor who wants to ask a technical question, chase a sample or
                 find the phone number should not have to read it as a
                 commitment to buy. */}
-            <Link href="/contact" className="bg-primary hover:bg-primary-1 rounded-control hidden items-center gap-2.5 px-6 py-3.5 text-[0.9rem] leading-none font-semibold text-white transition-colors md:inline-flex">
-              {t(locale, 'Contact')}
-              <Icon icon="tabler:arrow-narrow-right" className="size-5" />
-            </Link>
+            {/* The site's signature button, not a lookalike. This was a
+                hand-rolled solid with a static arrow beside the label — the
+                same shape as ArrowButton and none of its motion, on the one
+                control that appears on every page of the site. Every other CTA
+                slides its label and runs its arrow across the badge; the
+                busiest one did not.
+
+                `sm` because md is 52px and would tower over the 36px language
+                switcher next to it. `hidden md:inline-flex` is passed through
+                rather than wrapped, which is what `className` was added for. */}
+            <ArrowButton href="/contact" label={t(locale, 'Contact')} size="sm" className="hidden md:inline-flex" />
 
             <button
               type="button"

@@ -57,9 +57,12 @@ export default function LocaleError({ error, reset }: { error: Error & { digest?
           <p className="text-default-600 mt-5 text-base">The fault is ours, not yours, and it is usually temporary. Try again first — if it keeps happening, the products and datasheets below are unaffected, and a person will answer if you contact us directly.</p>
 
           <div className="mt-9 flex flex-wrap gap-4">
-            <button type="button" onClick={reset} className="bg-primary hover:bg-primary-1 inline-flex items-center px-6 py-3.75 text-[0.9rem] leading-none font-semibold text-white transition-colors">
-              Try again
-            </button>
+            {/* Was a hand-rolled solid sitting directly beside the
+                ArrowButton below it — two CTAs in one row wearing different
+                clothes, on the page a visitor reaches when something has
+                already gone wrong. `onClick` rather than `href` because this
+                one calls the segment's reset() instead of going anywhere. */}
+            <ArrowButton label="Try again" onClick={reset} />
             <ArrowButton href="/" label="Back to home" variant="light" />
           </div>
 

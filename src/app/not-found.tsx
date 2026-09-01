@@ -1,6 +1,7 @@
 import '@/assets/css/style.css'
 import { DEFAULT_PAGE_TITLE } from '@/config/constants'
 import type { Metadata } from 'next'
+import { ArrowButton } from '@/components/ui'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
@@ -21,12 +22,18 @@ const NotFound = () => (
           <h1 className="mt-4 text-5xl font-bold">This page does not exist.</h1>
           <p className="text-default-600 mt-5 text-base">The link may be out of date. The full catalogue of diamond and CBN products is one click away.</p>
           <div className="mt-9 flex flex-wrap justify-center gap-4">
-            <Link href="/" className="bg-primary px-6 py-3.75 font-medium text-white">
-              Back to home
-            </Link>
-            <Link href="/#products" className="border-default-200 border px-6 py-3.75 font-medium">
-              Browse products
-            </Link>
+            {/* ⚠ `external` ON TWO INTERNAL LINKS, AND IT IS LOAD-BEARING.
+                ArrowButton normally renders next-intl's locale-aware Link,
+                which reads the locale from context — and this file sits OUTSIDE
+                app/[locale], with its own <html> and no NextIntlClientProvider
+                above it. The localised Link would throw here. `external` is the
+                switch that renders a plain <a>, which is exactly right for a
+                404 that has no locale to preserve.
+
+                They were square solids with no motion: the only two CTAs on the
+                site still wearing the pre-ArrowButton shape. */}
+            <ArrowButton href="/" label="Back to home" external />
+            <ArrowButton href="/#products" label="Browse products" variant="light" external />
           </div>
 
           {/* Products and applications are the site's two entry axes, and

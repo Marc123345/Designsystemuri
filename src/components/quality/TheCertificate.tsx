@@ -1,5 +1,6 @@
 import Image from 'next/image'
 
+import { ArrowButton } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
 import { useLocale } from 'next-intl'
@@ -138,17 +139,10 @@ const TheCertificate = () => {
               <p className="text-default-700 mt-3 leading-relaxed">{SCOPE}</p>
             </div>
 
-            <a
-              href={CERT}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group rounded-control bg-primary hover:bg-primary-1 mt-8 inline-flex items-center gap-2.5 px-6 py-3.5 text-[0.9rem] leading-none font-semibold text-white transition-colors"
-            >
-              {t(locale, 'View the full certificate')}
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden>
-                <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </a>
+            {/* ⚠ Was hand-rolled here, with the same shell classes as the
+                navbar's old Contact button and none of the motion. `external`
+                because CERT is a raw asset path, not a route. */}
+            <ArrowButton href={CERT} label={t(locale, 'View the full certificate')} external className="mt-8" />
           </div>
         </div>
       </div>
