@@ -217,6 +217,40 @@ export function videoSources(mp4Url: string): VideoSource[] {
  * because every browser used to test it supports WebP. Pinning the format is
  * what makes the payload predictable.
  */
-export function videoPoster(mp4Url: string, atSeconds = 3) {
-  return `${mp4Url}/ik-thumbnail.jpg?tr=so-${atSeconds},f-webp,w-960,q-55`
+export function videoPoster(mp4Url: string, atSeconds = 3, width = 960, quality = 55) {
+  return `${mp4Url}/ik-thumbnail.jpg?tr=so-${atSeconds},f-webp,w-${width},q-${quality}`
+}
+
+/**
+ * The same frame at three widths, for the reduced-motion still.
+ *
+ * ⚠ THIS IS NOT FOR THE VIDEO'S `poster`, AND THE DISTINCTION IS THE WHOLE
+ * POINT. A site audit flagged the poster as an upscaled LCP — 960px stretched
+ * 1.5x on a 1440 screen and 2.7x on a 2560 one — and recommended preloading a
+ * srcset. That is right about the pixels and wrong about the trade, for the
+ * video: `poster` takes a single URL, so a responsive preload would fetch a
+ * different file from the one the attribute names and download the frame
+ * twice. And the video poster is TRANSIENT. It is covered by the intro on a
+ * first visit and replaced by the film within a second or two on a repeat one,
+ * so paying 17 KB on every phone to sharpen it is a bad trade. Measured:
+ *
+ *   w-960  q-55    27 KB   ← what the video keeps
+ *   w-1280 q-45    40 KB
+ *   w-1440 q-40    45 KB
+ *   w-1920 q-35    61 KB
+ *
+ * The reduced-motion still is a different case entirely and the audit did not
+ * separate them. That <img> is not transient — it IS the hero, permanently,
+ * for anyone who has asked their system to reduce motion. There is no video
+ * coming to replace it, and no `poster` attribute constraining it to one URL.
+ * So it gets a real srcset and the browser picks by viewport, which costs a
+ * phone nothing and stops those users being the only ones looking at an
+ * upscaled hero forever.
+ */
+export function posterSrcSet(mp4Url: string, atSeconds = 3) {
+  return [
+    `${videoPoster(mp4Url, atSeconds, 960, 55)} 960w`,
+    `${videoPoster(mp4Url, atSeconds, 1440, 40)} 1440w`,
+    `${videoPoster(mp4Url, atSeconds, 1920, 35)} 1920w`,
+  ].join(', ')
 }

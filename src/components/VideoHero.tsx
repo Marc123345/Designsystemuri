@@ -3,7 +3,7 @@ import { preload } from 'react-dom'
 import HeroMark from '@/components/HeroMark'
 import HeroTitle from '@/components/HeroTitle'
 import ScrollCue from '@/components/ScrollCue'
-import { videoSources, videoPoster } from '@/components/videoSources'
+import { videoSources, videoPoster, posterSrcSet } from '@/components/videoSources'
 
 /**
  * The hero: type on the film.
@@ -149,11 +149,20 @@ const VideoHero = ({
       </video>
 
       {/* Reduced motion gets the poster and nothing else — same box, same
-          crop, no JavaScript and no layout shift. */}
+          crop, no JavaScript and no layout shift.
+
+          `srcSet` here and NOT on the video's poster attribute. For these
+          users this still is the hero permanently, with no film coming to
+          replace it, so a 960px frame stretched across a 1440 or 2560 screen
+          is what they look at for as long as they are on the page. The video's
+          poster stays single-width because it is transient and because
+          `poster` takes one URL — see posterSrcSet in videoSources. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         className={`absolute inset-0 -z-20 hidden size-full object-cover ${objectPosition} motion-reduce:block`}
         src={poster}
+        srcSet={posterSrcSet(video, posterAt)}
+        sizes="100vw"
         alt=""
         aria-hidden
       />
