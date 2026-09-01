@@ -1,5 +1,6 @@
 import { routing, type Locale } from '@/i18n/routing'
 import { applications } from '@/lib/applications'
+import { posts } from '@/lib/blog'
 import { products } from '@/lib/products'
 import type { MetadataRoute } from 'next'
 
@@ -38,6 +39,9 @@ const paths: Record<string, Meta> = {
   '/': { priority: 1.0, changeFrequency: 'weekly' },
   ...Object.fromEntries(products.map((p) => [`/products/${p.slug}`, { priority: 0.8, changeFrequency: 'monthly' } as Meta])),
   ...Object.fromEntries(applications.map((a) => [`/applications/${a.slug}`, { priority: 0.8, changeFrequency: 'monthly' } as Meta])),
+  // Articles. Generated from the same array the pages are, so a post added to
+  // lib/blog.ts is in the sitemap by the next build and cannot be forgotten.
+  ...Object.fromEntries(posts.map((b) => [`/resources/blog/${b.slug}`, { priority: 0.6, changeFrequency: 'yearly' } as Meta])),
   '/quality': { priority: 0.7, changeFrequency: 'monthly' },
   '/about': { priority: 0.6, changeFrequency: 'monthly' },
   '/contact': { priority: 0.7, changeFrequency: 'monthly' },

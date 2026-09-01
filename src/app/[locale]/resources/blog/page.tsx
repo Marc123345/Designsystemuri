@@ -1,4 +1,6 @@
 import PhotoCard from '@/components/PhotoCard'
+import { Link } from '@/i18n/navigation'
+import { posts } from '@/lib/blog'
 import { PageHero } from '@/components/sections'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
@@ -17,18 +19,18 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 }
 
 /**
- * ⚠ NONE OF THESE ARE PUBLISHED, AND THE PAGE HAS TO KEEP SAYING SO.
+ * ⚠ THE "IN PREPARATION" MARKERS ARE GONE BECAUSE THE POSTS EXIST NOW.
  *
- * The disclosure ("Coming soon") is not decoration and it is not a
- * placeholder to delete when the design is signed off. An earlier version of
- * this page had "Read article" on every card, all seven pointing at /contact,
- * with the caveat at the very bottom — so a reader who clicked the second card
- * met a contact form having never seen it.
+ * The rule this file carried was: these cards must not offer a click while
+ * there is nothing behind them — no href, no "Read", an explicit marker on
+ * each one, and if posts are ever written, add `href` and remove the marker
+ * IN THE SAME COMMIT. That is what happened. All six are written, they live in
+ * lib/blog.ts, and every card now points at a real article.
  *
- * That is the constraint on everything below. These cards may look like the
- * rest of the site, but they must not offer a click: no href, no "Read", and
- * an explicit marker on each one. If posts are ever written, add `href` here
- * and remove the marker in the same commit — not before.
+ * The rule itself has not been repealed. Anything added to `posts` without a
+ * body is a card promising a page that does not exist, which is the failure
+ * the note was written about — an earlier version of this page had "Read
+ * article" on seven cards all pointing at /contact.
  *
  * ── The photographs ─────────────────────────────────────────────────────────
  *
@@ -38,44 +40,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
  * card was the old treatment; it gave six identical objects with nothing to
  * tell them apart but their titles.
  */
-const posts = [
-  {
-    category: 'Application Note',
-    title: 'Why batch-to-batch consistency is the real cost driver in diamond tooling',
-    image: '/eid/qc-batch-to-batch.jpg',
-    alt: 'Side-by-side scanning electron micrographs of two production lots at the same magnification, each with a 1 micrometre scale bar',
-  },
-  {
-    category: 'Technical',
-    title: 'Reading a particle size distribution: D10, D50, D90 and span',
-    image: '/eid/quality/08-micron-powder-grade-comparison.png',
-    alt: 'Sixteen dishes of micron diamond powder laid out in order from finest to coarsest',
-  },
-  {
-    category: 'Materials',
-    title: 'When CBN beats diamond: a field guide for ferrous grinding',
-    image: '/eid/cbn.jpg',
-    alt: 'Cubic boron nitride crystals at high magnification',
-  },
-  {
-    category: 'Industry',
-    title: 'What dental bur makers actually need from a diamond supplier',
-    image: '/eid/home/app-dental.jpg',
-    alt: 'Diamond-coated dental burs',
-  },
-  {
-    category: 'Process',
-    title: 'Inside our QC laboratory: how a batch gets approved to ship',
-    image: '/eid/qc-lab.jpg',
-    alt: 'A technician at an optical measurement system in the EID quality laboratory',
-  },
-  {
-    category: 'Materials',
-    title: 'CVD vs HPHT (MCD): choosing a single-crystal route',
-    image: '/eid/cvd-single-crystal.jpg',
-    alt: 'A single-crystal CVD diamond plate',
-  },
-]
 
 const BlogPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
   const { locale } = await params
@@ -114,22 +78,29 @@ const BlogPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
           Deliberately NOT a link and deliberately no "Read" affordance. */}
       <section data-note="lead-post" className="py-14 lg:py-20">
         <div className="container">
-          <article className="rounded-card relative isolate flex min-h-[380px] flex-col justify-end overflow-hidden p-7 lg:min-h-[440px] lg:p-10">
-            <Image src={posts[0].image} alt={t(locale, posts[0].alt)} fill sizes="100vw" className="-z-20 object-cover object-center" priority />
+          {/* A link now. `group` drives the same slow image scale every other
+              photographic card on the site uses on hover. */}
+          <Link href={`/resources/blog/${posts[0].slug}`} className="group focus-visible:outline-primary rounded-card relative isolate flex min-h-[380px] flex-col justify-end overflow-hidden p-7 focus-visible:outline-2 focus-visible:outline-offset-2 lg:min-h-[440px] lg:p-10">
+            <Image src={posts[0].image} alt={t(locale, posts[0].alt)} fill sizes="100vw" className="-z-20 object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.02]" priority />
             <span aria-hidden className="from-primary-3/95 via-primary-3/84 to-primary-3/58 absolute inset-0 -z-10 bg-linear-to-t via-55%" />
 
             <div className="flex flex-wrap items-center gap-2.5">
               <span className="rounded-control inline-flex items-center gap-1.5 border border-white/25 px-3.5 py-1.25 text-sm text-white">{t(locale, posts[0].category)}</span>
-              {/* ⚠ Solid white and a heavier scrim behind it. At white/75 over this
-                  frame the marker measured 2.81:1 — and of everything on this
-                  page it is the one line that must be legible, because it is
-                  what says the headline above it cannot be read yet. */}
-              <span className="rounded-control inline-flex items-center gap-1.5 border border-white/30 px-3 py-1 font-mono text-[10px] tracking-[0.18em] text-white uppercase">{t(locale, 'In preparation')}</span>
+              <span className="rounded-control inline-flex items-center gap-1.5 border border-white/30 px-3 py-1 font-mono text-[10px] tracking-[0.18em] text-white uppercase">
+                {posts[0].readMinutes} {t(locale, 'min read')}
+              </span>
             </div>
 
             <h2 className="mt-5 max-w-[24ch] text-[26px] font-bold text-white md:text-[34px] lg:text-[40px]">{t(locale, posts[0].title)}</h2>
-            <p className="mt-4 max-w-[62ch] text-base leading-relaxed text-white/85">{t(locale, 'Procurement optimises for price per carat. The bigger number is what an inconsistent batch costs downstream: rejected product, recalibrated lines, lost trust.')}</p>
-          </article>
+            <p className="mt-4 max-w-[62ch] text-base leading-relaxed text-white/85">{t(locale, posts[0].dek)}</p>
+
+            <span aria-hidden className="mt-6 inline-flex items-center gap-3 text-sm font-semibold text-white">
+              {t(locale, 'Read the article')}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-5 transition-transform duration-300 group-hover:translate-x-1">
+                <path d="M5 12h14m-4 4l4-4m-4-4l4 4" />
+              </svg>
+            </span>
+          </Link>
         </div>
       </section>
 
@@ -138,9 +109,9 @@ const BlogPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
           two adjacent tiles share a width and the row break moves. Six items
           over three rows of that pattern.
 
-          `href` is omitted on purpose: PhotoCard renders a plain article
-          without it, so nothing here is clickable. The `note` slot carries the
-          marker. */}
+          `href` is set now that the articles exist — PhotoCard renders a plain
+          article without one, which is what held this page back. The `note`
+          slot carries the read time where it used to carry the marker. */}
       <section data-note="posts" className="pb-16 lg:pb-24">
         <div className="container">
           <div className="grid gap-6 lg:grid-cols-12">
@@ -150,9 +121,10 @@ const BlogPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
                 className={['lg:col-span-7', 'lg:col-span-5', 'lg:col-span-5', 'lg:col-span-7', 'lg:col-span-7', 'lg:col-span-5'][i]}
                 minHeight="min-h-[300px] lg:min-h-[340px]"
                 weight="heavy"
+                href={`/resources/blog/${p.slug}`}
                 eyebrow={t(locale, p.category)}
                 title={t(locale, p.title)}
-                note={t(locale, 'In preparation')}
+                note={`${p.readMinutes} ${t(locale, 'min read')}`}
                 image={p.image}
                 alt={t(locale, p.alt)}
               />
