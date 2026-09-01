@@ -81,29 +81,40 @@ const TheCertificate = () => {
     <section id="certificate" data-note="certificate" className="py-16 lg:py-24">
       <div className="container">
         <div className="grid items-start gap-10 lg:grid-cols-12 lg:gap-14">
-          {/* ── THE SCAN ────────────────────────────────────────────────────
-              `rounded-card` and a hairline, like every other framed thing on
-              this site. The shadow is the one place on the page that uses one,
-              and it is tuned rather than borrowed: navy at 8% rather than
-              black, so on a white ground the card lifts without the grey halo
-              a black shadow leaves. A certificate should read as a sheet of
-              paper sitting on the page.
+          {/* ── THE SCAN, WITH NO FRAME AROUND IT ───────────────────────────
+              ⚠ THE BLACK BORDER WAS IN THE FILE, NOT IN THE CSS, which is why
+              it survived a first look at this component. The source scan
+              carried a 4px near-black keyline (rgb ~42) baked into all four
+              edges of the JPEG. It has been cropped out — 6px off each side to
+              clear the ringing that sits against a hard edge in a JPEG too —
+              taking the file from 755x1064 to 743x1052. Every edge is pure
+              white now; there are zero dark pixels left on any of them.
 
-              `sizes` is honest about the rendered width — this is a 755px
-              source and the column is ~470px at lg, so without it Next would
-              ship the full file to every viewport. */}
+              The `border-default-200` hairline went with it, per Marc: the
+              certificate sits on the page rather than in a card.
+
+              The shadow STAYS, and it is not a border in disguise. This section
+              runs on white and the certificate is white paper, so with no edge
+              treatment at all the sheet has no boundary and dissolves into the
+              page. Navy at 8% rather than black, so it lifts without the grey
+              halo a black shadow leaves on a white ground. If that should go
+              too it is one line — but check it on the page first.
+
+              `sizes` is honest about the rendered width: a 743px source into a
+              column of roughly 470px at lg, so without it Next would ship the
+              full file to every viewport. */}
           <a
             href={CERT}
             target="_blank"
             rel="noopener noreferrer"
-            className="group focus-visible:outline-primary rounded-card border-default-200 relative block overflow-hidden border bg-white focus-visible:outline-2 focus-visible:outline-offset-2 lg:col-span-5"
+            className="group focus-visible:outline-primary rounded-card relative block overflow-hidden focus-visible:outline-2 focus-visible:outline-offset-2 lg:col-span-5"
             style={{ boxShadow: '0 18px 40px -24px rgba(28,39,73,0.28)' }}
           >
             <Image
               src={CERT}
               alt={t(locale, 'EID Limited ISO 9001:2015 certificate of registration, issued by Citation ISO Certification Limited, certificate number 224122015')}
-              width={755}
-              height={1064}
+              width={743}
+              height={1052}
               sizes="(min-width: 1024px) 40vw, 100vw"
               className="h-auto w-full transition-transform duration-700 ease-out group-hover:scale-[1.02]"
             />
