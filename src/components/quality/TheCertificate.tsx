@@ -74,7 +74,11 @@ const TheCertificate = () => {
   const locale = useLocale() as Locale
 
   return (
-    <section data-note="certificate" className="py-16 lg:py-24">
+    /* `id` so the mosaic's 9001 tile can point at it. No `scroll-mt` — the
+       global scroll-padding-top in _general.css already clears the fixed
+       navbar for every anchor and every focus move; adding one here would
+       stack two offsets and land the heading a bar's height too low. */
+    <section id="certificate" data-note="certificate" className="py-16 lg:py-24">
       <div className="container">
         <div className="grid items-start gap-10 lg:grid-cols-12 lg:gap-14">
           {/* ── THE SCAN ────────────────────────────────────────────────────

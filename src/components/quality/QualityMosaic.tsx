@@ -136,11 +136,44 @@ const QualityMosaic = () => {
               />
             </div>
 
-            {/* SHORT — solid brand colour, one figure. */}
-            <div className="rounded-card bg-primary relative flex min-h-[200px] flex-col items-center justify-center overflow-hidden text-center lg:min-h-[248px]">
+            {/* SHORT — solid brand colour, one figure. AND IT IS A LINK NOW.
+                Until the certificate landed on this page, "9001 / ISO
+                CERTIFIED" was the site asserting its own credential in 64px
+                type — the largest unevidenced claim on a page whose whole
+                argument is that EID documents things rather than asserting
+                them. The document is now three sections down, with the number,
+                the issuer, the scope and the expiry on it.
+
+                So the tile keeps the figure and becomes the way to the proof.
+                Nothing is added visually at rest beyond one small line; the
+                arrow and the lift are hover-only, so the mosaic still reads as
+                a mosaic rather than a row of buttons.
+
+                A plain <a href="#certificate"> rather than next-intl's Link:
+                the target is on THIS page, and routing a same-page hash through
+                the router re-runs locale resolution to land where the browser
+                would have gone on its own. */}
+            <a
+              href="#certificate"
+              className="group rounded-card bg-primary hover:bg-primary-1 focus-visible:outline-primary relative flex min-h-[200px] flex-col items-center justify-center overflow-hidden text-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 lg:min-h-[248px]"
+            >
               <span className="text-[52px] leading-none font-bold text-white lg:text-[64px]">9001</span>
               <span className="mt-2 text-[11px] font-semibold tracking-[0.18em] text-white/85 uppercase">{t(locale, 'ISO certified')}</span>
-            </div>
+
+              {/* white/85 on primary is 8.2:1, so this clears the floor at
+                  11px without needing solid white — which would compete with
+                  the figure above it. */}
+              <span className="mt-4 inline-flex items-center gap-1.5 text-[11px] font-semibold tracking-[0.14em] text-white/85 uppercase">
+                {t(locale, 'See the certificate')}
+                {/* Inline SVG, not Iconify — CurtainGrid's rule, and the same
+                    reason: this file is a server component and importing Icon
+                    for one glyph would ship a client bundle for a decoration.
+                    Same path as tabler:arrow-narrow-right. */}
+                <svg viewBox="0 0 24 24" aria-hidden fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-4 transition-transform duration-500 group-hover:translate-x-1">
+                  <path d="M5 12h14m-4 4l4-4m-4-4l4 4" />
+                </svg>
+              </span>
+            </a>
           </div>
 
           <div className="flex flex-col justify-center gap-12 lg:col-span-6 lg:gap-16">
