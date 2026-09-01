@@ -80,7 +80,28 @@ const TheCertificate = () => {
        stack two offsets and land the heading a bar's height too low. */
     <section id="certificate" data-note="certificate" className="py-16 lg:py-24">
       <div className="container">
-        <div className="grid items-start gap-10 lg:grid-cols-12 lg:gap-14">
+        {/* ── 6/6 AND CENTRED, BOTH MEASURED ─────────────────────────────
+            This was 5/7 on `items-start`, and the columns came out 721px
+            against 982px — a 261px spread, all of it dead space under the
+            scan. Two changes, each doing half the work, and the same fix the
+            application hubs already documented for the same symptom:
+
+              · 5/7 -> 6/6. The scan gets ~20% wider so it grows taller, and
+                the facts column narrows so its eight rows wrap into more
+                lines. Both columns move toward each other at once. It also
+                makes the certificate BIGGER, which is worth having on its own:
+                this is the one image on the site where the text has to be
+                readable.
+              · items-start -> items-center. Whatever spread survives is split
+                above and below the scan instead of pooling underneath it,
+                which is what read as unbalanced.
+
+            Re-measured after rather than predicted: 881 against 1001, so 60px
+            top and bottom instead of 261px in one lump. Every section on the
+            page now runs 106 to 1406, one column edge the whole way down. If
+            the copy here ever grows materially, measure again rather than
+            assuming this still holds. */}
+        <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-14">
           {/* ── THE SCAN, WITH NO FRAME AROUND IT ───────────────────────────
               ⚠ THE BLACK BORDER WAS IN THE FILE, NOT IN THE CSS, which is why
               it survived a first look at this component. The source scan
@@ -107,7 +128,7 @@ const TheCertificate = () => {
             href={CERT}
             target="_blank"
             rel="noopener noreferrer"
-            className="group focus-visible:outline-primary rounded-card relative block overflow-hidden focus-visible:outline-2 focus-visible:outline-offset-2 lg:col-span-5"
+            className="group focus-visible:outline-primary rounded-card relative block overflow-hidden focus-visible:outline-2 focus-visible:outline-offset-2 lg:col-span-6"
             style={{ boxShadow: '0 18px 40px -24px rgba(28,39,73,0.28)' }}
           >
             <Image
@@ -115,12 +136,12 @@ const TheCertificate = () => {
               alt={t(locale, 'EID Limited ISO 9001:2015 certificate of registration, issued by Citation ISO Certification Limited, certificate number 224122015')}
               width={743}
               height={1052}
-              sizes="(min-width: 1024px) 40vw, 100vw"
+              sizes="(min-width: 1024px) 46vw, 100vw"
               className="h-auto w-full transition-transform duration-700 ease-out group-hover:scale-[1.02]"
             />
           </a>
 
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-6">
             <div className="border-default-300 rounded-control inline-flex items-center gap-1.5 border bg-white px-3.5 py-1.25">
               <span className="bg-primary size-2" />
               <span className="text-default-900 text-sm">{t(locale, 'Certification')}</span>
