@@ -1,7 +1,6 @@
 import CurtainGrid from '@/components/CurtainGrid'
 import ApplicationIndex from '@/components/home/ApplicationIndex'
 import QualityControlsStrip from '@/components/home/QualityControlsStrip'
-import EntryCards from '@/components/home/EntryCards'
 import ProofPanel from '@/components/home/ProofPanel'
 import QualityContactBento from '@/components/home/QualityContactBento'
 import { Faq } from '@/components/sections'
@@ -157,7 +156,15 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           that is the point: you see the hero end and the next thing begin in
           the same view, which is what lets a short hero feel deliberate rather
           than truncated. */}
-      <EntryCards />
+      {/* ── ENTRY CARDS: REMOVED ────────────────────────────────────────
+          Marc's call. Two half-width cards under the hero — "Explore our
+          Products / Eight groups" and "Explore our Applications / Six hubs" —
+          each a photograph with a line of copy.
+
+          Both destinations are still one scroll away and now named on the page
+          itself: the range section, and the applications index directly below
+          it. The cards were a signpost to two things already visible from the
+          same screen. */}
 
       {/* ── BAND 1 ─────────────────────────────────────────────────────────
           The rhythm Uri asked for, third attempt, and the difference this time

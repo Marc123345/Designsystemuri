@@ -131,7 +131,11 @@ export const datasheets: { group: string; sheets: Doc[] }[] = [
     ],
   },
   {
-    group: 'Polycrystalline Diamond',
+    // Matches the product names, which are now "PCD" and "Polycrystalline".
+    // Named for both because this group carries sheets for both: the PCD
+    // blanks and the CVD dressing logs from group 7, and the micron powder
+    // from group 8. Calling it just "PCD" would mislabel the powder sheet.
+    group: 'PCD & Polycrystalline',
     sheets: [
       {
         key: 'pcd',
