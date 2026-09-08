@@ -1,7 +1,5 @@
-import { Icon } from '@iconify/react'
-import { Link } from '@/i18n/navigation'
+import IconIndex from '@/components/home/IconIndex'
 import type { Locale } from '@/i18n/routing'
-import { t } from '@/lib/i18n-content'
 
 /**
  * The six application hubs as a compact icon index.
@@ -15,23 +13,17 @@ import { t } from '@/lib/i18n-content'
  * not by recognising a gloved hand. Six full-bleed images is the treatment you
  * give a gallery, not a menu.
  *
- * This is the same six hubs, same destinations, at roughly half the height:
- * icon, label, arrow. It reads as an index, which is what it is — the section's
- * own note already called the hubs "an index into the range rather than a point
- * on it".
- *
- * ── Each tile still goes somewhere ──────────────────────────────────────────
- *
- * Compressing the section does not shorten the route: every tile links to its
- * full hub page exactly as the photo cards did. The depth is one click away,
- * the same as before — it is only the shopfront that got smaller.
+ * Compressing the section does not shorten the route: every tile still links to
+ * its full hub page exactly as the photo cards did.
  *
  * ── Icons ───────────────────────────────────────────────────────────────────
  *
- * All tabler, all resolved offline through src/lib/icons.ts. Adding a name here
+ * All tabler, resolved offline through src/lib/icons.ts. Adding a name here
  * means running `npm run icons` — the script fails loudly on a name that does
- * not exist in the set rather than shipping an empty span, so a typo cannot
- * reach production silently.
+ * not exist rather than shipping an empty span.
+ *
+ * The card and grid themselves live in IconIndex, shared with the QC controls
+ * block below it so the two stay identical by construction.
  */
 
 const HUB_ICONS: Record<string, string> = {
@@ -50,41 +42,14 @@ export interface HubEntry {
 
 export default function ApplicationIndex({ hubs, locale }: { hubs: HubEntry[]; locale: Locale }) {
   return (
-    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-      {hubs.map((hub) => (
-        <Link
-          key={hub.slug}
-          href={`/applications/${hub.slug}`}
-          className="group border-default-200 hover:border-primary focus-visible:border-primary flex items-center gap-4 border bg-white px-5 py-5 transition-colors"
-        >
-          <span className="bg-primary/5 text-primary group-hover:bg-primary flex size-12 shrink-0 items-center justify-center transition-colors group-hover:text-white">
-            <Icon icon={HUB_ICONS[hub.slug] ?? 'tabler:circle-check'} className="size-6" />
-          </span>
-
-          <span className="text-default-900 group-hover:text-primary text-[15px] leading-snug font-semibold transition-colors">
-            {t(locale, hub.name)}
-          </span>
-
-          {/* Pushed to the end rather than sitting after the label, so the
-              arrows line up down the column whatever the label length — and
-              these labels run from "Dental" to "Grinding, Cutting, Sawing &
-              Drilling".
-
-              On hover the arrow is joined by the word "Explore", which is what
-              names the action: an arrow alone says "there is more" without
-              saying what happens. It is width-animated rather than mounted on
-              hover so the row never reflows and the arrows stay in column. */}
-          <span className="ms-auto flex shrink-0 items-center gap-1.5">
-            <span className="text-primary max-w-0 overflow-hidden text-[13px] font-semibold whitespace-nowrap opacity-0 transition-all duration-300 group-hover:max-w-24 group-hover:opacity-100">
-              {t(locale, 'Explore')}
-            </span>
-            <Icon
-              icon="tabler:arrow-narrow-right"
-              className="text-default-400 group-hover:text-primary size-5 shrink-0 transition-all group-hover:translate-x-1"
-            />
-          </span>
-        </Link>
-      ))}
-    </div>
+    <IconIndex
+      locale={locale}
+      columns={3}
+      items={hubs.map((hub) => ({
+        label: hub.name,
+        icon: HUB_ICONS[hub.slug] ?? 'tabler:circle-check',
+        href: `/applications/${hub.slug}`,
+      }))}
+    />
   )
 }

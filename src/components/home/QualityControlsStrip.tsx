@@ -1,59 +1,60 @@
 import { Icon } from '@iconify/react'
+import IconIndex from '@/components/home/IconIndex'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
 
 /**
- * The four QC controls, named, on one line.
+ * The four QC controls, named, on the homepage.
  *
  * ── Why names only ──────────────────────────────────────────────────────────
  *
- * The quality page carries these as four PhotoCards in a 7/5–5/7 arrangement,
- * each with a photograph and a paragraph. That is the right treatment on the
- * page the reader chose to open. On the homepage the job is different: say that
- * the four controls exist and get out of the way. So this is the names, an icon
- * each, and a route to the page where they are explained.
+ * The quality page carries these as four PhotoCards, each with a photograph and
+ * a paragraph. That is the right treatment on the page the reader chose to
+ * open. Here the job is to say the four controls exist and get out of the way,
+ * so it is the names, an icon each, and one route to where they are explained.
  *
- * ── Horizontal on purpose ───────────────────────────────────────────────────
+ * ── Same layout as the applications block ───────────────────────────────────
  *
- * Four stacked cards would add most of a screen to a homepage that is already
- * long. As a single row it costs one band of about 120px, and the four read as
- * a set — which is what they are — rather than as four separate claims.
+ * On Marc's instruction, and enforced rather than imitated: both blocks render
+ * through IconIndex, so a change to the card is a change to both. Centred
+ * heading and four across, matching the applications section directly above.
+ *
+ * ── The tiles do not link; the CTA does ─────────────────────────────────────
+ *
+ * There is no page per control — all four are explained on /quality. Four
+ * identical links to one page would be four chances to click the same thing,
+ * so the tiles are plain and "Explore our QC" underneath carries the route.
  *
  * Kept in step with components/quality/TheControls.tsx by hand: these are the
  * same four titles. If a control is renamed there, rename it here.
  */
 
-const CONTROLS: { title: string; icon: string }[] = [
-  { title: 'Size & Morphology: Mesh', icon: 'tabler:grid-dots' },
-  { title: 'Size & Morphology: Micron', icon: 'tabler:ruler-measure' },
-  { title: 'Advanced Chemical Cleaning', icon: 'tabler:flask' },
-  { title: 'Toughness (TI / TTI)', icon: 'tabler:shield-check' },
+const CONTROLS = [
+  { label: 'Size & Morphology: Mesh', icon: 'tabler:grid-dots' },
+  { label: 'Size & Morphology: Micron', icon: 'tabler:ruler-measure' },
+  { label: 'Advanced Chemical Cleaning', icon: 'tabler:flask' },
+  { label: 'Toughness (TI / TTI)', icon: 'tabler:shield-check' },
 ]
 
 export default function QualityControlsStrip({ locale }: { locale: Locale }) {
   return (
-    <section data-note="qc-strip" className="border-default-200 border-y bg-white py-7">
+    <section data-note="qc-strip" className="relative isolate py-14 lg:py-20">
       <div className="container">
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
-          <p className="text-default-500 shrink-0 text-[11px] font-semibold tracking-[0.14em] uppercase">
-            {t(locale, 'Every lot, four controls')}
-          </p>
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="text-[24px] font-bold md:text-[30px] lg:text-[34px]">{t(locale, 'Every lot, four controls.')}</h2>
+        </div>
 
-          <ul className="grid grid-cols-2 gap-x-6 gap-y-3 lg:flex lg:flex-1 lg:items-center lg:justify-end lg:gap-8">
-            {CONTROLS.map((c) => (
-              <li key={c.title} className="flex items-center gap-2.5">
-                <Icon icon={c.icon} className="text-primary size-[18px] shrink-0" />
-                <span className="text-default-800 text-[13px] leading-tight font-medium">{t(locale, c.title)}</span>
-              </li>
-            ))}
-          </ul>
+        <div className="mt-8 lg:mt-10">
+          <IconIndex items={CONTROLS} locale={locale} columns={4} />
+        </div>
 
+        <div className="mt-8 text-center">
           <Link
             href="/quality"
-            className="text-primary group inline-flex shrink-0 items-center gap-1.5 text-[13px] font-semibold"
+            className="bg-primary group inline-flex items-center gap-2 px-6 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-[color-mix(in_oklab,var(--color-primary)_88%,black)]"
           >
-            {t(locale, 'How we measure')}
+            {t(locale, 'Explore our QC')}
             <Icon icon="tabler:arrow-narrow-right" className="size-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>

@@ -1,6 +1,5 @@
 import QualityMosaic from '@/components/quality/QualityMosaic'
 import TheControls from '@/components/quality/TheControls'
-import TheCertificate from '@/components/quality/TheCertificate'
 import TheLaboratory from '@/components/quality/TheLaboratory'
 import VideoHero from '@/components/VideoHero'
 import type { Locale } from '@/i18n/routing'
@@ -84,7 +83,15 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
       <TheLaboratory />
       <QualityMosaic />
       <TheControls />
-      <TheCertificate />
+      {/* ── CERTIFICATION: REMOVED ─────────────────────────────────────
+          Marc's call. This was the registration table — standard, certificate
+          number, issuer, accreditation, registered entity, approval dates,
+          certified scope — beside a scan of the document.
+
+          The certificate is still reachable: the 9001 tile in QualityMosaic
+          now links straight to the scan rather than to this section's anchor.
+          The registration details are in components/quality/TheCertificate.tsx
+          in this file's history. */}
     </>
   )
 }

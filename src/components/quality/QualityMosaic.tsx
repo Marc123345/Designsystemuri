@@ -149,12 +149,24 @@ const QualityMosaic = () => {
                 arrow and the lift are hover-only, so the mosaic still reads as
                 a mosaic rather than a row of buttons.
 
-                A plain <a href="#certificate"> rather than next-intl's Link:
-                the target is on THIS page, and routing a same-page hash through
-                the router re-runs locale resolution to land where the browser
-                would have gone on its own. */}
+                Points at the certificate scan itself, not at an on-page
+                anchor. It used to be href="#certificate", which scrolled to the
+                Certification section — that section has been removed on Marc's
+                instruction, so the anchor would now scroll to nothing. This is
+                the downloadable, which is what the tile was offering anyway.
+
+                A plain <a> rather than next-intl's Link: the target is a raw
+                asset in /public, not a route, so it must not be locale-prefixed.
+
+                The ISO 9001:2015 registration details that used to sit in that
+                section — certificate number 224122015, issued by Citation ISO
+                Certification Limited, ASCB accredited, valid to 6 March 2029 —
+                are in this file's history via TheCertificate.tsx if they are
+                ever wanted back. */}
             <a
-              href="#certificate"
+              href="/eid/iso-9001-eid.jpg"
+              target="_blank"
+              rel="noreferrer noopener"
               className="group rounded-card bg-primary hover:bg-primary-1 focus-visible:outline-primary relative flex min-h-[200px] flex-col items-center justify-center overflow-hidden text-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 lg:min-h-[248px]"
             >
               <span className="text-[52px] leading-none font-bold text-white lg:text-[64px]">9001</span>

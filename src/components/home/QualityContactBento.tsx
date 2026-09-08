@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { Icon } from '@iconify/react'
 import { ArrowButton } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
@@ -57,83 +56,23 @@ import { useLocale } from 'next-intl'
  * the section heading above it. The paragraph under it is the same one that
  * card carried.
  */
-const CHECKS = ['Particle size distribution', 'Crystal morphology', 'Coating weight & coverage', 'ISO 9001 & traceability']
-
 const QualityContactBento = () => {
   const locale = useLocale() as Locale
 
   return (
-    <section data-note="quality-contact" className="py-20 lg:py-30">
+    /* ⚠ THIS IS THE CONTACT BLOCK NOW. Card A — "Measured on every run",
+       the 01-04 checks and the "See how our QC works" button — is gone on
+       Marc's instruction, and so is the heading pair above it, which framed
+       QC rather than the ask. The homepage was saying QC twice: this card
+       and the four-controls section directly above it, which names the
+       actual controls and carries its own route to /quality.
+
+       CHECKS and the section heading strings are in this file's history. */
+    <section data-note="quality-contact" className="py-14 lg:py-20">
       <div className="container">
-        {/* The products section's heading pair, to the token — see the note. */}
-        <div className="grid items-end gap-8 lg:grid-cols-12 lg:gap-14">
-          <div className="lg:col-span-7">
-            <h2 className="text-[28px] font-bold md:text-[36px] lg:text-[42px]">{t(locale, 'Every production run is tested before it leaves.')}</h2>
-          </div>
-          <p className="text-default-600 lg:col-span-5">
-            {t(locale, 'Consistency is a process, and ours runs on measurement. We test the run and record the result rather than sampling and assuming — ISO 9001 certified, with full traceability from incoming raw material to shipped lot.')}
-          </p>
-        </div>
-
-        <div className="mt-14 grid gap-6 lg:mt-18 lg:grid-cols-12">
-          {/* ── A: the evidence, over the frame of a check being made ── */}
-          <article className="rounded-card relative isolate flex min-h-[420px] flex-col justify-end overflow-hidden p-7 lg:col-span-7 lg:row-span-2 lg:p-9">
-            <Image
-              src="/eid/home/qc.jpg"
-              alt={t(locale, 'A gloved hand adjusting the stage of a laboratory microscope with a prepared sample slide under the objective')}
-              fill
-              sizes="(min-width: 1024px) 58vw, 100vw"
-              className="-z-20 object-cover object-center"
-            />
-            {/* ⚠ HEAVIER THAN PhotoCard's heavy scrim, AND THE REASON IS THE
-                ROW SPAN. This cell is 496px because it spans both bento rows,
-                against the ~420px the same content had in the old two-card
-                band. Taller card, bottom-anchored content: the label is pushed
-                further up the frame, and further up this frame is the lit
-                microscope body — the brightest thing in it.
-
-                Measured on the composited card, "Measured on every run" came
-                out at 1.9:1 against 4.5 needed. The identical treatment passed
-                at the old height. A card growing is a contrast change, not
-                just a layout one.
-
-                Reaching to 50% at the top rather than 8%, with the mid-stop
-                lifted to 88%, because the copy here occupies most of the card
-                rather than just its foot. */}
-            <span aria-hidden className="from-primary-3/96 via-primary-3/88 to-primary-3/50 absolute inset-0 -z-10 bg-linear-to-t via-50%" />
-
-            {/* Solid white. At white/90 this measured 4.54:1 — over the 4.5
-                floor by four hundredths, which is a rounding error rather than
-                a margin. Full white is 5.7:1 and costs nothing here. */}
-            <p className="font-mono text-[11px] tracking-[0.2em] text-white uppercase">{t(locale, 'Measured on every run')}</p>
-
-            <ul className="mt-5">
-              {CHECKS.map((check, i) => (
-                <li key={check} className="grid grid-cols-[auto_auto_1fr] items-start gap-x-3 border-t border-white/15 py-3.5 last:border-b">
-                  {/* white/85, not white/70, and it is the same finding as the
-                      label above rather than a new one. The label was lifted to
-                      solid white because white/90 measured 4.54:1 — "a rounding
-                      error rather than a margin". These two sit one line lower,
-                      at roughly 65% up the frame where the scrim is 77%, and at
-                      white/70 they measure 4.49:1 against the same 4.5 floor:
-                      the identical rounding error, missed because the fix went
-                      to the line above them and stopped. white/85 is 5.73:1 and
-                      keeps them quieter than the label, which is the point of
-                      dimming them at all. */}
-                  <span className="font-mono text-[11px] text-white/85 tabular-nums">{String(i + 1).padStart(2, '0')}</span>
-                  <Icon icon="tabler:circle-check" className="mt-0.5 size-4 shrink-0 text-white/85" />
-                  <span className="text-[0.95rem] leading-snug text-white">{t(locale, check)}</span>
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-7">
-              <ArrowButton href="/quality" label={t(locale, 'See how our QC works')} variant="light" />
-            </div>
-          </article>
-
+        <div className="grid gap-6 lg:grid-cols-12">
           {/* ── B: the ask ── */}
-          <article className="rounded-card bg-primary flex flex-col justify-between p-7 lg:col-span-5 lg:p-9">
+          <article className="rounded-card bg-primary flex flex-col justify-between p-7 lg:col-span-7 lg:p-9">
             <div>
               <h3 className="text-2xl font-bold text-white lg:text-[28px]">{t(locale, 'Tell us what you need')}</h3>
               <p className="mt-4 text-base leading-relaxed text-white/85">

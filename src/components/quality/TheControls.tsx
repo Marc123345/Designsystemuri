@@ -99,7 +99,11 @@ const CONTROLS = [
 ] as const
 
 /* About's spans exactly: 7/5 alternating, inverted on the second row. */
-const SPANS = ['lg:col-span-7', 'lg:col-span-5', 'lg:col-span-5', 'lg:col-span-7']
+/* Toughness (04) is the smallest tile on Marc's instruction: it is the one
+   control that does not run on every batch, so it should not read as equal in
+   weight to the three that do. 7/5 then 7/5 keeps the row break moving — no
+   two adjacent tiles share a width — while giving 04 the narrow column. */
+const SPANS = ['lg:col-span-7', 'lg:col-span-5', 'lg:col-span-7', 'lg:col-span-5']
 
 const COUNT_LABEL = ['', '', 'Two checks', 'Three checks', 'Four checks']
 
@@ -109,7 +113,8 @@ const TheControls = () => {
   return (
     <section data-note="qc-controls" className="py-16 lg:py-24">
       <div className="container">
-        <h2 className="text-[28px] font-bold md:text-[34px] lg:text-[38px]">{t(locale, 'The four controls')}</h2>
+        {/* Centred, matching the two index blocks on the homepage. */}
+        <h2 className="mx-auto max-w-3xl text-center text-[28px] font-bold md:text-[34px] lg:text-[38px]">{t(locale, 'The four controls')}</h2>
         {/* Marc's call: the "three on every batch, fourth by request" line is
             removed. The distinction it drew is still true and still on record in
             this file's history — it is no longer stated on the page. */}
@@ -119,7 +124,7 @@ const TheControls = () => {
             <PhotoCard
               key={c.n}
               className={SPANS[i]}
-              minHeight="min-h-[340px] lg:min-h-[380px]"
+              minHeight={i === 3 ? 'min-h-[260px] lg:min-h-[280px]' : 'min-h-[340px] lg:min-h-[380px]'}
               /* ⚠ `heavy`, and it is a legibility fix rather than a look.
                  These cards ran on the light scrim while they carried the old
                  photographs, which were dark: a sieve stack in shadow, two grey
