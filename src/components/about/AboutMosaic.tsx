@@ -88,7 +88,50 @@ const AboutMosaic = () => {
   return (
     <section data-note="about-mosaic" className="bg-default-50 py-16 lg:py-24">
       <div className="container">
-        <div className="grid gap-6 lg:grid-cols-12 lg:gap-10">
+        {/* ── THE COMPANY ───────────────────────────────────────────────────
+            Merged in from what was a separate <TheCompany> section directly
+            above this one. Marc's call, and the two were already one thought:
+            who EID is, then the figures that back it, then what it is for.
+            Three bands became one, and the page stops restating its own
+            subject at the top of each.
+
+            The accent rule down the left edge is kept — it is what makes the
+            heading and the two paragraphs read as a statement rather than as
+            body text that happens to start here. */}
+        <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
+          <div className="border-primary border-s-2 ps-7 lg:col-span-6 lg:ps-9">
+            <p className="text-default-500 font-mono text-[11px] tracking-[0.22em] uppercase">{t(locale, 'About')}</p>
+            <h2 className="text-default-900 mt-4 text-[32px] leading-none font-bold lg:text-[42px]">{t(locale, 'The Company')}</h2>
+
+            {/* 18-20px, not 16. Uri's note is that the wording at the top of
+                About is what people take away, so it gets the weight a heading
+                would normally carry. */}
+            <p className="text-default-700 mt-6 text-[18px] leading-relaxed lg:text-[19px]">
+              {t(
+                locale,
+                'With its headquarters in London, England, and worldwide marketing partners, EID has established a global reputation for quality, consistency and superior service.'
+              )}
+            </p>
+            <p className="text-default-600 mt-5 text-base leading-relaxed">
+              {t(
+                locale,
+                'Today EID has customers on every continent. Our sales team speaks more than ten dialects, but we all speak the same language — the right product at the right price, when and where you require it.'
+              )}
+            </p>
+          </div>
+
+          {/* ⚠ PLACEHOLDER, carried over with the block.
+              /eid/facility/hero-metrology-lab.png is EID's own metrology bench,
+              which is at least a picture of the company this paragraph is
+              describing. Their reference slot holds a company film; EID has one
+              — the hero clip — but running it twice would make it wallpaper.
+              16:9 either way, so a film drops in with no layout change. */}
+          <div className="rounded-card relative aspect-16/10 overflow-hidden lg:col-span-6">
+            <Image src="/eid/facility/hero-metrology-lab.png" alt={t(locale, 'Two technicians at a measuring microscope in the EID metrology laboratory')} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
+          </div>
+        </div>
+
+        <div className="mt-14 grid gap-6 lg:mt-20 lg:grid-cols-12 lg:gap-10">
           {/* ── THE MOSAIC ─────────────────────────────────────────────────
               Two columns of tiles inside the left half. The tall tile spans
               both rows, which is what stops the four tiles reading as a 2x2.

@@ -1,6 +1,5 @@
 import AboutMosaic from '@/components/about/AboutMosaic'
 import CoreValues from '@/components/about/CoreValues'
-import TheCompany from '@/components/about/TheCompany'
 import GlobeSection from '@/components/GlobeSection'
 import VideoHero from '@/components/VideoHero'
 import type { Locale } from '@/i18n/routing'
@@ -139,7 +138,6 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
           and the values off their page by name; these are the two blocks
           between them that make the sequence work — a page that opens on four
           figures is a page that has asserted before it has said anything. */}
-      <TheCompany />
 
       {/* The numbers, the photographs and the two statements are ONE block, not
           three stacked rows — which is the thing that is easy to get wrong
