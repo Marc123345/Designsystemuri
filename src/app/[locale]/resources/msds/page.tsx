@@ -7,7 +7,6 @@ import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
-import Image from 'next/image'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params
@@ -88,16 +87,32 @@ const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
                   sheet count is visible by looking at the list. */}
             </div>
 
-            <div className="rounded-card relative min-h-[260px] overflow-hidden lg:col-span-5">
-              <Image src="/eid/quality/10-chemical-rinse-beaker-diamonds.png" alt={t(locale, 'Diamond crystals suspended in a beaker of clear chemical rinse under a fume hood')} fill sizes="(min-width: 1024px) 42vw, 100vw" className="object-cover object-center" />
-            </div>
-          </div>
+            {/* ── THE SHEETS SIT WHERE THE PHOTOGRAPH WAS ──────────────────
+                Marc's call. This column held a beaker of diamond crystals in
+                chemical rinse, and the three documents ran full-width in a
+                separate block below it — so the one thing a visitor came for
+                was under the fold, behind a picture that was not evidence of
+                anything on a page about paperwork.
 
-          <div className="mt-14 lg:mt-16">
-            {/* A shield rather than a document icon: these are the safety set,
+                The panel beside this now reads as a label for the list rather
+                than as a standalone claim: "Safety data sheets, free to
+                download" with the three downloads immediately to its right.
+
+                ⚠ The rows are `flex-wrap`, so in a 5-of-12 column the PDF pill
+                drops under the title rather than sitting beside it. That is the
+                intended behaviour at this width and why the component was
+                written to wrap — do not "fix" it with nowrap, which would
+                squeeze the titles instead.
+
+                The photograph (/eid/quality/10-chemical-rinse-beaker-diamonds.png)
+                is still on disk and unused here.
+
+                A shield rather than a document icon: these are the safety set,
                 and the distinction is worth keeping at a glance when the two
                 resources pages otherwise look identical. */}
-            <DocList groups={[{ sheets: safetySheets }]} icon="tabler:shield" />
+            <div className="lg:col-span-5">
+              <DocList groups={[{ sheets: safetySheets }]} icon="tabler:shield" />
+            </div>
           </div>
         </div>
       </section>
