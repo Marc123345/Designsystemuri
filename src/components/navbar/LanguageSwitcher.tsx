@@ -42,7 +42,7 @@ const LanguageSwitcher = () => {
         // `hidden` is the initial state Preline toggles. Without it this panel
         // renders at opacity-0 but still occupies its box, so clicks over the
         // hero landed on the invisible ES / FR links and switched locale.
-        className="hs-dropdown-menu hs-dropdown-open:opacity-100 border-default-200 absolute end-0 top-full z-50 hidden border bg-white p-2 opacity-0 shadow-xl transition-[opacity,margin] duration-300 before:absolute before:start-0 before:-top-4 before:h-4 before:w-full"
+        className="hs-dropdown-menu hs-dropdown-open:opacity-100 border-default-200 rounded-card absolute end-0 top-full z-50 hidden border bg-white p-2 opacity-0 shadow-xl transition-[opacity,margin] duration-300 before:absolute before:start-0 before:-top-4 before:h-4 before:w-full"
         role="menu"
       >
         <div className="flex flex-col gap-0.5">

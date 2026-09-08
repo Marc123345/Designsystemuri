@@ -19,7 +19,7 @@ const AppProvidersWrapper = ({ children }: { children: React.ReactNode }) => {
           Off-screen until focused, so it costs sighted users nothing. */}
       <a
         href="#main"
-        className="focus:bg-primary sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-5 focus:py-3 focus:text-sm focus:font-semibold focus:text-white">
+        className="focus:bg-primary focus:rounded-control sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-5 focus:py-3 focus:text-sm focus:font-semibold focus:text-white">
         Skip to main content
       </a>
       <Navbar />

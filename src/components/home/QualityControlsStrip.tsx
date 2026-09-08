@@ -1,6 +1,5 @@
-import { Icon } from '@iconify/react'
+import { ArrowButton } from '@/components/ui'
 import IconIndex from '@/components/home/IconIndex'
-import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
 
@@ -49,14 +48,18 @@ export default function QualityControlsStrip({ locale }: { locale: Locale }) {
           <IconIndex items={CONTROLS} locale={locale} columns={4} />
         </div>
 
-        <div className="mt-8 text-center">
-          <Link
-            href="/quality"
-            className="bg-primary group inline-flex items-center gap-2 px-6 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-[color-mix(in_oklab,var(--color-primary)_88%,black)]"
-          >
-            {t(locale, 'Explore our QC')}
-            <Icon icon="tabler:arrow-narrow-right" className="size-4 transition-transform group-hover:translate-x-1" />
-          </Link>
+        {/* ── THE SITE'S BUTTON, NOT A LOOKALIKE ───────────────────────────
+            This was a hand-rolled square link: bg-primary, px-6 py-3, its own
+            hover colour mixed inline, and a small arrow that nudged 4px. It was
+            the only CTA on the site not going through ArrowButton, which exists
+            precisely so "the motion and the corner radius stay identical" — so
+            it was also the only square button on a site with a 12px control
+            radius, sitting one section below six rounded icon controls.
+
+            Nothing is passed but href and label: the default `md` size and
+            `primary` variant are what every other in-page CTA uses. */}
+        <div className="mt-8 flex justify-center">
+          <ArrowButton href="/quality" label={t(locale, 'Explore our QC')} />
         </div>
       </div>
     </section>
