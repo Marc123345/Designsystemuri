@@ -37,7 +37,7 @@ export type Pillar = CurtainItem & { meta: string }
 
 /* ══════════════════════════ THE SECTION ══════════════════════════ */
 
-const ProofPanel = ({ title, desc, pillars, ghost }: { /** Retained for call-site compatibility; the band above carries it now. */ eyebrow?: string; title: string; desc?: string; pillars: Pillar[]; ghost?: string }) => (
+const ProofPanel = ({ title, desc, pillars, ghost, aspect = 'portrait' }: { /** Retained for call-site compatibility; the band above carries it now. */ eyebrow?: string; title: string; desc?: string; pillars: Pillar[]; ghost?: string; /** 'landscape' (4:3) is shorter than the default portrait (3:4). */ aspect?: 'portrait' | 'landscape' }) => (
   /* Halved, per Uri's V1 note: "the whole section about half a screen, the
      wording is what matters, not the image."
 
@@ -55,7 +55,7 @@ const ProofPanel = ({ title, desc, pillars, ghost }: { /** Retained for call-sit
       </div>
 
       <div className="mt-10 lg:mt-12">
-        <CurtainGrid items={pillars} numbered />
+        <CurtainGrid items={pillars} numbered aspect={aspect} />
       </div>
     </div>
 

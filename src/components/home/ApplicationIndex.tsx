@@ -68,11 +68,21 @@ export default function ApplicationIndex({ hubs, locale }: { hubs: HubEntry[]; l
           {/* Pushed to the end rather than sitting after the label, so the
               arrows line up down the column whatever the label length — and
               these labels run from "Dental" to "Grinding, Cutting, Sawing &
-              Drilling". */}
-          <Icon
-            icon="tabler:arrow-narrow-right"
-            className="text-default-400 group-hover:text-primary ms-auto size-5 shrink-0 transition-all group-hover:translate-x-1"
-          />
+              Drilling".
+
+              On hover the arrow is joined by the word "Explore", which is what
+              names the action: an arrow alone says "there is more" without
+              saying what happens. It is width-animated rather than mounted on
+              hover so the row never reflows and the arrows stay in column. */}
+          <span className="ms-auto flex shrink-0 items-center gap-1.5">
+            <span className="text-primary max-w-0 overflow-hidden text-[13px] font-semibold whitespace-nowrap opacity-0 transition-all duration-300 group-hover:max-w-24 group-hover:opacity-100">
+              {t(locale, 'Explore')}
+            </span>
+            <Icon
+              icon="tabler:arrow-narrow-right"
+              className="text-default-400 group-hover:text-primary size-5 shrink-0 transition-all group-hover:translate-x-1"
+            />
+          </span>
         </Link>
       ))}
     </div>

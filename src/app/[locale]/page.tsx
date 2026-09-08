@@ -1,9 +1,9 @@
 import CurtainGrid from '@/components/CurtainGrid'
 import ApplicationIndex from '@/components/home/ApplicationIndex'
+import QualityControlsStrip from '@/components/home/QualityControlsStrip'
 import EntryCards from '@/components/home/EntryCards'
 import ProofPanel from '@/components/home/ProofPanel'
 import QualityContactBento from '@/components/home/QualityContactBento'
-import SectionBanner from '@/components/SectionBanner'
 import { Faq } from '@/components/sections'
 import CanvasField from '@/components/CanvasField'
 import VideoHero from '@/components/VideoHero'
@@ -173,7 +173,6 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           Shade 1 — the lightest of the three blues. The bands walk darker down
           the page: 1 here, 2 at applications, and the QC block already carries
           the darkest ground of all. */}
-      <SectionBanner label={t(locale, 'Our Products')} body={t(locale, 'Every industrial diamond and CBN product, from one source.')} shade={1} />
 
       {/* White ground, coarse screen. This section is the whole catalogue from
           natural grit down to micron powder, so it takes the top of the range;
@@ -204,7 +203,6 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       </section>
 
       {/* ── BAND 2 ─────────────────────────────────────────────────────── */}
-      <SectionBanner label={t(locale, 'Why EID')} body={t(locale, 'Fifty years of supplying tool makers has narrowed down to three things they buy us for.')} shade={2} />
 
       <ProofPanel
         eyebrow={t(locale, 'Why tool makers qualify EID')}
@@ -222,6 +220,9 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
            applications rows below run revealed, because a catalogue is scanned;
            three claims are read one at a time, which is what the curtain is
            for. */
+        /* Landscape rather than the default portrait: 4:3 instead of 3:4
+           takes roughly a quarter off the height of the three numbered tiles. */
+        aspect="landscape"
         pillars={[
           {
             meta: t(locale, 'Accountability'),
@@ -270,7 +271,6 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       {/* ── BAND 3 ─────────────────────────────────────────────────────────
           Darkest of the three, and the last cut before the QC block's own
           dark ground closes the run. */}
-      <SectionBanner label={t(locale, 'Applications')} body={t(locale, 'We supply the material; you build the tools that do the work.')} shade={3} />
 
       {/* APPLICATIONS. Deliberately lighter than the range above it.
 
@@ -307,10 +307,11 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       <section id="applications" data-note="applications" className="bg-canvas relative isolate py-14 lg:py-20">
         <CanvasField density="medium" />
         <div className="container">
-          <div className="grid items-end gap-8 lg:grid-cols-12 lg:gap-14">
-            <div className="lg:col-span-7">
-              <h2 className="text-[24px] font-bold md:text-[30px] lg:text-[34px]">{t(locale, 'Diamond and CBN for the work your tools do.')}</h2>
-            </div>
+          {/* Centred, and named for what the grid below actually is. The old
+              line ("Diamond and CBN for the work your tools do.") described the
+              material; the reader arriving here is looking for their industry. */}
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-[24px] font-bold md:text-[30px] lg:text-[34px]">{t(locale, 'Applications and industries we supply.')}</h2>
           </div>
 
           <div className="mt-8 lg:mt-10">
@@ -340,7 +341,6 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           and this one are separated by the whole applications grid, so they
           never co-appear — which is the one arrangement where the repeat costs
           nothing. A fourth blue token would fix it properly. */}
-      <SectionBanner label={t(locale, 'Quality')} body={t(locale, 'Every run measured, recorded and traceable — and one form to the person who did it.')} shade={3} />
 
       {/* QUALITY + THE ASK, combined.
 
@@ -352,6 +352,10 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           The long-form quality content still lives on /quality, which this
           links to; nothing was lost in the merge. See the component for the
           bento's shape and why the QC heading moved up into the section. */}
+      {/* Sits where the Quality divider strip used to, so quality is still
+          announced before the bento — as one line rather than a band. */}
+      <QualityControlsStrip locale={locale} />
+
       <QualityContactBento />
 
       {/* REACH lived here as <GlobeSection />. Uri's V1 note moves it: the

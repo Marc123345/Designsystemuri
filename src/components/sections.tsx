@@ -721,7 +721,7 @@ export const Faq = ({
    */
   plate?: { src: string; alt: string; position?: string; caption?: string }
 }) => (
-  <section data-note="faq" className="py-20 lg:py-30">
+  <section data-note="faq" className="py-14 lg:py-20">
     <div className="container">
       {/* 5/7 rather than 4/8. The picture has to read as a half of the section
           to be worth having, and the answers still get the wider column because
@@ -765,7 +765,11 @@ export const Faq = ({
             this card without re-checking it against the navy. */}
         <div className="flex flex-col gap-3 lg:col-span-7">
           {items.map((item, i) => (
-            <details key={item.q} open={i === 0} className="group bg-primary-3 open:bg-primary rounded-card border border-white/10 px-6 transition-colors">
+            /* All closed on load. The first was open to show what a card does, but
+                 with seven questions that put a full answer between the heading and
+                 the rest of the list — and the plus control already says these
+                 open. Closed, the whole set is scannable in one look. */
+            <details key={item.q} className="group bg-primary-3 open:bg-primary rounded-card border border-white/10 px-6 transition-colors">
               <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-5 [&::-webkit-details-marker]:hidden">
                 <div className="flex items-start gap-5">
                   <span className="mt-1 text-sm font-semibold tabular-nums text-white/55 transition-colors group-open:text-white">{String(i + 1).padStart(2, '0')}</span>
