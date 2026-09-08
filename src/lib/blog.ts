@@ -351,62 +351,6 @@ export const posts: Post[] = [
 
   /* ------------------------------------------------------------------ */
   {
-    slug: 'inside-our-qc-laboratory',
-    category: 'Process',
-    title: 'Inside our QC laboratory: how a batch gets approved to ship',
-    dek: 'Every lot is measured rather than sampled. What a batch is checked for before it leaves, what record goes with it, and what stays behind after it has gone.',
-    metaTitle: 'Inside the EID QC Laboratory: How a Batch Is Approved | EID',
-    metaDesc:
-      'Every lot is measured, not sampled. The checks a batch passes before it ships, the certificate of analysis that goes with it, and the retention sample that stays.',
-    image: '/eid/qc-lab.jpg',
-    alt: 'A technician at an optical measurement system in the EID quality laboratory',
-    published: '2026-09-01',
-    readMinutes: 5,
-    body: [
-      {
-        p: 'A lot that was spot-checked is a lot the customer has to re-qualify on arrival. That is the whole reason the laboratory works the way it does: the checks below run on every production lot, not on a sample of lots.',
-      },
-
-      { h2: 'Sizing' },
-      {
-        p: 'Mesh grit and micron powder are different measurement problems and are handled as such. Mesh material is graded mechanically against a calibrated sieve stack, and the buying criteria are the size fraction, the shape factor and how the grit breaks down under load. Micron powder is measured by particle counting and controlled on D-values across the whole distribution rather than on a midpoint — the reasoning is in [reading a particle size distribution](/resources/blog/reading-a-particle-size-distribution).',
-      },
-
-      { h2: 'Morphology' },
-      {
-        p: 'Crystal shape is inspected optically against the grade specification. Two lots can size identically and still cut differently if the shape has moved, so this is checked rather than inferred from the sizing result.',
-      },
-
-      { h2: 'Cleaning' },
-      {
-        p: 'Advanced chemical cleaning removes processing residues before final inspection. It is the least visible of the controls and the one most often felt downstream, because residues affect wetting, bonding and retention in the customer’s process rather than in ours.',
-      },
-
-      { h2: 'Toughness, on request' },
-      {
-        p: 'Toughness index and thermal toughness index are run where the grade or the application requires them — work in which size and shape alone do not predict tool life. These are by request rather than universal, and the request is worth making for heavy stock removal and for anything with a sintering step.',
-      },
-
-      { h2: 'The record, and what stays behind' },
-      {
-        p: 'A lot that passes ships with a certificate of analysis carrying its measured values. A retention sample is kept from every batch, and traceability runs from incoming raw material through to the lot that shipped.',
-      },
-      {
-        p: 'That last part is the one that earns its keep. A record proves what was measured; a retention sample allows the material itself to be re-examined when a question arrives eight months later and the original is long since consumed.',
-      },
-
-      { h2: 'What the certification covers' },
-      {
-        p: 'The quality management system is certified to ISO 9001:2015 and independently audited. The certificate is reproduced in full on the [quality page](/quality#certificate), including its registered scope — worth reading rather than taking on trust, which is the point of publishing it.',
-      },
-      {
-        note: 'Laboratory testing is carried out to FEPA, ISO 6106 and ANSI standards. Instrument makes, models and calibration intervals are not published here; they are available on request as part of a supplier qualification pack.',
-      },
-    ],
-  },
-
-  /* ------------------------------------------------------------------ */
-  {
     slug: 'cvd-vs-hpht-single-crystal-diamond',
     category: 'Materials',
     title: 'CVD vs HPHT (MCD): choosing a single-crystal route',
