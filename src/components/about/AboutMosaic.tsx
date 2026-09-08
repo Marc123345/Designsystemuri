@@ -1,3 +1,4 @@
+import CountUp from '@/components/CountUp'
 import Image from 'next/image'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
@@ -109,7 +110,7 @@ const AboutMosaic = () => {
               <dl className="absolute inset-0 flex flex-col items-center justify-around p-5 text-center">
                 {STACKED.map((f) => (
                   <div key={f.label}>
-                    <dd className="text-[38px] leading-none font-bold text-white lg:text-[46px]">{f.value}</dd>
+                    <dd className="text-[38px] leading-none font-bold text-white lg:text-[46px]"><CountUp value={f.value} /></dd>
                     <dt /* White, not the brand blue. Strauss sets these labels in a bright
                        cyan that pops off their dark tile; our lightest blue is #3d5290,
                        which on a navy scrim is barely separable from the ground at 11px.
@@ -131,7 +132,7 @@ const AboutMosaic = () => {
                 the biggest number. Without it the mosaic is four photographs
                 and the reach claim has nothing to make it land. */}
             <div className="rounded-card bg-primary relative flex min-h-[200px] flex-col items-center justify-center overflow-hidden text-center lg:min-h-[248px]">
-              <span className="text-[52px] leading-none font-bold text-white lg:text-[64px]">80</span>
+              <span className="text-[52px] leading-none font-bold text-white lg:text-[64px]"><CountUp value="80" /></span>
               <span className="mt-2 text-[11px] font-semibold tracking-[0.18em] text-white/85 uppercase">{t(locale, 'Countries supplied')}</span>
             </div>
           </div>

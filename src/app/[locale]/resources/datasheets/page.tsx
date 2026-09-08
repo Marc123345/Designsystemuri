@@ -1,3 +1,4 @@
+import CountUp from '@/components/CountUp'
 import { RichText } from '@/components/RichText'
 import DocList from '@/components/resources/DocList'
 import { PageHero } from '@/components/sections'
@@ -89,7 +90,7 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
                   { v: '0', k: 'Forms to fill in' },
                 ].map((s) => (
                   <div key={s.k} className="bg-primary px-4 py-4">
-                    <dd className="text-[26px] leading-none font-bold text-white lg:text-[30px]">{s.v}</dd>
+                    <dd className="text-[26px] leading-none font-bold text-white lg:text-[30px]"><CountUp value={s.v} /></dd>
                     <dt className="mt-2 text-[10px] font-semibold tracking-[0.18em] text-white/75 uppercase">{t(locale, s.k)}</dt>
                   </div>
                 ))}

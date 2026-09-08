@@ -1,3 +1,4 @@
+import CountUp from '@/components/CountUp'
 import Image from 'next/image'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
@@ -107,7 +108,7 @@ const QualityMosaic = () => {
               <dl className="absolute inset-0 flex flex-col items-center justify-around p-5 text-center">
                 {STACKED.map((f) => (
                   <div key={f.label}>
-                    <dd className="text-[38px] leading-none font-bold text-white lg:text-[46px]">{f.value}</dd>
+                    <dd className="text-[38px] leading-none font-bold text-white lg:text-[46px]"><CountUp value={f.value} /></dd>
                     <dt className="mt-2 text-[11px] font-semibold tracking-[0.18em] text-white/75 uppercase">{t(locale, f.label)}</dt>
                   </div>
                 ))}
@@ -169,7 +170,11 @@ const QualityMosaic = () => {
               rel="noreferrer noopener"
               className="group rounded-card bg-primary hover:bg-primary-1 focus-visible:outline-primary relative flex min-h-[200px] flex-col items-center justify-center overflow-hidden text-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 lg:min-h-[248px]"
             >
-              <span className="text-[52px] leading-none font-bold text-white lg:text-[64px]">9001</span>
+              {/* Counts like the three figures beside it, for consistency across the
+                  mosaic. ⚠ Worth knowing this one is a NAME, not a measure: it is
+                  ISO 9001, not nine thousand and one of anything. If counting it
+                  reads wrong, drop the CountUp here and leave the other three. */}
+              <span className="text-[52px] leading-none font-bold text-white lg:text-[64px]"><CountUp value="9001" /></span>
               <span className="mt-2 text-[11px] font-semibold tracking-[0.18em] text-white/85 uppercase">{t(locale, 'ISO certified')}</span>
 
               {/* white/85 on primary is 8.2:1, so this clears the floor at

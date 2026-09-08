@@ -1,3 +1,4 @@
+import CountUp from '@/components/CountUp'
 import Counter from '@/components/Counter'
 import HeroMark from '@/components/HeroMark'
 import HeroTitle from '@/components/HeroTitle'
@@ -470,7 +471,7 @@ export const StatMedallions = ({ items }: { items: { value?: string; label?: str
               <div key={i} className={`flex size-72 flex-col items-center justify-center overflow-hidden rounded-full p-10 text-center lg:size-112 ${dark ? 'bg-default-950' : 'border-default-300 border bg-white'}`}>
                 {/* leading-none: the theme's 1.3em line-height leaves the numeral
 glyph taller than its line box, so the label collides with it. */}
-                <div className={`text-[28px] leading-none font-bold md:text-[34px] lg:text-[58px] ${dark ? 'text-white' : 'text-default-900'}`}>{item.value}</div>
+                <div className={`text-[28px] leading-none font-bold md:text-[34px] lg:text-[58px] ${dark ? 'text-white' : 'text-default-900'}`}><CountUp value={String(item.value)} /></div>
                 {item.label && <div className={`mt-3 text-sm leading-none tracking-[0.2em] uppercase ${dark ? 'text-primary-1' : 'text-primary'}`}>{item.label}</div>}
                 {item.body && <p className={`mt-5 w-57 text-base lg:w-75 ${dark ? 'text-default-300' : 'text-default-600'}`}>{item.body}</p>}
               </div>
