@@ -188,15 +188,17 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       <section id="products" data-note="range" className="relative isolate py-20 lg:py-30">
         <CanvasField density="coarse" mark="end" />
         <div className="container">
-          <div className="grid items-end gap-8 lg:grid-cols-12 lg:gap-14">
-            {/* No eyebrow chip and no restatement of the band's sentence —
-                both sat four lines above this heading. What the section needs
-                from a heading is the thing the band cannot say in one line:
-                which eight groups, and how they divide. */}
-            <div className="lg:col-span-7">
-              <h2 className="text-[28px] font-bold md:text-[36px] lg:text-[42px]">{t(locale, 'Eight groups, from natural grit to single crystal.')}</h2>
+          <div>
+            {/* Centred and on its own, matching the applications and QC blocks
+                below. Was "Eight groups, from natural grit to single crystal."
+                beside a paragraph naming what each group covered — Marc's call
+                to drop the count and the list and carry the one claim instead.
+                This line was the Products divider strip's before the strips
+                came off; it says the same thing in fewer words than the
+                paragraph did. */}
+            <div className="mx-auto max-w-3xl text-center">
+              <h2 className="text-[24px] font-bold md:text-[30px] lg:text-[34px]">{t(locale, 'Every industrial diamond and CBN product, from one source.')}</h2>
             </div>
-            <p className="text-default-600 lg:col-span-5">{t(locale, 'Natural grit and powder made in our own factory, bonded and CBN grades processed, coated and graded to your specification, and single crystal made to your exact orientation.')}</p>
           </div>
 
           {/* Four across, revealed. The eight groups are a catalogue — the
