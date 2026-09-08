@@ -98,7 +98,67 @@ const QualityMosaic = () => {
   return (
     <section data-note="quality-mosaic" className="bg-default-50 py-16 lg:py-24">
       <div className="container">
-        <div className="grid gap-6 lg:grid-cols-12 lg:gap-10">
+        {/* ── THE LABORATORY ──────────────────────────────────────────
+            Merged in from what was a separate <TheLaboratory> section directly
+            above this one. Marc's call, and the same merge as About: what the
+            laboratory is, then the figures that back it, then the two
+            statements about how a lot is handled — one argument, one section,
+            instead of three bands each re-announcing quality control.
+
+            The accent rule down the left edge is kept; it is what makes the
+            heading and the two paragraphs read as a statement rather than as
+            body text that happens to start here. */}
+        <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
+          <div className="border-primary border-s-2 ps-7 lg:col-span-6 lg:ps-9">
+            <p className="text-default-500 font-mono text-[11px] tracking-[0.22em] uppercase">{t(locale, 'Quality control')}</p>
+            <h2 className="text-default-900 mt-4 text-[32px] leading-none font-bold lg:text-[42px]">{t(locale, 'The Laboratory')}</h2>
+
+            <p className="text-default-700 mt-6 text-[18px] leading-relaxed lg:text-[19px]">
+              {t(
+                locale,
+                'At EID, every single batch of diamond and CBN powder undergoes strict laboratory validation to guarantee total product consistency, lot after lot.'
+              )}
+            </p>
+            <p className="text-default-600 mt-5 text-base leading-relaxed">
+              {t(
+                locale,
+                'QC is built into every stage, from raw material selection through grading, crushing, chemical cleaning, coating and final inspection. The in-house QC laboratory is the backbone of everything we ship, and all laboratory testing is compliant with international FEPA, ISO 6106 and ANSI standards.'
+              )}
+            </p>
+          </div>
+
+          {/* The signature frame of the new set: a digital micrometer closed on
+              a diamond crystal, reading 3.000 mm. The paragraph beside it says
+              every batch is validated rather than sampled, and this is a
+              measurement being taken — the claim, happening.
+
+              ⚠ WHAT THIS SWAP COST, so nobody re-litigates it blind. The
+              previous frame was the QC laboratory with an ISO 9001 notice
+              visibly on the wall, chosen because the second paragraph here
+              ends on a list of standards and that was the only photograph in
+              which the certification was part of the room rather than
+              asserted in text. That is gone; the standards are now text only
+              on this page. The mosaic's 9001 tile a section below is where a
+              buyer meets the credential as an object instead.
+
+              ⚠ The source is square (1024x1024) and this frame is 16:10, so
+              roughly a third of the height is cropped away. `object-center`
+              is right for this one — the micrometer jaw and the crystal sit
+              dead centre — but it is not automatically right for the others.
+              Every square image placed in a non-square slot on this page had
+              its crop checked. */}
+          <div className="rounded-card relative aspect-16/10 overflow-hidden lg:col-span-6">
+            <Image
+              src="/eid/quality/09-digital-micrometer-diamond-measurement.png"
+              alt={t(locale, 'A digital micrometer closed on a diamond crystal, its display reading 3.000 mm')}
+              fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover"
+            />
+          </div>
+        </div>
+
+        <div className="mt-14 grid gap-6 lg:mt-20 lg:grid-cols-12 lg:gap-10">
           <div className="grid auto-rows-fr grid-cols-2 gap-6 lg:col-span-6">
             {/* TALL — three figures over the two-lot comparison. */}
             <div className="rounded-card relative row-span-2 min-h-[420px] overflow-hidden lg:min-h-[520px]">

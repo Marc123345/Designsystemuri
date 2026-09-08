@@ -1,6 +1,5 @@
 import QualityMosaic from '@/components/quality/QualityMosaic'
 import TheControls from '@/components/quality/TheControls'
-import TheLaboratory from '@/components/quality/TheLaboratory'
 import VideoHero from '@/components/VideoHero'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
@@ -80,7 +79,6 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
           About's wireframe is centred by construction. */}
       <VideoHero title={t(locale, 'Our Quality Control & Laboratory Standards')} video="https://ik.imagekit.io/qcvroy8xpd/EID%20VIDEO%20HERO.mp4" minHeight="min-h-[48svh]" />
 
-      <TheLaboratory />
       <QualityMosaic />
       <TheControls />
       {/* ── CERTIFICATION: REMOVED ─────────────────────────────────────
