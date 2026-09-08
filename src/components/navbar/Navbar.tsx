@@ -3,7 +3,7 @@
 import { Link, usePathname } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
-import { applicationMenu, primaryNav, productMenu, resourceMenu, site } from '@/lib/site'
+import { primaryNav, resourceMenu, site } from '@/lib/site'
 import { ArrowButton } from '@/components/ui'
 import { Icon } from '@iconify/react'
 import { useLocale } from 'next-intl'
@@ -117,8 +117,11 @@ const Navbar = () => {
 
   // One vertical panel anchored under its trigger, with the brand rule across
   // the top — the Supreme Home dropdown, minus the corner radius.
-  const menuPanel = (menu: 'products' | 'applications' | 'resources') => {
-    const entries = menu === 'products' ? productMenu : menu === 'applications' ? applicationMenu : resourceMenu
+  // 'applications' is gone from this union deliberately: that entry is a plain
+  // link now, so no panel is ever built for it. Leaving the case in place
+  // would be a branch nothing can reach.
+  const menuPanel = (menu: 'resources') => {
+    const entries = resourceMenu
     return (
       <div
         /* ── ⚠ THE PADDING IS THE HOVER BRIDGE. DO NOT MAKE IT A MARGIN. ────
@@ -313,7 +316,7 @@ const Navbar = () => {
             const active = isActive(item.href)
             const menu = 'menu' in item ? item.menu : undefined
             if (menu) {
-              const entries = menu === 'products' ? productMenu : menu === 'applications' ? applicationMenu : resourceMenu
+              const entries = resourceMenu
               return (
                 <div key={'m-' + item.href} className="hs-accordion">
                   <button type="button" className={`hs-accordion-toggle w-full px-4 py-4 ${navLink(active)}`} aria-expanded="false">

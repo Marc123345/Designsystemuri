@@ -64,13 +64,19 @@ export const resourceMenu = [
 // differentiator), then research, then company, then the conversion endpoint.
 export const primaryNav = [
   { label: 'Home', href: '/' },
-  // There is no standalone products page. Hovering reveals the eight product
-  // pages in the mega-menu; clicking goes to the range section on the homepage.
-  { label: 'Products', href: '/#products', menu: 'products' as const },
-  // Same shape as Products directly above: there is no standalone applications
-  // page any more. Hovering reveals the six hubs in the mega-menu; clicking
-  // goes to the applications section on the homepage.
-  { label: 'Applications', href: '/#applications', menu: 'applications' as const },
+  // Same treatment as Applications below, and for the same reason: as a `menu`
+  // entry this rendered as a dropdown button, so "clicking goes to the range
+  // section on the homepage" was never true — the button could not navigate.
+  // Plain link now; the eight product pages are reachable from the range
+  // section it scrolls to.
+  { label: 'Products', href: '/#products' },
+  // NOT a menu entry, unlike Products above. A `menu` item renders as a
+  // dropdown *button*, which cannot navigate — so the old comment here ("clicking
+  // goes to the applications section") was never true: hovering opened a panel
+  // and clicking did nothing. The six hubs are listed on the homepage section
+  // this points at, so the panel was a second copy of what the scroll reveals.
+  // Plain link now: click scrolls to #applications, on desktop and mobile alike.
+  { label: 'Applications', href: '/#applications' },
   { label: 'Quality', href: '/quality' },
   // href here is the active-state prefix only — a menu entry renders as a
   // dropdown button, never a link, so it does not point at the removed index.

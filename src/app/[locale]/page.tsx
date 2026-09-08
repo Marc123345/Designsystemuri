@@ -1,4 +1,5 @@
 import CurtainGrid from '@/components/CurtainGrid'
+import ApplicationIndex from '@/components/home/ApplicationIndex'
 import EntryCards from '@/components/home/EntryCards'
 import ProofPanel from '@/components/home/ProofPanel'
 import QualityContactBento from '@/components/home/QualityContactBento'
@@ -7,7 +8,7 @@ import { Faq } from '@/components/sections'
 import CanvasField from '@/components/CanvasField'
 import VideoHero from '@/components/VideoHero'
 import type { Locale } from '@/i18n/routing'
-import { applicationImage, productImage } from '@/lib/card-media'
+import { productImage } from '@/lib/card-media'
 import { localeAlternates } from '@/lib/hreflang'
 import { getApplications, getProducts, t } from '@/lib/i18n-content'
 import type { Metadata } from 'next'
@@ -139,15 +140,12 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
     image: { src: productImage(p.slug) ?? '', alt: '' },
   }))
 
-  // The same six hubs as curtain tiles: no description, because the card has
-  // nowhere to put one.
-  const hubTiles = HOME_HUB_ORDER.map((slug) => apps.find((a) => a.slug === slug))
+  // The same six hubs, now as an icon index rather than photo cards — slug and
+  // name are all ApplicationIndex needs. See the note on that component for why
+  // the photographs went.
+  const hubEntries = HOME_HUB_ORDER.map((slug) => apps.find((a) => a.slug === slug))
     .filter((a): a is NonNullable<typeof a> => Boolean(a))
-    .map((a) => ({
-      title: a.name,
-      href: `/applications/${a.slug}`,
-      image: { src: applicationImage(a.slug) ?? '', alt: '' },
-    }))
+    .map((a) => ({ slug: a.slug, name: a.name }))
 
   return (
     <>
@@ -315,8 +313,8 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
             </div>
           </div>
 
-          <div className="mt-10 lg:mt-12">
-            <CurtainGrid items={hubTiles} aspect="landscape" revealed />
+          <div className="mt-8 lg:mt-10">
+            <ApplicationIndex hubs={hubEntries} locale={locale} />
           </div>
 
           {/* "View all applications" is gone with the index page it pointed at.
