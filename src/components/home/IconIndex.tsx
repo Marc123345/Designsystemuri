@@ -23,6 +23,12 @@ import { t } from '@/lib/i18n-content'
  *             sentence each to justify them; these are index entries, and the
  *             label is the whole content. Adding blurbs would put this section
  *             back at the height it was cut down from.
+ *   not taken their bare icon on the page ground. That is Strauss's language,
+ *             not ours — this site puts an icon in a bordered white control at
+ *             `rounded-control`, taking `border-default-200` and going
+ *             `border-primary` on hover, the same treatment as the contact
+ *             rows and the mobile menu button. The structure is the reference;
+ *             the parts are this design system's.
  *
  * The separator is drawn on the item, not between grid cells, and suppressed on
  * the last of each row — so it works at three columns, four, two and one
@@ -74,8 +80,11 @@ export default function IconIndex({
       {items.map((item) => {
         const body = (
           <>
-            <span className="text-primary mb-5 transition-transform duration-300 group-hover:-translate-y-2.5">
-              <Icon icon={item.icon} className="size-14 lg:size-16" />
+            {/* The site's icon control, at index scale. size-9 elsewhere; here
+                it carries the block on its own, so it is sized up rather than
+                restyled. */}
+            <span className="border-default-200 text-primary group-hover:border-primary group-hover:bg-primary rounded-control mb-5 flex size-16 items-center justify-center border bg-white transition-all duration-300 group-hover:-translate-y-2 group-hover:text-white lg:size-20">
+              <Icon icon={item.icon} className="size-8 lg:size-9" />
             </span>
 
             <span className="text-default-900 group-hover:text-primary text-[17px] leading-snug font-semibold text-balance transition-colors lg:text-[19px]">
