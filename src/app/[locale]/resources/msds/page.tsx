@@ -81,23 +81,11 @@ const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
                 </p>
               </div>
 
-              {/* ⚠ THREE, AND THE NUMBER IS THE POINT. The build caution above
-                  says an entry with no current document behind it is left off
-                  rather than shipped stale, which is why this list is three and
-                  not the seven a speculative version once had. Deriving the
-                  figure from the registry means it can never claim more sheets
-                  than exist. */}
-              <dl className="rounded-control mt-9 grid grid-cols-2 gap-px overflow-hidden bg-white/15">
-                {[
-                  { v: String(safetySheets.length), k: 'Current sheets' },
-                  { v: '0', k: 'Forms to fill in' },
-                ].map((s) => (
-                  <div key={s.k} className="bg-primary px-4 py-4">
-                    <dd className="text-[26px] leading-none font-bold text-white lg:text-[30px]">{s.v}</dd>
-                    <dt className="mt-2 text-[10px] font-semibold tracking-[0.18em] text-white/75 uppercase">{t(locale, s.k)}</dt>
-                  </div>
-                ))}
-              </dl>
+              {/* The stat pair — "Current sheets" and "Forms to fill in" — is
+                  removed on Marc's instruction. The second counted something
+                  that does not exist, and the claim it was making is already in
+                  the eyebrow and the paragraph above: no form, no login. The
+                  sheet count is visible by looking at the list. */}
             </div>
 
             <div className="rounded-card relative min-h-[260px] overflow-hidden lg:col-span-5">
