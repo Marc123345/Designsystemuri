@@ -1,5 +1,4 @@
 import CurtainGrid from '@/components/CurtainGrid'
-import PhotoCard from '@/components/PhotoCard'
 import { RichParagraphs } from '@/components/RichText'
 import { CrossLinks, PageHero } from '@/components/sections'
 import { ArrowButton } from '@/components/ui'
@@ -112,82 +111,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
  * them. If a photograph here is swapped, re-measure before assuming the scrim
  * still covers it.
  */
-/**
- * The four claims. Same four on every hub, in the same order — they are what
- * EID sells, not what the industry does, so varying them would be varying the
- * argument rather than the page.
- */
-const WHY_CARDS = [
-  { title: 'Batch-to-batch consistency', desc: 'Re-order and get the same material, tested on every production run.' },
-  { title: 'Full range, one supplier', desc: 'Everything this application needs from a single relationship and standard.' },
-  { title: 'In-house QC laboratory', desc: 'Size distribution, crystal strength, morphology, and coating coverage.' },
-  { title: 'ISO 9001 & traceability', desc: 'Certificate of analysis and retention samples available on request.' },
-] as const
-
-/**
- * The photographs behind those claims, PER HUB.
- *
- * ⚠ The four images used to be hardcoded into WHY_CARDS, so all six hubs ran
- * the identical set. Combined with the outcome tile — which ran one micrometer
- * shot on all six — a buyer moving between two hubs saw five of the same
- * pictures twice and had no way to tell the pages apart below the fold.
- *
- * Each set is drawn from EID's own QC and laboratory photography, and every
- * alt below is the description already on record against that file elsewhere in
- * this codebase, copied verbatim. That is deliberate: an alt is a claim about
- * what a photograph contains, and the way to get one wrong is to write a fresh
- * one for a file you have not opened.
- *
- * ── What varies and what cannot ─────────────────────────────────────────────
- *
- * Cards 01 and 03 vary freely — there is a lot of measurement and laboratory
- * photography, and each hub gets a frame that leans toward how ITS material is
- * checked: impact testing for grinding, laser diffraction for polishing, the
- * micrometer for semiconductor.
- *
- * Cards 02 and 04 have a thin bench. Only three frames genuinely show a full
- * range (the jar shelf, the sixteen dishes, the graded grit), and only two say
- * traceability at all (the retention cabinet and the labelled jars). They are
- * split three and three across the hubs rather than pretending otherwise. If
- * more range-and-records photography ever arrives, this is where it goes.
- *
- * No image repeats WITHIN a hub. Repeats across hubs are fine and expected.
- */
-type WhyMedia = { image: string; alt: string }
-
-const M = {
-  semTwoLots: { image: '/eid/qc-batch-to-batch.jpg', alt: 'Side-by-side scanning electron micrographs of two production lots at the same magnification, each with a 1 micrometre scale bar' },
-  micrometer: { image: '/eid/quality/09-digital-micrometer-diamond-measurement.png', alt: 'A digital micrometer closed on a diamond crystal, its display reading 3.000 mm' },
-  balance: { image: '/eid/quality/06-precision-scale-diamond-grit.png', alt: 'A dish of diamond grit on a precision balance reading 0.0456 grams, with a microscope on the bench behind' },
-  opticalReadout: { image: '/eid/qc-inspection.jpg', alt: 'An optical measurement system with a diamond crystal magnified on screen and its dimensions read out alongside' },
-  impactTest: { image: '/eid/quality/01-automated-hardness-test-station.png', alt: 'An automated impact test station, its indenter lowered over the sample stage inside a guarded enclosure' },
-  laserDiffraction: { image: '/eid/quality/micron-qc-laser-diffraction.jpg', alt: 'A benchtop laser diffraction particle size analyser mid-measurement, with its wet dispersion unit alongside' },
-
-  jarShelf: { image: '/eid/qc-samples.jpg', alt: 'A laboratory shelf of labelled sample jars, coarse grit at the front graduating to fine powder along the row' },
-  sixteenDishes: { image: '/eid/quality/08-micron-powder-grade-comparison.png', alt: 'Sixteen dishes of micron diamond powder laid out in order from finest to coarsest' },
-  gradedGrit: { image: '/eid/home/hero-grit.jpg', alt: 'Graded industrial diamond grit, coarse crystals through to fine powder' },
-
-  qcTechnician: { image: '/eid/qc-lab.jpg', alt: 'A technician at an optical measurement system in the EID quality laboratory' },
-  metrologyLab: { image: '/eid/facility/hero-metrology-lab.png', alt: 'Two technicians at a measuring microscope in the EID metrology laboratory' },
-  microscopeStage: { image: '/eid/home/qc.jpg', alt: 'A gloved hand adjusting the stage of a laboratory microscope with a prepared sample slide under the objective' },
-  morphology: { image: '/eid/facility/crystal-microscopy.png', alt: 'Diamond crystals under the microscope during morphology inspection' },
-  stereoScope: { image: '/eid/quality/mesh-qc-stereo-microscopy.jpg', alt: 'A technician examining a sample of diamond grit under a binocular stereo microscope' },
-  pipette: { image: '/eid/quality/03-sample-preparation-pipette.png', alt: 'A gloved hand pipetting into a test tube of micron diamond powder, a centrifuge on the bench behind' },
-
-  retentionCabinet: { image: '/eid/quality/05-labeled-sample-storage-cabinet.png', alt: 'A storage cabinet of labelled sample containers, one retained from every batch' },
-} satisfies Record<string, WhyMedia>
-
-const WHY_MEDIA: Record<string, readonly [WhyMedia, WhyMedia, WhyMedia, WhyMedia]> = {
-  dental: [M.semTwoLots, M.jarShelf, M.qcTechnician, M.retentionCabinet],
-  'semiconductor-electronics': [M.micrometer, M.sixteenDishes, M.metrologyLab, M.retentionCabinet],
-  'automotive-aerospace': [M.balance, M.gradedGrit, M.microscopeStage, M.jarShelf],
-  'tool-and-die': [M.opticalReadout, M.jarShelf, M.morphology, M.retentionCabinet],
-  'grinding-cutting-sawing-drilling': [M.impactTest, M.sixteenDishes, M.stereoScope, M.jarShelf],
-  'polishing-lapping': [M.laserDiffraction, M.gradedGrit, M.pipette, M.jarShelf],
-}
-
-/** A hub added later renders the dental set rather than four empty cards. */
-const whyMediaFor = (slug: string) => WHY_MEDIA[slug] ?? WHY_MEDIA.dental
 
 /**
  * PRODUCT GRID SHAPES, BY COUNT.
@@ -232,7 +155,6 @@ const BENTO: Record<number, { span: string; minHeight: string }[] | undefined> =
 
 /* About's spans exactly: 7/5 alternating, inverted on the second row, so no two
    adjacent tiles share a width and the row break moves. */
-const SPANS = ['lg:col-span-7', 'lg:col-span-5', 'lg:col-span-5', 'lg:col-span-7']
 
 const parentSlugOf = (href: string) => href.replace('/products/', '').split('#')[0]
 
@@ -545,36 +467,19 @@ const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; s
         </div>
       </section>
 
-      {/* ── WHY EID ─────────────────────────────────────────────────────────
-          About's core-values block: a heading, a one-line subtitle under it,
-          then four PhotoCards on the 7/5 - 5/7 span pattern.
+      {/* ── WHY EID: REMOVED ────────────────────────────────────────────
+          Marc's call. This was a heading and subtitle (the hub's own
+          `app.why`), four PhotoCards on the 7/5-5/7 pattern with per-hub
+          photography, and a CTA to /quality.
 
-          The heading and subtitle are the hub's own `why` — Uri's per-hub
-          wording, which the glass card was already carrying and which keeps its
-          place at the top of the section. The four claims underneath are the
-          same four, in the same order; they were an accordion inside that card,
-          two of them collapsed, which put a proof point behind a click on the
-          page whose job is to prove things. Four photographs say them at once.
+          `app.why` and `app.whyCta` are still in the application data and are
+          simply unused now — left alone so the wording is not lost. The cards,
+          their photography map and the span table went with the section; this
+          file's history has all of it.
 
-          The CTA is `whyCta` where the hub sets one — "See how our micron QC
-          works" on the two hubs whose argument is micron sizing — and the
-          general line where it does not. */}
-      <section data-note="hub-why" className="py-16 lg:py-24">
-        <div className="container">
-          <h2 className="text-[28px] font-bold md:text-[34px] lg:text-[38px]">{app.why.title}</h2>
-          <p className="text-default-600 mt-3 max-w-3xl text-[17px]">{app.why.body}</p>
-
-          <div className="mt-10 grid gap-6 lg:mt-14 lg:grid-cols-12">
-            {WHY_CARDS.map((c, i) => (
-              <PhotoCard key={c.title} className={SPANS[i]} minHeight="min-h-[320px] lg:min-h-[360px]" weight="heavy" eyebrow={String(i + 1).padStart(2, '0')} title={t(locale, c.title)} body={t(locale, c.desc)} image={whyMediaFor(app.slug)[i].image} alt={t(locale, whyMediaFor(app.slug)[i].alt)} />
-            ))}
-          </div>
-
-          <div className="mt-12">
-            <ArrowButton href="/quality" label={app.whyCta ?? t(locale, 'See how our QC works')} />
-          </div>
-        </div>
-      </section>
+          The argument it made is still on the site: the same four controls are
+          named on the home page and set out in full on /quality, which is where
+          this section's button pointed. */}
 
       {/* ── ⚠ THE QUOTE BLOCK IS GONE FROM EVERY PAGE BUT /contact ───────
           Marc's call, applied site-wide: the eyebrow, "Request a quote or a

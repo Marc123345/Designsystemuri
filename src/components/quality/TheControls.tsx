@@ -110,9 +110,9 @@ const TheControls = () => {
     <section data-note="qc-controls" className="py-16 lg:py-24">
       <div className="container">
         <h2 className="text-[28px] font-bold md:text-[34px] lg:text-[38px]">{t(locale, 'The four controls')}</h2>
-        <p className="text-default-600 mt-3 max-w-2xl text-[17px]">
-          {t(locale, 'Three run on every batch. The fourth is by request, for work where size and shape alone do not predict tool life.')}
-        </p>
+        {/* Marc's call: the "three on every batch, fourth by request" line is
+            removed. The distinction it drew is still true and still on record in
+            this file's history — it is no longer stated on the page. */}
 
         <div className="mt-10 grid gap-6 lg:mt-14 lg:grid-cols-12">
           {CONTROLS.map((c, i) => (
