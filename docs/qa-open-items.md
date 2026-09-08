@@ -174,6 +174,17 @@ stone misrepresents what arrives in the drum, and sits oddly next to the CVD/MCD
 note directly above about particles needing to read sharp and faceted. Applies
 across the product photography, not to one file.
 
+**Also flagged: more chemical.** Noted 08/09/26 against the same photography.
+Read as: the frames should lean toward the chemical and laboratory side of the
+process — cleaning, grading, measurement — rather than presenting the material
+as a finished gem. It sits with the two notes above it, which point the same
+way: sharper, more faceted particles, and no outsized stones.
+
+⚠ Recorded as given, and it is short enough to be read more than one way. If
+what was meant is specifically the **Advanced Chemical Cleaning** control rather
+than the photography generally, this note is in the wrong section — check before
+briefing anyone on it.
+
 ⚠ **Two of these files are shared.** `product-images.ts` already notes that the
 resin-bond frame is deliberately reused for metal bond and CBN, and
 `resin-bond-...-hero.png` is also mapped to `nickel-coated`. So replacing "the
