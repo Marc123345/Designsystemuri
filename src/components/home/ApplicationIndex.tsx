@@ -26,12 +26,15 @@ import type { Locale } from '@/i18n/routing'
  * block below it so the two stay identical by construction.
  */
 
+/* Chosen to read at 56-64px, where a generic glyph looks like a placeholder.
+   Each one names the work rather than the industry: a bur for dental, a saw
+   blade for grinding and cutting, a wafer for semiconductor. */
 const HUB_ICONS: Record<string, string> = {
   dental: 'tabler:dental',
-  'grinding-cutting-sawing-drilling': 'tabler:tools',
+  'grinding-cutting-sawing-drilling': 'tabler:blade',
   'semiconductor-electronics': 'tabler:cpu',
-  'automotive-aerospace': 'tabler:plane',
-  'tool-and-die': 'tabler:settings',
+  'automotive-aerospace': 'tabler:plane-tilt',
+  'tool-and-die': 'tabler:tools',
   'polishing-lapping': 'tabler:diamond',
 }
 

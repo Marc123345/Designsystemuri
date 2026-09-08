@@ -4,23 +4,40 @@ import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
 
 /**
- * The card and grid behind both index blocks on the homepage: the six
- * application hubs, and the four QC controls.
+ * The index grid behind both blocks on the homepage: the six application hubs,
+ * and the four QC controls.
+ *
+ * ── After Strauss's core-values row ─────────────────────────────────────────
+ *
+ * Marc's reference. The shape there is a centred column per item — a large icon
+ * on its own, the label under it — with a dashed rule running between columns,
+ * and on hover the icon lifts while the label takes the brand colour. It reads
+ * as a set of related things rather than a stack of cards, which is exactly
+ * what six hubs and four controls are.
+ *
+ * What is taken and what is not:
+ *
+ *   taken     centred column, icon above label, dashed separators, the lift and
+ *             the colour change on hover.
+ *   not taken the paragraph under each label. Strauss has four values with a
+ *             sentence each to justify them; these are index entries, and the
+ *             label is the whole content. Adding blurbs would put this section
+ *             back at the height it was cut down from.
+ *
+ * The separator is drawn on the item, not between grid cells, and suppressed on
+ * the last of each row — so it works at three columns, four, two and one
+ * without a media query per arrangement.
  *
  * ── One component, not two that look alike ──────────────────────────────────
  *
- * Marc asked for the QC block to use the same layout as the applications
- * block. Copying the markup would have satisfied that for exactly as long as
- * nobody edited either copy. They share this instead, so "the same layout" is
- * enforced rather than maintained.
+ * Both blocks share this, so "the same layout" is enforced rather than
+ * maintained by hand.
  *
  * ── Tiles are optionally links ──────────────────────────────────────────────
  *
- * An application hub has its own page, so those tiles link and carry the arrow
- * and the "Explore" reveal. The four QC controls do not have a page each —
- * they are all explained on /quality — so those render as plain tiles and the
- * single CTA underneath carries the route. Four identical links to one page is
- * four chances to click the same thing.
+ * An application hub has its own page. The four QC controls do not — they are
+ * all explained on /quality — so those render as plain columns and the single
+ * CTA underneath carries the route.
  */
 
 export interface IconIndexItem {
@@ -29,7 +46,16 @@ export interface IconIndexItem {
   href?: string
 }
 
-const CARD = 'border-default-200 flex items-center gap-4 border bg-white px-5 py-5 transition-colors'
+const COL =
+  'group relative flex flex-col items-center px-4 pt-2 pb-6 text-center transition-colors'
+
+/* The dashed rule, drawn as a repeating gradient rather than a border so the
+   dash length does not change with the column width. Hidden on the last item in
+   each row at every breakpoint, and on the last item overall. */
+const RULE =
+  "after:pointer-events-none after:absolute after:end-0 after:top-6 after:bottom-6 after:w-px " +
+  "after:bg-[repeating-linear-gradient(180deg,var(--color-default-300)_0_6px,transparent_6px_12px)] " +
+  "last:after:hidden max-lg:[&:nth-child(2n)]:after:hidden max-sm:after:hidden"
 
 export default function IconIndex({
   items,
@@ -41,41 +67,29 @@ export default function IconIndex({
   columns?: 3 | 4
 }) {
   const cols = columns === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'
+  const nth = columns === 4 ? 'lg:[&:nth-child(4n)]:after:hidden' : 'lg:[&:nth-child(3n)]:after:hidden'
 
   return (
-    <div className={`grid gap-3 sm:grid-cols-2 ${cols}`}>
+    <div className={`grid gap-y-10 sm:grid-cols-2 ${cols}`}>
       {items.map((item) => {
         const body = (
           <>
-            <span className="bg-primary/5 text-primary group-hover:bg-primary flex size-12 shrink-0 items-center justify-center transition-colors group-hover:text-white">
-              <Icon icon={item.icon} className="size-6" />
+            <span className="text-primary mb-5 transition-transform duration-300 group-hover:-translate-y-2.5">
+              <Icon icon={item.icon} className="size-14 lg:size-16" />
             </span>
 
-            <span className="text-default-900 group-hover:text-primary text-[15px] leading-snug font-semibold transition-colors">
+            <span className="text-default-900 group-hover:text-primary text-[17px] leading-snug font-semibold text-balance transition-colors lg:text-[19px]">
               {t(locale, item.label)}
             </span>
-
-            {/* Only on the tiles that go somewhere. Width-animated rather than
-                mounted on hover, so the row never reflows and the arrows stay
-                in column whatever the label length — these run from "Dental"
-                to "Grinding, Cutting, Sawing & Drilling". */}
-            {item.href && (
-              <span className="ms-auto flex shrink-0 items-center gap-1.5">
-                <span className="text-primary max-w-0 overflow-hidden text-[13px] font-semibold whitespace-nowrap opacity-0 transition-all duration-300 group-hover:max-w-24 group-hover:opacity-100">
-                  {t(locale, 'Explore')}
-                </span>
-                <Icon icon="tabler:arrow-narrow-right" className="text-default-400 group-hover:text-primary size-5 shrink-0 transition-all group-hover:translate-x-1" />
-              </span>
-            )}
           </>
         )
 
         return item.href ? (
-          <Link key={item.label} href={item.href} className={`group hover:border-primary focus-visible:border-primary ${CARD}`}>
+          <Link key={item.label} href={item.href} className={`${COL} ${RULE} ${nth}`}>
             {body}
           </Link>
         ) : (
-          <div key={item.label} className={`group ${CARD}`}>
+          <div key={item.label} className={`${COL} ${RULE} ${nth}`}>
             {body}
           </div>
         )

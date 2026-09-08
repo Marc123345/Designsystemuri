@@ -47,11 +47,16 @@ const ProofPanel = ({ title, desc, pillars, ghost, aspect = 'portrait' }: { /** 
      a heading and three tiles, which is the shape he approved on Strauss. */
   <section data-note="core-values" className="bg-default-50 relative overflow-hidden py-14 lg:py-20">
     <div className="container">
-      <div className="grid items-end gap-8 lg:grid-cols-12 lg:gap-14">
-        <div className="lg:col-span-7">
-          <h2 className="text-[24px] font-bold md:text-[30px] lg:text-[34px]">{title}</h2>
-        </div>
-        {desc && <p className="text-default-600 lg:col-span-5">{desc}</p>}
+      {/* Centred and full width, matching the other index blocks on this page.
+          It was a 7/12 column beside a 5/12 paragraph — but no caller passes
+          `desc` any more, so the heading was being squeezed into 58% of the
+          container for a paragraph that is not there, which is what wrapped
+          "One accountable manufacturer, spec to delivery." onto two lines.
+          `text-balance` keeps it from breaking badly if a longer title is ever
+          passed, or on a narrow window where one line genuinely will not fit. */}
+      <div className="mx-auto max-w-4xl text-center">
+        <h2 className="text-[24px] font-bold text-balance md:text-[30px] lg:text-[34px]">{title}</h2>
+        {desc && <p className="text-default-600 mt-4">{desc}</p>}
       </div>
 
       <div className="mt-10 lg:mt-12">
