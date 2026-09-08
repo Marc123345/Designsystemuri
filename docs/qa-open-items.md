@@ -154,6 +154,30 @@ defect — LCP is 3.4s with 87% of it render delay and no blocking JavaScript,
 which is cumulative page weight. The section reduction is aimed at exactly that,
 so it is deliberately not being optimised beforehand.
 
+## 6 · Product photography Marc has flagged for replacement
+
+Raised 08/09/26. None of this is a code change — the components and the mapping
+in `src/lib/product-images.ts` are fine. It is the photographs themselves.
+
+| Product | What is wrong | Current file |
+| --- | --- | --- |
+| Polycrystalline diamond | Image needs replacing | `polycrystalline-diamond-powder-hero.png` |
+| Single crystal diamond | Image needs replacing | `single-crystal-diamond-plates-hero.png` |
+| CVD & MCD | **Particles are not sharp enough** — the crystals need to read as faceted and hard-edged, which is the whole claim of the product | `single-crystal-diamond-plates-alt-tray.png` |
+| Metal bond | Image needs replacing | `metal-bond-diamond-grit-hero.png`, `metal-bond-diamond-crystal-closeup-alt.png` |
+| CBN | Image needs replacing | `cbn-amber-and-black-grit-hero.png`, `cbn-amber-and-black-grit-alt-warm.png` |
+| Resin bond | Image needs replacing | `resin-bond-diamond-uncoated-nickel-coated-hero.png`, `resin-bond-diamond-uncoated-nickel-coated-alt-square.png` |
+
+⚠ **Two of these files are shared.** `product-images.ts` already notes that the
+resin-bond frame is deliberately reused for metal bond and CBN, and
+`resin-bond-...-hero.png` is also mapped to `nickel-coated`. So replacing "the
+resin bond image" changes three products unless the replacements are supplied
+separately. Worth deciding per product before shooting or sourcing.
+
+Once new files land, drop them in `src/assets/images/products/photo/` and
+repoint the imports at the top of `src/lib/product-images.ts` — nothing else
+references these paths.
+
 ## What passed and needed nothing
 
 **Reachability**, measured off the built link graph rather than estimated. Every
