@@ -168,6 +168,12 @@ in `src/lib/product-images.ts` are fine. It is the photographs themselves.
 | CBN | Image needs replacing | `cbn-amber-and-black-grit-hero.png`, `cbn-amber-and-black-grit-alt-warm.png` |
 | Resin bond | Image needs replacing | `resin-bond-diamond-uncoated-nickel-coated-hero.png`, `resin-bond-diamond-uncoated-nickel-coated-alt-square.png` |
 
+**Also flagged: remove the big stones.** Several product frames show large,
+gem-like crystals. EID sells grit and powder — mesh and micron — so an outsized
+stone misrepresents what arrives in the drum, and sits oddly next to the CVD/MCD
+note directly above about particles needing to read sharp and faceted. Applies
+across the product photography, not to one file.
+
 ⚠ **Two of these files are shared.** `product-images.ts` already notes that the
 resin-bond frame is deliberately reused for metal bond and CBN, and
 `resin-bond-...-hero.png` is also mapped to `nickel-coated`. So replacing "the
