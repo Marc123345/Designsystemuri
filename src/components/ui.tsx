@@ -69,7 +69,13 @@ from assistive tech. Without that, every CTA on the site announced and
 copy-pasted as "Request a Quote Request a Quote". */}
       <span className="relative block overflow-hidden">
         <span className={`block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] ${slide.hover}`}>{label}</span>
-        <span aria-hidden="true" className={`absolute start-0 ${slide.rest} duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:top-0`}>
+        {/* `select-none` matters as much as `aria-hidden` here. aria-hidden
+            takes this copy out of the accessibility tree, so screen readers
+            stopped announcing "Request a Quote Request a Quote" — but it does
+            nothing for text selection, so anyone copying a page still got the
+            label twice, and so did anything scraping the rendered text. Marc
+            hit exactly that pasting "Explore our QC / Explore our QC". */}
+        <span aria-hidden="true" className={`absolute start-0 select-none ${slide.rest} duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:top-0`}>
           {label}
         </span>
       </span>
