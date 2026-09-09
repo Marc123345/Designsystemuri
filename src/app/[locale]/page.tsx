@@ -2,7 +2,6 @@ import CurtainGrid from '@/components/CurtainGrid'
 import ApplicationIndex from '@/components/home/ApplicationIndex'
 import QualityControlsStrip from '@/components/home/QualityControlsStrip'
 import ProofPanel from '@/components/home/ProofPanel'
-import QualityContactBento from '@/components/home/QualityContactBento'
 import { Faq } from '@/components/sections'
 import CanvasField from '@/components/CanvasField'
 import VideoHero from '@/components/VideoHero'
@@ -365,7 +364,19 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           announced before the bento — as one line rather than a band. */}
       <QualityControlsStrip locale={locale} />
 
-      <QualityContactBento />
+      {/* ── THE CONTACT BENTO IS GONE FROM THIS PAGE ──────────────────────
+          Marc's call. It was "Tell us what you need" over a Contact button,
+          beside a plate carrying the email and phone rows.
+
+          Nothing about reaching EID is lost with it: Contact is the one
+          persistent button in the header on every page, the footer carries the
+          same email and phone, and the floating WhatsApp control sits over all
+          of it. This was the fourth copy of that on a single scroll.
+
+          It was rendered here and nowhere else, so components/home/
+          QualityContactBento.tsx went with it rather than being left as an
+          unreferenced file. It is in this commit's history if it is wanted
+          back. */}
 
       {/* REACH lived here as <GlobeSection />. Uri's V1 note moves it: the
           corrected version is canonical on About, and Contact closes with the
