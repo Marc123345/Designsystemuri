@@ -322,7 +322,23 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
               material; the reader arriving here is looking for their industry. */}
           <div className="mx-auto max-w-3xl text-center">
             <Eyebrow>{t(locale, 'Applications')}</Eyebrow>
-            <h2 className="mt-4 text-[24px] font-bold md:text-[30px] lg:text-[34px]">{t(locale, 'Applications and industries we supply.')}</h2>
+            {/* ── ⚠ THIS HEADING MUST NOT CLAIM TO BE THE WHOLE LIST ────────
+                "Applications and industries we supply." read as a complete
+                inventory of who EID sells to. It is not: these are the six
+                hubs that have pages behind them, and EID supplies well beyond
+                them — Marc's correction.
+
+                The fix is in the verb, not a qualifier. "Where our diamond and
+                CBN go to work" describes what the six tiles are — places the
+                material is used — without implying they are the only ones, so
+                nothing has to be walked back when a seventh hub is added.
+
+                ⚠ Do not "tighten" this back to a count. "Six industries…" is
+                the same trap the products heading was pulled out of, where
+                "Eight groups, from natural grit to single crystal" had to be
+                dropped because the number goes stale the moment the range
+                changes. */}
+            <h2 className="mt-4 text-[24px] font-bold md:text-[30px] lg:text-[34px]">{t(locale, 'Where our diamond and CBN go to work.')}</h2>
           </div>
 
           <div className="mt-8 lg:mt-10">
