@@ -3,7 +3,7 @@
 import { Link, usePathname } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
-import { primaryNav, resourceMenu, site } from '@/lib/site'
+import { primaryNav, productMenu, resourceMenu, site } from '@/lib/site'
 import { ArrowButton } from '@/components/ui'
 import { Icon } from '@iconify/react'
 import { useLocale } from 'next-intl'
@@ -120,8 +120,8 @@ const Navbar = () => {
   // 'applications' is gone from this union deliberately: that entry is a plain
   // link now, so no panel is ever built for it. Leaving the case in place
   // would be a branch nothing can reach.
-  const menuPanel = (menu: 'resources') => {
-    const entries = resourceMenu
+  const menuPanel = (menu: 'products' | 'resources') => {
+    const entries = menu === 'products' ? productMenu : resourceMenu
     return (
       <div
         /* ── ⚠ THE PADDING IS THE HOVER BRIDGE. DO NOT MAKE IT A MARGIN. ────
@@ -234,16 +234,48 @@ const Navbar = () => {
               const active = isActive(item.href)
               const menu = 'menu' in item ? item.menu : undefined
               if (menu) {
+                /* ── ⚠ A MENU ENTRY THAT IS ALSO A DESTINATION ────────────────
+                   Products is back as a dropdown, and it is a LINK, not the
+                   <button> the other menu entries use.
+
+                   That distinction is the whole reason it was removed in the
+                   first place: as a plain `menu` entry it rendered as a
+                   dropdown button, and a button cannot navigate — so hovering
+                   opened the panel and clicking did nothing at all. Making it a
+                   link again without the panel lost the eight product pages
+                   from the header; making it a button again loses the click.
+                   It is both now. Hover opens the panel, click goes to
+                   `/#products`.
+
+                   Preline drives the panel off `.hs-dropdown-toggle`, which it
+                   is happy to find on an anchor, so `[--trigger:hover]` behaves
+                   exactly as it does on the button entries.
+
+                   `linkMenu` is what marks an entry as both. Resources stays a
+                   button: its href is an active-state prefix pointing at an
+                   index page that was removed, so it has nowhere to go. */
+                const triggerClass = `hs-dropdown-toggle ${navLink(active)}`
+                const triggerInner = (
+                  <>
+                    {t(locale, item.label)}
+                    <Icon icon="tabler:chevron-down" className="hs-dropdown-open:rotate-180 size-3.5 transition-transform duration-300" />
+                  </>
+                )
                 return (
                   /* `[--offset:0]` overrides Preline's 10px default gap. The
                      air under the trigger has not gone anywhere — it is
                      `pt-2.5` on the panel now, inside the hover area rather
                      than outside it. See the long note on menuPanel. */
                   <div key={item.href} className="hs-dropdown relative inline-flex [--offset:0] [--trigger:hover]">
-                    <button type="button" className={`hs-dropdown-toggle ${navLink(active)}`} aria-haspopup="menu" aria-expanded="false">
-                      {t(locale, item.label)}
-                      <Icon icon="tabler:chevron-down" className="hs-dropdown-open:rotate-180 size-3.5 transition-transform duration-300" />
-                    </button>
+                    {item.linkMenu ? (
+                      <Link href={item.href} className={triggerClass} aria-haspopup="menu" aria-expanded="false">
+                        {triggerInner}
+                      </Link>
+                    ) : (
+                      <button type="button" className={triggerClass} aria-haspopup="menu" aria-expanded="false">
+                        {triggerInner}
+                      </button>
+                    )}
                     {menuPanel(menu)}
                   </div>
                 )
@@ -316,7 +348,17 @@ const Navbar = () => {
             const active = isActive(item.href)
             const menu = 'menu' in item ? item.menu : undefined
             if (menu) {
-              const entries = resourceMenu
+              /* ⚠ Was hardcoded to `resourceMenu`, which was correct only while
+                 Resources was the single menu entry. With Products back as a
+                 dropdown, that would have listed the three resource links under
+                 the Products accordion on every phone. Reads the entry now.
+
+                 Products stays an accordion here rather than the link+panel it
+                 is on desktop: there is no hover on a touchscreen, so a tap has
+                 to do one thing or the other, and opening the eight product
+                 pages is more use than scrolling to the section that lists
+                 them. */
+              const entries = menu === 'products' ? productMenu : resourceMenu
               return (
                 <div key={'m-' + item.href} className="hs-accordion">
                   <button type="button" className={`hs-accordion-toggle w-full px-4 py-4 ${navLink(active)}`} aria-expanded="false">

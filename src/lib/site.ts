@@ -64,12 +64,18 @@ export const resourceMenu = [
 // differentiator), then research, then company, then the conversion endpoint.
 export const primaryNav = [
   { label: 'Home', href: '/' },
-  // Same treatment as Applications below, and for the same reason: as a `menu`
-  // entry this rendered as a dropdown button, so "clicking goes to the range
-  // section on the homepage" was never true — the button could not navigate.
-  // Plain link now; the eight product pages are reachable from the range
-  // section it scrolls to.
-  { label: 'Products', href: '/#products' },
+  // ── PRODUCTS IS BOTH A LINK AND A DROPDOWN ──────────────────────────────
+  // `linkMenu` rather than `menu`: the panel opens on hover AND the label
+  // navigates on click. Marc asked for the dropdown back, and this is the
+  // shape that does not re-introduce the bug it was removed for — as a plain
+  // `menu` entry it rendered as a <button>, which cannot navigate, so clicking
+  // it did nothing. See the long note at the render site in Navbar.tsx.
+  //
+  // Applications below stays a plain link: its six hubs are the section the
+  // link scrolls to, so a panel would be a second copy of what the scroll
+  // already reveals. Products is different — eight product pages, none of them
+  // reachable in one click from anywhere in the header until now.
+  { label: 'Products', href: '/#products', menu: 'products' as const, linkMenu: true },
   // NOT a menu entry, unlike Products above. A `menu` item renders as a
   // dropdown *button*, which cannot navigate — so the old comment here ("clicking
   // goes to the applications section") was never true: hovering opened a panel

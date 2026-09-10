@@ -1,4 +1,5 @@
 import CurtainGrid, { type CurtainItem } from '@/components/CurtainGrid'
+import { Eyebrow } from '@/components/ui'
 
 /**
  * The three pillars as curtain tiles.
@@ -37,7 +38,7 @@ export type Pillar = CurtainItem & { meta: string }
 
 /* ══════════════════════════ THE SECTION ══════════════════════════ */
 
-const ProofPanel = ({ title, desc, pillars, ghost, aspect = 'portrait' }: { /** Retained for call-site compatibility; the band above carries it now. */ eyebrow?: string; title: string; desc?: string; pillars: Pillar[]; ghost?: string; /** 'landscape' (4:3) is shorter than the default portrait (3:4). */ aspect?: 'portrait' | 'landscape' }) => (
+const ProofPanel = ({ eyebrow, title, desc, pillars, ghost, aspect = 'portrait' }: { /** Rendered again — see the note on the heading below. */ eyebrow?: string; title: string; desc?: string; pillars: Pillar[]; ghost?: string; /** 'landscape' (4:3) is shorter than the default portrait (3:4). */ aspect?: 'portrait' | 'landscape' }) => (
   /* Halved, per Uri's V1 note: "the whole section about half a screen, the
      wording is what matters, not the image."
 
@@ -54,8 +55,17 @@ const ProofPanel = ({ title, desc, pillars, ghost, aspect = 'portrait' }: { /** 
           "One accountable manufacturer, spec to delivery." onto two lines.
           `text-balance` keeps it from breaking badly if a longer title is ever
           passed, or on a narrow window where one line genuinely will not fit. */}
+      {/* ⚠ THE EYEBROW IS RENDERED AGAIN, AND WAS NOT FOR A WHILE.
+          This component took `eyebrow` and threw it away: the blue SectionBanner
+          strip directly above it used to carry the label, so the prop was kept
+          only so the call site would not break. Those strips were removed, and
+          the prop went on being passed and silently dropped — the home page has
+          been sending "Why tool makers qualify EID" into nothing since. It is
+          the label this section wants, so it is back on the heading it belongs
+          to rather than a band that no longer exists. */}
       <div className="mx-auto max-w-4xl text-center">
-        <h2 className="text-[24px] font-bold text-balance md:text-[30px] lg:text-[34px]">{title}</h2>
+        {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+        <h2 className={`text-[24px] font-bold text-balance md:text-[30px] lg:text-[34px] ${eyebrow ? 'mt-4' : ''}`}>{title}</h2>
         {desc && <p className="text-default-600 mt-4">{desc}</p>}
       </div>
 

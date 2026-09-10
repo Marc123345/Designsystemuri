@@ -141,6 +141,38 @@ export const ChapterMarker = ({ index, label }: { index: string; label: string }
 )
 
 /** Section heading block: eyebrow, H2, optional lede. */
+/**
+ * The section eyebrow: a short mono label above an h2, in the brand blue.
+ *
+ * ── Why this exists as a component ──────────────────────────────────────────
+ *
+ * The site already had this label — About's "About", Quality's "Quality
+ * control", the product and application pages' "The range" and "The
+ * application" — but each one was a hand-written span carrying the same six
+ * utility classes, and the home page had none at all. Its four section
+ * headings sat bare, so a reader scanning the page got no register above the
+ * statement, and the home page read as a different site from the interior
+ * pages it introduces.
+ *
+ * ── Blue, not grey ──────────────────────────────────────────────────────────
+ *
+ * Marc's call. The existing hand-written labels are `text-default-500`, which
+ * on `--color-canvas` (#fbfbfd) is quiet enough that it reads as a caption
+ * under the heading rather than a label over it. `text-primary` (#2c3c6c) is
+ * the one colour on the page that means "this is EID's own voice", and it is
+ * what the icon controls, the accent rules and the stat tiles already use.
+ *
+ * At 11px with 0.22em tracking the weight is carried by the letterspacing, not
+ * the colour, so blue here is a register change rather than emphasis.
+ *
+ * ⚠ `align` is not a style choice. The home page centres its headings and the
+ * interior pages rule them off to the left; passing the wrong one puts the
+ * label out of step with the h2 directly under it.
+ */
+export const Eyebrow = ({ children, align = 'center' }: { children: React.ReactNode; align?: 'start' | 'center' }) => (
+  <p className={`text-primary font-mono text-[11px] tracking-[0.22em] uppercase ${align === 'center' ? 'text-center' : ''}`}>{children}</p>
+)
+
 export const SectionHeading = ({ eyebrow, title, desc, align = 'start', light = false }: { eyebrow?: string; title: string; desc?: string; align?: 'start' | 'center'; light?: boolean }) => (
   <div className={`max-w-3xl ${align === 'center' ? 'mx-auto text-center' : ''}`}>
     {eyebrow && (

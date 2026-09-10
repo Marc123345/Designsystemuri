@@ -20,7 +20,7 @@ import { Icon } from '@iconify/react'
 import { useLocale } from 'next-intl'
 import Image from 'next/image'
 import QuoteForm from './QuoteForm'
-import { ArrowButton, ArrowLink, SectionHeading } from './ui'
+import { ArrowButton, ArrowLink, Eyebrow, SectionHeading } from './ui'
 
 export type Card = {
   icon: string
@@ -729,7 +729,15 @@ export const Faq = ({
           several of them run to a full paragraph. */}
       <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="lg:sticky lg:top-28 lg:col-span-5 lg:self-start">
-          <SectionHeading eyebrow={eyebrow} title={title} desc={desc} />
+          {/* Not SectionHeading. That renders the eyebrow as a bordered white
+              chip with a square dot — the site's other eyebrow idiom, and the
+              one every OTHER heading on the home page has now moved off. Faq is
+              rendered on the home page and nowhere else, so switching it here
+              makes that page consistent without touching the chip where it is
+              still used. */}
+          <Eyebrow align="start">{eyebrow}</Eyebrow>
+          <h2 className="mt-4 text-[28px] font-bold md:text-[36px] lg:text-[42px]">{title}</h2>
+          {desc && <p className="mt-5">{desc}</p>}
 
           {plate && (
             <figure className="border-default-200 bg-default-50 rounded-card mt-10 overflow-hidden border">

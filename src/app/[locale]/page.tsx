@@ -1,6 +1,7 @@
 import CurtainGrid from '@/components/CurtainGrid'
 import ApplicationIndex from '@/components/home/ApplicationIndex'
 import QualityControlsStrip from '@/components/home/QualityControlsStrip'
+import { Eyebrow } from '@/components/ui'
 import ProofPanel from '@/components/home/ProofPanel'
 import { Faq } from '@/components/sections'
 import CanvasField from '@/components/CanvasField'
@@ -196,7 +197,8 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
                 came off; it says the same thing in fewer words than the
                 paragraph did. */}
             <div className="mx-auto max-w-3xl text-center">
-              <h2 className="text-[24px] font-bold md:text-[30px] lg:text-[34px]">{t(locale, 'Every industrial diamond and CBN product, from one source.')}</h2>
+              <Eyebrow>{t(locale, 'The range')}</Eyebrow>
+              <h2 className="mt-4 text-[24px] font-bold md:text-[30px] lg:text-[34px]">{t(locale, 'Every industrial diamond and CBN product, from one source.')}</h2>
             </div>
           </div>
 
@@ -319,7 +321,8 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
               line ("Diamond and CBN for the work your tools do.") described the
               material; the reader arriving here is looking for their industry. */}
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-[24px] font-bold md:text-[30px] lg:text-[34px]">{t(locale, 'Applications and industries we supply.')}</h2>
+            <Eyebrow>{t(locale, 'Applications')}</Eyebrow>
+            <h2 className="mt-4 text-[24px] font-bold md:text-[30px] lg:text-[34px]">{t(locale, 'Applications and industries we supply.')}</h2>
           </div>
 
           <div className="mt-8 lg:mt-10">

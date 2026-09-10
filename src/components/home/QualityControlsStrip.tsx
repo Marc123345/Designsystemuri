@@ -1,4 +1,4 @@
-import { ArrowButton } from '@/components/ui'
+import { ArrowButton, Eyebrow } from '@/components/ui'
 import IconIndex from '@/components/home/IconIndex'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
@@ -41,7 +41,8 @@ export default function QualityControlsStrip({ locale }: { locale: Locale }) {
     <section data-note="qc-strip" className="relative isolate py-14 lg:py-20">
       <div className="container">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-[24px] font-bold md:text-[30px] lg:text-[34px]">{t(locale, 'Every lot, four controls.')}</h2>
+          <Eyebrow>{t(locale, 'Quality control')}</Eyebrow>
+          <h2 className="mt-4 text-[24px] font-bold md:text-[30px] lg:text-[34px]">{t(locale, 'Every lot, four controls.')}</h2>
         </div>
 
         <div className="mt-8 lg:mt-10">
