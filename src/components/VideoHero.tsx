@@ -85,9 +85,29 @@ const VideoHero = ({
     /* `rounded-b-card` — Uri's 24px, bottom corners only. The band runs under
        the navbar to the top of the viewport, where there is nothing for a
        radius to be a radius against. */
+    /* ── CENTRED IN THE BAND, NOT PINNED TO THE BOTTOM OF IT ───────────
+       This was `items-end` with the lockup's clearance built into its own
+       top padding, and that only balanced the one hero it was tuned on.
+       `min-h` is a floor, so whenever the content is shorter than the floor
+       the leftover height has to go somewhere — pinned to the bottom, ALL of
+       it went above the mark. Measured on /about: 48px between the navbar
+       rule and the mark against 64px under the headline, on a hero whose
+       content is a mark and two lines.
+
+       `items-center` splits that slack instead of stacking it at the top, and
+       the navbar clearance moves here as padding — `pt-19`/`lg:pt-24` are the
+       navbar's own `h-[76px]`/`lg:h-[96px]`, so the centring happens in the
+       space BELOW the bar rather than behind it. Keep them in step: if the
+       navbar height changes, these change with it.
+
+       EVERY hero was off, not just /about — home measured 48/64 too. The
+       wrapper below is symmetric `py-14`, which is 56px a side: the same 112px
+       of vertical padding the old 48+64 spent, redistributed. So the heroes
+       balance without any of them changing height, and the note above about
+       the next section still clearing the fold holds unchanged. */
     <section
       data-note="hero"
-      className={`bg-primary-3 rounded-b-card relative isolate flex w-full items-end overflow-hidden ${minHeight}`}
+      className={`bg-primary-3 rounded-b-card relative isolate flex w-full items-center overflow-hidden pt-19 lg:pt-24 ${minHeight}`}
     >
       {/* Streaming from EID's own ImageKit account rather than committed, so a
           clip can be recut and swapped without a deploy, and ImageKit answers
@@ -197,7 +217,10 @@ const VideoHero = ({
 
           A background film cannot be relied on to be dark where a blended
           element needs it to be. Solid white is correct on both clips. */}
-      <div className="relative z-10 w-full pt-32 pb-14 lg:pt-36 lg:pb-16">
+      {/* Symmetric, now that the navbar clearance is on the section. 56px a
+          side is half of what the old asymmetric pair spent, so no hero
+          changes height — they just stop sitting low in their own band. */}
+      <div className="relative z-10 w-full py-14">
         <div className="container flex flex-col items-center text-center">
           <HeroMark blend={false} />
 
