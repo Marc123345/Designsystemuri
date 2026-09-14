@@ -2,14 +2,20 @@ import CurtainGrid, { type CurtainItem } from '@/components/CurtainGrid'
 import { Eyebrow } from '@/components/ui'
 
 /**
- * The three pillars as curtain tiles.
+ * The three pillars as photo tiles.
  *
- * Built to the `s-single-services` block in the dawork template. Each tile is a
- * photograph with a white panel over it; the panel retracts on hover and the
- * photograph is underneath. The reference does it with `transform: scaleY(0)`
- * from a centre origin, so the panel splits and pulls away from the middle
- * rather than sliding — that easing curve and that origin are the whole effect
- * and both are kept.
+ * Built to the `s-single-services` block in the dawork template, whose tile is a
+ * photograph behind a white panel that retracts on hover.
+ *
+ * ── The curtain is off, on Marc's instruction ─────────────────────────
+ *
+ * The photographs ARE the evidence for the three claims — the sieve stack, the
+ * two matching micrographs, the shelf of graded jars. Behind a curtain a desktop
+ * reader sees three white panels and no evidence, and has to hover each one to
+ * find out there was a photograph at all. `revealed` is CurtainGrid's word for
+ * the mobile treatment — where there is no hover to wait for — applied at every
+ * width, so it is not a second design, just the one the tile already had below
+ * lg. The retract mechanic still lives in CurtainGrid; no caller uses it now.
  *
  * The tile itself lives in components/CurtainGrid, because the reference uses
  * the same card twice — three across on its home page, six across its services
@@ -26,12 +32,13 @@ import { Eyebrow } from '@/components/ui'
  *
  * Nothing is lost that the site does not still say: each tile links to the page
  * where its claim is made in full, and the section's own lede above still
- * frames all three. Uri's ruling is intact — all three claims fully readable at
- * rest, nothing behind the hover but a photograph.
+ * frames all three. Uri's ruling is more than intact — all three claims are
+ * fully readable at rest, and now so is every photograph.
  *
- * No JavaScript. The reference has none for this either; its `.active` class is
- * hardcoded on the first card so one tile shows its hover state at rest, which
- * is a decision this one does not copy — on a three-up row it reads as a bug.
+ * No JavaScript, and less of it needed than before: with no curtain to open
+ * there is no `.eid-tiles` one-at-a-time rule either, so the row has no state
+ * at all. Hover is left doing what it does on every other card here — nudging
+ * the arrow.
  */
 
 export type Pillar = CurtainItem & { meta: string }
@@ -70,7 +77,7 @@ const ProofPanel = ({ eyebrow, title, desc, pillars, ghost, aspect = 'portrait' 
       </div>
 
       <div className="mt-10 lg:mt-12">
-        <CurtainGrid items={pillars} numbered aspect={aspect} />
+        <CurtainGrid items={pillars} numbered aspect={aspect} revealed />
       </div>
     </div>
 

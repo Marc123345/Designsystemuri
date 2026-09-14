@@ -73,6 +73,25 @@ const Tile = ({ item, index, open, sizes, revealed, numbered, aspect, cell = '' 
           so it costs nothing at rest. */}
       <span aria-hidden className="from-default-950/90 via-default-950/35 absolute inset-0 bg-linear-to-t to-transparent to-70%" />
 
+      {/* ── THE SECOND SCRIM, AND WHY IT IS GATED ON `numbered` ──────────
+          The bottom-up scrim above only covers the copy. The outlined numeral
+          sits top-RIGHT, in the part of the tile the gradient has already run
+          to transparent — which was survivable while the curtain hid the photo
+          at rest, and stopped being survivable the moment the pillars went
+          revealed. On qc-batch-to-batch.jpg, two high-key SEM micrographs, a
+          white hairline numeral over bare photograph is invisible.
+
+          So the tile is scrimmed from both ends and left alone in the middle:
+          type sits on darkness top and bottom, the photograph reads clean
+          through the centre, and nothing is dimmed that does not carry type.
+
+          `numbered` is the correct gate, not `revealed`. The numeral is the
+          only thing that ever sits up there, and it is drawn only when
+          numbered — so darkening the top of the eight product tiles or the
+          application bento, none of which have one, would be shading a
+          photograph for nothing. */}
+      {numbered && <span aria-hidden className="from-default-950/70 absolute inset-0 bg-linear-to-b to-transparent to-45%" />}
+
       {!revealed && (
         <span
           aria-hidden
@@ -173,8 +192,12 @@ const CurtainGrid = ({
    * The curtain is a good device for three claims you want read one at a time.
    * For a catalogue it works against you: eight product groups or six
    * application hubs are something you scan, and a row of white panels gives
-   * the eye nothing to scan. So those grids run revealed, and the curtain stays
-   * where it earns its keep.
+   * the eye nothing to scan.
+   *
+   * As of Marc's note on the three pillars, EVERY caller passes this — the
+   * photographs there are the evidence for the claims, so they show at rest as
+   * well. The retract mechanic below is therefore unused rather than gone;
+   * it is kept because turning a grid back is one prop.
    */
   revealed?: boolean
   /**

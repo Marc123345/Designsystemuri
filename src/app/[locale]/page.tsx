@@ -204,8 +204,8 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 
           {/* Four across, revealed. The eight groups are a catalogue — the
               thing a buyer scans to find their material — so every photograph
-              shows at rest. The curtain stays on the three pillars, where the
-              point is to read one claim at a time. */}
+              shows at rest — as it now does on the three pillars below, which
+              were the last grid holding a curtain. */}
           <div className="mt-14 lg:mt-18">
             <CurtainGrid items={groupTiles} columns={4} revealed />
           </div>
@@ -226,10 +226,10 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
            full, and the lede above still frames all three — but this needs
            Uri's sign-off with the hero lede and the two open FAQ answers.
 
-           This is the one grid that keeps the curtain. The products and
-           applications rows below run revealed, because a catalogue is scanned;
-           three claims are read one at a time, which is what the curtain is
-           for. */
+           This grid was the last one keeping the curtain, and it is revealed
+           now too: the three photographs are the evidence for the three claims,
+           and a desktop reader was getting white panels until they hovered. See
+           the note in ProofPanel. */
         /* Landscape rather than the default portrait: 4:3 instead of 3:4
            takes roughly a quarter off the height of the three numbered tiles. */
         aspect="landscape"

@@ -42,7 +42,7 @@ export default function QualityControlsStrip({ locale }: { locale: Locale }) {
       <div className="container">
         <div className="mx-auto max-w-3xl text-center">
           <Eyebrow>{t(locale, 'Quality control')}</Eyebrow>
-          <h2 className="mt-4 text-[24px] font-bold md:text-[30px] lg:text-[34px]">{t(locale, 'Every lot, four controls.')}</h2>
+          <h2 className="mt-4 text-[24px] font-bold md:text-[30px] lg:text-[34px]">{t(locale, 'Every lot is tested four ways before it ships.')}</h2>
         </div>
 
         <div className="mt-8 lg:mt-10">
