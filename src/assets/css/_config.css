@@ -1,78 +1,24 @@
-/* Themes Config */
+/* EID design tokens — the Tailwind-facing layer.
+ *
+ * Typography itself lives in _typography.css. This file exposes the same font
+ * stack to Tailwind utilities and keeps colour, radius, shadow and animation
+ * tokens in one place so components do not invent their own values. */
 @theme {
+    --font-heading: var(--font-sans);
+    --font-body: var(--font-sans);
 
-    --font-heading: "Mona Sans", sans-serif;
-    --font-body: "Geist", sans-serif;
-
-    /* EID — Industrial Precision blue, carried over from the previous build so
-       the brand reads identically. Replaces the template's orange. */
+    /* Brand palette: one blue family, used from accent to full dark surface. */
     --color-primary: #2c3c6c;
     --color-primary-1: #3d5290;
     --color-primary-2: #2c3c6c;
     --color-primary-3: #1c2749;
 
-    /* ── Card radius ─────────────────────────────────────────────────────
-       Uri's note, off Strauss: 24px on the cards and on the hero.
-
-       One token rather than `rounded-[24px]` at each call site, because this
-       site had no radius at all before it — every division was a hairline and
-       every corner was square — so this is a change of language, not a tweak.
-       When it is adjusted it has to move everywhere at once, and a token is the
-       only way that stays true.
-
-       `--radius-*` under @theme generates the `rounded-card` utility. */
-    --radius-card: 24px;
-
-    /* The same decision at control scale. 24px on a 44px-tall button is a
-       pill, and a pill is a different statement from a rounded card — Strauss
-       does run pills, so that is a live option, but it is a bigger change than
-       "round the corners" and should be Uri's to make rather than a side
-       effect of this one.
-
-       12px is half the card radius: unmistakably rounded, still square-ish
-       enough to read as an industrial control. Buttons, eyebrow chips, icon
-       buttons and form fields all take it, so nothing on the site is left as
-       the one hard-edged thing. */
-    --radius-control: 12px;
-
-    /* ── The light canvas, in two steps ──────────────────────────────────
-       Every light section on this site was pure white, and every dark one was
-       navy. Nothing in between, which meant a run of light sections read as
-       one continuous field with content floating in it — the SectionBanner
-       strips were doing all the separating on their own.
-
-       `canvas` is white's neighbour: the brand navy at about 4% over white.
-       Deliberately NOT `default-50`. The slate ramp is a neutral grey and this
-       is a tint of the actual brand colour, so a light section sitting on it
-       is quietly related to the navy bands above and below it rather than just
-       being a bit dirtier than the section next door. The difference is under
-       three points per channel; it is meant to be felt rather than seen.
-
-       Use it the way the banners already walk their shades down the page: white
-       where the content is the subject, `canvas` where it is a supporting or
-       index-like band. Two steps only. A third would need a reason.
-
-       ⚠ 2% IS NOT A TASTE DECISION AND IT MUST NOT BE DEEPENED WITHOUT
-       RE-MEASURING. `text-default-500` — the smallest grey this site puts on a
-       light ground — is 4.759:1 on white, a quarter of a point above the 4.5
-       floor. Tinting the ground spends that headroom directly:
-
-         1%  #fdfdfe   4.680      3%  #f9f9fb   4.526   ← arithmetic ceiling
-         2%  #fbfbfd   4.603      4%  #f7f7f9   4.450   ← FAILS
-
-       A first pass shipped 4% and broke it. 3% technically clears, by 0.026,
-       which is the floor to two decimal places rather than a margin — this file
-       has been here before, with the label in QualityContactBento that measured
-       4.54 and got lifted for exactly that reason. 2% is the deepest value with
-       a real margin, and it is enough: the tint is doing its job alongside a
-       section boundary and a mesh, not on its own.
-
-       ⚠ AND IT STILL CANNOT CARRY `text-default-500`. 4.603 is a margin for the
-       tint on its own; put CanvasField's grain and mesh on top and the stack
-       falls to 4.39-4.45, under the floor, with no grain setting that recovers
-       it. Tint a section OR texture it where that grey appears, not both. See
-       the budget table in CanvasField. */
+    /* Surfaces. `canvas` is intentionally only a 2% navy tint so muted copy
+       keeps its contrast margin while adjacent white sections still separate. */
     --color-canvas: #fbfbfd;
+    --color-surface: #ffffff;
+    --color-surface-soft: #fbfbfd;
+    --color-surface-brand: #1c2749;
 
     --color-body-bg: var(--color-white);
     --color-body-color: var(--color-slate-600);
@@ -89,42 +35,39 @@
     --color-default-900: var(--color-slate-900);
     --color-default-950: var(--color-slate-950);
 
-    /* Crossfade for the grade explorer photo, so switching grade reads as one
-       sample replacing another rather than a hard cut. */
-    --animate-grade-fade: grade-fade 400ms ease-out;
+    /* Shape language: cards are generous, controls are half that radius. */
+    --radius-card: 24px;
+    --radius-control: 12px;
+
+    /* Elevation is intentionally quiet. Borders do most of the structural
+       work; shadow only adds separation and a small hover lift. */
+    --shadow-card: 0 1px 2px rgb(15 23 42 / 0.04), 0 10px 28px rgb(28 39 73 / 0.05);
+    --shadow-card-hover: 0 2px 4px rgb(15 23 42 / 0.05), 0 18px 42px rgb(28 39 73 / 0.10);
+
+    /* Existing component animations, now aligned to the site motion curve. */
+    --animate-grade-fade: grade-fade 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    --animate-proof-rise: proof-rise 520ms cubic-bezier(0.19, 1, 0.22, 1) both;
 
     @keyframes grade-fade {
         from { opacity: 0; }
         to { opacity: 1; }
     }
 
-    /* Proof panel (components/home/ProofPanel).
-     *
-     * `proof-rise` brings one swatch tile in. Same 12px lift and the same
-     * easing as the site's other entrances, so the panel does not introduce a
-     * second motion vocabulary — the tiles just arrive on a stagger instead of
-     * all at once.
-     *
-     * It is `both`-filled and single-iteration, which is what makes the global
-     * prefers-reduced-motion rule in _general.css correct here rather than
-     * destructive: collapsing the duration lands each tile on its END state,
-     * i.e. fully visible. Nothing needs a second reduced-motion rule, and
-     * nothing disappears when motion is off.
-     */
-    --animate-proof-rise: proof-rise 520ms cubic-bezier(0.19, 1, 0.22, 1) both;
-
     @keyframes proof-rise {
         from { opacity: 0; transform: translateY(12px); }
         to { opacity: 1; transform: none; }
     }
 
-    --tw-leading: 1.3em;
-    --text-xs--line-height: 1.3em;
-    --text-sm--line-height: 1.3em;
-    --text-base--line-height: 1.3em;
-    --text-lg--line-height: 1.3em;
-    --text-xl--line-height: 1.3em;
-    --text-2xl--line-height: 1.3em;
-    --text-3xl--line-height: 1.3em;
-    --text-7xl--line-height: 1.1;
+    /* Tailwind text utilities use the same vertical rhythm as the semantic
+       typography roles. This prevents `text-base` from silently reverting a
+       paragraph to the old 1.3 line-height inside an otherwise 1.6 system. */
+    --tw-leading: var(--lh-body);
+    --text-xs--line-height: var(--lh-caption);
+    --text-sm--line-height: var(--lh-small);
+    --text-base--line-height: var(--lh-body);
+    --text-lg--line-height: var(--lh-lead);
+    --text-xl--line-height: var(--lh-h4);
+    --text-2xl--line-height: var(--lh-h3);
+    --text-3xl--line-height: var(--lh-h2);
+    --text-7xl--line-height: var(--lh-display);
 }

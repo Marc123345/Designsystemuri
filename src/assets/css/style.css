@@ -9,29 +9,24 @@ the template it came from.
 /* TailwindCSS */
 @import "tailwindcss";
 
-
 /* Preline UI */
 @import "preline/variants.css";
 @source "preline/dist/*.js";
 
-/* Plugin CSS
-   Only what the site actually uses. lightGallery and AOS were imported here by
-   the template and shipped their stylesheets to every visitor, but neither
-   library is used anywhere in src/ — no lightGallery instance is ever created
-   and there is not a single data-aos attribute in the codebase. Both are gone
-   from package.json too; put the import back at the same time as the code that
-   needs it, not before. */
+/* Plugin CSS */
 @import "swiper/swiper-bundle.css";
 
 /* Tailwind Plugin */
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/forms";
 
-
 @import "./_config.css";
 @import "./_swiper.css";
 @import "./_general.css";
 
-/* Typography is deliberately last: it is the site's semantic type contract and
-   must win over legacy one-off font-size/leading utilities. */
+/* Typography is the semantic type contract. */
 @import "./_typography.css";
+
+/* Loaded last so spacing, surfaces, components and motion resolve around the
+   typography rather than fighting it with local one-off values. */
+@import "./_system.css";
