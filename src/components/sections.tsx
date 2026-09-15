@@ -167,11 +167,15 @@ export const PageHero = ({
           }`}
         />
 
-        {/* A ground for the navbar, which is transparent over these heroes and
-            has white links. The vertical scrim runs bottom-up, so without this
-            the top of the frame carries no darkening at all and a pale
-            photograph erases the navigation. */}
-        <div aria-hidden className="from-default-950/78 absolute inset-x-0 top-0 -z-10 h-36 bg-linear-to-b via-transparent to-transparent" />
+        {/* ⚠ THE NAVBAR GROUND IS GONE — see the same note in VideoHero.
+            This one was heavier than the home hero's (144px at 78% against
+            112px at 55%), so on the product, application and resources heroes
+            it was the most bar-like of the two. The white links are now held
+            by the type shadow in `.eid-nav-over-hero`, not by a ground.
+
+            The bottom-up scrim above is untouched: that one sits under the
+            COPY and is load-bearing for the headline, which is a different
+            job from darkening the top of the frame for the navigation. */}
       </>
     )}
 

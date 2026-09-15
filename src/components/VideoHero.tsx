@@ -194,13 +194,17 @@ const VideoHero = ({
         className="from-primary-3/88 via-primary-3/30 absolute inset-0 -z-10 bg-linear-to-t via-45% to-transparent"
       />
 
-      {/* A ground for the navbar, which is transparent over this hero and has
-          white links. Short and light — enough for the links, not enough to
-          read as a bar across the top of the film. */}
-      <div
-        aria-hidden
-        className="from-primary-3/55 absolute inset-x-0 top-0 -z-10 h-24 bg-linear-to-b via-transparent to-transparent lg:h-28"
-      />
+      {/* ⚠ THE NAVBAR GROUND IS GONE, DELIBERATELY. There was a 112px wash
+          here (`from-primary-3/55`) to keep white links off bright footage.
+          It worked, and it also did the one thing its own comment said it must
+          not: it read as a bar across the top of the film. Marc's call is a
+          genuinely transparent bar over a hero.
+
+          The legibility it bought was real — this clip is a laboratory scene
+          with white coats — so it is bought a different way now: a shadow on
+          the type itself, in `.eid-nav-over-hero` in _general.css. That
+          travels with the glyphs, so it costs the picture nothing between the
+          words and cannot read as a band, because there is no rectangle. */}
 
       {/* THE LOCKUP. Mark, then headline at `mt-1.5` — Strauss's `row-gap:
           5px`, and the measurement the composition turns on: their monogram is

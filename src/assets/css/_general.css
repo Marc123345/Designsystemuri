@@ -202,9 +202,38 @@ textarea {
     border-color: rgba(255, 255, 255, 0.8);
 }
 
+/* ── WHAT HOLDS THE TYPE UP NOW THE GROUND IS GONE ──────────────────────────
+   Both heroes used to paint a wash under the bar so white links would clear
+   bright footage — 112px at 55% on the home film, 144px at 78% on the band
+   heroes. Marc's call is a transparent bar over a hero, and a wash that wide
+   reads as a bar however light it is.
+
+   So the insurance moves from a ground behind everything to a shadow on the
+   glyphs themselves. It travels with the letterforms, which means it costs the
+   picture nothing in the gaps between words and cannot read as a rectangle —
+   there isn't one. Tuned to disappear against dark footage and to hold a white
+   link against a white lab coat, which is the frame that set the old wash.
+
+   Scoped to `.eid-nav-over-hero`, so it exists only while the bar is over a
+   hero. The moment it takes its white ground on scroll, this stops applying
+   and the links are slate on white as before. */
+.eid-nav-over-hero :where(nav a, nav button, .hs-dropdown-toggle),
+.eid-nav-over-hero :where([class*="border-default"]) {
+    text-shadow: 0 1px 3px rgba(12, 18, 38, 0.55);
+}
+
+/* The lockup is an image, not type, so it takes the same insurance as a
+   filter. Without it the reverse mark loses its edge against a pale frame in
+   exactly the places the links do. */
+.eid-nav-over-hero img {
+    filter: drop-shadow(0 1px 3px rgba(12, 18, 38, 0.45));
+}
+
 /* The dropdown panels are still white cards on a white ground when they open —
-   they are not part of the bar's surface, so they keep their own colours. */
+   they are not part of the bar's surface, so they keep their own colours, and
+   a shadow meant for type on film would be grime on a white card. */
 .eid-nav-over-hero .hs-dropdown-menu :where(a) {
+    text-shadow: none;
     color: var(--color-default-700);
 }
 
