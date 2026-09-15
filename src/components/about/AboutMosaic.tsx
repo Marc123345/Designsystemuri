@@ -1,197 +1,139 @@
-import CountUp from '@/components/CountUp'
+import ArcStory, { type ArcStoryItem } from '@/components/ArcStory'
+import CanvasField from '@/components/CanvasField'
 import Image from 'next/image'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
 import { useLocale } from 'next-intl'
 
-/**
- * The numbers, the photographs, and the vision and mission — one mosaic.
- *
- * ── What Strauss actually does here ─────────────────────────────────────────
- *
- * This is the block Uri pointed at, and the shape is easy to describe wrongly.
- * It is not a numbers strip with text under it. It is a two-column mosaic:
- *
- *   ┌─────────┬─────────┐ ┌────────────────────┐
- *   │ tall    │ photo   │ │ OUR VISION         │   ← ruled, no box
- *   │ dark    ├─────────┤ │ paragraph          │
- *   │ tile,   │ solid   │ ├────────────────────┤
- *   │ three   │ blue    │ │ OUR MISSION        │
- *   │ figures │ tile,   │ │ paragraph          │
- *   │ over a  │ one     │ └────────────────────┘
- *   │ photo   │ figure  │
- *   └─────────┴─────────┘
- *
- * Three things make it work, and all three are easy to drop:
- *
- *  1. THE FIGURES SIT ON PHOTOGRAPHS, not in bordered boxes. That is the whole
- *     difference between a stat bar and this — "80 countries" over a picture of
- *     the place the material ships from is a claim with its evidence beside it;
- *     "80" in a white box is a number.
- *  2. THE TILES ARE DIFFERENT SIZES. One tall, two short, one of them solid
- *     brand colour rather than photographic. A grid of five equal cells is a
- *     strip; unequal cells are a composition.
- *  3. THE TEXT IS NOT BOXED. Vision and mission sit on the page ground with a
- *     thin accent rule down their left edge. Boxing them too would give the
- *     block eight competing rectangles and nowhere to rest.
- *
- * This replaces both NumbersStrip and VisionMission, which were the same
- * content as two stacked full-width rows. Those files are gone.
- *
- * ── ⚠ Two of the four figures still need Uri's confirmation ────────────────
- *
- *  · "80 countries" is his own figure from the written doc, but the reach
- *    section at the foot of this page says five continents and the heritage
- *    wording says "customers on every continent". Three scales for one claim.
- *  · "55+ years" is derived from "Since 1970", the anniversary his approved
- *    hero copy uses. 1970 → 2026 is 56, so both are true and only one should be
- *    said. Written 55+ rather than 56 so it does not need editing every year.
- *
- * The other two are safe: eight product groups is countable on the home page,
- * and every-batch testing is what the whole Quality page documents.
- *
- * ── ⚠ THE VISION AND MISSION COPY IS NOT URI'S ─────────────────────────────
- *
- * Every other block on this page carries wording EID supplied. A vision and a
- * mission are the two things a company writes for itself, and EID has not
- * written these. The constraint applied was: claim nothing the site does not
- * already claim, in its own words — "every batch measured rather than sampled"
- * is the Quality page and "since 1970" is his approved hero copy.
- *
- * (This list used to cite a third sentence, naming who EID sells to. Marc has
- * had it removed everywhere, so it is no longer a claim the site makes and no
- * longer available to borrow. See the note on the home page hero.)
- *
- * Safe to show him. Wrong to ship without him. The two `body` strings are the
- * only thing that changes if he writes his own, which is the better outcome.
- */
-const STACKED = [
-  { value: '55+', label: 'Years manufacturing' },
-  { value: '8', label: 'Product groups' },
-  { value: '100%', label: 'Batches tested' },
-]
+const VISION =
+  'To be the supplier a tool maker never has to think about. Diamond and CBN that arrive to the same specification every time, from one source across the full range, so the variable our customers are managing is their process rather than their material.'
 
-const STATEMENTS = [
+const MISSION =
+  'To manufacture, grade and quality-control superabrasives to a standard we can document rather than assert. Every batch is measured rather than sampled, every lot is traceable, and every grade is answered for by someone who works with the material, and the relationship is expected to outlast the order.'
+
+const ADVANTAGES = [
   {
-    label: 'Our vision',
-    body: 'To be the supplier a tool maker never has to think about. Diamond and CBN that arrive to the same specification every time, from one source across the full range, so the variable our customers are managing is their process rather than their material.',
+    n: '01',
+    title: 'Quality & consistency',
+    body: 'Manufacturing, grading and QC run through our own facilities to one specification.',
   },
   {
-    label: 'Our mission',
-    body: 'To manufacture, grade and quality-control superabrasives to a standard we can document rather than assert. Every batch is measured rather than sampled, every lot is traceable, and every grade is answered for by someone who works with the material, and the relationship is expected to outlast the order.',
+    n: '02',
+    title: 'Global service',
+    body: 'Sales and technical support run from London, with customers on every continent.',
   },
-]
+] as const
 
 const AboutMosaic = () => {
   const locale = useLocale() as Locale
 
+  const storyItems: ArcStoryItem[] = [
+    {
+      kicker: '01',
+      value: '55+',
+      title: t(locale, 'Years manufacturing'),
+      image: { src: '/eid/facility/sieve-stack-astm-e11.png', alt: '' },
+      tone: 'navy',
+      panel: 'overlay',
+    },
+    {
+      kicker: '02',
+      value: '8',
+      title: t(locale, 'Product groups'),
+      tone: 'blue',
+    },
+    {
+      kicker: '03',
+      value: '100%',
+      title: t(locale, 'Batches tested'),
+      image: {
+        src: '/eid/qc-lab.jpg',
+        alt: t(locale, 'A technician at an optical inspection system in the EID quality laboratory'),
+      },
+      tone: 'navy',
+      panel: 'overlay',
+    },
+    {
+      kicker: '04',
+      value: '80',
+      title: t(locale, 'Countries supplied'),
+      tone: 'navy',
+    },
+    {
+      kicker: '05',
+      title: t(locale, 'Our vision'),
+      body: t(locale, VISION),
+      tone: 'light',
+    },
+    {
+      kicker: '06',
+      title: t(locale, 'Our mission'),
+      body: t(locale, MISSION),
+      tone: 'light',
+    },
+  ]
+
   return (
-    <section data-note="about-mosaic" className="bg-default-50 py-16 lg:py-24">
+    <section data-note="about-mosaic" className="bg-default-50 relative isolate overflow-hidden py-16 lg:py-24">
+      <CanvasField grain={false} mark="end" />
+
       <div className="container">
-        {/* ── THE COMPANY ───────────────────────────────────────────────────
-            Merged in from what was a separate <TheCompany> section directly
-            above this one. Marc's call, and the two were already one thought:
-            who EID is, then the figures that back it, then what it is for.
-            Three bands became one, and the page stops restating its own
-            subject at the top of each.
+        {/* Image-led company introduction, adapted from Marc's industrial
+            reference: a dominant image on the left, a tighter company story on
+            the right, then two compact advantage rows. */}
+        <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-14 xl:gap-18">
+          <div className="rounded-card relative aspect-[7/5] overflow-hidden lg:col-span-7 lg:min-h-[520px]">
+            <Image
+              src="/eid/facility/hero-metrology-lab.png"
+              alt={t(locale, 'Two technicians at a measuring microscope in the EID metrology laboratory')}
+              fill
+              sizes="(min-width: 1024px) 58vw, 100vw"
+              className="object-cover"
+              priority={false}
+            />
+            <div aria-hidden className="absolute inset-0 bg-linear-to-t from-primary-3/28 via-transparent to-transparent" />
 
-            The accent rule down the left edge is kept — it is what makes the
-            heading and the two paragraphs read as a statement rather than as
-            body text that happens to start here. */}
-        <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
-          <div className="border-primary border-s-2 ps-7 lg:col-span-6 lg:ps-9">
-            <p className="text-default-500 font-mono text-[11px] tracking-[0.22em] uppercase">{t(locale, 'About')}</p>
-            <h2 className="text-default-900 mt-4 text-[32px] leading-none font-bold lg:text-[42px]">{t(locale, 'The Company')}</h2>
+            <div className="absolute bottom-5 left-5 rounded-control border border-white/20 bg-primary-3/78 px-4 py-3 text-white backdrop-blur-md lg:bottom-7 lg:left-7">
+              <span className="block font-mono text-[9px] tracking-[0.22em] text-white/65 uppercase">{t(locale, 'Since')}</span>
+              <span className="mt-1 block text-[28px] leading-none font-bold">1970</span>
+            </div>
+          </div>
 
-            {/* 18-20px, not 16. Uri's note is that the wording at the top of
-                About is what people take away, so it gets the weight a heading
-                would normally carry. */}
-            <p className="text-default-700 mt-6 text-[18px] leading-relaxed lg:text-[19px]">
+          <div className="lg:col-span-5">
+            <p className="text-primary font-mono text-[11px] tracking-[0.22em] uppercase">{t(locale, 'About EID')}</p>
+            <h2 className="text-default-900 mt-4 max-w-[12ch] text-[34px] leading-[1.02] font-bold tracking-[-0.035em] text-balance md:text-[40px] lg:text-[46px]">
+              {t(locale, 'One accountable source. Full range. Same specification.')}
+            </h2>
+
+            <p className="text-default-700 mt-6 text-[17px] leading-relaxed lg:text-[18px]">
               {t(
                 locale,
                 'With its headquarters in London, England, and worldwide marketing partners, EID has established a global reputation for quality, consistency and superior service.'
               )}
             </p>
-            <p className="text-default-600 mt-5 text-base leading-relaxed">
-              {t(
-                locale,
-                'Today EID has customers on every continent. Our sales team speaks more than ten dialects, but we all speak the same language — the right product at the right price, when and where you require it.'
-              )}
-            </p>
-          </div>
 
-          {/* ⚠ PLACEHOLDER, carried over with the block.
-              /eid/facility/hero-metrology-lab.png is EID's own metrology bench,
-              which is at least a picture of the company this paragraph is
-              describing. Their reference slot holds a company film; EID has one
-              — the hero clip — but running it twice would make it wallpaper.
-              16:9 either way, so a film drops in with no layout change. */}
-          <div className="rounded-card relative aspect-16/10 overflow-hidden lg:col-span-6">
-            <Image src="/eid/facility/hero-metrology-lab.png" alt={t(locale, 'Two technicians at a measuring microscope in the EID metrology laboratory')} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
+            <div className="mt-9 space-y-7">
+              {ADVANTAGES.map((advantage) => (
+                <div key={advantage.n} className="flex items-start gap-5">
+                  <span className="border-primary/20 bg-primary/5 text-primary rounded-control flex size-14 shrink-0 items-center justify-center border font-mono text-[11px] font-semibold tracking-[0.16em]">
+                    {advantage.n}
+                  </span>
+                  <div className="border-primary/45 min-w-0 border-s-2 ps-5">
+                    <h3 className="text-default-900 text-[19px] leading-tight font-semibold lg:text-[21px]">{t(locale, advantage.title)}</h3>
+                    <p className="text-default-600 mt-2 text-[15px] leading-relaxed lg:text-base">{t(locale, advantage.body)}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
-        <div className="mt-14 grid gap-6 lg:mt-20 lg:grid-cols-12 lg:gap-10">
-          {/* ── THE MOSAIC ─────────────────────────────────────────────────
-              Two columns of tiles inside the left half. The tall tile spans
-              both rows, which is what stops the four tiles reading as a 2x2.
-
-              `auto-rows-fr` rather than fixed heights: the tall tile's content
-              is three figures and the short ones are one each, so letting the
-              rows size themselves keeps the two columns level whatever the
-              type does at a given width. */}
-          <div className="grid auto-rows-fr grid-cols-2 gap-6 lg:col-span-6">
-            {/* TALL — three figures over a photograph, spanning both rows. */}
-            <div className="rounded-card relative row-span-2 min-h-[420px] overflow-hidden lg:min-h-[520px]">
-              {/* ⚠ PLACEHOLDER, like every photograph on this page. */}
-              <Image src="/eid/facility/sieve-stack-astm-e11.png" alt="" fill sizes="(min-width: 1024px) 25vw, 50vw" className="object-cover" />
-              {/* Heavy enough that white numerals clear contrast over the
-                  brightest part of the frame, and in brand navy rather than
-                  black so it darkens the photograph instead of covering it. */}
-              <span aria-hidden className="bg-primary-3/78 absolute inset-0" />
-
-              <dl className="absolute inset-0 flex flex-col items-center justify-around p-5 text-center">
-                {STACKED.map((f) => (
-                  <div key={f.label}>
-                    <dd className="text-[38px] leading-none font-bold text-white lg:text-[46px]"><CountUp value={f.value} /></dd>
-                    <dt /* White, not the brand blue. Strauss sets these labels in a bright
-                       cyan that pops off their dark tile; our lightest blue is #3d5290,
-                       which on a navy scrim is barely separable from the ground at 11px.
-                       Contrast wins over palette on a caption this small. */
-                    className="mt-2 text-[11px] font-semibold tracking-[0.18em] text-white/75 uppercase">{t(locale, f.label)}</dt>
-                  </div>
-                ))}
-              </dl>
-            </div>
-
-            {/* SHORT — a photograph on its own, no figure. It is the tile that
-                stops the column being all claims. */}
-            <div className="rounded-card relative min-h-[200px] overflow-hidden lg:min-h-[248px]">
-              <Image src="/eid/qc-lab.jpg" alt={t(locale, 'A technician at an optical inspection system in the EID quality laboratory')} fill sizes="(min-width: 1024px) 25vw, 50vw" className="object-cover" />
-            </div>
-
-            {/* SHORT — solid brand colour, one figure. Strauss makes exactly
-                one of their tiles non-photographic, and it is the one carrying
-                the biggest number. Without it the mosaic is four photographs
-                and the reach claim has nothing to make it land. */}
-            <div className="rounded-card bg-primary relative flex min-h-[200px] flex-col items-center justify-center overflow-hidden text-center lg:min-h-[248px]">
-              <span className="text-[52px] leading-none font-bold text-white lg:text-[64px]"><CountUp value="80" /></span>
-              <span className="mt-2 text-[11px] font-semibold tracking-[0.18em] text-white/85 uppercase">{t(locale, 'Countries supplied')}</span>
-            </div>
-          </div>
-
-          {/* ── VISION AND MISSION ─────────────────────────────────────────
-              Ruled, not boxed. See point 3 in the note above — the mosaic beside
-              them is already four rectangles, and boxing these would leave the
-              block with nowhere to rest. */}
-          <div className="flex flex-col justify-center gap-12 lg:col-span-6 lg:gap-16">
-            {STATEMENTS.map((b) => (
-              <div key={b.label} className="border-primary border-s-2 ps-7 lg:ps-9">
-                <h2 className="text-default-900 text-[26px] leading-none font-bold lg:text-[32px]">{t(locale, b.label)}</h2>
-                <p className="text-default-600 mt-5 text-[16px] leading-relaxed lg:text-[17px]">{t(locale, b.body)}</p>
-              </div>
-            ))}
-          </div>
+        {/* The old static stats mosaic + ruled Vision/Mission pair is now one
+            continuous story arc. This is deliberately the same interaction
+            language as the home-page proof carousel: evidence first, then the
+            two manifesto cards as the sequence resolves. */}
+        <div className="mt-16 lg:mt-24">
+          <ArcStory items={storyItems} ariaLabel={t(locale, 'EID manufacturing, quality, reach, vision and mission')} cardHeight={500} />
         </div>
       </div>
     </section>
