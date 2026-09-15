@@ -37,23 +37,23 @@ const ProductTile = ({ item, sizes }: { item: CurtainItem; sizes: string }) => {
             className={`object-cover transition-transform duration-500 ease-out group-hover:scale-[1.015] group-focus-visible:scale-[1.015] ${item.image.position ?? 'object-center'}`}
           />
 
-          {/* Product copy belongs inside the uploaded crystal silhouette.
-              It stays visible on touch-sized layouts where hover is unavailable,
-              and becomes a hover/focus reveal on desktop. */}
-          <div className="absolute inset-0 flex items-end bg-linear-to-t from-black/72 via-black/16 to-transparent px-[10%] pb-[11%] pt-[38%] opacity-100 transition-opacity duration-300 lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-visible:opacity-100">
-            <div className="flex w-full items-end justify-between gap-4">
+          {/* Product identity is always present. Keep the photography open and
+              let a compact navy plate do the contrast work instead of covering
+              the entire crystal with a permanent dark gradient. */}
+          <div className="absolute inset-x-[8%] bottom-[8%]">
+            <div className="bg-primary-3/82 flex items-end justify-between gap-3 rounded-[14px] border border-white/18 px-4 py-3.5 text-white shadow-[0_10px_28px_rgba(15,24,52,0.16)] backdrop-blur-md transition-[background-color,transform] duration-300 group-hover:bg-primary-3/92 group-focus-visible:bg-primary-3/92 sm:px-5 sm:py-4">
               <div className="min-w-0">
                 {item.meta && (
-                  <span className="block text-[10px] font-semibold tracking-[0.18em] text-white/70 uppercase">
+                  <span className="block text-[9px] font-semibold tracking-[0.18em] text-white/65 uppercase sm:text-[10px]">
                     {item.meta}
                   </span>
                 )}
-                <h3 className={`text-[17px] leading-[1.15] font-semibold text-white sm:text-[18px] ${item.meta ? 'mt-2' : ''}`}>
+                <h3 className={`text-[16px] leading-[1.15] font-semibold text-white sm:text-[18px] ${item.meta ? 'mt-1.5' : ''}`}>
                   {item.title}
                 </h3>
               </div>
 
-              <span aria-hidden className="mb-0.5 shrink-0 text-white">
+              <span aria-hidden className="mb-0.5 shrink-0 text-white/90">
                 <svg
                   viewBox="0 0 24 24"
                   className="size-5 transition-transform duration-300 group-hover:translate-x-1 group-focus-visible:translate-x-1"
