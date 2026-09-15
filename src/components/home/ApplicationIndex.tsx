@@ -2,7 +2,6 @@ import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { applicationImage } from '@/lib/card-media'
 import { t } from '@/lib/i18n-content'
-import { Icon } from '@iconify/react'
 import Image from 'next/image'
 
 /**
@@ -63,7 +62,9 @@ export default function ApplicationIndex({ hubs, locale }: { hubs: HubEntry[]; l
                 </div>
 
                 <span className="rounded-control flex size-10 shrink-0 items-center justify-center border border-white/25 bg-white/10 text-white backdrop-blur-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:bg-white group-hover:text-default-900 group-focus-visible:-translate-y-1 group-focus-visible:bg-white group-focus-visible:text-default-900">
-                  <Icon icon="tabler:arrow-up-right" className="size-5" />
+                  <svg aria-hidden viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M7 17 17 7M8 7h9v9" />
+                  </svg>
                 </span>
               </div>
             </Link>
