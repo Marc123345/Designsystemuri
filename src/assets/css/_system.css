@@ -1,0 +1,200 @@
+/* ========================================================================== 
+   EID visual system harmony layer
+   Typography lives in _typography.css. This file aligns everything around it:
+   section rhythm, surfaces, controls, cards and motion.
+   ========================================================================== */
+
+:root {
+  /* Spacing rhythm */
+  --space-section: clamp(4.5rem, 3.5rem + 3vw, 7.5rem);
+  --space-section-compact: clamp(3.5rem, 3rem + 2vw, 6rem);
+  --space-section-tight: clamp(2.5rem, 2.1rem + 1.25vw, 4rem);
+  --space-stack: clamp(2rem, 1.75rem + 1vw, 3.5rem);
+  --space-card: clamp(1.5rem, 1.3rem + 0.75vw, 2.25rem);
+
+  /* Motion vocabulary */
+  --motion-fast: 180ms;
+  --motion-base: 320ms;
+  --motion-slow: 520ms;
+  --motion-cinematic: 720ms;
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-emphasized: cubic-bezier(0.19, 1, 0.22, 1);
+
+  /* Surface/elevation vocabulary */
+  --line-soft: rgb(148 163 184 / 0.28);
+  --line-brand: rgb(44 60 108 / 0.34);
+  --shadow-rest: 0 1px 2px rgb(15 23 42 / 0.04), 0 10px 28px rgb(28 39 73 / 0.05);
+  --shadow-hover: 0 2px 4px rgb(15 23 42 / 0.05), 0 18px 42px rgb(28 39 73 / 0.10);
+}
+
+/* --------------------------------------------------------------------------
+   Layout rhythm
+   -------------------------------------------------------------------------- */
+
+.eid-section {
+  padding-block: var(--space-section);
+}
+
+.eid-section-compact {
+  padding-block: var(--space-section-compact);
+}
+
+.eid-section-tight {
+  padding-block: var(--space-section-tight);
+}
+
+.eid-stack {
+  margin-top: var(--space-stack);
+}
+
+/* Compatibility bridge for the two section rhythms already used throughout
+   the repo. It makes existing pages fluid without needing every route rewritten
+   before they benefit from the system. */
+section[class~="py-20"][class~="lg:py-30"] {
+  padding-block: var(--space-section);
+}
+
+section[class~="py-16"][class~="lg:py-24"] {
+  padding-block: var(--space-section-compact);
+}
+
+section[class~="py-10"][class~="lg:py-14"] {
+  padding-block: var(--space-section-tight);
+}
+
+section[class~="pb-20"][class~="lg:pb-30"] {
+  padding-bottom: var(--space-section);
+}
+
+/* --------------------------------------------------------------------------
+   Shared surfaces and cards
+   -------------------------------------------------------------------------- */
+
+.eid-card {
+  border: 1px solid var(--color-default-200);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-rest);
+}
+
+.eid-card-interactive {
+  transition-property: transform, border-color, background-color, box-shadow;
+  transition-duration: var(--motion-base);
+  transition-timing-function: var(--ease-standard);
+}
+
+@media (hover: hover) {
+  .eid-card-interactive:hover {
+    transform: translateY(-2px);
+    border-color: var(--line-brand);
+    box-shadow: var(--shadow-hover);
+  }
+}
+
+.eid-surface-soft {
+  background: var(--color-surface-soft);
+}
+
+.eid-surface-brand {
+  background: var(--color-surface-brand);
+  color: #fff;
+}
+
+/* CurtainGrid is already the site's main photographic card primitive. Give its
+   separated rounded cards the same restrained elevation and lift as text cards. */
+.eid-tiles a.rounded-card {
+  box-shadow: var(--shadow-rest);
+  transition: transform var(--motion-base) var(--ease-standard), box-shadow var(--motion-base) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  .eid-tiles a.rounded-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Controls
+   -------------------------------------------------------------------------- */
+
+.eid-icon-button {
+  display: inline-flex;
+  width: 3rem;
+  height: 3rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-control);
+  background: var(--color-default-100);
+  color: var(--color-default-900);
+  transition: transform var(--motion-base) var(--ease-standard), background-color var(--motion-fast) ease, color var(--motion-fast) ease, box-shadow var(--motion-base) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  .eid-icon-button:hover {
+    transform: translateY(-1px);
+    background: var(--color-default-200);
+    box-shadow: var(--shadow-rest);
+  }
+}
+
+.eid-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border: 1px solid var(--color-default-300);
+  border-radius: var(--radius-control);
+  background: #fff;
+  padding: 0.3125rem 0.75rem;
+}
+
+/* --------------------------------------------------------------------------
+   Motion
+   -------------------------------------------------------------------------- */
+
+.eid-motion-base {
+  transition-duration: var(--motion-base) !important;
+  transition-timing-function: var(--ease-standard) !important;
+}
+
+.eid-motion-emphasized {
+  transition-duration: var(--motion-slow) !important;
+  transition-timing-function: var(--ease-emphasized) !important;
+}
+
+.eid-motion-cinematic {
+  transition-duration: var(--motion-cinematic) !important;
+  transition-timing-function: var(--ease-emphasized) !important;
+}
+
+/* Normalize the common Tailwind timings used by legacy components. The class
+   names stay valid, but all repeated interactions now speak one tempo. */
+.duration-300 { transition-duration: var(--motion-base); }
+.duration-500 { transition-duration: var(--motion-slow); }
+.duration-700 { transition-duration: var(--motion-cinematic); }
+
+.eid-curtain,
+.eid-ink,
+.eid-ink-dim,
+.eid-num-rest,
+.eid-num-over,
+.eid-arrow {
+  transition-duration: var(--motion-slow) !important;
+  transition-timing-function: var(--ease-emphasized) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Reduced motion
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .eid-card-interactive,
+  .eid-icon-button,
+  .eid-tiles a.rounded-card,
+  .eid-motion-base,
+  .eid-motion-emphasized,
+  .eid-motion-cinematic {
+    transition-duration: 0.01ms !important;
+    transform: none !important;
+  }
+}
