@@ -34,8 +34,40 @@ const ProductTile = ({ item, sizes }: { item: CurtainItem; sizes: string }) => {
             alt={item.image.alt}
             fill
             sizes={sizes}
-            className={`object-cover ${item.image.position ?? 'object-center'}`}
+            className={`object-cover transition-transform duration-500 ease-out group-hover:scale-[1.015] group-focus-visible:scale-[1.015] ${item.image.position ?? 'object-center'}`}
           />
+
+          {/* Product copy belongs inside the uploaded crystal silhouette.
+              It stays visible on touch-sized layouts where hover is unavailable,
+              and becomes a hover/focus reveal on desktop. */}
+          <div className="absolute inset-0 flex items-end bg-linear-to-t from-black/72 via-black/16 to-transparent px-[10%] pb-[11%] pt-[38%] opacity-100 transition-opacity duration-300 lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-visible:opacity-100">
+            <div className="flex w-full items-end justify-between gap-4">
+              <div className="min-w-0">
+                {item.meta && (
+                  <span className="block text-[10px] font-semibold tracking-[0.18em] text-white/70 uppercase">
+                    {item.meta}
+                  </span>
+                )}
+                <h3 className={`text-[17px] leading-[1.15] font-semibold text-white sm:text-[18px] ${item.meta ? 'mt-2' : ''}`}>
+                  {item.title}
+                </h3>
+              </div>
+
+              <span aria-hidden className="mb-0.5 shrink-0 text-white">
+                <svg
+                  viewBox="0 0 24 24"
+                  className="size-5 transition-transform duration-300 group-hover:translate-x-1 group-focus-visible:translate-x-1"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M5 12h14m-4 4l4-4m-4-4l4 4" />
+                </svg>
+              </span>
+            </div>
+          </div>
         </div>
 
         {/* The uploaded vector itself, unchanged: same 113 × 151 viewBox,
@@ -49,33 +81,6 @@ const ProductTile = ({ item, sizes }: { item: CurtainItem; sizes: string }) => {
           aria-hidden
           className="pointer-events-none object-contain"
         />
-      </div>
-
-      <div className="mt-5 flex items-start justify-between gap-5">
-        <div className="min-w-0">
-          {item.meta && (
-            <span className="text-default-500 block text-[11px] font-semibold tracking-[0.18em] uppercase">
-              {item.meta}
-            </span>
-          )}
-          <h3 className={`text-default-900 text-[18px] leading-[1.2] font-semibold lg:text-[20px] ${item.meta ? 'mt-2' : ''}`}>
-            {item.title}
-          </h3>
-        </div>
-
-        <span aria-hidden className="text-primary mt-0.5 shrink-0">
-          <svg
-            viewBox="0 0 24 24"
-            className="size-5 transition-transform duration-300 group-hover:translate-x-1"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M5 12h14m-4 4l4-4m-4-4l4 4" />
-          </svg>
-        </span>
       </div>
     </Link>
   )
