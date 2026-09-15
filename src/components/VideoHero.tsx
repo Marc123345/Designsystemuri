@@ -5,16 +5,10 @@ import HeroTitle from '@/components/HeroTitle'
 import ScrollCue from '@/components/ScrollCue'
 import { videoSources, videoPoster, posterSrcSet } from '@/components/videoSources'
 
-/**
- * Shared full-bleed video hero.
- *
- * Home is the only hero that carries the scroll cue, so that flag also gives us
- * a safe way to tune the homepage composition without changing the shorter
- * interior heroes. The home version gets a little more breathing room, a
- * narrower optical text measure, and a softer layered vignette behind the
- * lockup. The result stays centred, but no longer feels like every element is
- * competing for the exact middle of the frame.
- */
+/** Shared full-bleed video hero. Every route now uses the same frame, lockup
+ * width, vignette and vertical rhythm as home; only the optional scroll cue
+ * changes. `minHeight` remains accepted for call-site compatibility, while the
+ * shared `.eid-hero-shell` system owns the actual height. */
 const VideoHero = ({
   title,
   desc,
@@ -34,21 +28,13 @@ const VideoHero = ({
 }) => {
   const sources = videoSources(video)
   const poster = videoPoster(video, posterAt)
-  const isHomeHero = scrollCue
 
-  /* The poster is the hero's LCP element. A video poster is normally fetched
-     at low priority, so preload it as an image and let the film remain idle
-     until SiteIntro/releaseHeroVideo releases it. */
   preload(poster, { as: 'image', fetchPriority: 'high' })
-
-  const heroHeight = isHomeHero
-    ? `${minHeight} md:min-h-[64svh] xl:min-h-[66svh]`
-    : minHeight
 
   return (
     <section
       data-note="hero"
-      className={`bg-primary-3 rounded-b-card relative isolate flex w-full items-center overflow-hidden pt-19 lg:pt-24 ${heroHeight}`}
+      className={`eid-hero-shell bg-primary-3 rounded-b-card relative isolate flex w-full items-center overflow-hidden pt-19 lg:pt-24 ${minHeight}`}
     >
       <video
         className={`absolute inset-0 -z-20 size-full object-cover ${objectPosition} motion-reduce:hidden`}
@@ -78,49 +64,28 @@ const VideoHero = ({
         aria-hidden
       />
 
-      {/* Vertical legibility gradient. It is intentionally darkest only where
-          the copy lives, leaving the upper film largely untouched. */}
+      <div aria-hidden className="from-primary-3/92 via-primary-3/38 absolute inset-0 -z-10 bg-linear-to-t via-42% to-transparent" />
       <div
         aria-hidden
-        className="from-primary-3/92 via-primary-3/38 absolute inset-0 -z-10 bg-linear-to-t via-42% to-transparent"
+        className="absolute inset-0 -z-10"
+        style={{
+          background:
+            'radial-gradient(ellipse at 50% 58%, rgba(28, 39, 73, 0.34) 0%, rgba(28, 39, 73, 0.16) 38%, rgba(28, 39, 73, 0) 72%)',
+        }}
       />
 
-      {/* Home gets a very soft centred vignette rather than a rectangular wash.
-          This gives the title a stable visual ground as the laboratory footage
-          changes while keeping the edges of the film open and cinematic. */}
-      {isHomeHero && (
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10"
-          style={{
-            background:
-              'radial-gradient(ellipse at 50% 58%, rgba(28, 39, 73, 0.34) 0%, rgba(28, 39, 73, 0.16) 38%, rgba(28, 39, 73, 0) 72%)',
-          }}
-        />
-      )}
-
-      <div
-        className={`relative z-10 w-full ${
-          isHomeHero ? 'py-12 sm:py-14 lg:-translate-y-1 lg:py-16' : 'py-14'
-        }`}
-      >
+      <div className="relative z-10 w-full py-12 sm:py-14 lg:-translate-y-1 lg:py-16">
         <div className="container flex flex-col items-center text-center">
           <HeroMark blend={false} />
 
           <HeroTitle
             title={title}
-            className={`mt-2 drop-shadow-[0_2px_18px_rgba(12,18,38,0.28)] ${
-              isHomeHero ? 'display max-w-[24ch]' : 'max-w-[28ch]'
-            }`}
+            className="mt-3 max-w-[22ch] drop-shadow-[0_2px_18px_rgba(12,18,38,0.28)]"
           />
 
-          {desc && (
-            <p className="lead mt-6 max-w-[64ch] text-pretty text-white/85">
-              {desc}
-            </p>
-          )}
+          {desc && <p className="lead mt-5 max-w-[58ch] text-pretty text-white/82">{desc}</p>}
 
-          {scrollCue && <ScrollCue className="mt-8 opacity-80 sm:mt-9" />}
+          {scrollCue && <ScrollCue className="mt-8 opacity-75 sm:mt-9" />}
         </div>
       </div>
     </section>
