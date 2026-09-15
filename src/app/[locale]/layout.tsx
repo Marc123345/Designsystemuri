@@ -1,5 +1,5 @@
 import { SITE_ORIGIN } from '@/app/sitemap'
-import '@/assets/css/style.css'
+import '@/assets/css/eid.css'
 import favicon from '@/assets/images/favicon.svg'
 import SiteIntro from '@/components/SiteIntro'
 import WhatsAppButton from '@/components/WhatsAppButton'
