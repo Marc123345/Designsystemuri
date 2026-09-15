@@ -1,62 +1,21 @@
 'use client'
 
+import { ArrowButton } from '@/components/ui'
 import { Link, usePathname } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
 import { primaryNav, productMenu, resourceMenu, site } from '@/lib/site'
-import { ArrowButton } from '@/components/ui'
 import { Icon } from '@iconify/react'
 import { useLocale } from 'next-intl'
 import Image from 'next/image'
-import { useEffect, useSyncExternalStore } from 'react'
+import { useEffect, useState, useSyncExternalStore } from 'react'
 import LanguageSwitcher from './LanguageSwitcher'
 
-/**
- * Header in the Supreme Home pattern: a solid white bar, an angled brand-colour
- * block behind the logo (clip-path polygon), centred nav, a contact block and
- * square solid CTA on the right, and a hairline along the bottom. Recoloured
- * Supreme red -> EID blue, and squared off in line with the site's no-radius
- * rule.
- *
- * Kept from the previous header: Preline drives the dropdowns and the mobile
- * overlay, positioning stays `fixed` (every page already pads its top for a
- * fixed bar), and the link set still comes from lib/site.ts, so the
- * buyer's-journey order is defined once and shared with the footer index.
- *
- * ── Transparent over the home hero ──────────────────────────────────────────
- *
- * On the home page, while the page is at the top, the bar drops its white
- * ground and its hairline and sits directly on the hero photograph; the links,
- * the language switcher and the burger go white to suit. Scroll a little and
- * the solid bar comes back. That is what lets the hero own the whole viewport
- * rather than starting 96px down it.
- *
- * Scoped to the home route on purpose. Every other page opens with `PageHero`,
- * and half of those have no background image — a transparent bar over a white
- * page reads as a rendering fault, not as a design. When another page grows a
- * full-bleed hero, add it to `TRANSPARENT_ON` and nothing else changes.
- *
- * The colour switch is done in CSS rather than by threading a variant through
- * every child (see `.eid-nav-over-hero` in _general.css). The bar holds the
- * language switcher, a Preline dropdown set, a CTA and a burger, and passing a
- * `light` prop into all of them would be four components changed to express
- * one state.
- */
-/**
- * Routes that open with a full-bleed hero the bar can sit on.
- *
- * Entries ending in `/` match a prefix, so the dynamic product and application
- * routes are covered without listing every slug. Everything here is a page
- * whose `PageHero` carries a photograph — the two lists have to stay in step,
- * because a transparent bar over a white page reads as a rendering fault.
- */
 const TRANSPARENT_ON = [
   '/',
   '/about',
   '/quality',
   '/contact',
-  // The /applications index is gone; the per-hub pages under it remain and
-  // still open on a photograph.
   '/applications/',
   '/products/',
   '/resources/blog',
@@ -67,100 +26,59 @@ const TRANSPARENT_ON = [
 const opensOnPhoto = (pathname: string) =>
   TRANSPARENT_ON.some((route) => (route.endsWith('/') && route.length > 1 ? pathname.startsWith(route) : pathname === route))
 
-/**
- * Scroll position as an external store.
- *
- * A subscription to something outside React, so it reads through
- * useSyncExternalStore rather than a useState/useEffect pair — the effect
- * version sets state on first commit and cascades a render on every mount, on
- * a component that is on every page of the site.
- *
- * The threshold is 40px rather than 0 so a rubber-band scroll or a one-notch
- * nudge does not flicker the bar. The server snapshot is `true`: SSR has no
- * scroll position, and "at the top" is the state the home page paints first.
- */
 const subscribeScroll = (onChange: () => void) => {
   window.addEventListener('scroll', onChange, { passive: true })
   return () => window.removeEventListener('scroll', onChange)
 }
+
 const getAtTop = () => window.scrollY < 40
 const getAtTopServer = () => true
+
+type MobileSection = 'products' | 'resources' | null
 
 const Navbar = () => {
   const pathname = usePathname()
   const locale = useLocale() as Locale
   const atTop = useSyncExternalStore(subscribeScroll, getAtTop, getAtTopServer)
   const overHero = atTop && opensOnPhoto(pathname)
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const [mobileSection, setMobileSection] = useState<MobileSection>(null)
 
-  /* Close the mobile overlay on navigation. Preline attaches HSOverlay to
-     `window` at runtime and ships no type for it, so it is narrowed here rather
-     than cast to `any` twice — same behaviour, and the lint rule the rest of
-     the file passes now applies to this block too. */
+  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href))
+  const closeMobile = () => {
+    setMobileOpen(false)
+    setMobileSection(null)
+  }
+
   useEffect(() => {
-    const overlay = document.getElementById('mobile-menu')
-    const hs = (window as unknown as { HSOverlay?: { close: (el: Element) => void } }).HSOverlay
-    if (overlay && hs) hs.close(overlay)
+    closeMobile()
   }, [pathname])
 
-  // A section is active when the path sits anywhere beneath it, so
-  // /products/cbn still lights up "Products".
-  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href))
+  useEffect(() => {
+    if (!mobileOpen) return
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = previousOverflow
+    }
+  }, [mobileOpen])
 
-  /* `py-0.5` is a WCAG 2.5.8 fix, not spacing. These measured 23px — one pixel
-     under the 24px target minimum, and unlike the inline links in body copy
-     they get no help from the inline exception, because a nav item is not
-     running text. Four pixels of vertical padding takes the hit area to 27px
-     and moves nothing: the bar's height is set by the taller controls beside
-     these, so the row does not grow. */
+  useEffect(() => {
+    if (!mobileOpen) return
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeMobile()
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [mobileOpen])
+
   const navLink = (active: boolean) =>
     `flex items-center gap-1.5 py-0.5 text-[0.94rem] font-semibold tracking-[0.01em] transition-colors hover:text-primary ${active ? 'text-primary' : 'text-default-700'}`
 
-  // One vertical panel anchored under its trigger, with the brand rule across
-  // the top — the Supreme Home dropdown, minus the corner radius.
-  // 'applications' is gone from this union deliberately: that entry is a plain
-  // link now, so no panel is ever built for it. Leaving the case in place
-  // would be a branch nothing can reach.
   const menuPanel = (menu: 'products' | 'resources') => {
     const entries = menu === 'products' ? productMenu : resourceMenu
     return (
       <div
-        /* ── ⚠ THE PADDING IS THE HOVER BRIDGE. DO NOT MAKE IT A MARGIN. ────
-            This element is transparent and carries no chrome; it is a hit area
-            with a card inside it. That split is the fix for a real bug, so it
-            needs to survive the next tidy-up.
-
-            ── What was broken ────────────────────────────────────────────────
-            Hovering Applications opened the menu, and moving the pointer down
-            towards "Dental" closed it before it could be clicked. Every entry
-            in all three menus was unreachable by mouse.
-
-            Preline hangs the panel `--offset: 10` below the trigger and binds
-            `mouseleave` on `.hs-dropdown` with no close delay. The button is
-            23px tall inside a 96px bar, so between its bottom edge (59px) and
-            the panel's top (69px) sat 10px of header — measured, and
-            `document.elementFromPoint` in that band returned the bar's own div,
-            not anything inside the dropdown. Crossing it fired `mouseleave` and
-            the panel shut instantly.
-
-            There WAS a bridge for exactly this: `before:-top-4 before:h-4` on
-            this element, reaching up into the gap. It stopped working the day
-            the panel became a rounded card, because `overflow-hidden` — added
-            so the 4px brand rule gets clipped by the corner instead of poking
-            out of it — clips a pseudo-element sitting outside the box. The
-            bridge was still in the class list, rendering nothing.
-
-            ── The fix ────────────────────────────────────────────────────────
-            `[--offset:0]` on the trigger, so this wrapper's top edge meets the
-            button's bottom edge with nothing between them, and `pt-2.5` here to
-            put the 10px of air back INSIDE the wrapper. Same 10px, same look,
-            except the pointer now crosses a descendant of `.hs-dropdown`
-            instead of the header, so `mouseleave` never fires. Padding, not
-            margin: a margin is outside the box and would restore the gap
-            exactly as it was.
-
-            The card chrome moved to the inner div, which keeps its
-            `overflow-hidden` and its clipped brand rule — that part was never
-            the problem. */
         className="hs-dropdown-menu hs-dropdown-open:opacity-100 absolute start-1/2 top-full z-50 hidden -translate-x-1/2 pt-2.5 opacity-0 transition-[opacity,margin] duration-300"
         role="menu"
       >
@@ -173,7 +91,7 @@ const Navbar = () => {
                 href={entry.href}
                 className={`hover:text-primary border-default-100 flex items-center gap-2.5 border-b px-3 py-2.5 text-[0.88rem] font-semibold last:border-b-0 ${isActive(entry.href) ? 'text-primary' : 'text-default-700'}`}
               >
-                <span className="bg-default-300 size-1 shrink-0 transition-transform group-hover:scale-150" />
+                <span className="bg-default-300 size-1 shrink-0" />
                 {t(locale, entry.label)}
               </Link>
             ))}
@@ -185,6 +103,65 @@ const Navbar = () => {
 
   const navItems = primaryNav.filter((item) => !('cta' in item && item.cta))
 
+  const mobilePlainItems = primaryNav.filter(
+    (item) => !('cta' in item && item.cta) && !('menu' in item && item.menu),
+  )
+
+  const mobileAccordion = (
+    label: string,
+    section: Exclude<MobileSection, null>,
+    entries: ReadonlyArray<{ label: string; href: string }>,
+    active: boolean,
+  ) => {
+    const open = mobileSection === section
+    return (
+      <div className={`overflow-hidden rounded-[18px] border transition-colors ${open ? 'border-primary/30 bg-primary/[0.045]' : 'border-default-200 bg-white'}`}>
+        <button
+          type="button"
+          className="flex min-h-14 w-full items-center gap-4 px-4 py-3.5 text-left"
+          onClick={() => setMobileSection(open ? null : section)}
+          aria-expanded={open}
+        >
+          <span className={`flex size-9 shrink-0 items-center justify-center rounded-full ${active ? 'bg-primary text-white' : 'bg-primary/8 text-primary'}`}>
+            <Icon icon={section === 'products' ? 'tabler:diamond' : 'tabler:file-description'} className="size-4.5" />
+          </span>
+          <span className={`text-[17px] font-semibold tracking-[-0.01em] ${active ? 'text-primary' : 'text-default-900'}`}>{t(locale, label)}</span>
+          <Icon icon="tabler:chevron-down" className={`text-default-500 ms-auto size-4 transition-transform duration-300 ${open ? 'rotate-180' : ''}`} />
+        </button>
+
+        <div className={`grid transition-[grid-template-rows] duration-300 ${open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
+          <div className="overflow-hidden">
+            <div className="border-default-200 mx-3 border-t px-1 pt-2 pb-3">
+              {section === 'products' && (
+                <Link
+                  href="/#products"
+                  onClick={closeMobile}
+                  className="text-primary mb-1 flex min-h-11 items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold"
+                >
+                  {t(locale, 'Products')} overview
+                  <Icon icon="tabler:arrow-up-right" className="size-4" />
+                </Link>
+              )}
+              <div className={section === 'products' ? 'grid gap-1 min-[430px]:grid-cols-2' : 'grid gap-1'}>
+                {entries.map((entry) => (
+                  <Link
+                    key={'mobile-' + entry.href}
+                    href={entry.href}
+                    onClick={closeMobile}
+                    className={`flex min-h-11 items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors hover:bg-white ${isActive(entry.href) ? 'bg-white text-primary shadow-sm' : 'text-default-600'}`}
+                  >
+                    <span className="bg-primary/35 size-1 shrink-0 rounded-full" />
+                    <span>{t(locale, entry.label)}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <header>
       <div
@@ -193,67 +170,22 @@ const Navbar = () => {
           overHero ? 'eid-nav-over-hero border-transparent bg-transparent' : 'border-default-200 bg-white'
         }`}
       >
-        {/* Angled brand block behind the logo — and it only exists when the bar
-            has a ground of its own.
-
-            The lockup is `logo-white.png`, a reverse mark, so it needs
-            something dark under it. Once the bar turns white on scroll, that
-            something is this block. Over a hero it is not: the bar is
-            transparent, the logo is already sitting on a dark photograph or on
-            the film, and the block was a second navy shape pasted over a frame
-            that was navy anyway — a hard clipped edge cutting across the
-            picture for no reason, which is exactly what it looks like on the
-            new video hero.
-
-            So it fades with `overHero`, on the same 300ms the bar uses to swap
-            its background, and the two changes read as one movement rather than
-            a plate popping in.
-
-            Kept mounted rather than conditionally rendered: unmounting it
-            cannot be transitioned, and it would snap. `pointer-events-none` is
-            still on it, so an invisible block over the logo link costs
-            nothing. */}
         <div
           aria-hidden
           className={`bg-primary pointer-events-none absolute top-0 left-0 h-full transition-opacity duration-300 ${overHero ? 'opacity-0' : 'opacity-100'}`}
-          style={{ width: 'clamp(200px, 22vw, 340px)', clipPath: 'polygon(0 0, 85% 0, 100% 100%, 0% 100%)' }}
+          style={{ width: 'clamp(185px, 22vw, 340px)', clipPath: 'polygon(0 0, 85% 0, 100% 100%, 0% 100%)' }}
         />
 
         <div className="relative flex h-full items-center px-4 md:px-7.5 lg:px-12.5">
-          {/* Logo — the reverse lockup, on the brand block. */}
           <Link href="/" className="relative z-10 flex shrink-0 items-center" aria-label="EID Ltd — home">
-            <Image src="/eid/logo-white.png" alt="EID Ltd" width={650} height={221} priority className="w-32 transition-opacity hover:opacity-80 lg:w-40" />
+            <Image src="/eid/logo-white.png" alt="EID Ltd" width={650} height={221} priority className="w-27 transition-opacity hover:opacity-80 sm:w-32 lg:w-40" />
           </Link>
 
-          {/* Nav, centred in the space the logo and the right cluster leave.
-              Deliberately in normal flow rather than absolutely centred: EID
-              carries six entries against Supreme Home's five, and an absolutely
-              centred nav overlaps the right cluster once the viewport tightens. */}
           <nav id="navbar" className="mx-auto hidden items-center gap-6 lg:flex xl:gap-9">
             {navItems.map((item) => {
               const active = isActive(item.href)
               const menu = 'menu' in item ? item.menu : undefined
               if (menu) {
-                /* ── ⚠ A MENU ENTRY THAT IS ALSO A DESTINATION ────────────────
-                   Products is back as a dropdown, and it is a LINK, not the
-                   <button> the other menu entries use.
-
-                   That distinction is the whole reason it was removed in the
-                   first place: as a plain `menu` entry it rendered as a
-                   dropdown button, and a button cannot navigate — so hovering
-                   opened the panel and clicking did nothing at all. Making it a
-                   link again without the panel lost the eight product pages
-                   from the header; making it a button again loses the click.
-                   It is both now. Hover opens the panel, click goes to
-                   `/#products`.
-
-                   Preline drives the panel off `.hs-dropdown-toggle`, which it
-                   is happy to find on an anchor, so `[--trigger:hover]` behaves
-                   exactly as it does on the button entries.
-
-                   `linkMenu` is what marks an entry as both. Resources stays a
-                   button: its href is an active-state prefix pointing at an
-                   index page that was removed, so it has nowhere to go. */
                 const triggerClass = `hs-dropdown-toggle ${navLink(active)}`
                 const triggerInner = (
                   <>
@@ -262,10 +194,6 @@ const Navbar = () => {
                   </>
                 )
                 return (
-                  /* `[--offset:0]` overrides Preline's 10px default gap. The
-                     air under the trigger has not gone anywhere — it is
-                     `pt-2.5` on the panel now, inside the hover area rather
-                     than outside it. See the long note on menuPanel. */
                   <div key={item.href} className="hs-dropdown relative inline-flex [--offset:0] [--trigger:hover]">
                     {item.linkMenu ? (
                       <Link href={item.href} className={triggerClass} aria-haspopup="menu" aria-expanded="false">
@@ -288,42 +216,24 @@ const Navbar = () => {
             })}
           </nav>
 
-          {/* ms-auto matters below lg. The nav above carries mx-auto and is what
-              pushes this cluster to the right edge — but it is `hidden` until
-              lg, so on a phone there was nothing holding the cluster over and it
-              sat flush against the logo, on top of the angled brand block. That
-              put the language switcher's slate text on the brand blue at 1.37:1
-              — unreadable, and the one contrast failure left on mobile. */}
-          <div className="ms-auto flex shrink-0 items-center gap-3 lg:ms-0 lg:gap-4">
+          <div className="ms-auto flex shrink-0 items-center gap-2.5 lg:ms-0 lg:gap-4">
             <LanguageSwitcher />
-
-            {/* Square solid CTA. Labelled "Contact", not "Request A Quote":
-                the button is the site's one persistent conversion route and a
-                visitor who wants to ask a technical question, chase a sample or
-                find the phone number should not have to read it as a
-                commitment to buy. */}
-            {/* The site's signature button, not a lookalike. This was a
-                hand-rolled solid with a static arrow beside the label — the
-                same shape as ArrowButton and none of its motion, on the one
-                control that appears on every page of the site. Every other CTA
-                slides its label and runs its arrow across the badge; the
-                busiest one did not.
-
-                `sm` because md is 52px and would tower over the 36px language
-                switcher next to it. `hidden md:inline-flex` is passed through
-                rather than wrapped, which is what `className` was added for. */}
             <ArrowButton href="/contact" label={t(locale, 'Contact')} size="sm" className="hidden md:inline-flex" />
 
             <button
               type="button"
               aria-haspopup="dialog"
-              aria-expanded="false"
+              aria-expanded={mobileOpen}
               aria-controls="mobile-menu"
-              data-hs-overlay="#mobile-menu"
-              className="border-default-200 hover:bg-primary hover:border-primary rounded-control inline-flex size-11 items-center justify-center border transition-colors hover:text-white lg:hidden"
-              aria-label="Open menu"
+              onClick={() => setMobileOpen((open) => !open)}
+              className={`rounded-control inline-flex size-11 items-center justify-center border transition-all lg:hidden ${
+                mobileOpen
+                  ? 'border-primary bg-primary text-white'
+                  : 'border-default-200 hover:bg-primary hover:border-primary hover:text-white'
+              }`}
+              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             >
-              <Icon icon="tabler:menu-2" className="size-6" />
+              <Icon icon={mobileOpen ? 'tabler:x' : 'tabler:menu-2'} className="size-6" />
             </button>
           </div>
         </div>
@@ -331,61 +241,93 @@ const Navbar = () => {
 
       <div
         id="mobile-menu"
-        /* Bottom corners only. The mobile overlay drops from under the bar
-            and its top edge is flush against it, so a radius up there would be
-            a gap; the same reasoning as the heroes. */
-        className="hs-overlay hs-overlay-open:translate-y-0 hs-overlay-open:top-[76px] rounded-b-card absolute top-0 z-[110] max-h-[80vh] w-full -translate-y-full transform overflow-y-auto bg-white shadow-xl transition-all duration-300 lg:hidden"
+        className={`fixed inset-x-0 top-[76px] z-[115] h-[calc(100dvh-76px)] overflow-hidden bg-default-50 transition-all duration-300 lg:hidden ${
+          mobileOpen ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none -translate-y-3 opacity-0'
+        }`}
         role="dialog"
-        // Preline gives this role; a dialog with no accessible name is
-        // announced as just "dialog", so a screen reader user has no idea what
-        // opened.
         aria-label={t(locale, 'Menu')}
         aria-modal="true"
-        tabIndex={-1}
+        aria-hidden={!mobileOpen}
       >
-        <div className="divide-default-200 flex flex-col divide-y">
-          {navItems.map((item) => {
-            const active = isActive(item.href)
-            const menu = 'menu' in item ? item.menu : undefined
-            if (menu) {
-              /* ⚠ Was hardcoded to `resourceMenu`, which was correct only while
-                 Resources was the single menu entry. With Products back as a
-                 dropdown, that would have listed the three resource links under
-                 the Products accordion on every phone. Reads the entry now.
+        <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div
+            className="bg-primary absolute -right-20 top-12 size-64 opacity-[0.035]"
+            style={{
+              maskImage: "url('/eid/brand/eid-logo-outline.svg')",
+              WebkitMaskImage: "url('/eid/brand/eid-logo-outline.svg')",
+              maskRepeat: 'repeat',
+              WebkitMaskRepeat: 'repeat',
+              maskSize: '64px 64px',
+              WebkitMaskSize: '64px 64px',
+            }}
+          />
+        </div>
 
-                 Products stays an accordion here rather than the link+panel it
-                 is on desktop: there is no hover on a touchscreen, so a tap has
-                 to do one thing or the other, and opening the eight product
-                 pages is more use than scrolling to the section that lists
-                 them. */
-              const entries = menu === 'products' ? productMenu : resourceMenu
+        <div className="relative flex h-full flex-col overflow-y-auto overscroll-contain px-4 pt-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:px-6">
+          <div className="mb-5 flex items-end justify-between gap-4">
+            <div>
+              <p className="text-primary font-mono text-[9px] font-semibold tracking-[0.22em] uppercase">EID navigation</p>
+              <p className="text-default-900 mt-1 text-[23px] leading-tight font-semibold tracking-[-0.025em]">Find what you need.</p>
+            </div>
+            <span className="text-default-400 font-mono text-[9px] tracking-[0.18em] uppercase">Since 1970</span>
+          </div>
+
+          <nav aria-label="Mobile navigation" className="grid gap-2.5">
+            {mobilePlainItems.map((item) => {
+              const active = isActive(item.href)
               return (
-                <div key={'m-' + item.href} className="hs-accordion">
-                  <button type="button" className={`hs-accordion-toggle w-full px-4 py-4 ${navLink(active)}`} aria-expanded="false">
-                    {t(locale, item.label)}
-                    <Icon icon="tabler:chevron-down" className="ms-auto size-4" />
-                  </button>
-                  <div className="hs-accordion-content hidden w-full overflow-hidden ps-4 pb-4 transition-[height]">
-                    {entries.map((entry) => (
-                      <Link key={'m-' + entry.href} href={entry.href} className="text-default-600 hover:text-primary block px-3 py-2 text-sm font-medium transition-colors">
-                        {t(locale, entry.label)}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
+                <Link
+                  key={'mobile-main-' + item.href}
+                  href={item.href}
+                  onClick={closeMobile}
+                  className={`flex min-h-14 items-center gap-4 rounded-[18px] border px-4 py-3.5 transition-all ${
+                    active ? 'border-primary/25 bg-primary/[0.055] text-primary' : 'border-default-200 bg-white text-default-900'
+                  }`}
+                >
+                  <span className={`flex size-9 shrink-0 items-center justify-center rounded-full ${active ? 'bg-primary text-white' : 'bg-default-100 text-default-600'}`}>
+                    <Icon
+                      icon={
+                        item.href === '/'
+                          ? 'tabler:home'
+                          : item.href.includes('applications')
+                            ? 'tabler:tool'
+                            : item.href === '/quality'
+                              ? 'tabler:microscope'
+                              : 'tabler:building-factory-2'
+                      }
+                      className="size-4.5"
+                    />
+                  </span>
+                  <span className="text-[17px] font-semibold tracking-[-0.01em]">{t(locale, item.label)}</span>
+                  <Icon icon="tabler:arrow-up-right" className="text-default-400 ms-auto size-4" />
+                </Link>
               )
-            }
-            return (
-              <Link key={'m-' + item.href} href={item.href} className={`px-4 py-4 ${navLink(active)}`}>
-                {t(locale, item.label)}
-              </Link>
-            )
-          })}
+            })}
 
-          <a href={site.phoneHref} className="text-primary flex items-center gap-3 px-4 py-4 text-[0.95rem] font-semibold">
-            <Icon icon="tabler:phone" className="size-5" />
-            {site.phone}
-          </a>
+            {mobileAccordion('Products', 'products', productMenu, pathname.startsWith('/products'))}
+            {mobileAccordion('Resources', 'resources', resourceMenu, pathname.startsWith('/resources'))}
+          </nav>
+
+          <div className="border-default-200 mt-6 border-t pt-5">
+            <Link
+              href="/contact"
+              onClick={closeMobile}
+              className="bg-primary rounded-[18px] flex min-h-14 items-center justify-between px-5 py-4 text-white shadow-[0_18px_45px_-25px_rgba(39,53,97,0.75)]"
+            >
+              <span>
+                <span className="block text-[17px] font-semibold">{t(locale, 'Contact')}</span>
+                <span className="mt-0.5 block text-xs text-white/65">Quotes, samples & technical questions</span>
+              </span>
+              <span className="flex size-9 items-center justify-center rounded-full bg-white text-primary">
+                <Icon icon="tabler:arrow-up-right" className="size-4.5" />
+              </span>
+            </Link>
+
+            <a href={site.phoneHref} className="text-default-600 mt-3 flex min-h-11 items-center justify-center gap-2 text-sm font-semibold">
+              <Icon icon="tabler:phone" className="text-primary size-4" />
+              {site.phone}
+            </a>
+          </div>
         </div>
       </div>
     </header>
