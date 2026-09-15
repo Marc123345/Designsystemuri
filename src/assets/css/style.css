@@ -30,3 +30,6 @@ the template it came from.
 /* Loaded last so spacing, surfaces, components and motion resolve around the
    typography rather than fighting it with local one-off values. */
 @import "./_system.css";
+
+/* Product-only crystal geometry inspired by the supplied EID reference. */
+@import "./_faceted-cards.css";
