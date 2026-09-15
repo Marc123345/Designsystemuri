@@ -110,7 +110,6 @@ const AboutCrystalScene = () => {
       const crosshairGeometry = new THREE.BufferGeometry().setFromPoints([
         new THREE.Vector3(-2.35, 0, 0),
         new THREE.Vector3(2.35, 0, 0),
-        new THREE.Vector3(0, 0, 0),
         new THREE.Vector3(0, -2.35, 0),
         new THREE.Vector3(0, 2.35, 0),
       ])
