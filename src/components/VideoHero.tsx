@@ -110,14 +110,12 @@ const VideoHero = ({
           <HeroTitle
             title={title}
             className={`mt-2 drop-shadow-[0_2px_18px_rgba(12,18,38,0.28)] ${
-              isHomeHero
-                ? 'max-w-[24ch] text-[clamp(2rem,4.6vw,3.75rem)]'
-                : 'text-[clamp(1.9rem,4.4vw,3.5rem)]'
+              isHomeHero ? 'display max-w-[24ch]' : 'max-w-[28ch]'
             }`}
           />
 
           {desc && (
-            <p className="mt-6 max-w-[64ch] text-[0.95rem] leading-relaxed text-pretty text-white/85 md:text-base">
+            <p className="lead mt-6 max-w-[64ch] text-pretty text-white/85">
               {desc}
             </p>
           )}
