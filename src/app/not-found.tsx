@@ -1,4 +1,3 @@
-import '@/assets/css/style.css'
 import { DEFAULT_PAGE_TITLE } from '@/config/constants'
 import type { Metadata } from 'next'
 import { ArrowButton } from '@/components/ui'
