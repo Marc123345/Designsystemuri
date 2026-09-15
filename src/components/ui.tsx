@@ -114,16 +114,16 @@ export const Eyebrow = ({ children, align = 'center' }: { children: React.ReactN
   <p className={`label text-primary ${align === 'center' ? 'text-center' : ''}`}>{children}</p>
 )
 
-/** Section heading block: chip, H2, optional lead. */
+/** Section heading block: compact chip, expressive Juturu H2, optional lead. */
 export const SectionHeading = ({ eyebrow, title, desc, align = 'start', light = false }: { eyebrow?: string; title: string; desc?: string; align?: 'start' | 'center'; light?: boolean }) => (
   <div className={`max-w-3xl ${align === 'center' ? 'mx-auto text-center' : ''}`}>
     {eyebrow && (
       <div className={`eid-chip ${light ? 'border-white/20 bg-white/8' : ''}`}>
         <span className={`${light ? 'bg-primary-1' : 'bg-primary'} size-2 rounded-full`} />
-        <span className={`small ${light ? 'text-white' : 'text-default-900'}`}>{eyebrow}</span>
+        <span className={`label ${light ? 'text-white' : 'text-default-900'}`}>{eyebrow}</span>
       </div>
     )}
-    <h2 className={`mt-4 ${light ? 'text-white' : ''}`}>{title}</h2>
+    <h2 className={`section-title mt-4 ${light ? 'text-white' : ''}`}>{title}</h2>
     {desc && <p className={`lead mt-5 max-w-[62ch] ${align === 'center' ? 'mx-auto' : ''} ${light ? 'text-white/75' : 'text-default-600'}`}>{desc}</p>}
   </div>
 )
