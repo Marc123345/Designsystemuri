@@ -49,9 +49,22 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
  *     placements. If a qualifier is wanted again it needs new wording from
  *     Uri, not this one restored.
  */
+/* ⚠ THE LEDE IS GONE, ON MARC'S INSTRUCTION. It read "The complete range of
+   diamond and CBN products, precision engineered and QC-controlled to your
+   specification." The headline carries the hero on its own now, which is what
+   /about already did — VideoHero's `desc` has always been optional and
+   documents that page as the precedent.
+
+   Removed rather than emptied: `desc: ''` would leave a key that renders
+   nothing and reads like a value someone forgot to fill in. The prop is
+   dropped from the call below to match, so there is no dead field here and no
+   argument passing an undefined through `t()`.
+
+   This is the SECOND sentence to come out of this hero — see point 2 above for
+   the first, and the same rule applies: do not reintroduce it as a shorter
+   variant or a paraphrase. New wording would need to come from Uri. */
 const hero = {
   title: 'Industrial Diamond — Manufactured In-House Since 1970',
-  desc: 'The complete range of diamond and CBN products, precision engineered and QC-controlled to your specification.',
 }
 
 /**
@@ -148,7 +161,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 
   return (
     <>
-      <VideoHero title={t(locale, hero.title)} desc={t(locale, hero.desc)} video="https://ik.imagekit.io/qcvroy8xpd/EID%20VIDEO%20HERO.mp4" minHeight="min-h-[60svh]" scrollCue />
+      <VideoHero title={t(locale, hero.title)} video="https://ik.imagekit.io/qcvroy8xpd/EID%20VIDEO%20HERO.mp4" minHeight="min-h-[60svh]" scrollCue />
 
       {/* The two doors, 50/50, still on the hero's navy ground so they read as
           the foot of the hero rather than as the page's first section — which
