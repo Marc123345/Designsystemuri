@@ -114,7 +114,7 @@ const TheControls = () => {
     <section data-note="qc-controls" className="py-16 lg:py-24">
       <div className="container">
         {/* Centred, matching the two index blocks on the homepage. */}
-        <h2 className="mx-auto max-w-3xl text-center text-[28px] font-bold md:text-[34px] lg:text-[38px]">{t(locale, 'The four controls')}</h2>
+        <h2 className="mx-auto max-w-3xl text-center text-[28px] font-bold text-balance md:text-[34px] lg:text-[38px]">{t(locale, 'The four controls')}</h2>
         {/* Marc's call: the "three on every batch, fourth by request" line is
             removed. The distinction it drew is still true and still on record in
             this file's history — it is no longer stated on the page. */}

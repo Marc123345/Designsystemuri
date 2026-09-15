@@ -19,7 +19,7 @@ const NotFound = () => (
       <main className="flex min-h-screen items-center justify-center px-6">
         <div className="max-w-lg text-center">
           <div className="text-default-500 text-sm tracking-[0.2em] uppercase">Error 404</div>
-          <h1 className="mt-4 text-5xl font-bold">This page does not exist.</h1>
+          <h1 className="mt-4 text-5xl font-bold text-balance">This page does not exist.</h1>
           <p className="text-default-600 mt-5 text-base">The link may be out of date. The full catalogue of diamond and CBN products is one click away.</p>
           <div className="mt-9 flex flex-wrap justify-center gap-4">
             {/* ⚠ `external` ON TWO INTERNAL LINKS, AND IT IS LOAD-BEARING.

@@ -181,7 +181,11 @@ export const SectionHeading = ({ eyebrow, title, desc, align = 'start', light = 
         <span className="text-default-900 text-sm">{eyebrow}</span>
       </div>
     )}
-    <h2 className={`mt-4 text-[28px] font-bold md:text-[36px] lg:text-[42px] ${light ? 'text-white' : ''}`}>{title}</h2>
+    {/* `text-balance` follows `align`, not the component. Left-aligned copy
+        is SUPPOSED to have a short last line — that is what a ragged right
+        edge is — so balancing it buys nothing and costs the browser a
+        second layout pass. Centred, a short last line reads as a fault. */}
+    <h2 className={`mt-4 text-[28px] font-bold md:text-[36px] lg:text-[42px] ${align === 'center' ? 'text-balance' : ''} ${light ? 'text-white' : ''}`}>{title}</h2>
     {desc && <p className={`mt-5 ${light ? 'text-default-300' : ''}`}>{desc}</p>}
   </div>
 )

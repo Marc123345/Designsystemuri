@@ -198,7 +198,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
                 paragraph did. */}
             <div className="mx-auto max-w-3xl text-center">
               <Eyebrow>{t(locale, 'The range')}</Eyebrow>
-              <h2 className="mt-4 text-[24px] font-bold md:text-[30px] lg:text-[34px]">{t(locale, 'Every industrial diamond and CBN product, from one source.')}</h2>
+              <h2 className="mt-4 text-[24px] font-bold text-balance md:text-[30px] lg:text-[34px]">{t(locale, 'Every industrial diamond and CBN product, from one source.')}</h2>
             </div>
           </div>
 
@@ -338,7 +338,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
                 "Eight groups, from natural grit to single crystal" had to be
                 dropped because the number goes stale the moment the range
                 changes. */}
-            <h2 className="mt-4 text-[24px] font-bold md:text-[30px] lg:text-[34px]">{t(locale, 'Where our diamond and CBN go to work.')}</h2>
+            <h2 className="mt-4 text-[24px] font-bold text-balance md:text-[30px] lg:text-[34px]">{t(locale, 'Where our diamond and CBN go to work.')}</h2>
           </div>
 
           <div className="mt-8 lg:mt-10">
