@@ -1,7 +1,7 @@
 /* ========================================================================== 
    EID visual system harmony layer
    Typography lives in _typography.css. This file aligns everything around it:
-   section rhythm, surfaces, controls, cards and motion.
+   hero geometry, section rhythm, surfaces, controls, cards and motion.
    ========================================================================== */
 
 :root {
@@ -30,6 +30,88 @@
 ::selection {
   background: rgb(44 60 108 / 0.18);
   color: var(--color-primary-3);
+}
+
+/* --------------------------------------------------------------------------
+   Hero system
+
+   The site had three competing hero heights and two different vertical
+   alignments. Every hero now follows the homepage's responsive frame and
+   centred lockup so changing route never feels like changing template.
+   -------------------------------------------------------------------------- */
+
+.eid-hero-shell,
+[data-note="page-hero"] {
+  min-height: 60svh !important;
+}
+
+@media (min-width: 768px) {
+  .eid-hero-shell,
+  [data-note="page-hero"] {
+    min-height: 64svh !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .eid-hero-shell,
+  [data-note="page-hero"] {
+    min-height: 66svh !important;
+  }
+}
+
+[data-note="page-hero"] {
+  display: flex !important;
+  align-items: center !important;
+}
+
+[data-note="page-hero"] > .container {
+  padding-top: clamp(7rem, 12vh, 9rem) !important;
+  padding-bottom: clamp(3rem, 6vh, 4.5rem) !important;
+}
+
+[data-note="page-hero"] > .container > div {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+[data-note="page-hero"] > .container > div > div {
+  display: flex;
+  width: 100%;
+  max-width: 72rem !important;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.25rem !important;
+}
+
+/* PageHero still passes the historical small mark. Visually normalize it to
+   the same mark size used by VideoHero without duplicating component markup. */
+[data-note="page-hero"] > .container > div > span[aria-hidden] {
+  width: 2.75rem !important;
+}
+
+@media (min-width: 1024px) {
+  [data-note="page-hero"] > .container > div > span[aria-hidden] {
+    width: 3.5rem !important;
+  }
+}
+
+[data-note="page-hero"] h1 {
+  width: 100%;
+  max-width: 22ch;
+  font-size: var(--fs-display) !important;
+  line-height: var(--lh-display) !important;
+  letter-spacing: var(--ls-display) !important;
+  font-weight: var(--fw-semibold) !important;
+}
+
+[data-note="page-hero"] h1 + p {
+  max-width: 58ch !important;
+  margin-top: 1.25rem !important;
+  font-size: var(--fs-lead) !important;
+  line-height: var(--lh-lead) !important;
 }
 
 /* --------------------------------------------------------------------------
