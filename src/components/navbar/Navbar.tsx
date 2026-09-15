@@ -111,9 +111,12 @@ const Navbar = () => {
      they get no help from the inline exception, because a nav item is not
      running text. Four pixels of vertical padding takes the hit area to 27px
      and moves nothing: the bar's height is set by the taller controls beside
-     these, so the row does not grow. */
+     these, so the row does not grow.
+     
+     UI Upgrade: Added an animated sliding underline on hover and active states. */
   const navLink = (active: boolean) =>
-    `flex items-center gap-1.5 py-0.5 text-[0.94rem] font-semibold tracking-[0.01em] transition-colors hover:text-primary ${active ? 'text-primary' : 'text-default-700'}`
+    `relative flex items-center gap-1.5 py-0.5 text-[0.94rem] font-semibold tracking-[0.01em] transition-colors hover:text-primary ${active ? 'text-primary after:origin-bottom-left after:scale-x-100' : 'text-default-700'
+    } after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-primary after:transition-transform after:duration-300 hover:after:origin-bottom-left hover:after:scale-x-100`
 
   // One vertical panel anchored under its trigger, with the brand rule across
   // the top — the Supreme Home dropdown, minus the corner radius.
@@ -160,11 +163,13 @@ const Navbar = () => {
 
             The card chrome moved to the inner div, which keeps its
             `overflow-hidden` and its clipped brand rule — that part was never
-            the problem. */
-        className="hs-dropdown-menu hs-dropdown-open:opacity-100 absolute start-1/2 top-full z-50 hidden -translate-x-1/2 pt-2.5 opacity-0 transition-[opacity,margin] duration-300"
+            the problem.
+            
+            UI Upgrade: Added subtle translate-y scale for smooth physics. */
+        className="hs-dropdown-menu hs-dropdown-open:opacity-100 hs-dropdown-open:translate-y-0 absolute start-1/2 top-full z-50 hidden -translate-x-1/2 translate-y-2 pt-2.5 opacity-0 transition-all duration-300 ease-out"
         role="menu"
       >
-        <div className="border-default-200 rounded-card overflow-hidden border bg-white shadow-[0_30px_70px_-30px_rgba(0,0,0,0.5)]">
+        <div className="border-default-100 rounded-card overflow-hidden border bg-white/95 backdrop-blur-xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)]">
           <div className="bg-primary h-[4px]" />
           <div className="flex min-w-64 flex-col p-2">
             {entries.map((entry) => (
@@ -189,9 +194,10 @@ const Navbar = () => {
     <header>
       <div
         data-note="navbar"
-        className={`fixed inset-x-0 top-0 z-[120] h-[76px] w-full border-b transition-colors duration-300 lg:h-[96px] ${
-          overHero ? 'eid-nav-over-hero border-transparent bg-transparent' : 'border-default-200 bg-white'
-        }`}
+        /* UI Upgrade: Replaced stark solid white on scroll with a translucent, blurred backdrop 
+           and smooth 500ms transition for a more premium, deep feel. */
+        className={`fixed inset-x-0 top-0 z-[120] h-[76px] w-full border-b transition-all duration-500 lg:h-[96px] ${overHero ? 'eid-nav-over-hero border-transparent bg-transparent' : 'border-white/20 bg-white/85 backdrop-blur-md shadow-sm'
+          }`}
       >
         {/* Angled brand block behind the logo — and it only exists when the bar
             has a ground of its own.
@@ -333,8 +339,11 @@ const Navbar = () => {
         id="mobile-menu"
         /* Bottom corners only. The mobile overlay drops from under the bar
             and its top edge is flush against it, so a radius up there would be
-            a gap; the same reasoning as the heroes. */
-        className="hs-overlay hs-overlay-open:translate-y-0 hs-overlay-open:top-[76px] rounded-b-card absolute top-0 z-[110] max-h-[80vh] w-full -translate-y-full transform overflow-y-auto bg-white shadow-xl transition-all duration-300 lg:hidden"
+            a gap; the same reasoning as the heroes. 
+            
+            UI Upgrade: Applied backdrop-blur and a snappier custom cubic-bezier ease for 
+            the mobile slide-down. */
+        className="hs-overlay hs-overlay-open:translate-y-0 hs-overlay-open:top-[76px] rounded-b-card absolute top-0 z-[110] max-h-[80vh] w-full -translate-y-full transform overflow-y-auto bg-white/95 backdrop-blur-xl shadow-2xl transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden border-b border-default-200"
         role="dialog"
         // Preline gives this role; a dialog with no accessible name is
         // announced as just "dialog", so a screen reader user has no idea what
