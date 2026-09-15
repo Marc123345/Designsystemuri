@@ -1,3 +1,4 @@
+import ScrambleHeading from '@/components/ScrambleHeading'
 import ProofArc, { type ProofArcItem } from '@/components/home/ProofArc'
 
 /**
@@ -53,7 +54,10 @@ const ProofPanel = ({
       </div>
 
       <div className="mt-4 grid items-end gap-4 md:grid-cols-[1.25fr_.75fr] lg:gap-8">
-        <h2 className="max-w-[17ch] text-[36px] leading-[0.98] font-semibold tracking-[-0.04em] text-white text-balance md:text-[46px] lg:text-[54px]">{title}</h2>
+        <ScrambleHeading
+          text={title}
+          className="max-w-[17ch] text-[36px] leading-[0.98] font-semibold tracking-[-0.04em] text-white text-balance md:text-[46px] lg:text-[54px]"
+        />
         <div className="max-w-[38ch] md:justify-self-end md:text-right">
           {desc && <p className="mb-1.5 text-sm leading-relaxed text-white/72">{desc}</p>}
           <p className="text-[13px] leading-relaxed text-white/52">Use arrows, dots, or drag.</p>
