@@ -1,33 +1,11 @@
+import EvidencePanel from '@/components/EvidencePanel'
 import PhotoCard from '@/components/PhotoCard'
+import ScrollReveal from '@/components/ScrollReveal'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
 import { useLocale } from 'next-intl'
+import type { CSSProperties } from 'react'
 
-/**
- * Four values, four columns — Strauss's layout, EID's words.
- *
- * Uri, F1/F2, on Strauss's Our Core Values block: "all their values match ours
- * … that's really us", and the instruction was to copy the layout. Their four
- * are Innovation, Family, Excellence, Precision, set as four plain columns of
- * a heading and a short paragraph on a white ground, with nothing else in the
- * section. That is what this is.
- *
- * ── ⚠ One open decision: Precision, or Service? ─────────────────────────────
- *
- * His note allows for swapping one of the four for **Service**. Precision is
- * kept for now on the argument that it is the one value the rest of this site
- * actually evidences — the Quality page is four controls' worth of it — while
- * Service is a claim with nothing behind it on any page. If he wants Service
- * in, the honest swap is Family out rather than Precision: Family and Service
- * are both about how EID deals with people, and Precision is about the
- * material. That is his call, and it is a two-line change in the table below.
- *
- * The copy is written for EID rather than adapted from Strauss's, because
- * Strauss's paragraphs describe Strauss — a dental and industrial tool maker,
- * not a superabrasive supplier — and four sentences lifted off a competitor's
- * About page is the one thing on this site that would be recognisable as
- * lifted.
- */
 const VALUES = [
   {
     name: 'Innovation',
@@ -50,20 +28,10 @@ const VALUES = [
   {
     name: 'Precision',
     body: 'Where microns are the unit of the argument. Every batch is measured rather than sampled and assumed, because a grade you have to re-qualify on each order is not a grade you can build a production run around.',
-    /* Was the SEM micrograph, which was the literal reading of "microns" but
-       the wrong picture: an abstract grey texture that says nothing about
-       measuring. This is the optical measurement rig with a crystal magnified
-       on screen and its dimensions read out beside it — a machine in the act of
-       measuring, which is what the paragraph is actually claiming. */
     image: '/eid/qc-inspection.jpg',
     alt: 'An optical measurement system with a diamond crystal magnified on screen and its dimensions read out alongside',
   },
 ]
-
-/* Span per tile. 7/5 alternating, inverted on the second row: no two adjacent
-   tiles share a width and the row break lands in a different place each time.
-   A 2x2 of equal boxes is a grid; this is a composition. */
-const SPANS = ['lg:col-span-7', 'lg:col-span-5', 'lg:col-span-5', 'lg:col-span-7']
 
 const CoreValues = () => {
   const locale = useLocale() as Locale
@@ -71,52 +39,47 @@ const CoreValues = () => {
   return (
     <section data-note="core-values" className="py-16 lg:py-24">
       <div className="container">
-        {/* Heading plus a one-line subtitle, which is Strauss's shape — theirs
-            reads "Driving Technological Excellence to Deliver Superior
-            Products" under "OUR CORE VALUES". The subtitle is what stops four
-            abstract nouns arriving with no frame around them. */}
-        <h2 className="text-[28px] font-bold md:text-[34px] lg:text-[38px]">{t(locale, 'Our core values')}</h2>
-        <p className="text-default-600 mt-3 max-w-2xl text-[17px]">{t(locale, 'Four things that have not changed since 1970, and that a buyer can check against every order.')}</p>
+        <EvidencePanel className="px-5 py-9 sm:px-7 sm:py-11 lg:px-10 lg:py-12 xl:px-12">
+          <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
+            <div className="eid-sticky-copy lg:col-span-4">
+              <p className="font-mono text-[10px] tracking-[0.22em] text-white/55 uppercase">{t(locale, 'About EID')}</p>
+              <h2 className="mt-4 text-[30px] leading-[1.02] font-bold text-white md:text-[36px] lg:text-[42px]">
+                {t(locale, 'Our core values')}
+              </h2>
+              <p className="mt-4 max-w-md text-[17px] leading-relaxed text-white/72">
+                {t(locale, 'Four things that have not changed since 1970, and that a buyer can check against every order.')}
+              </p>
 
-        {/* ── On the site rule ──────────────────────────────────────────────
-            These were white cards with the photograph beside or above the copy.
-            They are PhotoCards now: the image fills the tile and the words sit
-            on it, which is the rule everywhere on this site.
+              <div aria-hidden className="mt-8 hidden items-center gap-3 lg:flex">
+                <span className="h-px w-10 bg-white/30" />
+                <span className="font-mono text-[10px] font-semibold tracking-[0.2em] text-white/50">01 — 04</span>
+              </div>
+            </div>
 
-            The numeral went with the change. On a white card it was a quiet
-            grey mark; over a photograph it would need its own contrast
-            treatment to survive, and at that point it is competing with the
-            heading rather than labelling the tile. PhotoCard's eyebrow slot
-            carries it instead, at 11px mono — same job, no fight.
-
-            Every photograph is still the thing its paragraph is about:
-              Innovation → crystal grown and inspected for orientation
-              Family     → the grader the copy says answers your call
-              Excellence → the retention samples kept from every batch
-              Precision  → an SEM micrograph, microns with a scale bar */}
-        <div className="mt-10 grid gap-6 lg:mt-14 lg:grid-cols-12">
-          {VALUES.map((v, i) => (
-            <PhotoCard
-              key={v.name}
-              className={SPANS[i]}
-              minHeight="min-h-[340px] lg:min-h-[380px]"
-              /* ⚠ `heavy` for contrast, not for looks. Found while auditing
-                 /quality after its photographs changed: these four cards were
-                 the WORST on the site, with the eyebrow numerals at 1.55-1.82:1
-                 against the brightest part of each frame on the light scrim.
-                 Raising PhotoCard's eyebrow to white/85 took them to 2.73; only
-                 the heavier scrim clears 4.5:1. Two of these photographs are
-                 bright by nature — a lit microscope stage and a white lab shelf
-                 — so the cover has to come from the scrim. */
-              weight="heavy"
-              eyebrow={String(i + 1).padStart(2, '0')}
-              title={t(locale, v.name)}
-              body={t(locale, v.body)}
-              image={v.image}
-              alt={t(locale, v.alt)}
-            />
-          ))}
-        </div>
+            <div className="grid gap-8 lg:col-span-8 lg:gap-12 lg:pb-[18vh]">
+              {VALUES.map((value, index) => (
+                <div
+                  key={value.name}
+                  className="eid-sticky-card"
+                  style={{ '--eid-sticky-top': `${6.5 + index * 1.15}rem` } as CSSProperties}
+                >
+                  <ScrollReveal delay={index * 0.045}>
+                    <PhotoCard
+                      className="ring-2 ring-white/85 shadow-[0_24px_80px_-32px_rgba(0,0,0,0.72)]"
+                      minHeight="min-h-[360px] lg:min-h-[58svh]"
+                      weight="heavy"
+                      eyebrow={String(index + 1).padStart(2, '0')}
+                      title={t(locale, value.name)}
+                      body={t(locale, value.body)}
+                      image={value.image}
+                      alt={t(locale, value.alt)}
+                    />
+                  </ScrollReveal>
+                </div>
+              ))}
+            </div>
+          </div>
+        </EvidencePanel>
       </div>
     </section>
   )

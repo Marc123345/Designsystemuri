@@ -1,55 +1,10 @@
+import EvidencePanel from '@/components/EvidencePanel'
 import PhotoCard from '@/components/PhotoCard'
+import ScrollReveal from '@/components/ScrollReveal'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
 import { useLocale } from 'next-intl'
 
-/**
- * The four controls, in About's core-values layout.
- *
- * Same block as CoreValues: a heading, a one-line subtitle under it, then four
- * PhotoCards on a 7/5 - 5/7 span pattern so no two adjacent tiles share a
- * width and the row break moves. Same tile heights, same eyebrow numerals.
- *
- * ── What is kept from the previous version of this page ─────────────────────
- *
- * The four controls and every bullet in them are Uri's, from §4 of the written
- * spec, and are unchanged. The disclosure is kept too: collapsed, each card is
- * a photograph, a number, a title and a count, which is what lets four cards
- * carrying three and four bullet pairs each sit in the same grid as About's
- * four one-paragraph values. Expanded, the bullets are all still there.
- *
- * ── The subtitle does real work ─────────────────────────────────────────────
- *
- * "Three run on every batch. The fourth is by request." That sentence is the
- * one thing about this section a buyer can get wrong, and it belongs above the
- * grid rather than only inside card 04, because the mosaic a screen up says
- * "4 laboratory controls" and someone skimming will carry that number down
- * here. Card 04 still carries its own note for anyone who lands on it directly.
- *
- * ── The photographs ─────────────────────────────────────────────────────────
- *
- *   01 → grit on a precision balance. See the note below.
- *   02 → sample prep for sedimentation, centrifuge behind.
- *   03 → an electron micrograph showing the treated diamond surface.
- *   04 → the impact test station.
- *
- * ⚠ 04 FINALLY HAS ONE. This slot has been brand navy since the page was
- * built, because the T.I. milling and crush chamber shot did not exist and a
- * navy tile reads as a deliberate odd card rather than a missing asset. The
- * automated impact station is that shot: an indenter over a guarded stage,
- * which is what a toughness test looks like. The card is no longer the odd one
- * out, so if the grid ever wants a deliberate break again it has to come from
- * somewhere else.
- *
- * ⚠ 01 IS THE APPROXIMATE ONE NOW, and the weak link in the set. This control
- * is mesh sizing — test sieves, shape-sorting tables, Image Pro. A balance
- * weighing grit is not sizing it; it is the nearest of the seven new frames
- * because it at least shows graded grit as the subject. The frame it replaced
- * was a technician actually operating a stack of test sieves, which is the
- * control exactly. That file, /eid/qc-sieve.jpg, is still on disk and still
- * the better picture for this card. Worth putting back if a sieve frame is
- * not commissioned in the new style.
- */
 const CONTROLS = [
   {
     n: '01',
@@ -98,57 +53,86 @@ const CONTROLS = [
   },
 ] as const
 
-/* About's spans exactly: 7/5 alternating, inverted on the second row. */
-/* Toughness (04) is the smallest tile on Marc's instruction: it is the one
-   control that does not run on every batch, so it should not read as equal in
-   weight to the three that do. 7/5 then 7/5 keeps the row break moving — no
-   two adjacent tiles share a width — while giving 04 the narrow column. */
-const SPANS = ['lg:col-span-7', 'lg:col-span-5', 'lg:col-span-7', 'lg:col-span-5']
-
 const COUNT_LABEL = ['', '', 'Two checks', 'Three checks', 'Four checks']
+const LEFT = [0, 2] as const
+const RIGHT = [1, 3] as const
 
 const TheControls = () => {
   const locale = useLocale() as Locale
 
+  const card = (index: 0 | 1 | 2 | 3) => {
+    const control = CONTROLS[index]
+    return (
+      <PhotoCard
+        className="ring-2 ring-white/85 shadow-[0_24px_70px_-34px_rgba(0,0,0,0.7)]"
+        minHeight={index === 3 ? 'min-h-[320px] lg:min-h-[390px]' : 'min-h-[350px] lg:min-h-[430px]'}
+        weight="heavy"
+        collapsible
+        disclosureLabel={t(locale, COUNT_LABEL[control.points.length])}
+        eyebrow={control.n}
+        title={t(locale, control.title)}
+        points={control.points.map(([label, body]) => [t(locale, label), t(locale, body)] as const)}
+        note={'note' in control && control.note ? t(locale, control.note) : undefined}
+        image={control.image}
+        alt={t(locale, control.alt)}
+      />
+    )
+  }
+
   return (
     <section data-note="qc-controls" className="py-16 lg:py-24">
       <div className="container">
-        {/* Centred, matching the two index blocks on the homepage. */}
-        <h2 className="mx-auto max-w-3xl text-center text-[28px] font-bold text-balance md:text-[34px] lg:text-[38px]">{t(locale, 'The four controls')}</h2>
-        {/* Marc's call: the "three on every batch, fourth by request" line is
-            removed. The distinction it drew is still true and still on record in
-            this file's history — it is no longer stated on the page. */}
+        <EvidencePanel className="px-5 py-9 sm:px-7 sm:py-11 lg:px-8 lg:py-10 xl:px-10">
+          {/* Mobile/tablet: straightforward reading order. */}
+          <div className="lg:hidden">
+            <h2 className="mx-auto max-w-3xl text-center text-[28px] font-bold text-white text-balance md:text-[34px]">
+              {t(locale, 'The four controls')}
+            </h2>
+            <div className="mt-10 grid gap-6 sm:grid-cols-2">
+              {CONTROLS.map((_, index) => (
+                <ScrollReveal key={CONTROLS[index].n} delay={index * 0.04}>
+                  {card(index as 0 | 1 | 2 | 3)}
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
 
-        <div className="mt-10 grid gap-6 lg:mt-14 lg:grid-cols-12">
-          {CONTROLS.map((c, i) => (
-            <PhotoCard
-              key={c.n}
-              className={SPANS[i]}
-              minHeight={i === 3 ? 'min-h-[260px] lg:min-h-[280px]' : 'min-h-[340px] lg:min-h-[380px]'}
-              /* ⚠ `heavy`, and it is a legibility fix rather than a look.
-                 These cards ran on the light scrim while they carried the old
-                 photographs, which were dark: a sieve stack in shadow, two grey
-                 micrographs, and a card with no image at all. The new set is
-                 bright — a lit balance, a white lab bench, a beaker under a
-                 fume hood, a blue-lit test cell — and under the light scrim the
-                 11px eyebrow numerals measured 1.87-2.25:1 against the brightest
-                 part of each frame, failing 1.4.3 on all four cards at once.
+          {/* Desktop: two moving evidence columns orbit a pinned centre spine,
+              borrowing the 4/4/4 sticky gallery from the supplied reference. */}
+          <div className="hidden items-start gap-6 lg:grid lg:grid-cols-12">
+            <div className="col-span-4 space-y-[28vh] pb-[22vh]">
+              {LEFT.map((index) => (
+                <ScrollReveal key={CONTROLS[index].n}>{card(index)}</ScrollReveal>
+              ))}
+            </div>
 
-                 Swapping a photograph is never only a content change. If these
-                 images are replaced again, re-measure before assuming the scrim
-                 still covers. */
-              weight="heavy"
-              collapsible
-              disclosureLabel={t(locale, COUNT_LABEL[c.points.length])}
-              eyebrow={c.n}
-              title={t(locale, c.title)}
-              points={c.points.map(([label, body]) => [t(locale, label), t(locale, body)] as const)}
-              note={'note' in c && c.note ? t(locale, c.note) : undefined}
-              image={'image' in c ? c.image : undefined}
-              alt={'alt' in c ? t(locale, c.alt) : ''}
-            />
-          ))}
-        </div>
+            <div className="eid-sticky-viewport col-span-4 flex items-center justify-center px-2">
+              <div className="rounded-card w-full border border-white/18 bg-white/[0.07] px-7 py-10 text-center shadow-[0_24px_80px_-38px_rgba(0,0,0,0.6)] backdrop-blur-sm">
+                <p className="font-mono text-[10px] tracking-[0.24em] text-white/55 uppercase">{t(locale, 'Quality control')}</p>
+                <h2 className="mt-4 text-[38px] leading-[0.98] font-bold tracking-[-0.035em] text-white text-balance xl:text-[46px]">
+                  {t(locale, 'The four controls')}
+                </h2>
+
+                <div aria-hidden className="mx-auto mt-9 flex max-w-[220px] items-center justify-between">
+                  {CONTROLS.map((control, index) => (
+                    <div key={control.n} className="flex items-center">
+                      <span className="rounded-control flex size-9 items-center justify-center border border-white/25 bg-white/8 font-mono text-[10px] font-semibold text-white/82">
+                        {control.n}
+                      </span>
+                      {index < CONTROLS.length - 1 && <span className="mx-1 h-px w-4 bg-white/20 xl:w-6" />}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="col-span-4 space-y-[28vh] pt-[24vh] pb-[22vh]">
+              {RIGHT.map((index) => (
+                <ScrollReveal key={CONTROLS[index].n}>{card(index)}</ScrollReveal>
+              ))}
+            </div>
+          </div>
+        </EvidencePanel>
       </div>
     </section>
   )

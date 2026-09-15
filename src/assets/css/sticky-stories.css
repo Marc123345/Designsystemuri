@@ -1,0 +1,93 @@
+/* Lenis' required base behaviour, kept in the site's shared stylesheet so the
+   root client wrapper does not import global package CSS from a nested module. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* Shared sticky-story rules inspired by the scroll references Marc supplied.
+   Desktop gets the layered/pinned composition; touch-sized layouts keep normal
+   document flow so content never depends on scroll choreography. */
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .eid-sticky-copy {
+    position: sticky;
+    top: 6.5rem;
+    align-self: start;
+  }
+
+  .eid-sticky-viewport {
+    position: sticky;
+    top: 6.5rem;
+    min-height: calc(100svh - 8rem);
+    align-self: start;
+  }
+
+  .eid-sticky-card {
+    position: sticky;
+    top: var(--eid-sticky-top, 6.5rem);
+  }
+
+  [data-note='faq'] > .container > .grid > :first-child {
+    position: sticky;
+    top: 6.5rem;
+    align-self: start;
+  }
+}
+
+/* Progressive view-timeline reveals. Unsupported browsers simply show the
+   rows normally; no JS or hidden fallback is involved. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .eid-doc-row,
+    [data-note='faq'] details {
+      animation: eid-scroll-in linear both;
+      animation-timeline: view();
+      animation-range: entry 4% entry 38%;
+    }
+  }
+}
+
+@keyframes eid-scroll-in {
+  from {
+    opacity: 0.42;
+    transform: translateY(18px) scale(0.992);
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eid-sticky-copy,
+  .eid-sticky-viewport,
+  .eid-sticky-card {
+    position: static !important;
+  }
+
+  .eid-doc-row,
+  [data-note='faq'] details {
+    animation: none !important;
+    transform: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+  }
+}
