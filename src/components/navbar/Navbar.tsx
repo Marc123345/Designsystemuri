@@ -51,7 +51,8 @@ const Navbar = () => {
   }
 
   useEffect(() => {
-    closeMobile()
+    setMobileOpen(false)
+    setMobileSection(null)
   }, [pathname])
 
   useEffect(() => {
@@ -138,7 +139,7 @@ const Navbar = () => {
                   onClick={closeMobile}
                   className="text-primary mb-1 flex min-h-11 items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold"
                 >
-                  {t(locale, 'Products')} overview
+                  {t(locale, 'Products')}
                   <Icon icon="tabler:arrow-up-right" className="size-4" />
                 </Link>
               )}
