@@ -31,3 +31,7 @@ the template it came from.
 @import "./_config.css";
 @import "./_swiper.css";
 @import "./_general.css";
+
+/* Typography is deliberately last: it is the site's semantic type contract and
+   must win over legacy one-off font-size/leading utilities. */
+@import "./_typography.css";
