@@ -202,10 +202,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
         <CanvasField
           density="coarse"
           mark="end"
-          marginImages={{
-            start: 'https://ik.imagekit.io/qcvroy8xpd/EID%20Pattern%20-%20Section%202%20(Left).png',
-            end: 'https://ik.imagekit.io/qcvroy8xpd/EID%20Pattern%20-%20Section%202%20(Right).png',
-          }}
+          marginPattern
         />
         <div className="container">
           <div>
@@ -232,7 +229,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
         </div>
       </section>
 
-      {/* ── BAND 2 ─────────────────────────────────────────────────────── */}
+      {/* ── BAND 2 ────────────────────────────────────────────────────���── */}
 
       <ProofPanel
         eyebrow={t(locale, 'Why tool makers qualify EID')}
