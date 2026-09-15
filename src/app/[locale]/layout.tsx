@@ -10,20 +10,17 @@ import { site } from '@/lib/site'
 import type { Metadata } from 'next'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
-import { Geist, Mona_Sans } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import 'swiper/css'
 import 'swiper/css/effect-fade'
 import 'swiper/css/navigation'
 
-const geist = Geist({
-  variable: '--font-body',
-  subsets: ['latin'],
-  display: 'swap',
-})
-
-const monaSans = Mona_Sans({
-  variable: '--font-heading',
+/* Apple platforms resolve -apple-system/BlinkMacSystemFont to SF Pro. Inter is
+   loaded only as the cross-platform fallback and exposed to CSS as a variable
+   so the stack in _typography.css remains the single source of truth. */
+const inter = Inter({
+  variable: '--font-inter',
   subsets: ['latin'],
   display: 'swap',
 })
@@ -108,7 +105,7 @@ const LocaleLayout = async ({ children, params }: { children: React.ReactNode; p
   setRequestLocale(locale)
 
   return (
-    <html lang={locale} className={`${geist.variable} ${monaSans.variable} antialiased`}>
+    <html lang={locale} className={`${inter.variable} antialiased`}>
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
 
@@ -123,30 +120,11 @@ const LocaleLayout = async ({ children, params }: { children: React.ReactNode; p
             preconnect that does not match the eventual request's CORS mode
             opens a connection the browser then cannot reuse. */}
         <link rel="preconnect" href="https://ik.imagekit.io" crossOrigin="" />
-
-        {/* The `.site-loader` noscript rule that used to sit here is gone with
-            SiteLoader. It hid the overlay for visitors without JavaScript,
-            because a script-dismissed panel would otherwise cover the site
-            permanently. SiteIntro cannot create that problem: it renders
-            nothing until its effect runs, so no-JS means no overlay at all. */}
       </head>
       <body suppressHydrationWarning>
         <NextIntlClientProvider>
           <AppProvidersWrapper>{children}</AppProvidersWrapper>
-          {/* Outside the page wrapper so it floats above every route. */}
-          {/* Mounted here rather than as a loading.tsx boundary: a Suspense
-              boundary lasts only as long as the server render, and these routes
-              are prerendered, so it was invisible. Because the layout is not
-              remounted on client navigation, this shows on a full page load and
-              not again as you move around the site. */}
           <SiteIntro />
-          {/* ⚠ WRAPPED IN A LANDMARK, and the wrapper is the whole point.
-              The button is fixed-position and mounted here rather than inside
-              any page, so it sat outside header, main and footer — axe flagged
-              it on all seven pages, and a screen-reader user navigating by
-              landmark never met the site's most persistent contact route. An
-              `aside` with a name puts it on that list. The link inside already
-              carries its own accessible name. */}
           <aside aria-label={t(locale, 'Quick contact')}>
             <WhatsAppButton />
           </aside>
