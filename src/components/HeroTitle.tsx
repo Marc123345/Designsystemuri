@@ -1,10 +1,9 @@
 /**
  * Shared hero headline.
  *
- * Juturu's variable weight axis is the expressive device here. Two-beat titles
- * use a lighter subject line and a stronger claim line without changing family
- * or size, so the lockup feels dynamic but remains one typographic system.
- * Single-beat titles use a controlled semibold weight and balanced wrapping.
+ * Keep the explicit two-beat break where the copy includes an em dash, but use
+ * one Crimson Text treatment throughout. Hierarchy now comes from composition,
+ * not from variable-font tricks or mixed weights.
  */
 const HeroTitle = ({ title, className = '' }: { title: string; className?: string }) => {
   const beats = title.split('—')
@@ -14,11 +13,11 @@ const HeroTitle = ({ title, className = '' }: { title: string; className?: strin
     <h1 className={`display text-white ${className}`}>
       {twoBeat ? (
         <>
-          <span className="hero-title-soft block">{beats[0].trim()}</span>{' '}
-          <strong className="hero-title-strong block">{beats[1].trim()}</strong>
+          <span className="block font-semibold">{beats[0].trim()}</span>{' '}
+          <strong className="block font-semibold">{beats[1].trim()}</strong>
         </>
       ) : (
-        <span className="hero-title-single block text-balance">{title}</span>
+        <span className="block font-semibold text-balance">{title}</span>
       )}
     </h1>
   )
