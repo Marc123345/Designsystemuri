@@ -30,7 +30,7 @@ import { useLocale } from 'next-intl'
  *
  *   01 → grit on a precision balance. See the note below.
  *   02 → sample prep for sedimentation, centrifuge behind.
- *   03 → the chemical rinse itself.
+ *   03 → an electron micrograph showing the treated diamond surface.
  *   04 → the impact test station.
  *
  * ⚠ 04 FINALLY HAS ONE. This slot has been brand navy since the page was
@@ -82,8 +82,8 @@ const CONTROLS = [
       ['Surface purity control', 'The treatment clears crystal surfaces, allowing better bond adhesion during tool manufacturing.'],
       ['Visual purity inspection', 'Optical checks under the microscope confirm the cleaned material is consistent.'],
     ],
-    image: '/eid/quality/10-chemical-rinse-beaker-diamonds.png',
-    alt: 'Diamond crystals suspended in a beaker of clear chemical rinse under a fume hood',
+    image: '/eid/surface-enhancements.jpg',
+    alt: 'Electron micrograph showing treated diamond surface morphology',
   },
   {
     n: '04',
