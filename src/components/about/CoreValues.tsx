@@ -50,9 +50,9 @@ const CoreValues = () => {
                 {t(locale, 'Four things that have not changed since 1970, and that a buyer can check against every order.')}
               </p>
 
-              <div className="mt-8 hidden items-center gap-3 text-[10px] font-semibold tracking-[0.18em] text-white/55 uppercase lg:flex">
+              <div aria-hidden className="mt-8 hidden items-center gap-3 lg:flex">
                 <span className="h-px w-10 bg-white/30" />
-                {t(locale, 'Scroll through 01—04')}
+                <span className="font-mono text-[10px] font-semibold tracking-[0.2em] text-white/50">01 — 04</span>
               </div>
             </div>
 
