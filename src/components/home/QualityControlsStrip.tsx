@@ -27,8 +27,8 @@ const CONTROLS = [
   {
     n: '03',
     label: 'Advanced Chemical Cleaning',
-    image: '/eid/quality/10-chemical-rinse-beaker-diamonds.png',
-    alt: 'Diamond crystals suspended in a beaker of clear chemical rinse under a fume hood',
+    image: '/eid/surface-enhancements.jpg',
+    alt: 'Electron micrograph showing treated diamond surface morphology',
   },
   {
     n: '04',
