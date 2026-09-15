@@ -1,7 +1,29 @@
+/* Lenis' required base behaviour, kept in the site's shared stylesheet so the
+   root client wrapper does not import global package CSS from a nested module. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
 /* Shared sticky-story rules inspired by the scroll references Marc supplied.
    Desktop gets the layered/pinned composition; touch-sized layouts keep normal
    document flow so content never depends on scroll choreography. */
-
 @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
   .eid-sticky-copy {
     position: sticky;
@@ -21,8 +43,6 @@
     top: var(--eid-sticky-top, 6.5rem);
   }
 
-  /* FAQ owns a semantic two-column layout. Pin its contextual left column
-     while the native details/summary accordion continues beside it. */
   [data-note='faq'] > .container > .grid > :first-child {
     position: sticky;
     top: 6.5rem;
