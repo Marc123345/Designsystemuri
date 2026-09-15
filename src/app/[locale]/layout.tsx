@@ -10,29 +10,10 @@ import { site } from '@/lib/site'
 import type { Metadata } from 'next'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
-import { Crimson_Text, Noto_Sans } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import 'swiper/css'
 import 'swiper/css/effect-fade'
 import 'swiper/css/navigation'
-
-/* Mirrors the Ask Afrika pairing while using Next's font pipeline instead of
-   an external Google Fonts stylesheet. */
-const crimsonText = Crimson_Text({
-  variable: '--font-crimson',
-  subsets: ['latin'],
-  weight: ['400', '600', '700'],
-  style: ['normal', 'italic'],
-  display: 'swap',
-})
-
-const notoSans = Noto_Sans({
-  variable: '--font-noto',
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  style: ['normal'],
-  display: 'swap',
-})
 
 const orgSchema = {
   '@context': 'https://schema.org',
@@ -94,9 +75,17 @@ const LocaleLayout = async ({ children, params }: { children: React.ReactNode; p
   setRequestLocale(locale)
 
   return (
-    <html lang={locale} className={`${crimsonText.variable} ${notoSans.variable} antialiased`}>
+    <html lang={locale} className="antialiased">
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@500&family=Inter:wght@700&display=swap"
+          rel="stylesheet"
+        />
+
         <link rel="preconnect" href="https://ik.imagekit.io" crossOrigin="" />
       </head>
       <body suppressHydrationWarning>

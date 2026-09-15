@@ -122,10 +122,10 @@
 :is([data-note="range"], [data-note="hub-products"]) .grid > a.group h3 {
   max-width: 92%;
   font-family: var(--font-heading);
-  font-size: clamp(1.25rem, 1.14rem + 0.42vw, 1.5rem) !important;
-  line-height: 1.08 !important;
-  font-weight: var(--fw-semibold) !important;
-  letter-spacing: -0.01em !important;
+  font-size: var(--text-size-300) !important;
+  line-height: 1.15 !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.022em !important;
 }
 
 :is([data-note="range"], [data-note="hub-products"]) .grid > a.group .eid-arrow {
