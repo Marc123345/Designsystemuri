@@ -104,10 +104,6 @@ const Navbar = () => {
 
   const navItems = primaryNav.filter((item) => !('cta' in item && item.cta))
 
-  const mobilePlainItems = primaryNav.filter(
-    (item) => !('cta' in item && item.cta) && !('menu' in item && item.menu),
-  )
-
   const mobileAccordion = (
     label: string,
     section: Exclude<MobileSection, null>,
@@ -137,19 +133,19 @@ const Navbar = () => {
                 <Link
                   href="/#products"
                   onClick={closeMobile}
-                  className="text-primary mb-1 flex min-h-11 items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold"
+                  className="text-primary mb-1 flex min-h-10 items-center justify-between rounded-xl px-3 py-2 text-sm font-semibold"
                 >
-                  {t(locale, 'Products')}
+                  {t(locale, 'View all products')}
                   <Icon icon="tabler:arrow-up-right" className="size-4" />
                 </Link>
               )}
-              <div className={section === 'products' ? 'grid gap-1 min-[430px]:grid-cols-2' : 'grid gap-1'}>
+              <div className={section === 'products' ? 'grid grid-cols-2 gap-1' : 'grid gap-1'}>
                 {entries.map((entry) => (
                   <Link
                     key={'mobile-' + entry.href}
                     href={entry.href}
                     onClick={closeMobile}
-                    className={`flex min-h-11 items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors hover:bg-white ${isActive(entry.href) ? 'bg-white text-primary shadow-sm' : 'text-default-600'}`}
+                    className={`flex min-h-10 items-center gap-2 rounded-xl px-3 py-2 text-[13px] leading-snug font-medium transition-colors hover:bg-white ${isActive(entry.href) ? 'bg-white text-primary shadow-sm' : 'text-default-600'}`}
                   >
                     <span className="bg-primary/35 size-1 shrink-0 rounded-full" />
                     <span>{t(locale, entry.label)}</span>
@@ -162,6 +158,15 @@ const Navbar = () => {
       </div>
     )
   }
+
+  const mobilePlainIcon = (href: string) =>
+    href === '/'
+      ? 'tabler:home'
+      : href.includes('applications')
+        ? 'tabler:tool'
+        : href === '/quality'
+          ? 'tabler:microscope'
+          : 'tabler:building-factory-2'
 
   return (
     <header>
@@ -274,7 +279,15 @@ const Navbar = () => {
           </div>
 
           <nav aria-label="Mobile navigation" className="grid gap-2.5">
-            {mobilePlainItems.map((item) => {
+            {navItems.map((item) => {
+              const menu = 'menu' in item ? item.menu : undefined
+
+              if (menu) {
+                const entries = menu === 'products' ? productMenu : resourceMenu
+                const active = menu === 'products' ? pathname.startsWith('/products') : pathname.startsWith('/resources')
+                return <div key={'mobile-main-' + item.href}>{mobileAccordion(item.label, menu, entries, active)}</div>
+              }
+
               const active = isActive(item.href)
               return (
                 <Link
@@ -286,27 +299,13 @@ const Navbar = () => {
                   }`}
                 >
                   <span className={`flex size-9 shrink-0 items-center justify-center rounded-full ${active ? 'bg-primary text-white' : 'bg-default-100 text-default-600'}`}>
-                    <Icon
-                      icon={
-                        item.href === '/'
-                          ? 'tabler:home'
-                          : item.href.includes('applications')
-                            ? 'tabler:tool'
-                            : item.href === '/quality'
-                              ? 'tabler:microscope'
-                              : 'tabler:building-factory-2'
-                      }
-                      className="size-4.5"
-                    />
+                    <Icon icon={mobilePlainIcon(item.href)} className="size-4.5" />
                   </span>
                   <span className="text-[17px] font-semibold tracking-[-0.01em]">{t(locale, item.label)}</span>
                   <Icon icon="tabler:arrow-up-right" className="text-default-400 ms-auto size-4" />
                 </Link>
               )
             })}
-
-            {mobileAccordion('Products', 'products', productMenu, pathname.startsWith('/products'))}
-            {mobileAccordion('Resources', 'resources', resourceMenu, pathname.startsWith('/resources'))}
           </nav>
 
           <div className="border-default-200 mt-6 border-t pt-5">
