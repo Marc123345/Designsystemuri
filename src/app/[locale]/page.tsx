@@ -199,7 +199,14 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           the fine screen is unused now that the QC pages are gone. See
           CanvasField. */}
       <section id="products" data-note="range" className="relative isolate py-20 lg:py-30">
-        <CanvasField density="coarse" mark="end" />
+        <CanvasField
+          density="coarse"
+          mark="end"
+          marginImages={{
+            start: 'https://ik.imagekit.io/qcvroy8xpd/EID%20Pattern%20-%20Section%202%20(Left).png',
+            end: 'https://ik.imagekit.io/qcvroy8xpd/EID%20Pattern%20-%20Section%202%20(Right).png',
+          }}
+        />
         <div className="container">
           <div>
             {/* Centred and on its own, matching the applications and QC blocks

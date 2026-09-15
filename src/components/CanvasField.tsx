@@ -149,6 +149,7 @@ const CanvasField = ({
   density = 'medium',
   grain = true,
   mark = false,
+  marginImages,
   className = '',
 }: {
   /** Sieve aperture. See the table above — it is meant to match the page. */
@@ -157,12 +158,29 @@ const CanvasField = ({
   grain?: boolean
   /** Ghost the EID mark off one edge. Off by default — it is a feature spot, not a default. */
   mark?: false | 'start' | 'end'
+  /** Optional decorative artwork that lives only in the wide page margins. */
+  marginImages?: { start: string; end: string }
   className?: string
 }) => {
   const cell = CELL[density]
 
   return (
     <div aria-hidden className={`pointer-events-none absolute inset-0 -z-10 overflow-hidden ${className}`}>
+      {marginImages && (
+        <>
+          <img
+            src={marginImages.start}
+            alt=""
+            className="absolute inset-y-0 start-0 hidden h-full w-[clamp(9rem,18vw,18rem)] object-cover object-right opacity-90 lg:block"
+          />
+          <img
+            src={marginImages.end}
+            alt=""
+            className="absolute inset-y-0 end-0 hidden h-full w-[clamp(9rem,18vw,18rem)] object-cover object-left opacity-90 lg:block"
+          />
+        </>
+      )}
+
       {/* THE GRAIN, full width — and the most expensive layer in the budget
           above, which is the opposite of what it looks like. 1.5% against the
           dark sections' 6%: a light ground shows noise far more readily, and
