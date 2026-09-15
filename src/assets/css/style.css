@@ -6,10 +6,6 @@ restructured for EID. Kept as the origin note for anyone tracing a rule back to
 the template it came from.
 */
 
-/* SF Pro is supplied by Apple devices through the system stack. Inter is the
-   cross-platform fallback requested by the typography system. */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
-
 /* TailwindCSS */
 @import "tailwindcss";
 
