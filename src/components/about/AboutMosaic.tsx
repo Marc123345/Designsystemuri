@@ -1,4 +1,5 @@
 import ArcStory, { type ArcStoryItem } from '@/components/ArcStory'
+import CanvasField from '@/components/CanvasField'
 import Image from 'next/image'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
@@ -73,7 +74,9 @@ const AboutMosaic = () => {
   ]
 
   return (
-    <section data-note="about-mosaic" className="bg-default-50 overflow-hidden py-16 lg:py-24">
+    <section data-note="about-mosaic" className="bg-default-50 relative isolate overflow-hidden py-16 lg:py-24">
+      <CanvasField grain={false} mark="end" />
+
       <div className="container">
         {/* Image-led company introduction, adapted from Marc's industrial
             reference: a dominant image on the left, a tighter company story on
