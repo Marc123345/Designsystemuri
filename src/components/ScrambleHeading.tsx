@@ -73,7 +73,7 @@ const ScrambleHeading = ({ text, className = '' }: { text: string; className?: s
     <h2 ref={ref} aria-label={text} className={className}>
       <span aria-hidden>
         {glyphs.map((glyph, index) => (
-          <span key={`${index}-${glyph.char}`} className={glyph.dud ? 'text-current/35' : undefined}>
+          <span key={`${index}-${glyph.char}`} className={glyph.dud ? 'opacity-[0.35]' : undefined}>
             {glyph.char}
           </span>
         ))}
