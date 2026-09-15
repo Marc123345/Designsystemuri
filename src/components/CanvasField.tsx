@@ -1,10 +1,10 @@
 /**
  * Shared surface treatment for light/white sections.
  *
- * The sieve mesh and grain stay restrained and live behind the content. The full
- * EID logo lockup is part of the canvas itself: it is rendered as a large,
- * low-opacity blue watermark and is ON by default. Individual sections can
- * still move it to the opposite edge, centre it, or disable it explicitly.
+ * The mesh and grain stay restrained behind the content. A large EID logo
+ * lockup remains the primary watermark, while the uploaded EID outline mark is
+ * repeated as a low-contrast edge pattern so white canvases feel branded
+ * without becoming wallpaper.
  */
 const GRAIN =
   "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.5'/></svg>\")"
@@ -29,17 +29,28 @@ const LOGO_MASK = {
   WebkitMaskSize: 'contain',
 } as const
 
+const OUTLINE_PATTERN_MASK = {
+  maskImage: "url('/eid/brand/eid-logo-outline.svg')",
+  WebkitMaskImage: "url('/eid/brand/eid-logo-outline.svg')",
+  maskRepeat: 'repeat',
+  WebkitMaskRepeat: 'repeat',
+  maskSize: '72px 72px',
+  WebkitMaskSize: '72px 72px',
+} as const
+
 type MarkPosition = false | 'start' | 'end' | 'center'
 
 const CanvasField = ({
   density = 'medium',
   grain = true,
   mark = 'end',
+  pattern = true,
   className = '',
 }: {
   density?: 'coarse' | 'medium' | 'fine'
   grain?: boolean
   mark?: MarkPosition
+  pattern?: boolean
   className?: string
 }) => {
   const cell = CELL[density]
@@ -50,6 +61,9 @@ const CanvasField = ({
       : mark === 'center'
         ? 'left-1/2 -translate-x-1/2'
         : '-end-36 md:-end-48 lg:-end-56'
+
+  const patternEdge = mark === 'start' ? '-end-6' : '-start-6'
+  const patternInnerEdge = mark === 'start' ? 'end-24' : 'start-24'
 
   return (
     <div aria-hidden className={`pointer-events-none absolute inset-0 -z-10 overflow-hidden ${className}`}>
@@ -72,6 +86,19 @@ const CanvasField = ({
           }}
         />
       </div>
+
+      {pattern && (
+        <>
+          <div
+            className={`bg-primary absolute inset-y-[9%] w-40 opacity-[0.052] sm:w-48 lg:w-56 ${patternEdge}`}
+            style={{ ...OUTLINE_PATTERN_MASK, maskPosition: '0 0', WebkitMaskPosition: '0 0' }}
+          />
+          <div
+            className={`bg-primary absolute inset-y-[18%] hidden w-24 opacity-[0.032] md:block lg:w-28 ${patternInnerEdge}`}
+            style={{ ...OUTLINE_PATTERN_MASK, maskPosition: '36px 36px', WebkitMaskPosition: '36px 36px' }}
+          />
+        </>
+      )}
 
       {mark && (
         <div
