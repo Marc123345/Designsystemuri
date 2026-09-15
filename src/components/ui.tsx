@@ -5,18 +5,8 @@ import { Icon } from '@iconify/react'
 
 /**
  * The template's signature button: a label that slides up on hover and an arrow
- * that slides across. Every CTA in the site goes through here so the motion and
- * the corner radius stay identical.
- */
-/**
- * `size` exists for one reason: Uri's V1 note on the home hero — the two CTAs
- * were "a fifth of the size" they should be relative to a hero that big. Rather
- * than scale the component and grow every button on the site, `lg` is opt-in
- * and used by the hero only.
- *
- * The badge grows with the shell, and the label's hover duplicate is offset by
- * the badge height, so both `top-7`/`top-9` pairs have to move together — that
- * is why the offsets below are derived from `size` rather than hard-coded.
+ * that slides across. Every CTA in the site goes through here so motion,
+ * geometry and typography stay identical.
  */
 export const ArrowButton = ({
   href,
@@ -27,54 +17,31 @@ export const ArrowButton = ({
   onClick,
   className: extra = '',
 }: {
-  /** Omit only when `onClick` is given — an action rather than a destination. */
   href?: string
   label: string
   variant?: 'primary' | 'dark' | 'light'
   size?: 'md' | 'sm' | 'lg'
-  /** Render a plain <a> rather than the locale-aware Link. */
   external?: boolean
-  /** Makes it a <button>. For the one CTA on the site that does something
-      instead of going somewhere — error.tsx's "Try again", which calls the
-      route segment's reset(). Before this existed that button was hand-rolled
-      and sat directly beside an ArrowButton, two CTAs in one row wearing
-      different clothes. */
   onClick?: () => void
   className?: string
 }) => {
   const lg = size === 'lg'
   const sm = size === 'sm'
-  /* `sm` exists for the navbar and nowhere else. At md this button is 52px
-     tall, which towers over the 36px language switcher beside it and makes the
-     bar top-heavy; at sm it is 40px and sits in the row. The animation, the
-     radius and the badge inset are identical — only the scale moves. */
-  const shellSize = lg ? 'gap-5 ps-8 pe-2 py-2 text-lg' : sm ? 'gap-3 ps-5 pe-1 py-1 text-[0.9rem]' : 'gap-4 ps-6 pe-1.5 py-1.5 text-base'
+
+  /* Size variants change the control geometry, not the type scale. The `ui`
+     class below is the single source of truth for button/nav typography. */
+  const shellSize = lg ? 'gap-5 ps-8 pe-2 py-2' : sm ? 'gap-3 ps-5 pe-1 py-1' : 'gap-4 ps-6 pe-1.5 py-1.5'
   const badgeSize = lg ? 'size-12' : sm ? 'size-8' : 'size-10'
   const slide = lg ? { rest: 'top-9', hover: 'group-hover:-translate-y-9', arrowRest: 'end-9' } : sm ? { rest: 'top-5', hover: 'group-hover:-translate-y-5', arrowRest: 'end-5' } : { rest: 'top-7', hover: 'group-hover:-translate-y-7', arrowRest: 'end-7' }
   const arrowSlide = lg ? 'group-hover:translate-x-9' : sm ? 'group-hover:translate-x-5' : 'group-hover:translate-x-7'
 
   const shell = variant === 'primary' ? 'bg-primary text-white' : variant === 'dark' ? 'bg-default-900 text-white' : 'bg-white text-default-900 border border-default-200'
-
   const badge = variant === 'primary' ? 'bg-default-900 text-white' : variant === 'dark' ? 'bg-primary text-white' : 'bg-primary text-white'
 
   const inner = (
     <>
-      {/* The label slides up on hover and a duplicate rides in behind it. The
-wrapper must stay exactly one line tall with no padding — any vertical
-padding grows the box past the duplicate's top-7 offset and it stops
-being clipped, showing both copies at rest. Pad the shell instead.
-
-The second copy is purely the animation's other half, so it is hidden
-from assistive tech. Without that, every CTA on the site announced and
-copy-pasted as "Request a Quote Request a Quote". */}
       <span className="relative block overflow-hidden">
         <span className={`block duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] ${slide.hover}`}>{label}</span>
-        {/* `select-none` matters as much as `aria-hidden` here. aria-hidden
-            takes this copy out of the accessibility tree, so screen readers
-            stopped announcing "Request a Quote Request a Quote" — but it does
-            nothing for text selection, so anyone copying a page still got the
-            label twice, and so did anything scraping the rendered text. Marc
-            hit exactly that pasting "Explore our QC / Explore our QC". */}
         <span aria-hidden="true" className={`absolute start-0 select-none ${slide.rest} duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:top-0`}>
           {label}
         </span>
@@ -93,10 +60,7 @@ copy-pasted as "Request a Quote Request a Quote". */}
     </>
   )
 
-  // One uniform radius on the shell and a matching inset on the badge. The
-  // previous mismatched corner radii ( shell,
-  // badge) made the badge appear to break out of the button's corner.
-  const className = `group rounded-control inline-flex items-center ${shellSize} font-medium leading-none transition-all ${shell} ${extra}`
+  const className = `ui group rounded-control inline-flex items-center ${shellSize} transition-all ${shell} ${extra}`
 
   if (onClick) {
     return (
@@ -123,69 +87,39 @@ copy-pasted as "Request a Quote Request a Quote". */}
 
 /** Inline text link with a sliding arrow — for in-card "read more" actions. */
 export const ArrowLink = ({ href, label }: { href: string; label: string }) => (
-  <Link href={href} className="group text-primary inline-flex items-center gap-2 text-sm font-semibold transition-all">
+  <Link href={href} className="small group text-primary inline-flex items-center gap-2 font-semibold transition-all">
     {label}
     <Icon icon="tabler:arrow-narrow-right" className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
   </Link>
 )
 
-/**
- * Numbered chapter rule. Carried over from the previous build — it gives a long
- * page a spine, so a buyer scanning knows where they are.
- */
+/** Numbered chapter rule used as the scanning spine on long pages. */
 export const ChapterMarker = ({ index, label }: { index: string; label: string }) => (
   <div className="border-default-200 flex items-center gap-5 border-t pt-6">
-    <span className="text-primary text-sm font-semibold">{index}</span>
-    <span className="text-default-500 text-sm tracking-[0.2em] uppercase">{label}</span>
+    <span className="small text-primary font-semibold">{index}</span>
+    <span className="label text-default-500">{label}</span>
   </div>
 )
 
-/** Section heading block: eyebrow, H2, optional lede. */
 /**
- * The section eyebrow: a short mono label above an h2, in the brand blue.
- *
- * ── Why this exists as a component ──────────────────────────────────────────
- *
- * The site already had this label — About's "About", Quality's "Quality
- * control", the product and application pages' "The range" and "The
- * application" — but each one was a hand-written span carrying the same six
- * utility classes, and the home page had none at all. Its four section
- * headings sat bare, so a reader scanning the page got no register above the
- * statement, and the home page read as a different site from the interior
- * pages it introduces.
- *
- * ── Blue, not grey ──────────────────────────────────────────────────────────
- *
- * Marc's call. The existing hand-written labels are `text-default-500`, which
- * on `--color-canvas` (#fbfbfd) is quiet enough that it reads as a caption
- * under the heading rather than a label over it. `text-primary` (#2c3c6c) is
- * the one colour on the page that means "this is EID's own voice", and it is
- * what the icon controls, the accent rules and the stat tiles already use.
- *
- * At 11px with 0.22em tracking the weight is carried by the letterspacing, not
- * the colour, so blue here is a register change rather than emphasis.
- *
- * ⚠ `align` is not a style choice. The home page centres its headings and the
- * interior pages rule them off to the left; passing the wrong one puts the
- * label out of step with the h2 directly under it.
+ * Section eyebrow. All section labels now use the shared `label` role instead
+ * of hand-tuned 11px mono typography, so their scale and tracking stay in sync
+ * with the rest of the responsive system.
  */
 export const Eyebrow = ({ children, align = 'center' }: { children: React.ReactNode; align?: 'start' | 'center' }) => (
-  <p className={`text-primary font-mono text-[11px] tracking-[0.22em] uppercase ${align === 'center' ? 'text-center' : ''}`}>{children}</p>
+  <p className={`label text-primary ${align === 'center' ? 'text-center' : ''}`}>{children}</p>
 )
 
+/** Section heading block: eyebrow, H2, optional lede. */
 export const SectionHeading = ({ eyebrow, title, desc, align = 'start', light = false }: { eyebrow?: string; title: string; desc?: string; align?: 'start' | 'center'; light?: boolean }) => (
   <div className={`max-w-3xl ${align === 'center' ? 'mx-auto text-center' : ''}`}>
     {eyebrow && (
       <div className="border-default-300 rounded-control inline-flex items-center gap-1.5 border bg-white px-3.5 py-1.25">
         <span className="bg-primary size-2"></span>
-        <span className="text-default-900 text-sm">{eyebrow}</span>
+        <span className="small text-default-900">{eyebrow}</span>
       </div>
     )}
-    {/* `text-balance` follows `align`, not the component. Left-aligned copy
-        is SUPPOSED to have a short last line — that is what a ragged right
-        edge is — so balancing it buys nothing and costs the browser a
-        second layout pass. Centred, a short last line reads as a fault. */}
-    <h2 className={`mt-4 text-[28px] font-bold md:text-[36px] lg:text-[42px] ${align === 'center' ? 'text-balance' : ''} ${light ? 'text-white' : ''}`}>{title}</h2>
-    {desc && <p className={`mt-5 ${light ? 'text-default-300' : ''}`}>{desc}</p>}
+    <h2 className={`mt-4 ${light ? 'text-white' : ''}`}>{title}</h2>
+    {desc && <p className={`lead mt-5 ${light ? 'text-default-300' : ''}`}>{desc}</p>}
   </div>
 )
