@@ -1,18 +1,16 @@
 /* ========================================================================== 
    EID visual system harmony layer
-   Typography lives in _typography.css. This file aligns everything around it:
-   section rhythm, surfaces, controls, cards and motion.
+   Typography lives in _typography.css. This file aligns hero geometry,
+   section rhythm, surfaces, controls, cards and motion around it.
    ========================================================================== */
 
 :root {
-  /* Spacing rhythm */
   --space-section: clamp(4.5rem, 3.5rem + 3vw, 7.5rem);
   --space-section-compact: clamp(3.5rem, 3rem + 2vw, 6rem);
   --space-section-tight: clamp(2.5rem, 2.1rem + 1.25vw, 4rem);
   --space-stack: clamp(2rem, 1.75rem + 1vw, 3.5rem);
   --space-card: clamp(1.5rem, 1.3rem + 0.75vw, 2.25rem);
 
-  /* Motion vocabulary */
   --motion-fast: 180ms;
   --motion-base: 320ms;
   --motion-slow: 520ms;
@@ -20,7 +18,6 @@
   --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
   --ease-emphasized: cubic-bezier(0.19, 1, 0.22, 1);
 
-  /* Surface/elevation vocabulary */
   --line-soft: rgb(148 163 184 / 0.28);
   --line-brand: rgb(44 60 108 / 0.34);
   --shadow-rest: 0 1px 2px rgb(15 23 42 / 0.04), 0 10px 28px rgb(28 39 73 / 0.05);
@@ -33,53 +30,103 @@
 }
 
 /* --------------------------------------------------------------------------
+   Hero system
+   -------------------------------------------------------------------------- */
+
+/* Every hero now follows the same frame as home. The old min-height utilities
+   remain in call sites for compatibility, but this is the single source of
+   truth for the visible hero height. */
+.eid-hero-shell,
+[data-note="page-hero"] {
+  min-height: 60svh !important;
+}
+
+@media (min-width: 768px) {
+  .eid-hero-shell,
+  [data-note="page-hero"] {
+    min-height: 64svh !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .eid-hero-shell,
+  [data-note="page-hero"] {
+    min-height: 66svh !important;
+  }
+}
+
+[data-note="page-hero"] {
+  display: flex !important;
+  align-items: center !important;
+}
+
+[data-note="page-hero"] > .container {
+  padding-top: clamp(7rem, 12vh, 9rem) !important;
+  padding-bottom: clamp(3rem, 6vh, 4.5rem) !important;
+}
+
+[data-note="page-hero"] > .container > div {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+[data-note="page-hero"] > .container > div > div {
+  display: flex;
+  width: 100%;
+  max-width: 72rem !important;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.25rem !important;
+}
+
+[data-note="page-hero"] > .container > div > span[aria-hidden] {
+  width: 2.75rem !important;
+}
+
+@media (min-width: 1024px) {
+  [data-note="page-hero"] > .container > div > span[aria-hidden] {
+    width: 3.5rem !important;
+  }
+}
+
+[data-note="page-hero"] h1 {
+  width: 100%;
+  max-width: 22ch;
+  font-family: var(--font-display) !important;
+  font-size: var(--fs-display) !important;
+  line-height: var(--lh-display) !important;
+  letter-spacing: var(--ls-display) !important;
+  font-weight: 620 !important;
+  font-variation-settings: "wght" 620;
+}
+
+[data-note="page-hero"] h1 + p {
+  max-width: 58ch !important;
+  margin-top: 1.25rem !important;
+  font-family: var(--font-sans) !important;
+  font-size: var(--fs-lead) !important;
+  line-height: var(--lh-lead) !important;
+}
+
+/* --------------------------------------------------------------------------
    Layout rhythm
    -------------------------------------------------------------------------- */
 
-.eid-section {
-  padding-block: var(--space-section);
-}
+.eid-section { padding-block: var(--space-section); }
+.eid-section-compact { padding-block: var(--space-section-compact); }
+.eid-section-tight { padding-block: var(--space-section-tight); }
+.eid-stack { margin-top: var(--space-stack); }
 
-.eid-section-compact {
-  padding-block: var(--space-section-compact);
-}
+section[class~="py-20"][class~="lg:py-30"] { padding-block: var(--space-section); }
+section[class~="py-16"][class~="lg:py-24"] { padding-block: var(--space-section-compact); }
+section[class~="py-10"][class~="lg:py-14"] { padding-block: var(--space-section-tight); }
+section[class~="pb-20"][class~="lg:pb-30"] { padding-bottom: var(--space-section); }
 
-.eid-section-tight {
-  padding-block: var(--space-section-tight);
-}
+section[class~="bg-default-50"] { background: var(--color-canvas); }
 
-.eid-stack {
-  margin-top: var(--space-stack);
-}
-
-/* Compatibility bridge for the repeated section rhythms already used across
-   routes. Existing sections become fluid without requiring a route-by-route
-   rewrite before they can benefit from the design system. */
-section[class~="py-20"][class~="lg:py-30"] {
-  padding-block: var(--space-section);
-}
-
-section[class~="py-16"][class~="lg:py-24"] {
-  padding-block: var(--space-section-compact);
-}
-
-section[class~="py-10"][class~="lg:py-14"] {
-  padding-block: var(--space-section-tight);
-}
-
-section[class~="pb-20"][class~="lg:pb-30"] {
-  padding-bottom: var(--space-section);
-}
-
-/* Supporting light bands use the same tiny brand tint rather than switching
-   between unrelated neutral greys. */
-section[class~="bg-default-50"] {
-  background: var(--color-canvas);
-}
-
-/* Legacy grid CTA tiles used a slate-black surface while the rest of the site
-   uses EID navy. Keep the dark/light contrast but bring the tile into the brand
-   family without touching true neutral overlays used for photograph legibility. */
 a[class~="bg-default-900"][class~="border-default-900"] {
   background: var(--color-primary-3);
   border-color: var(--color-primary-3);
@@ -117,17 +164,9 @@ a[class~="bg-default-900"][class~="border-default-900"] {
   }
 }
 
-.eid-surface-soft {
-  background: var(--color-surface-soft);
-}
+.eid-surface-soft { background: var(--color-surface-soft); }
+.eid-surface-brand { background: var(--color-surface-brand); color: #fff; }
 
-.eid-surface-brand {
-  background: var(--color-surface-brand);
-  color: #fff;
-}
-
-/* CurtainGrid is the main photographic card primitive. Its separated rounded
-   tiles now share the same restrained elevation and lift as text cards. */
 .eid-tiles a.rounded-card {
   box-shadow: var(--shadow-rest);
   transition: transform var(--motion-base) var(--ease-standard), box-shadow var(--motion-base) var(--ease-standard);
@@ -214,8 +253,6 @@ a[class~="bg-default-900"][class~="border-default-900"] {
   transition-timing-function: var(--ease-emphasized) !important;
 }
 
-/* Normalize the common Tailwind timings used by legacy components. The class
-   names stay valid, but repeated interactions now speak one tempo. */
 .duration-300 { transition-duration: var(--motion-base); }
 .duration-500 { transition-duration: var(--motion-slow); }
 .duration-700 { transition-duration: var(--motion-cinematic); }

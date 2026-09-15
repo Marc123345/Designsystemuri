@@ -1,0 +1,43 @@
+/* ========================================================================== 
+   Juturu component accents
+
+   Juturu is not a blanket UI font. These are the high-impact places where its
+   variable weight axis adds brand character without compromising the SF/Inter
+   reading layer.
+   ========================================================================== */
+
+/* Faceted product cards: the title belongs to the crystal object, so it gets
+   the display face. A small weight shift on hover makes the typography react
+   with the image/facet motion without changing size or causing reflow. */
+:is([data-note="range"], [data-note="hub-products"]) .grid > a.group h3 {
+  font-family: var(--font-display);
+  font-weight: 560;
+  font-variation-settings: "wght" 560;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  transition:
+    font-variation-settings var(--motion-slow) var(--ease-emphasized),
+    color var(--motion-base) var(--ease-standard),
+    transform var(--motion-base) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  :is([data-note="range"], [data-note="hub-products"]) .grid > a.group:hover h3,
+  :is([data-note="range"], [data-note="hub-products"]) .grid > a.group:focus-visible h3 {
+    font-weight: 690;
+    font-variation-settings: "wght" 690;
+  }
+}
+
+/* Large verified figures use the same family as headlines but a denser weight,
+   making numbers feel like graphic objects rather than oversized body type. */
+.stat,
+[data-note="stats"] [class*="text-"][class*="font-bold"] {
+  font-family: var(--font-display);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is([data-note="range"], [data-note="hub-products"]) .grid > a.group h3 {
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -56,18 +56,6 @@ export function generateStaticParams() {
 }
 
 export const metadata: Metadata = {
-  // Absolute URLs for Open Graph are built from this. Without it, next/metadata
-  // emits relative og:image paths, which no scraper resolves.
-  //
-  // It has to be SITE_ORIGIN rather than a literal, because that is what
-  // canonicals and hreflang already use. Hardcoding the real domain here while
-  // those still resolved to the Vercel URL had the same page claiming two
-  // different origins — og:url on eid-ltd.com, rel=canonical on
-  // designsystemuri.vercel.app.
-  //
-  // AT LAUNCH: set NEXT_PUBLIC_SITE_URL to https://www.eid-ltd.com in the
-  // Vercel project. Until then everything consistently points at the review
-  // deployment, which is correct for a build that is not the real site yet.
   metadataBase: new URL(SITE_ORIGIN),
   title: {
     default: 'Industrial Diamond & CBN Manufacturer | EID Ltd',
@@ -76,13 +64,6 @@ export const metadata: Metadata = {
   icons: { icon: favicon.src },
   description: 'EID manufactures the full industrial diamond and CBN range: grit, powder, CVD single crystal, MCD, PCD and PCBN, graded and QC-tested in-house. ISO 9001.',
   robots: 'index, follow',
-  // The site had no Open Graph or Twitter tags of any kind, so every page
-  // shared into LinkedIn, WhatsApp or Slack arrived as a bare URL with no
-  // title, description or image. For a supplier whose buyers pass links around
-  // internally, that is the first impression a lot of people get.
-  //
-  // Declared here so every route inherits it; pages with their own
-  // generateMetadata override the parts they care about.
   openGraph: {
     type: 'website',
     siteName: 'EID Ltd',
@@ -109,16 +90,11 @@ const LocaleLayout = async ({ children, params }: { children: React.ReactNode; p
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
 
-        {/* Every video, poster and rendition comes from ImageKit, and the
-            intro's clip is requested within milliseconds of the page painting.
-            Without this the browser pays a DNS lookup plus a TLS handshake
-            before the first byte of it arrives — on a phone that is commonly
-            200-400ms of nothing happening, at the exact moment the brand
-            moment is meant to start.
+        {/* Juturu is used in the first-screen hero, so preload the one variable
+            WOFF2 rather than waiting for the stylesheet/font discovery chain. */}
+        <link rel="preload" href="/fonts/Juturu-VariableVF.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
 
-            `crossOrigin` is required: media is fetched anonymously, and a
-            preconnect that does not match the eventual request's CORS mode
-            opens a connection the browser then cannot reuse. */}
+        {/* Every video, poster and rendition comes from ImageKit. */}
         <link rel="preconnect" href="https://ik.imagekit.io" crossOrigin="" />
       </head>
       <body suppressHydrationWarning>

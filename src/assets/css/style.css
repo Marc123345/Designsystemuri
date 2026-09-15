@@ -33,3 +33,7 @@ the template it came from.
 
 /* Product-only crystal geometry inspired by the supplied EID reference. */
 @import "./_faceted-cards.css";
+
+/* Juturu accents are deliberately last: they opt only selected components back
+   into the expressive display family while the rest of the UI stays SF/Inter. */
+@import "./_juturu-components.css";
