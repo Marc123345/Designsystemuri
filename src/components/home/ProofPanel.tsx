@@ -31,26 +31,26 @@ const ProofPanel = ({
         portfolio's black/blue atmosphere wholesale. */}
     <div aria-hidden className="bg-primary-1/10 pointer-events-none absolute left-1/2 top-[58%] -z-10 h-[560px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[150px]" />
 
-    <div className="container">
+    <div className="container text-white">
       {/* Same editorial setup as the portfolio reference: chapter-like label,
           statement on the left, interaction cue on the right. */}
-      <div className="flex items-center gap-3">
-        {eyebrow && <span className="font-mono text-[11px] tracking-[0.24em] text-white/55 uppercase">{eyebrow}</span>}
-        <span aria-hidden className="h-px w-12 bg-white/15" />
-        <span className="font-mono text-[11px] tracking-[0.24em] text-white/35 uppercase">03 proof points</span>
+      <div className="flex items-center gap-3 text-white">
+        {eyebrow && <span className="font-mono text-[11px] tracking-[0.24em] text-white/70 uppercase">{eyebrow}</span>}
+        <span aria-hidden className="h-px w-12 bg-white/20" />
+        <span className="font-mono text-[11px] tracking-[0.24em] text-white/50 uppercase">03 proof points</span>
       </div>
 
       <div className="mt-8 grid items-end gap-8 md:grid-cols-[1.2fr_1fr] lg:gap-14">
-        <h2 className="max-w-[18ch] text-[32px] leading-[1.02] font-semibold tracking-[-0.035em] text-balance md:text-[40px] lg:text-[48px]">{title}</h2>
-        <div className="max-w-[48ch] md:justify-self-end">
-          {desc && <p className="mb-3 text-base leading-relaxed text-white/72">{desc}</p>}
-          <p className="text-base leading-relaxed text-white/58">
+        <h2 className="max-w-[18ch] text-[32px] leading-[1.02] font-semibold tracking-[-0.035em] text-white text-balance md:text-[40px] lg:text-[48px]">{title}</h2>
+        <div className="max-w-[48ch] text-white md:justify-self-end">
+          {desc && <p className="mb-3 text-base leading-relaxed text-white/80">{desc}</p>}
+          <p className="text-base leading-relaxed text-white/70">
             Select a proof point or use the arrows to explore. Prefer to spin it? Drag the arc.
           </p>
         </div>
       </div>
 
-      <div className="mt-8 lg:mt-10">
+      <div className="mt-8 text-white lg:mt-10">
         <ProofArc items={pillars} aspect={aspect} />
       </div>
     </div>
