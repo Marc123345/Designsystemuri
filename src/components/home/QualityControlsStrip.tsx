@@ -1,4 +1,5 @@
 import ArcStory, { type ArcStoryItem } from '@/components/ArcStory'
+import CanvasField from '@/components/CanvasField'
 import { ArrowButton, Eyebrow } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
@@ -41,6 +42,7 @@ export default function QualityControlsStrip({ locale }: { locale: Locale }) {
 
   return (
     <section data-note="qc-strip" className="relative isolate overflow-hidden py-14 lg:py-20">
+      <CanvasField density="fine" mark="start" />
       <div aria-hidden className="bg-primary/7 pointer-events-none absolute left-1/2 top-[62%] -z-10 h-[460px] w-[860px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[140px]" />
 
       <div className="container">
