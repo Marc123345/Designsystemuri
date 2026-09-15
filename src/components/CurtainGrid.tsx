@@ -37,41 +37,13 @@ const ProductTile = ({ item, sizes }: { item: CurtainItem; sizes: string }) => {
             className={`object-cover transition-transform duration-500 ease-out group-hover:scale-[1.015] group-focus-visible:scale-[1.015] ${item.image.position ?? 'object-center'}`}
           />
 
-          {/* Product identity is always present. Keep the photography open and
-              let a compact navy plate do the contrast work instead of covering
-              the entire crystal with a permanent dark gradient. */}
-          <div className="absolute inset-x-[8%] bottom-[8%]">
-            <div className="bg-primary-3/82 flex items-end justify-between gap-3 rounded-[14px] border border-white/18 px-4 py-3.5 text-white shadow-[0_10px_28px_rgba(15,24,52,0.16)] backdrop-blur-md transition-[background-color,transform] duration-300 group-hover:bg-primary-3/92 group-focus-visible:bg-primary-3/92 sm:px-5 sm:py-4">
-              <div className="min-w-0">
-                {item.meta && (
-                  <span className="block text-[9px] font-semibold tracking-[0.18em] text-white/65 uppercase sm:text-[10px]">
-                    {item.meta}
-                  </span>
-                )}
-                <h3 className={`text-[16px] leading-[1.15] font-semibold text-white sm:text-[18px] ${item.meta ? 'mt-1.5' : ''}`}>
-                  {item.title}
-                </h3>
-              </div>
-
-              <span aria-hidden className="mb-0.5 shrink-0 text-white/90">
-                <svg
-                  viewBox="0 0 24 24"
-                  className="size-5 transition-transform duration-300 group-hover:translate-x-1 group-focus-visible:translate-x-1"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M5 12h14m-4 4l4-4m-4-4l4 4" />
-                </svg>
-              </span>
-            </div>
-          </div>
+          <span
+            aria-hidden
+            className="absolute inset-x-0 bottom-0 h-[38%] bg-linear-to-t from-black/22 via-black/5 to-transparent"
+          />
         </div>
 
-        {/* The uploaded vector itself, unchanged: same 113 × 151 viewBox,
-            same path coordinates, same #B3B3B3 stroke and 0.5 stroke width. */}
+        {/* Exact uploaded crystal vector remains the visible frame. */}
         <Image
           src="/eid/product-crystal-frame.svg"
           alt=""
@@ -81,6 +53,40 @@ const ProductTile = ({ item, sizes }: { item: CurtainItem; sizes: string }) => {
           aria-hidden
           className="pointer-events-none object-contain"
         />
+
+        {/* Permanent product identity. There is no opacity/hover reveal here:
+            every product name and arrow are visible at every breakpoint. */}
+        <div className="absolute inset-x-[7.5%] bottom-[7.5%] z-10">
+          <div className="bg-primary-3 flex min-h-[92px] items-center justify-between gap-3 rounded-[16px] border border-white/20 px-4 py-4 text-white shadow-[0_12px_30px_rgba(15,24,52,0.22)] transition-transform duration-300 group-hover:-translate-y-0.5 group-focus-visible:-translate-y-0.5 sm:min-h-[98px] sm:px-5">
+            <div className="min-w-0 flex-1">
+              {item.meta && (
+                <span className="mb-1.5 block text-[9px] font-semibold tracking-[0.18em] text-white/68 uppercase sm:text-[10px]">
+                  {item.meta}
+                </span>
+              )}
+              <h3 className="flex min-h-[3.45em] items-center text-[16px] leading-[1.15] font-semibold text-white sm:text-[18px]">
+                {item.title}
+              </h3>
+            </div>
+
+            <span
+              aria-hidden
+              className="grid size-9 shrink-0 place-items-center rounded-full border border-white/30 text-white transition-transform duration-300 group-hover:translate-x-1 group-focus-visible:translate-x-1"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="size-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M5 12h14m-4 4l4-4m-4-4l4 4" />
+              </svg>
+            </span>
+          </div>
+        </div>
       </div>
     </Link>
   )
@@ -238,7 +244,7 @@ const CurtainGrid = ({
           : '(min-width: 1024px) 31vw, (min-width: 640px) 48vw, 100vw')
 
     return (
-      <div className={`grid gap-x-8 gap-y-12 lg:gap-x-10 lg:gap-y-16 ${productGrid}`}>
+      <div className={`grid items-start gap-x-8 gap-y-12 lg:gap-x-10 lg:gap-y-16 ${productGrid}`}>
         {items.map((item) => (
           <ProductTile key={item.href} item={item} sizes={productSizes} />
         ))}
