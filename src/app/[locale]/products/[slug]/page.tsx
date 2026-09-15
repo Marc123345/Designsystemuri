@@ -104,14 +104,14 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
     url: `https://www.eid-ltd.com/products/${slug}`,
     ...(allSeries.length
       ? {
-          hasVariant: allSeries.flatMap((s) =>
-            s.grades.map((g) => ({
-              '@type': 'Product',
-              name: g.code,
-              ...(g.desc ? { description: g.desc } : {}),
-            }))
-          ),
-        }
+        hasVariant: allSeries.flatMap((s) =>
+          s.grades.map((g) => ({
+            '@type': 'Product',
+            name: g.code,
+            ...(g.desc ? { description: g.desc } : {}),
+          }))
+        ),
+      }
       : {}),
   }
 
@@ -182,35 +182,40 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
               <div className="flex flex-col gap-6 lg:sticky lg:top-40">
                 {leadImage?.image ? <ProductPhoto image={leadImage.image} alt={`${p.name} — EID`} /> : <Wireframe label={`Product image — ${p.name}`} />}
 
-                <div className="rounded-card bg-primary p-6 lg:p-7">
-                  <div className="rounded-control inline-flex w-fit items-center gap-1.5 border border-white/25 px-3.5 py-1.25">
-                    <span className="bg-primary-1 size-2" />
-                    <span className="text-sm text-white">{t(locale, 'At a glance')}</span>
+                {/* UI Upgrade: Replaced flat background with a deep, layered glass-over-solid effect.
+                    The ::before pseudo-element applies a soft light wash to create a premium gradient 
+                    without altering the brand's exact hex color. Added a 1px inner translucent ring. */}
+                <div className="rounded-card bg-primary shadow-[0_20px_40px_-15px_rgba(30,41,89,0.3)] ring-1 ring-white/15 relative overflow-hidden p-6 lg:p-7 before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/10 before:to-transparent before:pointer-events-none">
+                  <div className="relative z-10">
+                    {/* UI Upgrade: Subtly frosted chip for the eyebrow title */}
+                    <div className="rounded-control inline-flex w-fit items-center gap-1.5 border border-white/15 bg-white/5 backdrop-blur-md px-3.5 py-1.25 shadow-sm">
+                      <span className="bg-primary-1 size-2" />
+                      <span className="text-sm text-white">{t(locale, 'At a glance')}</span>
+                    </div>
+
+                    {/* Still a `dl`, and still label/value pairs — a spec summary
+                        is a description list whatever colour it sits on. Only the
+                        ink and the rules changed: white/70 for the terms at 11px
+                        mono tracking, which is the eyebrow scale used everywhere
+                        else, and white hairlines instead of slate ones. */}
+                    <dl className="mt-5 divide-y divide-white/15">
+                      {facts.map((f) => (
+                        <div key={f.label} className="group flex items-baseline justify-between gap-6 py-3 transition-colors duration-300 hover:bg-white/5 rounded-md -mx-3 px-3">
+                          <dt className="text-[11px] tracking-[0.18em] text-white/70 uppercase transition-colors duration-300 group-hover:text-white/90">{f.label}</dt>
+                          <dd className="text-right font-mono text-sm font-semibold text-white">{f.value}</dd>
+                        </div>
+                      ))}
+                    </dl>
+
+                    {hasDatasheet && (
+                      /* UI Upgrade: Animated underline on hover, sweeping from left to right, 
+                         paired with a subtle download icon bump. */
+                      <Link href="/resources/datasheets" className="group relative mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white transition-colors pb-1 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-white after:transition-transform after:duration-300 hover:after:origin-bottom-left hover:after:scale-x-100">
+                        <Icon icon="tabler:download" className="size-5 transition-transform duration-300 group-hover:-translate-y-0.5" />
+                        {t(locale, 'Datasheets for this range')}
+                      </Link>
+                    )}
                   </div>
-
-                  {/* Still a `dl`, and still label/value pairs — a spec summary
-                      is a description list whatever colour it sits on. Only the
-                      ink and the rules changed: white/70 for the terms at 11px
-                      mono tracking, which is the eyebrow scale used everywhere
-                      else, and white hairlines instead of slate ones. */}
-                  <dl className="mt-5 divide-y divide-white/15">
-                    {facts.map((f) => (
-                      <div key={f.label} className="flex items-baseline justify-between gap-6 py-3">
-                        <dt className="text-[11px] tracking-[0.18em] text-white/70 uppercase">{f.label}</dt>
-                        <dd className="text-right font-mono text-sm font-semibold text-white">{f.value}</dd>
-                      </div>
-                    ))}
-                  </dl>
-
-                  {hasDatasheet && (
-                    /* White, not `text-primary`. The same trap the two
-                       resources pages document: brand navy on a brand-navy
-                       panel is invisible. */
-                    <Link href="/resources/datasheets" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white underline-offset-4 transition-colors hover:underline">
-                      <Icon icon="tabler:download" className="size-5" />
-                      {t(locale, 'Datasheets for this range')}
-                    </Link>
-                  )}
                 </div>
               </div>
             </aside>
@@ -244,14 +249,14 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
           // split pages would render the group twice.
           ...(isSplit && !(p.crossLinks ?? []).some((g) => g.title === 'On this page')
             ? [
-                {
-                  title: t(locale, 'On this page'),
-                  links: p.sections.map((s) => ({
-                    label: s.label,
-                    href: `/products/${p.slug}#${s.id}`,
-                  })),
-                },
-              ]
+              {
+                title: t(locale, 'On this page'),
+                links: p.sections.map((s) => ({
+                  label: s.label,
+                  href: `/products/${p.slug}#${s.id}`,
+                })),
+              },
+            ]
             : []),
           ...(p.crossLinks ?? []),
           { title: t(locale, 'Applications'), links: crossApplicationLinks },
@@ -334,8 +339,8 @@ const ProductSectionBlock = ({ locale, slug, productName, section, gray, showHea
 
               <div className="space-y-6 lg:col-span-5">
                 {/* When the section has grade blocks, the photos live inside
-those blocks (mirroring eid-ltd.com); only show a header
-photo for single-image sections without a grade selector. */}
+                    those blocks (mirroring eid-ltd.com); only show a header
+                    photo for single-image sections without a grade selector. */}
                 {!cat?.series?.length && cat?.image ? <ProductPhoto image={cat.image} alt={`${section.title} — EID`} gallery={cat.imageGallery} /> : !cat ? <Wireframe label={`${section.label} — material / tooling shot`} ratio="landscape" /> : null}
 
                 {/* Ruled on the left, like every other aside on the site,
@@ -347,9 +352,9 @@ photo for single-image sections without a grade selector. */}
                   <div key={c.title} className="border-primary border-s-2 ps-6">
                     <div className="text-default-500 font-mono text-[11px] tracking-[0.22em] uppercase">{c.title}</div>
                     {/* Callout bodies carry the deck's in-prose links (the
-                          CBN-vs-diamond guide, the PCD ↔ PCBN counterparts), so
-they have to go through RichText like every other
-copy field rather than render as literal markdown. */}
+                        CBN-vs-diamond guide, the PCD ↔ PCBN counterparts), so
+                        they have to go through RichText like every other
+                        copy field rather than render as literal markdown. */}
                     {Array.isArray(c.body) ? (
                       <ul className="mt-3 space-y-2">
                         {c.body.map((b, i) => (
@@ -388,49 +393,56 @@ copy field rather than render as literal markdown. */}
             {hasDetail && (
               <div className="mt-14 grid gap-6 lg:mt-16 lg:grid-cols-12">
                 {section.applications?.length ? (
-                  <div className={`rounded-card bg-primary p-7 lg:p-9 ${showSpecs ? 'lg:col-span-7' : 'lg:col-span-8'}`}>
-                    <div className="rounded-control inline-flex w-fit items-center gap-1.5 border border-white/25 px-3.5 py-1.25">
-                      <span className="bg-primary-1 size-2" />
-                      <span className="text-sm text-white">{section.applicationsTitle ?? t(locale, 'Typical Applications')}</span>
+                  /* UI Upgrade: Exact same premium depth treatment as the facts card. */
+                  <div className={`rounded-card bg-primary shadow-[0_20px_40px_-15px_rgba(30,41,89,0.3)] ring-1 ring-white/15 relative overflow-hidden p-7 lg:p-9 before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/10 before:to-transparent before:pointer-events-none ${showSpecs ? 'lg:col-span-7' : 'lg:col-span-8'}`}>
+                    <div className="relative z-10">
+                      <div className="rounded-control inline-flex w-fit items-center gap-1.5 border border-white/15 bg-white/5 backdrop-blur-md px-3.5 py-1.25 shadow-sm">
+                        <span className="bg-primary-1 size-2" />
+                        <span className="text-sm text-white">{section.applicationsTitle ?? t(locale, 'Typical Applications')}</span>
+                      </div>
+
+                      {/* ⚠ WHITE TICKS, NOT `primary-1` — and this is a lesson
+                          the site has already learnt once. The note on
+                          AboutMosaic says it plainly: primary-1 is #3d5290 and on
+                          a navy ground it is barely separable from it. That note
+                          was written about 11px labels; these are 20px marks and
+                          they were just as invisible, measured against #2c3c6c on
+                          the tile below. Contrast wins over palette on a marker
+                          that has a job to do. `primary-1` is fine where it
+                          already appears — the square dot inside a
+                          white-bordered chip, which is decorative and framed. */}
+                      <ul className="mt-6 space-y-3.5">
+                        {section.applications.map((a, i) => (
+                          /* UI Upgrade: Added group hover micro-interactions. The checkmark brightens 
+                             and the text gently glides to the right. */
+                          <li key={i} className="group flex gap-3 text-base leading-relaxed text-white/90 transition-transform duration-300 hover:translate-x-1.5">
+                            <Icon icon="tabler:check" className="mt-1 size-5 shrink-0 text-white/60 transition-colors duration-300 group-hover:text-white" />
+                            {a}
+                          </li>
+                        ))}
+                      </ul>
+
+                      {section.applicationsNote && (
+                        <p className="mt-7 border-t border-white/15 pt-6 text-base leading-relaxed text-white/80">
+                          {/* ⚠ RichText renders its links `text-primary` — brand
+                              navy, invisible on a brand-navy panel. Same trap the
+                              two resources pages document, overridden locally for
+                              the same reason: every other consumer of RichText is
+                              on white. These notes carry the deck's real in-prose
+                              links, so they have to stay clickable AND visible. */}
+                          <span className="[&_a]:text-white [&_a]:decoration-white/60">
+                            <RichText>{section.applicationsNote}</RichText>
+                          </span>
+                        </p>
+                      )}
                     </div>
-
-                    {/* ⚠ WHITE TICKS, NOT `primary-1` — and this is a lesson
-                        the site has already learnt once. The note on
-                        AboutMosaic says it plainly: primary-1 is #3d5290 and on
-                        a navy ground it is barely separable from it. That note
-                        was written about 11px labels; these are 20px marks and
-                        they were just as invisible, measured against #2c3c6c on
-                        the tile below. Contrast wins over palette on a marker
-                        that has a job to do. `primary-1` is fine where it
-                        already appears — the square dot inside a
-                        white-bordered chip, which is decorative and framed. */}
-                    <ul className="mt-6 space-y-3.5">
-                      {section.applications.map((a, i) => (
-                        <li key={i} className="flex gap-3 text-base leading-relaxed text-white/90">
-                          <Icon icon="tabler:check" className="mt-1 size-5 shrink-0 text-white/75" />
-                          {a}
-                        </li>
-                      ))}
-                    </ul>
-
-                    {section.applicationsNote && (
-                      <p className="mt-7 border-t border-white/15 pt-6 text-base leading-relaxed text-white/80">
-                        {/* ⚠ RichText renders its links `text-primary` — brand
-                            navy, invisible on a brand-navy panel. Same trap the
-                            two resources pages document, overridden locally for
-                            the same reason: every other consumer of RichText is
-                            on white. These notes carry the deck's real in-prose
-                            links, so they have to stay clickable AND visible. */}
-                        <span className="[&_a]:text-white [&_a]:decoration-white/60">
-                          <RichText>{section.applicationsNote}</RichText>
-                        </span>
-                      </p>
-                    )}
                   </div>
                 ) : null}
 
                 {showSpecs ? (
-                  <div className={`border-default-200 bg-default-50 rounded-card border p-7 lg:p-8 ${section.applications?.length ? 'lg:col-span-5' : 'lg:col-span-8'}`}>
+                  /* UI Upgrade: Exchanged flat gray for a soft gradient, an airy drop shadow, and a subtle ring 
+                     to give the table card physical presence on the page. */
+                  <div className={`border-default-100 bg-gradient-to-b from-white to-default-50/50 shadow-[0_8px_30px_rgb(0,0,0,0.03)] ring-1 ring-black/5 rounded-card border p-7 lg:p-8 ${section.applications?.length ? 'lg:col-span-5' : 'lg:col-span-8'}`}>
                     <h3 className="text-default-900 text-xl font-bold lg:text-2xl">{section.specsTitle ?? t(locale, 'Specifications')}</h3>
                     <div className="mt-6">
                       <SpecTable specs={section.specs!} />
@@ -441,8 +453,9 @@ copy field rather than render as literal markdown. */}
                       </p>
                     )}
                     {section.datasheet && (
-                      <a href={doc?.file ?? '/resources/datasheets'} download={doc ? '' : undefined} className="text-primary mt-6 inline-flex items-center gap-2 text-sm font-semibold">
-                        <Icon icon="tabler:download" className="size-5" />
+                      /* UI Upgrade: Animated underline on hover, matching the navbar styling. */
+                      <a href={doc?.file ?? '/resources/datasheets'} download={doc ? '' : undefined} className="group relative mt-6 inline-flex items-center gap-2 pb-0.5 text-sm font-semibold text-primary after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-primary after:transition-transform after:duration-300 hover:after:origin-bottom-left hover:after:scale-x-100">
+                        <Icon icon="tabler:download" className="size-5 transition-transform duration-300 group-hover:-translate-y-0.5" />
                         {t(locale, 'Download the')} {section.datasheet} {t(locale, '(PDF)')}
                       </a>
                     )}
@@ -457,8 +470,8 @@ copy field rather than render as literal markdown. */}
                 <div className="mb-10 flex flex-wrap items-baseline gap-3">
                   <h3 className="text-default-900 text-2xl font-bold">{t(locale, 'Grades & specifications')}</h3>
                   {section.datasheet && (
-                    <a href={doc?.file ?? '/resources/datasheets'} download={doc ? '' : undefined} className="text-primary inline-flex items-center gap-1.5 text-sm font-semibold">
-                      <Icon icon="tabler:download" className="size-4" />
+                    <a href={doc?.file ?? '/resources/datasheets'} download={doc ? '' : undefined} className="group relative inline-flex items-center gap-1.5 pb-0.5 text-sm font-semibold text-primary after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-primary after:transition-transform after:duration-300 hover:after:origin-bottom-left hover:after:scale-x-100">
+                      <Icon icon="tabler:download" className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5" />
                       {section.datasheet}
                     </a>
                   )}
