@@ -1,4 +1,6 @@
+import CanvasField from '@/components/CanvasField'
 import CountUp from '@/components/CountUp'
+import ScrambleHeading from '@/components/ScrambleHeading'
 import ScrollReveal from '@/components/ScrollReveal'
 import Image from 'next/image'
 import type { Locale } from '@/i18n/routing'
@@ -24,9 +26,12 @@ const STATEMENTS = [
 
 const QualityMosaic = () => {
   const locale = useLocale() as Locale
+  const heading = t(locale, 'The Laboratory')
 
   return (
-    <section data-note="quality-mosaic" className="bg-default-50 py-16 lg:py-24">
+    <section data-note="quality-mosaic" className="bg-default-50 relative isolate overflow-hidden py-16 lg:py-22">
+      <CanvasField density="fine" mark="start" />
+
       <div className="container">
         <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-10 xl:gap-14">
           <div className="lg:col-span-5">
@@ -44,9 +49,10 @@ const QualityMosaic = () => {
               <div className="relative z-10 flex w-full flex-col justify-between p-7 sm:p-9 lg:p-10 xl:p-12">
                 <div>
                   <p className="font-mono text-[11px] tracking-[0.22em] text-white/58 uppercase">{t(locale, 'Quality control')}</p>
-                  <h2 className="mt-4 text-[34px] leading-[0.98] font-bold tracking-[-0.035em] md:text-[40px] lg:text-[46px]">
-                    {t(locale, 'The Laboratory')}
-                  </h2>
+                  <ScrambleHeading
+                    text={heading}
+                    className="mt-4 text-[40px] leading-[0.96] font-bold tracking-[-0.045em] text-white md:text-[50px] lg:text-[58px]"
+                  />
 
                   <p className="mt-6 text-[17px] leading-relaxed text-white/92 lg:text-[18px]">
                     {t(
@@ -90,7 +96,7 @@ const QualityMosaic = () => {
             <ScrollReveal>
               <article className="rounded-card border-default-200 bg-white p-7 shadow-[0_22px_70px_-42px_rgba(2,6,23,0.35)] sm:p-9 lg:p-10">
                 <div className="border-primary border-s-2 ps-6 lg:ps-8">
-                  <h3 className="text-default-900 text-[28px] leading-none font-bold lg:text-[34px]">{t(locale, STATEMENTS[0].label)}</h3>
+                  <h3 className="text-primary-3 text-[30px] leading-none font-bold tracking-[-0.025em] lg:text-[36px]">{t(locale, STATEMENTS[0].label)}</h3>
                   <p className="text-default-600 mt-5 text-[16px] leading-relaxed lg:text-[17px]">{t(locale, STATEMENTS[0].body)}</p>
                 </div>
               </article>
@@ -111,7 +117,7 @@ const QualityMosaic = () => {
             <ScrollReveal>
               <article className="rounded-card border-default-200 bg-white p-7 shadow-[0_22px_70px_-42px_rgba(2,6,23,0.35)] sm:p-9 lg:p-10">
                 <div className="border-primary border-s-2 ps-6 lg:ps-8">
-                  <h3 className="text-default-900 text-[28px] leading-none font-bold lg:text-[34px]">{t(locale, STATEMENTS[1].label)}</h3>
+                  <h3 className="text-primary-3 text-[30px] leading-none font-bold tracking-[-0.025em] lg:text-[36px]">{t(locale, STATEMENTS[1].label)}</h3>
                   <p className="text-default-600 mt-5 text-[16px] leading-relaxed lg:text-[17px]">{t(locale, STATEMENTS[1].body)}</p>
                 </div>
               </article>

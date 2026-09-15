@@ -1,5 +1,6 @@
 import ArcStory, { type ArcStoryItem } from '@/components/ArcStory'
 import CanvasField from '@/components/CanvasField'
+import ScrambleHeading from '@/components/ScrambleHeading'
 import ScrollReveal from '@/components/ScrollReveal'
 import Image from 'next/image'
 import type { Locale } from '@/i18n/routing'
@@ -74,18 +75,16 @@ const AboutMosaic = () => {
     },
   ]
 
+  const introTitle = t(locale, 'One accountable source. Full range. Same specification.')
+
   return (
-    <section data-note="about-mosaic" className="bg-default-50 relative isolate overflow-hidden py-16 lg:py-24">
+    <section data-note="about-mosaic" className="bg-default-50 relative isolate overflow-hidden py-14 lg:py-18">
       <CanvasField grain={false} mark="end" />
 
       <div className="container">
-        {/* On desktop the laboratory frame pins while the company story moves
-            past it. Mobile remains ordinary document flow. This borrows the
-            sticky split-screen rhythm from Marc's reference without turning
-            the whole section into a forced full-screen slide. */}
-        <div className="grid items-start gap-10 lg:grid-cols-12 lg:gap-14 xl:gap-18">
+        <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-12 xl:gap-16">
           <div className="lg:col-span-7">
-            <div className="eid-sticky-viewport rounded-card relative aspect-[7/5] overflow-hidden lg:aspect-auto lg:min-h-[calc(100svh-8rem)]">
+            <div className="eid-sticky-viewport eid-sticky-viewport--compact rounded-card relative aspect-[7/5] overflow-hidden lg:aspect-auto">
               <Image
                 src="/eid/facility/hero-metrology-lab.png"
                 alt={t(locale, 'Two technicians at a measuring microscope in the EID metrology laboratory')}
@@ -103,14 +102,15 @@ const AboutMosaic = () => {
             </div>
           </div>
 
-          <div className="lg:col-span-5 lg:pb-[18vh]">
-            <ScrollReveal className="lg:flex lg:min-h-[62vh] lg:flex-col lg:justify-center">
+          <div className="lg:col-span-5">
+            <ScrollReveal>
               <p className="text-primary font-mono text-[11px] tracking-[0.22em] uppercase">{t(locale, 'About EID')}</p>
-              <h2 className="text-default-900 mt-4 max-w-[12ch] text-[34px] leading-[1.02] font-bold tracking-[-0.035em] text-balance md:text-[40px] lg:text-[46px]">
-                {t(locale, 'One accountable source. Full range. Same specification.')}
-              </h2>
+              <ScrambleHeading
+                text={introTitle}
+                className="text-primary-3 mt-4 max-w-[12ch] text-[40px] leading-[0.98] font-bold tracking-[-0.045em] text-balance md:text-[50px] lg:text-[58px]"
+              />
 
-              <p className="text-default-700 mt-6 text-[17px] leading-relaxed lg:text-[18px]">
+              <p className="text-default-700 mt-5 text-[17px] leading-relaxed lg:text-[18px]">
                 {t(
                   locale,
                   'With its headquarters in London, England, and worldwide marketing partners, EID has established a global reputation for quality, consistency and superior service.'
@@ -118,19 +118,15 @@ const AboutMosaic = () => {
               </p>
             </ScrollReveal>
 
-            <div className="mt-10 space-y-8 lg:mt-0 lg:space-y-0">
+            <div className="mt-8 grid gap-4">
               {ADVANTAGES.map((advantage, index) => (
-                <ScrollReveal
-                  key={advantage.n}
-                  delay={index * 0.06}
-                  className="lg:flex lg:min-h-[42vh] lg:items-center"
-                >
-                  <div className="flex items-start gap-5">
-                    <span className="border-primary/20 bg-primary/5 text-primary rounded-control flex size-14 shrink-0 items-center justify-center border font-mono text-[11px] font-semibold tracking-[0.16em]">
+                <ScrollReveal key={advantage.n} delay={index * 0.06}>
+                  <div className="rounded-card border-default-200 bg-white/86 flex items-start gap-4 border p-5 shadow-[0_18px_50px_-40px_rgba(2,6,23,0.35)] backdrop-blur-sm lg:p-6">
+                    <span className="border-primary/20 bg-primary/5 text-primary rounded-control flex size-12 shrink-0 items-center justify-center border font-mono text-[10px] font-semibold tracking-[0.16em]">
                       {advantage.n}
                     </span>
-                    <div className="border-primary/45 min-w-0 border-s-2 ps-5">
-                      <h3 className="text-default-900 text-[19px] leading-tight font-semibold lg:text-[21px]">{t(locale, advantage.title)}</h3>
+                    <div className="border-primary/45 min-w-0 border-s-2 ps-4">
+                      <h3 className="text-primary-3 text-[20px] leading-tight font-semibold lg:text-[22px]">{t(locale, advantage.title)}</h3>
                       <p className="text-default-600 mt-2 text-[15px] leading-relaxed lg:text-base">{t(locale, advantage.body)}</p>
                     </div>
                   </div>
@@ -140,10 +136,8 @@ const AboutMosaic = () => {
           </div>
         </div>
 
-        {/* Stats, reach, vision and mission retain the 3D arc interaction that
-            was already approved; the sticky introduction resolves into it. */}
-        <div className="mt-16 lg:mt-24">
-          <ArcStory items={storyItems} ariaLabel={t(locale, 'EID manufacturing, quality, reach, vision and mission')} cardHeight={500} />
+        <div className="mt-12 lg:mt-16">
+          <ArcStory items={storyItems} ariaLabel={t(locale, 'EID manufacturing, quality, reach, vision and mission')} cardHeight={440} />
         </div>
       </div>
     </section>

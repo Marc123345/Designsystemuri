@@ -1,5 +1,6 @@
 import EvidencePanel from '@/components/EvidencePanel'
 import PhotoCard from '@/components/PhotoCard'
+import ScrambleHeading from '@/components/ScrambleHeading'
 import ScrollReveal from '@/components/ScrollReveal'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
@@ -35,38 +36,40 @@ const VALUES = [
 
 const CoreValues = () => {
   const locale = useLocale() as Locale
+  const title = t(locale, 'Our core values')
 
   return (
-    <section data-note="core-values" className="py-16 lg:py-24">
+    <section data-note="core-values" className="py-14 lg:py-18">
       <div className="container">
-        <EvidencePanel className="px-5 py-9 sm:px-7 sm:py-11 lg:px-10 lg:py-12 xl:px-12">
-          <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
+        <EvidencePanel className="px-5 py-8 sm:px-7 sm:py-10 lg:px-10 lg:py-10 xl:px-12">
+          <div className="grid gap-8 lg:grid-cols-12 lg:gap-10">
             <div className="eid-sticky-copy lg:col-span-4">
               <p className="font-mono text-[10px] tracking-[0.22em] text-white/55 uppercase">{t(locale, 'About EID')}</p>
-              <h2 className="mt-4 text-[30px] leading-[1.02] font-bold text-white md:text-[36px] lg:text-[42px]">
-                {t(locale, 'Our core values')}
-              </h2>
-              <p className="mt-4 max-w-md text-[17px] leading-relaxed text-white/72">
+              <ScrambleHeading
+                text={title}
+                className="mt-4 text-[38px] leading-[0.98] font-bold tracking-[-0.04em] text-white md:text-[46px] lg:text-[54px]"
+              />
+              <p className="mt-4 max-w-md text-[16px] leading-relaxed text-white/70 lg:text-[17px]">
                 {t(locale, 'Four things that have not changed since 1970, and that a buyer can check against every order.')}
               </p>
 
-              <div aria-hidden className="mt-8 hidden items-center gap-3 lg:flex">
+              <div aria-hidden className="mt-7 hidden items-center gap-3 lg:flex">
                 <span className="h-px w-10 bg-white/30" />
                 <span className="font-mono text-[10px] font-semibold tracking-[0.2em] text-white/50">01 — 04</span>
               </div>
             </div>
 
-            <div className="grid gap-8 lg:col-span-8 lg:gap-12 lg:pb-[18vh]">
+            <div className="grid gap-6 lg:col-span-8 lg:gap-8 lg:pb-[8vh]">
               {VALUES.map((value, index) => (
                 <div
                   key={value.name}
                   className="eid-sticky-card"
-                  style={{ '--eid-sticky-top': `${6.5 + index * 1.15}rem` } as CSSProperties}
+                  style={{ '--eid-sticky-top': `${6.5 + index * 0.8}rem` } as CSSProperties}
                 >
                   <ScrollReveal delay={index * 0.045}>
                     <PhotoCard
                       className="ring-2 ring-white/85 shadow-[0_24px_80px_-32px_rgba(0,0,0,0.72)]"
-                      minHeight="min-h-[360px] lg:min-h-[58svh]"
+                      minHeight="min-h-[340px] lg:min-h-[430px]"
                       weight="heavy"
                       eyebrow={String(index + 1).padStart(2, '0')}
                       title={t(locale, value.name)}
