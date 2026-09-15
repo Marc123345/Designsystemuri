@@ -154,7 +154,11 @@ const AboutMosaic = () => {
                 {STACKED.map((f) => (
                   <div key={f.label}>
                     <dd className="text-[38px] leading-none font-bold text-white lg:text-[46px]"><CountUp value={f.value} /></dd>
-                    <dt className="mt-2 text-[11px] font-semibold tracking-[0.18em] text-white/75 uppercase">{t(locale, f.label)}</dt>
+                    <dt /* White, not the brand blue. Strauss sets these labels in a bright
+                       cyan that pops off their dark tile; our lightest blue is #3d5290,
+                       which on a navy scrim is barely separable from the ground at 11px.
+                       Contrast wins over palette on a caption this small. */
+                    className="mt-2 text-[11px] font-semibold tracking-[0.18em] text-white/75 uppercase">{t(locale, f.label)}</dt>
                   </div>
                 ))}
               </dl>
