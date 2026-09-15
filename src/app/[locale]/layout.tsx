@@ -10,22 +10,30 @@ import { site } from '@/lib/site'
 import type { Metadata } from 'next'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
-import { Inter } from 'next/font/google'
+import { Crimson_Text, Noto_Sans } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import 'swiper/css'
 import 'swiper/css/effect-fade'
 import 'swiper/css/navigation'
 
-/* Apple platforms resolve -apple-system/BlinkMacSystemFont to SF Pro. Inter is
-   loaded only as the cross-platform fallback and exposed to CSS as a variable
-   so the stack in _typography.css remains the single source of truth. */
-const inter = Inter({
-  variable: '--font-inter',
+/* Mirrors the Ask Afrika pairing while using Next's font pipeline instead of
+   an external Google Fonts stylesheet. */
+const crimsonText = Crimson_Text({
+  variable: '--font-crimson',
   subsets: ['latin'],
+  weight: ['400', '600', '700'],
+  style: ['normal', 'italic'],
   display: 'swap',
 })
 
-// Organization / LocalBusiness structured data (real EID NAP details).
+const notoSans = Noto_Sans({
+  variable: '--font-noto',
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  style: ['normal'],
+  display: 'swap',
+})
+
 const orgSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -86,15 +94,9 @@ const LocaleLayout = async ({ children, params }: { children: React.ReactNode; p
   setRequestLocale(locale)
 
   return (
-    <html lang={locale} className={`${inter.variable} antialiased`}>
+    <html lang={locale} className={`${crimsonText.variable} ${notoSans.variable} antialiased`}>
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
-
-        {/* Juturu is used in the first-screen hero, so preload the one variable
-            WOFF2 rather than waiting for the stylesheet/font discovery chain. */}
-        <link rel="preload" href="/fonts/Juturu-VariableVF.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-
-        {/* Every video, poster and rendition comes from ImageKit. */}
         <link rel="preconnect" href="https://ik.imagekit.io" crossOrigin="" />
       </head>
       <body suppressHydrationWarning>

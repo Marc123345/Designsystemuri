@@ -24,16 +24,11 @@ the template it came from.
 @import "./_swiper.css";
 @import "./_general.css";
 
-/* Typography is the semantic type contract. */
+/* Crimson Text headings + Noto Sans body/UI. */
 @import "./_typography.css";
 
-/* Loaded last so spacing, surfaces, components and motion resolve around the
-   typography rather than fighting it with local one-off values. */
+/* Layout, surfaces, components and motion resolve around the type system. */
 @import "./_system.css";
 
 /* Product-only crystal geometry inspired by the supplied EID reference. */
 @import "./_faceted-cards.css";
-
-/* Juturu accents are deliberately last: they opt only selected components back
-   into the expressive display family while the rest of the UI stays SF/Inter. */
-@import "./_juturu-components.css";
