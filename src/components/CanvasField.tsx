@@ -110,17 +110,8 @@
 const GRAIN =
   "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.5'/></svg>\")"
 
-const CELL: Record<'coarse' | 'medium' | 'fine', number> = {
-  coarse: 32,
-  medium: 20,
-  fine: 12,
-}
-
 /** Fades the field in and out at the top and bottom of the section. */
 const V_MASK = 'linear-gradient(to bottom, transparent 0%, black 16%, black 84%, transparent 100%)'
-
-/** Clears the middle, where `.container` puts the content. */
-const H_MASK = 'linear-gradient(to right, black 0%, black 12%, transparent 26%, transparent 74%, black 88%, black 100%)'
 
 /* THE MARK, as a mask rather than as a picture.
    /eid/logo-white.png is white ink on transparent, so dropped onto a white
@@ -162,8 +153,6 @@ const CanvasField = ({
   marginImages?: { start: string; end: string }
   className?: string
 }) => {
-  const cell = CELL[density]
-
   return (
     <div aria-hidden className={`pointer-events-none absolute inset-0 -z-10 overflow-hidden ${className}`}>
       {marginImages && (
@@ -187,21 +176,6 @@ const CanvasField = ({
           the extra point of contrast it buys back is worth more than the
           difference anyone can see between 1.5 and 2.5. */}
       {grain && <div className="absolute inset-0 opacity-[0.015]" style={{ backgroundImage: GRAIN, maskImage: V_MASK, WebkitMaskImage: V_MASK }} />}
-
-      {/* THE SIEVE, margins only. Two one-pixel gradients rather than an SVG
-          pattern: the browser tiles them on the compositor, there is no extra
-          request, and the cell size is a single number to change. */}
-      <div style={{ maskImage: V_MASK, WebkitMaskImage: V_MASK }} className="absolute inset-0">
-        <div
-          className="text-default-300 absolute inset-0 opacity-40"
-          style={{
-            backgroundImage: 'linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)',
-            backgroundSize: `${cell}px ${cell}px`,
-            maskImage: H_MASK,
-            WebkitMaskImage: H_MASK,
-          }}
-        />
-      </div>
 
       {/* THE MARK, ghosted off one edge.
 
