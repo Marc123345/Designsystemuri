@@ -27,6 +27,11 @@
   --shadow-hover: 0 2px 4px rgb(15 23 42 / 0.05), 0 18px 42px rgb(28 39 73 / 0.10);
 }
 
+::selection {
+  background: rgb(44 60 108 / 0.18);
+  color: var(--color-primary-3);
+}
+
 /* --------------------------------------------------------------------------
    Layout rhythm
    -------------------------------------------------------------------------- */
@@ -47,9 +52,9 @@
   margin-top: var(--space-stack);
 }
 
-/* Compatibility bridge for the two section rhythms already used throughout
-   the repo. It makes existing pages fluid without needing every route rewritten
-   before they benefit from the system. */
+/* Compatibility bridge for the repeated section rhythms already used across
+   routes. Existing sections become fluid without requiring a route-by-route
+   rewrite before they can benefit from the design system. */
 section[class~="py-20"][class~="lg:py-30"] {
   padding-block: var(--space-section);
 }
@@ -64,6 +69,27 @@ section[class~="py-10"][class~="lg:py-14"] {
 
 section[class~="pb-20"][class~="lg:pb-30"] {
   padding-bottom: var(--space-section);
+}
+
+/* Supporting light bands use the same tiny brand tint rather than switching
+   between unrelated neutral greys. */
+section[class~="bg-default-50"] {
+  background: var(--color-canvas);
+}
+
+/* Legacy grid CTA tiles used a slate-black surface while the rest of the site
+   uses EID navy. Keep the dark/light contrast but bring the tile into the brand
+   family without touching true neutral overlays used for photograph legibility. */
+a[class~="bg-default-900"][class~="border-default-900"] {
+  background: var(--color-primary-3);
+  border-color: var(--color-primary-3);
+}
+
+@media (hover: hover) {
+  a[class~="bg-default-900"][class~="border-default-900"]:hover {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -100,8 +126,8 @@ section[class~="pb-20"][class~="lg:pb-30"] {
   color: #fff;
 }
 
-/* CurtainGrid is already the site's main photographic card primitive. Give its
-   separated rounded cards the same restrained elevation and lift as text cards. */
+/* CurtainGrid is the main photographic card primitive. Its separated rounded
+   tiles now share the same restrained elevation and lift as text cards. */
 .eid-tiles a.rounded-card {
   box-shadow: var(--shadow-rest);
   transition: transform var(--motion-base) var(--ease-standard), box-shadow var(--motion-base) var(--ease-standard);
@@ -115,7 +141,7 @@ section[class~="pb-20"][class~="lg:pb-30"] {
 }
 
 /* --------------------------------------------------------------------------
-   Controls
+   Controls and fields
    -------------------------------------------------------------------------- */
 
 .eid-icon-button {
@@ -148,6 +174,27 @@ section[class~="pb-20"][class~="lg:pb-30"] {
   padding: 0.3125rem 0.75rem;
 }
 
+:where(
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+  select,
+  textarea
+) {
+  border-radius: var(--radius-control);
+  border-color: var(--color-default-300);
+  background: #fff;
+  font: inherit;
+  transition: border-color var(--motion-fast) ease, box-shadow var(--motion-fast) ease, background-color var(--motion-fast) ease;
+}
+
+:where(
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+  select,
+  textarea
+):focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgb(44 60 108 / 0.12);
+}
+
 /* --------------------------------------------------------------------------
    Motion
    -------------------------------------------------------------------------- */
@@ -168,7 +215,7 @@ section[class~="pb-20"][class~="lg:pb-30"] {
 }
 
 /* Normalize the common Tailwind timings used by legacy components. The class
-   names stay valid, but all repeated interactions now speak one tempo. */
+   names stay valid, but repeated interactions now speak one tempo. */
 .duration-300 { transition-duration: var(--motion-base); }
 .duration-500 { transition-duration: var(--motion-slow); }
 .duration-700 { transition-duration: var(--motion-cinematic); }
