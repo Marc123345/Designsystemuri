@@ -1,10 +1,10 @@
 /**
  * Shared surface treatment for light/white sections.
  *
- * The sieve mesh and grain stay restrained and live behind the content. The EID
- * mark is now part of the canvas itself: the supplied mark is rendered as a
- * large, low-opacity blue watermark and is ON by default. Individual sections
- * can still move it to the opposite edge, centre it, or disable it explicitly.
+ * The sieve mesh and grain stay restrained and live behind the content. The full
+ * EID logo lockup is part of the canvas itself: it is rendered as a large,
+ * low-opacity blue watermark and is ON by default. Individual sections can
+ * still move it to the opposite edge, centre it, or disable it explicitly.
  */
 const GRAIN =
   "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.5'/></svg>\")"
@@ -17,6 +17,17 @@ const CELL: Record<'coarse' | 'medium' | 'fine', number> = {
 
 const V_MASK = 'linear-gradient(to bottom, transparent 0%, black 16%, black 84%, transparent 100%)'
 const H_MASK = 'linear-gradient(to right, black 0%, black 12%, transparent 26%, transparent 74%, black 88%, black 100%)'
+
+const LOGO_MASK = {
+  maskImage: "url('/eid/logo-white.png')",
+  WebkitMaskImage: "url('/eid/logo-white.png')",
+  maskPosition: 'center',
+  WebkitMaskPosition: 'center',
+  maskRepeat: 'no-repeat',
+  WebkitMaskRepeat: 'no-repeat',
+  maskSize: 'contain',
+  WebkitMaskSize: 'contain',
+} as const
 
 type MarkPosition = false | 'start' | 'end' | 'center'
 
@@ -33,12 +44,12 @@ const CanvasField = ({
 }) => {
   const cell = CELL[density]
 
-  const markPosition =
+  const logoPosition =
     mark === 'start'
-      ? '-start-24 md:-start-28 lg:-start-32'
+      ? '-start-36 md:-start-48 lg:-start-56'
       : mark === 'center'
         ? 'left-1/2 -translate-x-1/2'
-        : '-end-24 md:-end-28 lg:-end-32'
+        : '-end-36 md:-end-48 lg:-end-56'
 
   return (
     <div aria-hidden className={`pointer-events-none absolute inset-0 -z-10 overflow-hidden ${className}`}>
@@ -64,13 +75,8 @@ const CanvasField = ({
 
       {mark && (
         <div
-          className={`absolute top-1/2 aspect-square w-[22rem] -translate-y-1/2 opacity-[0.055] md:w-[32rem] lg:w-[40rem] xl:w-[48rem] ${markPosition}`}
-          style={{
-            backgroundImage: "url('/eid/eid-mark.svg')",
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'contain',
-          }}
+          className={`bg-primary absolute top-1/2 aspect-[650/221] w-[34rem] -translate-y-1/2 opacity-[0.045] md:w-[48rem] lg:w-[62rem] xl:w-[72rem] ${logoPosition}`}
+          style={LOGO_MASK}
         />
       )}
     </div>
