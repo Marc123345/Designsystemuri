@@ -1,0 +1,39 @@
+/* Shared sticky-story rules inspired by the scroll references Marc supplied.
+   Desktop gets the layered/pinned composition; touch-sized layouts keep normal
+   document flow so content never depends on scroll choreography. */
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .eid-sticky-copy {
+    position: sticky;
+    top: 6.5rem;
+    align-self: start;
+  }
+
+  .eid-sticky-viewport {
+    position: sticky;
+    top: 6.5rem;
+    min-height: calc(100svh - 8rem);
+    align-self: start;
+  }
+
+  .eid-sticky-card {
+    position: sticky;
+    top: var(--eid-sticky-top, 6.5rem);
+  }
+
+  /* FAQ already owns a semantic two-column layout. Pin its contextual left
+     column while the native details/summary accordion continues beside it. */
+  [data-note='faq'] > .container > .grid > :first-child {
+    position: sticky;
+    top: 6.5rem;
+    align-self: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eid-sticky-copy,
+  .eid-sticky-viewport,
+  .eid-sticky-card {
+    position: static !important;
+  }
+}
