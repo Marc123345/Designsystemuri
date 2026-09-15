@@ -6,61 +6,27 @@ import ScrollCue from '@/components/ScrollCue'
 import { videoSources, videoPoster, posterSrcSet } from '@/components/videoSources'
 
 /**
- * The hero: type on the film.
+ * Shared full-bleed video hero.
  *
- * ── What changed, and what it bought ────────────────────────────────────────
- *
- * This was a stack — film on top, statement underneath on flat navy, joined by
- * a gradient. That arrangement spent a lot of the frame on treatment rather
- * than on picture:
- *
- *   navbar scrim      112-128px
- *   join gradient      96-112px
- *   the navy block    ~300px of solid colour under the film
- *
- * Marc's call is to drop all of it and put the words on the video. The join
- * gradient goes entirely — with no navy block beneath, it has nothing to join
- * to — and the section is one full-bleed film again.
- *
- * ── The one treatment that stays, and why ───────────────────────────────────
- *
- * A single bottom-up scrim behind the copy. Not the old 45% brand wash over
- * the whole frame: this is transparent across the top two thirds so the film
- * plays clean, and only firms up under the words.
- *
- * It is not optional. The home clip is a laboratory scene with white coats and
- * bright benches, and white type dropped straight onto that is unreadable at
- * several points in a 15-second loop. The test is not whether it reads on the
- * poster frame — it is whether it reads on every frame. The scrim is the
- * cheapest thing that guarantees that, and at these stops it costs the picture
- * very little.
- *
- * `primary-3` rather than black: against cool blue-grey footage a black scrim
- * is a foreign colour and reads as a bar laid on top rather than as shading.
- *
- * ── Height is a floor ───────────────────────────────────────────────────────
- *
- * `min-h`, not `h`. A longer headline takes the room it needs rather than
- * clipping, and the next section still shows above the fold at these values —
- * which is the mechanism behind the whole rhythm brief.
+ * Home is the only hero that carries the scroll cue, so that flag also gives us
+ * a safe way to tune the homepage composition without changing the shorter
+ * interior heroes. The home version gets a little more breathing room, a
+ * narrower optical text measure, and a softer layered vignette behind the
+ * lockup. The result stays centred, but no longer feels like every element is
+ * competing for the exact middle of the frame.
  */
 const VideoHero = ({
   title,
   desc,
   video,
   posterAt = 3,
-  /** Minimum height for the band. About runs shorter than home. */
   minHeight = 'min-h-[60svh]',
-  /** Crop bias. Defaults to slightly above centre. */
   objectPosition = 'object-[50%_45%]',
   scrollCue = false,
 }: {
   title: string
-  /** Optional. About runs without one — the headline carries the page. */
   desc?: string
-  /** ImageKit MP4 URL. WebM and the poster are derived from it. */
   video: string
-  /** Second to pull the poster frame from. */
   posterAt?: number
   minHeight?: string
   objectPosition?: string
@@ -68,89 +34,22 @@ const VideoHero = ({
 }) => {
   const sources = videoSources(video)
   const poster = videoPoster(video, posterAt)
+  const isHomeHero = scrollCue
 
-  /* The poster is the hero's LCP element, and Chrome fetches a <video poster>
-     at LOW priority — it treats it as decoration, which is exactly wrong here:
-     it is the picture the page is judged on, and under preload="none" plus the
-     intro it is the ONLY thing in the hero for the first seconds of a visit.
-     This emits a <link rel="preload" fetchpriority="high"> into the head, so
-     it is discovered with the document rather than when the parser reaches the
-     element, and it outranks the images further down the page.
-
-     Same URL as the `poster` attribute below — a preload that does not match
-     byte for byte is a second download, not a head start. */
+  /* The poster is the hero's LCP element. A video poster is normally fetched
+     at low priority, so preload it as an image and let the film remain idle
+     until SiteIntro/releaseHeroVideo releases it. */
   preload(poster, { as: 'image', fetchPriority: 'high' })
 
+  const heroHeight = isHomeHero
+    ? `${minHeight} md:min-h-[64svh] xl:min-h-[66svh]`
+    : minHeight
+
   return (
-    /* `rounded-b-card` — Uri's 24px, bottom corners only. The band runs under
-       the navbar to the top of the viewport, where there is nothing for a
-       radius to be a radius against. */
-    /* ── CENTRED IN THE BAND, NOT PINNED TO THE BOTTOM OF IT ───────────
-       This was `items-end` with the lockup's clearance built into its own
-       top padding, and that only balanced the one hero it was tuned on.
-       `min-h` is a floor, so whenever the content is shorter than the floor
-       the leftover height has to go somewhere — pinned to the bottom, ALL of
-       it went above the mark. Measured on /about: 48px between the navbar
-       rule and the mark against 64px under the headline, on a hero whose
-       content is a mark and two lines.
-
-       `items-center` splits that slack instead of stacking it at the top, and
-       the navbar clearance moves here as padding — `pt-19`/`lg:pt-24` are the
-       navbar's own `h-[76px]`/`lg:h-[96px]`, so the centring happens in the
-       space BELOW the bar rather than behind it. Keep them in step: if the
-       navbar height changes, these change with it.
-
-       EVERY hero was off, not just /about — home measured 48/64 too. The
-       wrapper below is symmetric `py-14`, which is 56px a side: the same 112px
-       of vertical padding the old 48+64 spent, redistributed. So the heroes
-       balance without any of them changing height, and the note above about
-       the next section still clearing the fold holds unchanged. */
     <section
       data-note="hero"
-      className={`bg-primary-3 rounded-b-card relative isolate flex w-full items-center overflow-hidden pt-19 lg:pt-24 ${minHeight}`}
+      className={`bg-primary-3 rounded-b-card relative isolate flex w-full items-center overflow-hidden pt-19 lg:pt-24 ${heroHeight}`}
     >
-      {/* Streaming from EID's own ImageKit account rather than committed, so a
-          clip can be recut and swapped without a deploy, and ImageKit answers
-          range requests so the browser streams instead of blocking on the
-          whole file.
-
-          `poster` is a frame generated by ImageKit from the same file
-          (`/ik-thumbnail.jpg?tr=so-N`). First paint is a real frame of the
-          real video and there is no second asset to keep in sync.
-
-          muted + playsInline  — autoplay is refused without both, and on iOS
-                                 playsInline stops it going fullscreen.
-          loop                 — background film, no controls, no end state.
-
-          preload="none", and this is a fix rather than a default. It was
-          "metadata", and measuring a first visit showed why that was wrong:
-          the hero's request went out at 37ms and the intro's at 399ms. The
-          hero is server-rendered and SiteIntro is a client component, so the
-          clip nobody can see — it is behind a full-screen opaque panel —
-          reached the network first and took bandwidth from the one filling
-          the viewport. On a phone that is the difference between the intro
-          playing and the intro sitting on its poster.
-
-          With "none" the hero costs nothing until releaseHeroVideo raises it,
-          which happens the moment the swoosh ends, or immediately on a repeat
-          visit where no intro runs. Nothing is lost visually: `poster` is an
-          image attribute and is unaffected by preload, so first paint is still
-          a real frame of the real film.
-
-          NO `autoPlay`, and that is the point. With it the clip starts as soon
-          as the browser can play it, which is behind the full-screen loading
-          panel — several seconds of a short loop spent where nobody can see
-          it, so the first thing a visitor actually sees is the middle of a
-          shot. `data-hero-video` hands the start over to SiteIntro, which rewinds
-          and plays it once the swoosh has finished. See releaseHeroVideo,
-          including why a refused play() is swallowed rather than treated as
-          an error.
-
-          disableRemotePlayback / disablePictureInPicture — decoration, not
-          content. Without them Chrome and Android offer a silent background
-          loop to Cast and to picture-in-picture and register it with the OS
-          media session: controls a visitor can hit by accident, over a film
-          with nothing to control, on every hero on the site. */}
       <video
         className={`absolute inset-0 -z-20 size-full object-cover ${objectPosition} motion-reduce:hidden`}
         poster={poster}
@@ -168,15 +67,7 @@ const VideoHero = ({
         ))}
       </video>
 
-      {/* Reduced motion gets the poster and nothing else — same box, same
-          crop, no JavaScript and no layout shift.
-
-          `srcSet` here and NOT on the video's poster attribute. For these
-          users this still is the hero permanently, with no film coming to
-          replace it, so a 960px frame stretched across a 1440 or 2560 screen
-          is what they look at for as long as they are on the page. The video's
-          poster stays single-width because it is transient and because
-          `poster` takes one URL — see posterSrcSet in videoSources. */}
+      {/* Reduced-motion users keep the same poster/crop without a layout shift. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         className={`absolute inset-0 -z-20 hidden size-full object-cover ${objectPosition} motion-reduce:block`}
@@ -187,48 +78,43 @@ const VideoHero = ({
         aria-hidden
       />
 
-      {/* Legibility, and only that. Clear from the top through 45%, so the
-          upper frame is untouched picture; firms up under the copy. */}
+      {/* Vertical legibility gradient. It is intentionally darkest only where
+          the copy lives, leaving the upper film largely untouched. */}
       <div
         aria-hidden
-        className="from-primary-3/88 via-primary-3/30 absolute inset-0 -z-10 bg-linear-to-t via-45% to-transparent"
+        className="from-primary-3/92 via-primary-3/38 absolute inset-0 -z-10 bg-linear-to-t via-42% to-transparent"
       />
 
-      {/* ⚠ THE NAVBAR GROUND IS GONE, DELIBERATELY. There was a 112px wash
-          here (`from-primary-3/55`) to keep white links off bright footage.
-          It worked, and it also did the one thing its own comment said it must
-          not: it read as a bar across the top of the film. Marc's call is a
-          genuinely transparent bar over a hero.
+      {/* Home gets a very soft centred vignette rather than a rectangular wash.
+          This gives the title a stable visual ground as the laboratory footage
+          changes while keeping the edges of the film open and cinematic. */}
+      {isHomeHero && (
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10"
+          style={{
+            background:
+              'radial-gradient(ellipse at 50% 58%, rgba(28, 39, 73, 0.34) 0%, rgba(28, 39, 73, 0.16) 38%, rgba(28, 39, 73, 0) 72%)',
+          }}
+        />
+      )}
 
-          The legibility it bought was real — this clip is a laboratory scene
-          with white coats — so it is bought a different way now: a shadow on
-          the type itself, in `.eid-nav-over-hero` in _general.css. That
-          travels with the glyphs, so it costs the picture nothing between the
-          words and cannot read as a band, because there is no rectangle. */}
-
-      {/* THE LOCKUP. Mark, then headline at `mt-1.5` — Strauss's `row-gap:
-          5px`, and the measurement the composition turns on: their monogram is
-          not above the headline, it is part of it.
-
-          `blend={false}`, and this is the second time that call has been
-          re-made. `mix-blend-mode: overlay` is the point of HeroMark and it
-          works beautifully over consistently dark footage — but the mark sits
-          high in the frame, above where the legibility scrim starts, so on the
-          home clip it lands on a white lab coat. Overlay against a bright
-          ground turns the white star into a blue smudge, and it does it on
-          some frames of the loop and not others, which is worse than a
-          consistent result either way.
-
-          A background film cannot be relied on to be dark where a blended
-          element needs it to be. Solid white is correct on both clips. */}
-      {/* Symmetric, now that the navbar clearance is on the section. 56px a
-          side is half of what the old asymmetric pair spent, so no hero
-          changes height — they just stop sitting low in their own band. */}
-      <div className="relative z-10 w-full py-14">
+      <div
+        className={`relative z-10 w-full ${
+          isHomeHero ? 'py-12 sm:py-14 lg:-translate-y-1 lg:py-16' : 'py-14'
+        }`}
+      >
         <div className="container flex flex-col items-center text-center">
           <HeroMark blend={false} />
 
-          <HeroTitle title={title} className="mt-1.5 text-[clamp(1.9rem,4.4vw,3.5rem)]" />
+          <HeroTitle
+            title={title}
+            className={`mt-2 drop-shadow-[0_2px_18px_rgba(12,18,38,0.28)] ${
+              isHomeHero
+                ? 'max-w-[24ch] text-[clamp(2rem,4.6vw,3.75rem)]'
+                : 'text-[clamp(1.9rem,4.4vw,3.5rem)]'
+            }`}
+          />
 
           {desc && (
             <p className="mt-6 max-w-[64ch] text-[0.95rem] leading-relaxed text-pretty text-white/85 md:text-base">
@@ -236,7 +122,7 @@ const VideoHero = ({
             </p>
           )}
 
-          {scrollCue && <ScrollCue className="mt-9" />}
+          {scrollCue && <ScrollCue className="mt-8 opacity-80 sm:mt-9" />}
         </div>
       </div>
     </section>
