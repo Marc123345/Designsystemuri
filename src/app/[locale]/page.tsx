@@ -68,52 +68,43 @@ const hero = {
 }
 
 /**
- * FAQ — written for AI search and FAQPage rich results.
+ * FAQ — supplied by Marc on 16 September 2026.
  *
- * Two questions came out on Uri's pass, for the same commercial reason. The
- * first ("do you resell or manufacture") and the second ("where is the material
- * made") both answered by naming the synthetic ranges as made at partner
- * plants — which hands a buyer the idea of skipping EID and sourcing direct.
- * That framing is now gone from this page and from every other page on the
- * site; what remains is what EID does to the material and stands behind: the
- * specification, the processing, the coating, the grading and the QC pass.
- *
- * The two ISO/documentation questions were near-duplicates of each other —
- * "can you provide COAs, retention samples, ISO certificates and references"
- * and "are you ISO-registered, and do you have the documentation large
- * companies require" are the same question asked twice — so they are merged
- * into one answer that covers the whole document set.
- *
- * ⚠ Still needs Uri's sign-off before launch.
+ * Keep this copy aligned with the approved FAQ document. The same array powers
+ * both the visible accordion and FAQPage structured data below.
  */
 const faqs = [
   {
-    q: 'Where are you based, and what does EID do to the material?',
-    a: 'EID is based in London, England, at EID House, 12 St. Cross Street, EC1N 8UB, and has manufactured industrial diamond since 1970. Natural diamond grit, micron powder, rotary diamond and tool stones are manufactured in our own factory: raw material is crushed, shaped, graded and QC-passed here. Across the rest of the range — metal bond, resin bond, CBN, PCD, PCBN, CVD and MCD — the specification is ours, and the material is processed, coated, graded and inspected through our facility before it ships. All rough diamond is supplied through legitimate conflict-free sources under the Kimberley Process Certification Scheme.',
+    q: 'Can you customize products for us?',
+    a: 'Yes. Standard grades ship from stock, while custom specifications — including bespoke mesh/micron sizing, specific shape factors, custom CVD single crystal in all orientations — 100, 110, 111 — and specialized metallic PVD/electroless coatings — are made to order.',
   },
   {
-    q: 'Are you ISO-registered, and can you supply COAs, retention samples and references?',
-    a: 'Yes to all of it. EID’s quality management system is ISO 9001 certified, covering incoming raw material inspection, manufacturing, testing, packaging and delivery. A certificate of analysis is available per lot on request, and a retention sample is kept from every batch, so a question raised months later can be checked against the exact material that shipped. The document set a procurement or quality department normally asks for is available: ISO 9001 certificate, COA per lot, safety data sheets, technical datasheets, Kimberley Process compliance for natural rough, and lot-level traceability from incoming raw material to shipped lot. Customer references can be arranged where the customer has agreed to act as one — tell us your application and we will point you at the closest match. If your supplier-approval pack asks for something not on that list, send it over and we will complete it.',
-  },
-  {
-    q: 'Do you offer electroplated / electroplating diamonds?',
-    a: 'Yes, and several grades are specified for it. In the natural range, NS-100-P and the MB series are recommended for electroplated tools. In CBN, EBN A and EBN AA are used in electroplated single-layer bonds. We also etch crystal surfaces specifically for electroplating, which improves nickel-to-diamond clamping in micro-engineering applications — that is covered in the coated sections of the [metal bond](/products/metal-bond#coated) and [CBN](/products/cbn#coated) pages, and in the Polish, Etch & CRT datasheet.',
+    q: 'Do you offer diamond and CBN grades suitable for electroplated or vitrified tools?',
+    a: 'Yes. We engineer and supply Diamond and CBN grits specifically optimized for both electroplated and vitrified bond manufacturing.',
   },
   {
     q: 'Can I download product specifications as a PDF?',
-    a: 'Yes, and they are ungated: no form, no login, no email address. Eighteen technical datasheets covering the full range are published under [Resources](/resources/datasheets), each with grades, descriptions, size charts and coating options, and each product page links straight to its own sheet. Safety data sheets for natural, synthetic and CBN materials are published the same way under [MSDS](/resources/msds). If the exact specification you need is not on a published sheet, ask us and we will send it.',
+    a: 'Yes. All 18 technical datasheets and MSDS documents are completely ungated — no forms, logins, or email addresses required. You can download them directly from our Resources page or individual product pages. If you need a custom specification not listed, contact us and we will send it directly.',
   },
   {
-    q: 'What industries and applications do you serve?',
-    a: 'The material goes into your product. The main sectors are dental, semiconductor and advanced electronics, automotive and aerospace, tool and die, construction and stone, and optics. By operation, that means grinding, cutting, sawing and drilling; polishing and lapping; dressing and truing; and precision machining with PCD, PCBN, MCD and CVD single crystal. Tell us the material you are working and the finish you need and we will specify the grade.',
+    q: 'Are you ISO-registered, and can you supply COAs, retention samples, and references?',
+    a: 'Yes. EID’s quality management system is ISO 9001 certified, covering everything from raw material inspection to final delivery. We routinely provide full documentation packs for supplier approval, including: ISO 9001 Certification and full lot-level traceability; Certificates of Analysis (COAs) available per lot on request; retention samples kept from every batch to check against future quality queries; and Kimberley Process compliance for all natural rough diamonds.',
   },
   {
-    q: 'Can you customise products and do the finishing in-house?',
-    a: 'Yes. Standard grades ship from stock and custom specifications are made to order: custom mesh and micron sizing, shape factor to your requirement, and CVD single crystal grown to a specified orientation and face. Finishing is done in our own facility — electroless nickel and copper coating at 30%, 56%, 60% or any percentage you specify, metallic PVD coatings including Ti, TiC, TiN, TiCN, Si, Cu, Cr and Zr, surface polishing, etching for electroplating, and CRT crystal rounding for customised engineering applications.',
+    q: 'Do your raw diamond and CBN materials have a shelf life or specific storage requirements?',
+    a: 'No, our raw diamond and CBN materials do not degrade and have an indefinite shelf life when stored correctly. To maintain optimal purity and performance, we recommend storing the materials in their original sealed containers in a dry, climate-controlled environment to prevent moisture contamination or ambient oxidation.',
   },
   {
-    q: 'Can you supply customers who feed into large OEMs such as Boeing or Rolls-Royce?',
-    a: 'Yes — we supply tool makers whose tooling and components feed aerospace, automotive and energy programmes, and we are set up for the documentation those supply chains run on: ISO 9001, certificate of analysis per lot, retention samples, lot traceability from raw material to delivery, and safety data sheets. To be clear about what that does and does not mean: EID is approved as your supplier, not as a direct supplier to those OEMs, and any flow-down requirement in your own approval sits with you. Send us the requirement and we will tell you plainly whether we can meet it.',
+    q: 'What are your standard lead times, and do you ship internationally?',
+    a: 'Yes, we supply tool makers globally from our HQ in London (or from our Dublin facility, if EU exports are an advantage). Standard catalog grades ship directly from stock usually within 24 to 48 hours, while custom specifications, rounding, or specialized PVD/electroless coatings are made to order with lead times tailored to your project timeline.',
+  },
+  {
+    q: 'Do you offer consignment stock options?',
+    a: 'Yes, we provide tailored consignment inventory programs to support our partners’ supply chain security. However, these programs are restricted to high-volume enterprise accounts with stable, recurring production runs and are subject to minimum annual volume commitments.',
+  },
+  {
+    q: "Why aren't prices listed on your website, and what do you need to provide a quote?",
+    a: 'Pricing varies depending on your chosen material type, custom dimensions, or specialized requirements. To get a fast quotation, please contact us with your required product specifications, dimensions, and your target industry application.',
   },
 ]
 
