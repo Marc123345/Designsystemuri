@@ -1,71 +1,13 @@
-/* Uri September 2026 review refinements.
- * These are deliberately scoped to the exact sections he called out in the
- * review videos so the wider design system does not drift with them.
+/* Uri September 2026 review refinement.
+ * The page-specific hierarchy and FAQ layout now live in their components;
+ * this file only carries the one global header adjustment from the recording.
  */
-
 @media (min-width: 1024px) {
-  /* Uri: logo and desktop navigation should be "a little bit bigger". */
-  [data-note="navbar"] #navbar :where(a, button) {
+  [data-note="navbar"] #navbar :where(a, button, .hs-dropdown-toggle) {
     font-size: 1rem;
   }
 
   [data-note="navbar"] img[alt="EID Ltd"] {
     width: 11rem;
   }
-
-  /* Uri: APPLICATIONS is the section title; the explanatory sentence is the
-     supporting line, not the dominant headline. */
-  [data-note="applications"] .container > div:first-child > p {
-    color: var(--color-primary-3);
-    font-family: var(--font-heading);
-    font-size: 2.75rem;
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: -0.035em;
-    text-transform: none;
-  }
-
-  [data-note="applications"] .container > div:first-child > h2 {
-    margin-top: 0.75rem;
-    color: var(--color-default-600);
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 1.5;
-    letter-spacing: 0;
-  }
-
-  /* Uri explicitly asked for "some of the places" so the six cards do not
-     imply a closed list of industries. English is the review language; other
-     locales keep their translated copy until their translations are revised. */
-  html[lang="en"] [data-note="applications"] .container > div:first-child > h2 {
-    font-size: 0;
-  }
-
-  html[lang="en"] [data-note="applications"] .container > div:first-child > h2::after {
-    content: "Some of the places our diamond and CBN go to work.";
-    display: block;
-    font-size: 1rem;
-  }
-
-  /* Uri: the eight FAQs should not consume a whole screen in one vertical
-     stack. Keep the native <details> controls but show 1–4 and 5–8 side by side. */
-  [data-note="faq"] {
-    padding-block: 3rem;
-  }
-
-  [data-note="faq"] .container > div > div:last-child {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.75rem;
-    align-items: start;
-  }
-
-  [data-note="faq"] .container > div > div:last-child > details:nth-child(1) { grid-column: 1; grid-row: 1; }
-  [data-note="faq"] .container > div > div:last-child > details:nth-child(2) { grid-column: 1; grid-row: 2; }
-  [data-note="faq"] .container > div > div:last-child > details:nth-child(3) { grid-column: 1; grid-row: 3; }
-  [data-note="faq"] .container > div > div:last-child > details:nth-child(4) { grid-column: 1; grid-row: 4; }
-  [data-note="faq"] .container > div > div:last-child > details:nth-child(5) { grid-column: 2; grid-row: 1; }
-  [data-note="faq"] .container > div > div:last-child > details:nth-child(6) { grid-column: 2; grid-row: 2; }
-  [data-note="faq"] .container > div > div:last-child > details:nth-child(7) { grid-column: 2; grid-row: 3; }
-  [data-note="faq"] .container > div > div:last-child > details:nth-child(8) { grid-column: 2; grid-row: 4; }
 }
