@@ -1,17 +1,10 @@
-import ArcStory, { type ArcStoryItem } from '@/components/ArcStory'
 import CanvasField from '@/components/CanvasField'
 import ScrambleHeading from '@/components/ScrambleHeading'
 import ScrollReveal from '@/components/ScrollReveal'
-import Image from 'next/image'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
+import Image from 'next/image'
 import { useLocale } from 'next-intl'
-
-const VISION =
-  'To be the supplier a tool maker never has to think about. Diamond and CBN that arrive to the same specification every time, from one source across the full range, so the variable our customers are managing is their process rather than their material.'
-
-const MISSION =
-  'To manufacture, grade and quality-control superabrasives to a standard we can document rather than assert. Every batch is measured rather than sampled, every lot is traceable, and every grade is answered for by someone who works with the material, and the relationship is expected to outlast the order.'
 
 const ADVANTAGES = [
   {
@@ -22,59 +15,24 @@ const ADVANTAGES = [
   {
     n: '02',
     title: 'Global service',
-    body: 'Sales and technical support run from London, with customers on every continent.',
+    body: 'Sales and technical support run from London, with processing and logistics supporting toolmakers worldwide.',
   },
 ] as const
 
+const FACTS = [
+  { value: '1970', label: 'Manufacturing since' },
+  { value: '8', label: 'Product groups' },
+  { value: '100%', label: 'Batches tested' },
+] as const
+
+/**
+ * About should explain the company, not make the visitor operate another
+ * carousel. Uri's review repeatedly asks for less congestion and less scrolling,
+ * so the old six-slide story/vision/mission rail is replaced by three static,
+ * already-supported facts that can be read in one glance.
+ */
 const AboutMosaic = () => {
   const locale = useLocale() as Locale
-
-  const storyItems: ArcStoryItem[] = [
-    {
-      kicker: '01',
-      value: '55+',
-      title: t(locale, 'Years manufacturing'),
-      image: { src: '/eid/facility/sieve-stack-astm-e11.png', alt: '' },
-      tone: 'navy',
-      panel: 'overlay',
-    },
-    {
-      kicker: '02',
-      value: '8',
-      title: t(locale, 'Product groups'),
-      tone: 'blue',
-    },
-    {
-      kicker: '03',
-      value: '100%',
-      title: t(locale, 'Batches tested'),
-      image: {
-        src: '/eid/qc-lab.jpg',
-        alt: t(locale, 'A technician at an optical inspection system in the EID quality laboratory'),
-      },
-      tone: 'navy',
-      panel: 'overlay',
-    },
-    {
-      kicker: '04',
-      value: '80',
-      title: t(locale, 'Countries supplied'),
-      tone: 'navy',
-    },
-    {
-      kicker: '05',
-      title: t(locale, 'Our vision'),
-      body: t(locale, VISION),
-      tone: 'light',
-    },
-    {
-      kicker: '06',
-      title: t(locale, 'Our mission'),
-      body: t(locale, MISSION),
-      tone: 'light',
-    },
-  ]
-
   const introTitle = t(locale, 'One accountable source. Full range. Same specification.')
 
   return (
@@ -84,14 +42,13 @@ const AboutMosaic = () => {
       <div className="container">
         <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-12 xl:gap-16">
           <div className="lg:col-span-7">
-            <div className="eid-sticky-viewport eid-sticky-viewport--compact rounded-card relative aspect-[7/5] overflow-hidden lg:aspect-auto">
+            <div className="rounded-card relative aspect-[7/5] overflow-hidden">
               <Image
                 src="/eid/facility/hero-metrology-lab.png"
                 alt={t(locale, 'Two technicians at a measuring microscope in the EID metrology laboratory')}
                 fill
                 sizes="(min-width: 1024px) 58vw, 100vw"
                 className="object-cover"
-                priority={false}
               />
               <div aria-hidden className="absolute inset-0 bg-linear-to-t from-primary-3/48 via-primary-3/5 to-transparent" />
 
@@ -136,8 +93,13 @@ const AboutMosaic = () => {
           </div>
         </div>
 
-        <div className="mt-12 lg:mt-16">
-          <ArcStory items={storyItems} ariaLabel={t(locale, 'EID manufacturing, quality, reach, vision and mission')} cardHeight={440} />
+        <div className="border-default-200 mt-10 grid overflow-hidden rounded-card border bg-white sm:grid-cols-3 lg:mt-12">
+          {FACTS.map((fact, index) => (
+            <div key={fact.label} className={`p-5 text-center lg:p-6 ${index ? 'border-default-200 border-t sm:border-t-0 sm:border-s' : ''}`}>
+              <p className="text-primary text-[30px] leading-none font-bold tracking-[-0.04em] lg:text-[36px]">{fact.value}</p>
+              <p className="text-default-600 mt-2 font-mono text-[10px] tracking-[0.18em] uppercase">{t(locale, fact.label)}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
