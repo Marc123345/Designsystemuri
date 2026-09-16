@@ -55,7 +55,7 @@ const AboutMosaic = () => {
         <div className="mx-auto max-w-5xl text-center">
           <p className="text-primary font-mono text-[10px] tracking-[0.22em] uppercase">{t(locale, 'About EID')}</p>
           <h1 className="text-primary-3 mx-auto mt-4 max-w-[24ch] text-[34px] leading-[1.02] font-bold tracking-[-0.04em] text-balance md:text-[44px] lg:text-[52px]">
-            {t(locale, 'With its headquarters in London, England, and worldwide marketing partners, EID has established a global reputation for quality, consistency and superior service.')}
+            {t(locale, 'Headquartered in London, EID is trusted worldwide for quality, consistency and service.')}
           </h1>
         </div>
 
