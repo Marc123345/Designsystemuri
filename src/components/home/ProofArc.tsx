@@ -52,13 +52,25 @@ const ProofArc = ({ items, aspect = 'portrait' }: ProofArcProps) => {
   const desktopHeight = aspect === 'landscape' ? 245 : 275
 
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    // Do not capture immediately: pointerdown bubbles from the carousel's own
+    // buttons and links, and eager capture can steal their pointerup/click.
     dragRef.current = { startX: event.clientX, hasMoved: false, isDragging: true }
-    event.currentTarget.setPointerCapture?.(event.pointerId)
   }
 
   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     if (!dragRef.current.isDragging) return
-    if (Math.abs(event.clientX - dragRef.current.startX) > 12) dragRef.current.hasMoved = true
+
+    if (Math.abs(event.clientX - dragRef.current.startX) > 12) {
+      if (!dragRef.current.hasMoved) {
+        dragRef.current.hasMoved = true
+        // Capture only once this is an actual drag, so clicks on arrows, dots
+        // and cards remain clicks while drag gestures still stay attached to
+        // the stage if the pointer leaves its bounds.
+        if (!event.currentTarget.hasPointerCapture?.(event.pointerId)) {
+          event.currentTarget.setPointerCapture?.(event.pointerId)
+        }
+      }
+    }
   }
 
   const finishDrag = (event: React.PointerEvent<HTMLDivElement>) => {
