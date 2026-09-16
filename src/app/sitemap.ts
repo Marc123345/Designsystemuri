@@ -9,14 +9,6 @@ import type { MetadataRoute } from 'next'
  * surface. Imported by robots.ts and by the hreflang helper (which stamps the
  * <canonical> and hreflang tags on every page), so setting it correctly here
  * fixes canonicals, alternates, robots, and this sitemap in one move.
- *
- * Resolved in priority order:
- *  1. NEXT_PUBLIC_SITE_URL — set to https://www.eid-ltd.com when the custom
- * domain is attached, and the entire site follows.
- *  2. VERCEL_PROJECT_PRODUCTION_URL — the project's production domain on
- *     Vercel. Stable across preview builds, so a preview still emits the
- * production canonical rather than its own deployment URL.
- *  3. The current production domain — for local dev / non-Vercel builds.
  */
 export const SITE_ORIGIN = (process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'https://designsystemuri.vercel.app')).replace(/\/+$/, '')
 
@@ -27,21 +19,12 @@ const localeUrl = (locale: Locale, path: string) => {
 
 type Meta = { priority: number; changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency'] }
 
-// Every real, indexable route, locale-agnostic, with its SEO weighting. The
-// per-slug product and application pages are generated from the data so the
-// sitemap can never drift out of sync with the routes that actually exist.
-//
-// Deliberately absent: /products and /applications. Both index pages were
-// removed and both 301 to their home-page section (/#products, /#applications),
-// so listing either would advertise a redirect. The per-slug pages under them
-// are still here and are the real destinations.
 const paths: Record<string, Meta> = {
   '/': { priority: 1.0, changeFrequency: 'weekly' },
   ...Object.fromEntries(products.map((p) => [`/products/${p.slug}`, { priority: 0.8, changeFrequency: 'monthly' } as Meta])),
   ...Object.fromEntries(applications.map((a) => [`/applications/${a.slug}`, { priority: 0.8, changeFrequency: 'monthly' } as Meta])),
-  // Articles. Generated from the same array the pages are, so a post added to
-  // lib/blog.ts is in the sitemap by the next build and cannot be forgotten.
   ...Object.fromEntries(posts.map((b) => [`/resources/blog/${b.slug}`, { priority: 0.6, changeFrequency: 'yearly' } as Meta])),
+  '/surface-enhancements': { priority: 0.7, changeFrequency: 'monthly' },
   '/quality': { priority: 0.7, changeFrequency: 'monthly' },
   '/about': { priority: 0.6, changeFrequency: 'monthly' },
   '/contact': { priority: 0.7, changeFrequency: 'monthly' },
@@ -54,8 +37,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date()
 
   return Object.entries(paths).flatMap(([path, meta]) => {
-    // Each URL lists every language alternate plus x-default (Google's
-    // recommended reciprocal form), matching the <head> hreflang tags.
     const languages: Record<string, string> = {
       'x-default': localeUrl(routing.defaultLocale, path),
     }
