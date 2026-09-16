@@ -1,9 +1,9 @@
-import QualityMosaic from '@/components/quality/QualityMosaic'
-import TheControls from '@/components/quality/TheControls'
-import VideoHero from '@/components/VideoHero'
+import { PageHero } from '@/components/sections'
+import { ArrowButton } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
+import Image from 'next/image'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
@@ -16,80 +16,127 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   }
 }
 
-/**
- * /quality, rebuilt on the About page's layout.
- *
- * Marc's instruction: the About layout exactly, three sections, this page's
- * own pictures and words. So the sequence is About's, one section shorter:
- *
- *   VideoHero        film, type over it, 48svh          ← About's hero, same props
- *   TheLaboratory    ← TheCompany       statement + 16:10 media
- *   QualityMosaic    ← AboutMosaic      figures over photographs + two statements
- *   TheControls      ← CoreValues       four PhotoCards, 7/5 - 5/7
- *
- * ── What went, and where it went ────────────────────────────────────────────
- *
- * Nothing was dropped. Three sections meant folding four things into three:
- *
- *  · The hero's 60-word lede → TheLaboratory's opening paragraph. About's hero
- *    carries a headline alone, and matching that is the point of the exercise.
- *    The paragraph was a statement about the laboratory sitting in a hero, and
- *    it reads better as the first thing under one.
- *  · The compliance strip (FEPA / ISO 6106 / ANSI) → the second paragraph of
- *    TheLaboratory. A standards list is a sentence, not a section.
- *  · Its ISO 9001 badge → the mosaic's solid tile, at 64px instead of 12px.
- *  · The four controls → TheControls, unchanged in content.
- *
- * ── Where About's fourth section would have been ────────────────────────────
- *
- * About closes on GlobeSection, then a white spacer before the footer. Both
- * are absent here and that is the same decision twice, not a deviation: the
- * globe is about reach rather than quality and would be the fourth section,
- * and the spacer exists on About only because GlobeSection is a dark
- * full-bleed band whose 24px corners need some page ground under them to read
- * as corners. TheControls ends on white, so there is nothing to separate.
- *
- * ── The closing CTA is still gone ───────────────────────────────────────────
- *
- * "Test our consistency" was removed on Marc's earlier call and has not come
- * back. It was in Uri's written spec (§4), so if it returns it returns with his
- * wording. Nothing is orphaned: /contact is the header button on every page,
- * it is in the footer, and the floating WhatsApp control sits over this page.
- */
+const controls = [
+  {
+    n: '01',
+    title: 'Size & Morphology: Mesh',
+    points: [
+      ['Precision size separation', 'Mechanical test sieves separate and sort diamond grit into uniform sizes.'],
+      ['Morphological sorting', 'Automated shape-sorting tables separate the different crystal shapes — from sharp, fast-cutting grains to tough, blocky crystals.'],
+      ['Visual microscope check', 'Microscope checks run throughout production to monitor batch appearance, colour consistency, crystal structure and general uniformity.'],
+      ['Image Pro validation', 'Final batches are processed through image analysis software, documenting size distribution and shape factor together.'],
+    ],
+    image: '/eid/qc-sieve.jpg',
+    alt: 'A technician operating a stack of laboratory test sieves beside a tray of graded diamond grit',
+  },
+  {
+    n: '02',
+    title: 'Size & Morphology: Micron',
+    points: [
+      ['Advanced particle separation', 'Sedimentation and centrifugation classify micron and sub-micron sizes.'],
+      ['Malvern PSD reporting', 'Every lot is measured on Malvern particle size distribution equipment, generating a distribution curve.'],
+      ['SEM verification', 'Scanning electron microscopy inspects final grain morphology and confirms the absence of oversized or undersized particles.'],
+    ],
+    image: '/eid/qc-micron-sem.jpg',
+    alt: 'Scanning electron micrograph of micron diamond powder with the particle size distribution visible',
+  },
+  {
+    n: '03',
+    title: 'Advanced Chemical Cleaning',
+    points: [
+      ['Targeted impurity removal', 'Chemical washing strips surface impurities, processing dust and metallic residues where high purity is required.'],
+      ['Surface purity control', 'The treatment clears crystal surfaces, allowing better bond adhesion during tool manufacturing.'],
+      ['Visual purity inspection', 'Optical checks under the microscope confirm the cleaned material is consistent.'],
+    ],
+    image: '/eid/surface-enhancements.jpg',
+    alt: 'Detailed view of treated diamond surface morphology',
+  },
+  {
+    n: '04',
+    title: 'Toughness (TI / TTI)',
+    note: 'Available on request for advanced applications',
+    points: [
+      ['Targeted mechanical evaluation', 'Standard size and shape controls meet almost every everyday application. Room-temperature Toughness Index milling tests are available for specialised high-impact projects.'],
+      ['Thermal stability testing', 'For extreme-heat environments, optional Thermal Toughness Index testing measures how well crystals hold up during tool manufacturing.'],
+    ],
+    image: '/eid/quality/01-automated-hardness-test-station.png',
+    alt: 'Automated toughness testing station with a guarded sample stage',
+  },
+] as const
+
 const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
   const { locale } = await params
   setRequestLocale(locale)
 
   return (
     <>
-      {/* About's hero configuration exactly — 48svh rather than the home
-          page's 60, and no supporting line, because the heading carries the
-          page and the paragraph that used to sit here now opens TheLaboratory.
+      <PageHero
+        eyebrow={t(locale, 'Quality control')}
+        title={t(locale, 'Our Quality Control & Laboratory Standards')}
+        desc={t(
+          locale,
+          'At E.I.D, every single batch of diamond and CBN powder undergoes strict laboratory validation to guarantee total product consistency, lot after lot.'
+        )}
+        crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Quality') }]}
+      />
 
-          ── The film ──
-          The laboratory footage, which is the home page's clip rather than
-          About's wireframe diamond. With two clips in the library one of them
-          repeats somewhere, and this is the pairing that makes sense: this is
-          the page that documents the laboratory that footage was shot in.
-          Swap it the moment Uri supplies a third clip.
+      <div className="border-default-200 border-b">
+        <div className="container flex flex-wrap items-center gap-x-10 gap-y-3 py-5">
+          <span className="text-default-600 text-sm">
+            {t(locale, 'All laboratory testing is compliant with international FEPA, ISO 6106 and ANSI standards.')}
+          </span>
+          <span className="border-default-300 text-default-900 ms-auto inline-flex items-center gap-2 rounded-control border px-3 py-1.5 text-xs tracking-[0.18em] uppercase">
+            <span className="bg-primary size-2" aria-hidden />
+            {t(locale, 'ISO 9001:2015 certified')}
+          </span>
+        </div>
+      </div>
 
-          `objectPosition` is VideoHero's default upward bias rather than
-          About's `object-center` — the same distinction the home page already
-          makes, because this composition has its subject above the midline and
-          About's wireframe is centred by construction. */}
-      <VideoHero title={t(locale, 'Our Quality Control & Laboratory Standards')} video="https://ik.imagekit.io/qcvroy8xpd/EID%20VIDEO%20HERO.mp4" minHeight="min-h-[48svh]" />
+      <section data-note="qc-controls" className="py-12 lg:py-16">
+        <div className="container">
+          <div className="grid gap-5 lg:grid-cols-2">
+            {controls.map((control) => (
+              <article key={control.n} className="rounded-card border-default-200 overflow-hidden border bg-white">
+                <div className="relative aspect-[16/7] overflow-hidden bg-default-100">
+                  <Image src={control.image} alt={t(locale, control.alt)} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
+                  <span aria-hidden className="from-primary-3/65 absolute inset-0 bg-linear-to-t via-transparent to-transparent" />
+                  <span className="absolute bottom-4 left-4 font-mono text-[10px] tracking-[0.2em] text-white/85 uppercase">{control.n}</span>
+                </div>
 
-      <QualityMosaic />
-      <TheControls />
-      {/* ── CERTIFICATION: REMOVED ─────────────────────────────────────
-          Marc's call. This was the registration table — standard, certificate
-          number, issuer, accreditation, registered entity, approval dates,
-          certified scope — beside a scan of the document.
+                <div className="p-6 lg:p-7">
+                  <h2 className="text-[21px] font-bold tracking-[-0.02em] text-default-900 lg:text-[24px]">{t(locale, control.title)}</h2>
+                  {'note' in control && control.note && <p className="text-default-500 mt-2 text-sm italic">{t(locale, control.note)}</p>}
 
-          The certificate is still reachable: the 9001 tile in QualityMosaic
-          now links straight to the scan rather than to this section's anchor.
-          The registration details are in components/quality/TheCertificate.tsx
-          in this file's history. */}
+                  <dl className="mt-5 grid gap-4 sm:grid-cols-2">
+                    {control.points.map(([label, body]) => (
+                      <div key={label} className="border-default-200 border-t pt-3.5">
+                        <dt className="text-[0.92rem] font-semibold text-default-900">{t(locale, label)}</dt>
+                        <dd className="text-default-600 mt-1.5 text-[0.9rem] leading-relaxed">{t(locale, body)}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-primary-3 py-12 text-white lg:py-14">
+        <div className="container">
+          <div className="grid items-center gap-7 lg:grid-cols-12 lg:gap-12">
+            <div className="lg:col-span-8">
+              <h2 className="text-[26px] font-bold md:text-[30px]">{t(locale, 'Test our consistency')}</h2>
+              <p className="mt-3 max-w-[62ch] text-[15px] leading-relaxed text-white/72">
+                {t(locale, 'Contact our technical team to arrange a sample batch tailored to your exact specifications.')}
+              </p>
+            </div>
+            <div className="lg:col-span-4 lg:justify-self-end">
+              <ArrowButton href="/contact" label={t(locale, 'Contact us / request a sample')} />
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   )
 }
