@@ -77,7 +77,6 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
           locale,
           'At E.I.D, every single batch of diamond and CBN powder undergoes strict laboratory validation to guarantee total product consistency, lot after lot.'
         )}
-        crumbs={[{ label: t(locale, 'Home'), href: '/' }, { label: t(locale, 'Quality') }]}
       />
 
       <div className="border-default-200 border-b">
