@@ -38,7 +38,7 @@ const Footer = () => {
   }
 
   return (
-    <footer data-note="footer" id="footer" className="rounded-t-card relative overflow-hidden">
+    <footer data-note="footer" id="footer" className="relative overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-2">
         <div className="relative isolate overflow-hidden px-4 py-14 md:px-7.5 lg:px-12.5 lg:py-20">
           <Backdrop className="-z-10" />
