@@ -107,13 +107,23 @@ const ArcStory = ({ items, ariaLabel, cardHeight = 470 }: ArcStoryProps) => {
   }
 
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    // A pointerdown from a nested arrow/card bubbles here. Capturing at this
+    // point steals the later pointerup/click from that control, so only record
+    // the possible drag until the pointer actually moves horizontally.
     dragRef.current = { startX: event.clientX, hasMoved: false, isDragging: true }
-    event.currentTarget.setPointerCapture?.(event.pointerId)
   }
 
   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     if (!dragRef.current.isDragging) return
-    if (Math.abs(event.clientX - dragRef.current.startX) > 12) dragRef.current.hasMoved = true
+
+    if (Math.abs(event.clientX - dragRef.current.startX) > 12) {
+      if (!dragRef.current.hasMoved) {
+        dragRef.current.hasMoved = true
+        if (!event.currentTarget.hasPointerCapture?.(event.pointerId)) {
+          event.currentTarget.setPointerCapture?.(event.pointerId)
+        }
+      }
+    }
   }
 
   const finishDrag = (event: React.PointerEvent<HTMLDivElement>) => {
