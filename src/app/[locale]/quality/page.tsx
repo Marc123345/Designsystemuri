@@ -1,4 +1,3 @@
-import { PageHero } from '@/components/sections'
 import { ArrowButton } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
@@ -22,9 +21,9 @@ const controls = [
     title: 'Size & Morphology: Mesh',
     points: [
       ['Precision size separation', 'Mechanical test sieves separate and sort diamond grit into uniform sizes.'],
-      ['Morphological sorting', 'Automated shape-sorting tables separate the different crystal shapes — from sharp, fast-cutting grains to tough, blocky crystals.'],
-      ['Visual microscope check', 'Microscope checks run throughout production to monitor batch appearance, colour consistency, crystal structure and general uniformity.'],
-      ['Image Pro validation', 'Final batches are processed through image analysis software, documenting size distribution and shape factor together.'],
+      ['Morphological sorting', 'Automated shape-sorting tables separate different crystal shapes.'],
+      ['Visual microscope check', 'Microscope checks monitor batch appearance, colour consistency, crystal structure and uniformity.'],
+      ['Image Pro validation', 'Final batches are documented for size distribution and shape factor.'],
     ],
     image: '/eid/qc-sieve.jpg',
     alt: 'A technician operating a stack of laboratory test sieves beside a tray of graded diamond grit',
@@ -34,19 +33,19 @@ const controls = [
     title: 'Size & Morphology: Micron',
     points: [
       ['Advanced particle separation', 'Sedimentation and centrifugation classify micron and sub-micron sizes.'],
-      ['Malvern PSD reporting', 'Every lot is measured on Malvern particle size distribution equipment, generating a distribution curve.'],
-      ['SEM verification', 'Scanning electron microscopy inspects final grain morphology and confirms the absence of oversized or undersized particles.'],
+      ['Malvern PSD reporting', 'Every lot is measured on particle size distribution equipment.'],
+      ['SEM verification', 'Scanning electron microscopy verifies final grain morphology and size consistency.'],
     ],
     image: '/eid/qc-micron-sem.jpg',
-    alt: 'Scanning electron micrograph of micron diamond powder with the particle size distribution visible',
+    alt: 'Scanning electron micrograph of micron diamond powder',
   },
   {
     n: '03',
     title: 'Advanced Chemical Cleaning',
     points: [
-      ['Targeted impurity removal', 'Chemical washing strips surface impurities, processing dust and metallic residues where high purity is required.'],
-      ['Surface purity control', 'The treatment clears crystal surfaces, allowing better bond adhesion during tool manufacturing.'],
-      ['Visual purity inspection', 'Optical checks under the microscope confirm the cleaned material is consistent.'],
+      ['Targeted impurity removal', 'Chemical washing removes surface impurities, processing dust and metallic residues where high purity is required.'],
+      ['Surface purity control', 'Treatment clears crystal surfaces to support bond adhesion during tool manufacturing.'],
+      ['Visual purity inspection', 'Optical checks confirm cleaned material is consistent.'],
     ],
     image: '/eid/surface-enhancements.jpg',
     alt: 'Detailed view of treated diamond surface morphology',
@@ -56,8 +55,8 @@ const controls = [
     title: 'Toughness (TI / TTI)',
     note: 'Available on request for advanced applications',
     points: [
-      ['Targeted mechanical evaluation', 'Standard size and shape controls meet almost every everyday application. Room-temperature Toughness Index milling tests are available for specialised high-impact projects.'],
-      ['Thermal stability testing', 'For extreme-heat environments, optional Thermal Toughness Index testing measures how well crystals hold up during tool manufacturing.'],
+      ['Targeted mechanical evaluation', 'Room-temperature Toughness Index milling tests are available for specialised high-impact projects.'],
+      ['Thermal stability testing', 'Optional Thermal Toughness Index testing measures crystal stability for extreme-heat environments.'],
     ],
     image: '/eid/quality/01-automated-hardness-test-station.png',
     alt: 'Automated toughness testing station with a guarded sample stage',
@@ -70,47 +69,94 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
 
   return (
     <>
-      <PageHero
-        eyebrow={t(locale, 'Quality control')}
-        title={t(locale, 'Our Quality Control & Laboratory Standards')}
-        desc={t(
-          locale,
-          'At E.I.D, every single batch of diamond and CBN powder undergoes strict laboratory validation to guarantee total product consistency, lot after lot.'
-        )}
-      />
+      <section data-note="quality-hero" className="bg-primary-3 rounded-b-card relative isolate flex min-h-[330px] items-end overflow-hidden text-white lg:min-h-[360px]">
+        <Image
+          src="/eid/facility/crystal-microscopy.png"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="-z-20 object-cover object-center"
+        />
+        <div aria-hidden className="bg-primary-3/52 absolute inset-0 -z-10" />
+        <div aria-hidden className="from-default-950/88 via-default-950/30 absolute inset-0 -z-10 bg-linear-to-t to-transparent" />
 
-      <div className="border-default-200 border-b">
-        <div className="container flex flex-wrap items-center gap-x-10 gap-y-3 py-5">
-          <span className="text-default-600 text-sm">
-            {t(locale, 'All laboratory testing is compliant with international FEPA, ISO 6106 and ANSI standards.')}
-          </span>
-          <span className="border-default-300 text-default-900 ms-auto inline-flex items-center gap-2 rounded-control border px-3 py-1.5 text-xs tracking-[0.18em] uppercase">
-            <span className="bg-primary size-2" aria-hidden />
-            {t(locale, 'ISO 9001:2015 certified')}
-          </span>
+        <div className="container pb-9 pt-28 lg:pb-10 lg:pt-32">
+          <div className="mx-auto max-w-4xl text-center">
+            <p className="font-mono text-[10px] tracking-[0.22em] text-white/70 uppercase">{t(locale, 'Quality control')}</p>
+            <h1 className="mt-3 text-[32px] leading-[1.02] font-bold tracking-[-0.04em] text-white md:text-[42px] lg:text-[48px]">
+              {t(locale, 'Our Quality Control & Laboratory Standards')}
+            </h1>
+            <p className="mx-auto mt-4 max-w-[70ch] text-[15px] leading-relaxed text-white/82 lg:text-base">
+              {t(locale, 'At E.I.D, every single batch of diamond and CBN powder undergoes strict laboratory validation to guarantee total product consistency, lot after lot.')}
+            </p>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <section data-note="qc-controls" className="py-12 lg:py-16">
+      <section data-note="quality-proof" className="border-default-200 border-b bg-default-50 py-7 lg:py-8">
         <div className="container">
-          <div className="grid gap-5 lg:grid-cols-2">
+          <div className="grid gap-4 lg:grid-cols-3">
+            <article className="rounded-card border-default-200 bg-white p-5 border lg:p-6">
+              <div className="flex items-center justify-between gap-4">
+                <h2 className="text-primary-3 text-[20px] font-semibold">{t(locale, 'The Laboratory')}</h2>
+                <span className="border-default-300 text-default-700 rounded-control inline-flex items-center gap-2 border px-2.5 py-1 text-[9px] tracking-[0.15em] uppercase">
+                  <span className="bg-primary size-1.5" aria-hidden />
+                  {t(locale, 'ISO 9001:2015')}
+                </span>
+              </div>
+              <p className="text-default-600 mt-3 text-[14px] leading-relaxed">
+                {t(locale, 'QC is built into every stage, from raw material selection through grading, cleaning, coating and final inspection. Laboratory testing follows FEPA, ISO 6106 and ANSI standards.')}
+              </p>
+            </article>
+
+            <article className="rounded-card border-default-200 bg-white p-5 border lg:p-6">
+              <h2 className="text-primary-3 text-[20px] font-semibold">{t(locale, 'Measured, not sampled')}</h2>
+              <p className="text-default-600 mt-3 text-[14px] leading-relaxed">
+                {t(locale, 'Every batch is measured for the controls that define its grade, so repeat orders can be checked against a documented specification rather than a spot-check.')}
+              </p>
+            </article>
+
+            <article className="rounded-card border-default-200 bg-white p-5 border lg:p-6">
+              <h2 className="text-primary-3 text-[20px] font-semibold">{t(locale, 'Documented, not asserted')}</h2>
+              <p className="text-default-600 mt-3 text-[14px] leading-relaxed">
+                {t(locale, 'Lot traceability, certificates of analysis on request and retained batch samples give buyers a record to return to when a grade needs answering for.')}
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section data-note="qc-controls" className="py-8 lg:py-10">
+        <div className="container">
+          <div className="mb-6 flex items-end justify-between gap-6">
+            <div>
+              <p className="text-primary font-mono text-[10px] tracking-[0.22em] uppercase">{t(locale, 'The four controls')}</p>
+              <h2 className="text-primary-3 mt-2 text-[28px] leading-tight font-bold tracking-[-0.03em] md:text-[34px]">{t(locale, 'What buyers need to see.')}</h2>
+            </div>
+            <p className="text-default-500 hidden max-w-[38ch] text-right text-[13px] leading-relaxed lg:block">
+              {t(locale, 'Mesh, micron, chemical cleaning and optional toughness testing are separate controls — not steps in a sequence.')}
+            </p>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-2">
             {controls.map((control) => (
               <article key={control.n} className="rounded-card border-default-200 overflow-hidden border bg-white">
-                <div className="relative aspect-[16/7] overflow-hidden bg-default-100">
+                <div className="relative aspect-[16/5] min-h-[150px] overflow-hidden bg-default-100">
                   <Image src={control.image} alt={t(locale, control.alt)} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
-                  <span aria-hidden className="from-primary-3/65 absolute inset-0 bg-linear-to-t via-transparent to-transparent" />
-                  <span className="absolute bottom-4 left-4 font-mono text-[10px] tracking-[0.2em] text-white/85 uppercase">{control.n}</span>
+                  <span aria-hidden className="from-primary-3/70 absolute inset-0 bg-linear-to-t via-transparent to-transparent" />
+                  <span className="absolute bottom-3 left-4 font-mono text-[9px] tracking-[0.2em] text-white/85 uppercase">{control.n}</span>
                 </div>
 
-                <div className="p-6 lg:p-7">
-                  <h2 className="text-[21px] font-bold tracking-[-0.02em] text-default-900 lg:text-[24px]">{t(locale, control.title)}</h2>
-                  {'note' in control && control.note && <p className="text-default-500 mt-2 text-sm italic">{t(locale, control.note)}</p>}
+                <div className="p-5 lg:p-6">
+                  <h3 className="text-[20px] font-bold tracking-[-0.02em] text-default-900 lg:text-[22px]">{t(locale, control.title)}</h3>
+                  {'note' in control && control.note ? <p className="text-default-500 mt-1.5 text-[12px] italic">{t(locale, control.note)}</p> : null}
 
-                  <dl className="mt-5 grid gap-4 sm:grid-cols-2">
+                  <dl className="mt-4 grid gap-x-5 gap-y-3 sm:grid-cols-2">
                     {control.points.map(([label, body]) => (
-                      <div key={label} className="border-default-200 border-t pt-3.5">
-                        <dt className="text-[0.92rem] font-semibold text-default-900">{t(locale, label)}</dt>
-                        <dd className="text-default-600 mt-1.5 text-[0.9rem] leading-relaxed">{t(locale, body)}</dd>
+                      <div key={label} className="border-default-200 border-t pt-3">
+                        <dt className="text-[13px] font-semibold text-default-900">{t(locale, label)}</dt>
+                        <dd className="text-default-600 mt-1 text-[12.5px] leading-relaxed">{t(locale, body)}</dd>
                       </div>
                     ))}
                   </dl>
@@ -121,12 +167,12 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
         </div>
       </section>
 
-      <section className="bg-primary-3 py-12 text-white lg:py-14">
+      <section className="bg-primary-3 py-9 text-white lg:py-10">
         <div className="container">
-          <div className="grid items-center gap-7 lg:grid-cols-12 lg:gap-12">
+          <div className="grid items-center gap-6 lg:grid-cols-12 lg:gap-10">
             <div className="lg:col-span-8">
-              <h2 className="text-[26px] font-bold md:text-[30px]">{t(locale, 'Test our consistency')}</h2>
-              <p className="mt-3 max-w-[62ch] text-[15px] leading-relaxed text-white/72">
+              <h2 className="text-[25px] font-bold text-white md:text-[28px]">{t(locale, 'Test our consistency')}</h2>
+              <p className="mt-2 max-w-[62ch] text-[14px] leading-relaxed text-white/72">
                 {t(locale, 'Contact our technical team to arrange a sample batch tailored to your exact specifications.')}
               </p>
             </div>
