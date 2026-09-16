@@ -1,46 +1,18 @@
 import createNextIntlPlugin from "next-intl/plugin";
 import type { NextConfig } from "next";
 
-// The message catalog is intentionally empty (content lives in lib/i18n-content),
-// but the plugin still has to know where the request config sits under src/.
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
-  // Next advertises itself in an X-Powered-By header by default. It tells an
-  // attacker which framework to look up known issues for and tells a visitor
-  // nothing.
   poweredByHeader: false,
-  /**
-   * Security headers. The site was sending none at all.
-   *
-   * These are the ones that are safe to set without knowing every asset the
-   * site will ever load. Deliberately no Content-Security-Policy: this page
-   * loads Jotform's embed script from their CDN and frames form.jotform.com,
-   * and a CSP written from a list of what is loaded today is a policy that
-   * silently breaks the quote form the first time Jotform changes a hostname.
-   * That is worth doing properly, with report-only and a reporting endpoint
-   * first, rather than guessed at here.
-   *
-   * HSTS is not set either — Vercel already sends it on production domains, and
-   * a second one from the app would only be a chance to disagree.
-   */
   headers: async () => [
     {
       source: '/:path*',
       headers: [
-        // Stop the browser second-guessing a declared Content-Type.
         { key: 'X-Content-Type-Options', value: 'nosniff' },
-        // Send the full URL within the site and only the origin off-site, so
-        // internal paths do not leak to third parties through the referer.
         { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-        // Nothing here is meant to be framed by anyone else.
         { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
-        // Powerful features this site has no use for, denied to the page and to
-        // everything it frames. Camera is the exception and is scoped rather
-        // than denied: the Jotform embed may carry a photo or upload widget, and
-        // a blanket camera=() here would override the iframe's own allow
-        // attribute and break it.
         {
           key: 'Permissions-Policy',
           value: 'geolocation=(), microphone=(), payment=(), usb=(), magnetometer=(), camera=(self "https://form.jotform.com")',
@@ -49,10 +21,8 @@ const nextConfig: NextConfig = {
     },
   ],
   images: {
-    // Prefer the official imagery already published on EID's current Wix site
-    // for the catalogue and London HQ. Keeping the CDN explicit here means
-    // Next can still optimise those source images instead of falling back to a
-    // raw <img> request.
+    // Still required for the London HQ photograph used on Contact. Product
+    // imagery itself is back on the local AI catalogue set.
     remotePatterns: [
       {
         protocol: 'https',
@@ -60,35 +30,48 @@ const nextConfig: NextConfig = {
         pathname: '/media/**',
       },
     ],
-    // Next serves WebP by default and stops there. AVIF is listed first so it
-    // is preferred where the browser accepts it — typically 20-30% smaller than
-    // WebP at equivalent quality, and every browser that does not support it
-    // falls through to the WebP entry, so there is no fallback to write.
     formats: ['image/avif', 'image/webp'],
   },
-  // Vol 03 removed the standalone products page: the mega-menu exposes the
-  // eight product pages and "Products" goes to the range section on the
-  // homepage. /products was already deployed, so it redirects rather than 404s.
-  // The locale form is listed separately because these run before the
-  // next-intl middleware, which is what would otherwise resolve the prefix.
   redirects: async () => [
     { source: "/products", destination: "/#products", permanent: true },
     { source: "/:locale(de|es|it|ja|fr|ko|zh)/products", destination: "/:locale#products", permanent: true },
-    // /applications went the same way as /products, and for the same reason:
-    // the home page already lists all six hubs, so an index page that listed
-    // them again was a click between the reader and the hub they wanted. Both
-    // were deployed, so both redirect rather than 404.
     { source: "/applications", destination: "/#applications", permanent: true },
     { source: "/:locale(de|es|it|ja|fr|ko|zh)/applications", destination: "/:locale#applications", permanent: true },
-    // Mesh QC and Micron QC are gone at Marc's request. They were deployed and
-    // linked from the footer on every page, so they redirect rather than 404 —
-    // same reasoning as the two above. /quality is the destination because it
-    // is the page that still makes the QC argument; sending them to the
-    // homepage would drop a reader who asked a specific question.
     { source: "/mesh-qc", destination: "/quality", permanent: true },
     { source: "/:locale(de|es|it|ja|fr|ko|zh)/mesh-qc", destination: "/:locale/quality", permanent: true },
     { source: "/micron-qc", destination: "/quality", permanent: true },
     { source: "/:locale(de|es|it|ja|fr|ko|zh)/micron-qc", destination: "/:locale/quality", permanent: true },
+
+    // Legacy eid-ltd.com catalogue -> redesigned eight-page catalogue.
+    // Mesh products.
+    { source: "/resin-bond-mesh", destination: "/products/resin-bond#mesh", permanent: true },
+    { source: "/metal-bond-mesh", destination: "/products/metal-bond#mesh", permanent: true },
+    { source: "/natural-mesh", destination: "/products/natural-grit-powder#grit", permanent: true },
+    { source: "/ebn-mesh", destination: "/products/cbn#mesh", permanent: true },
+
+    // Micron products.
+    { source: "/resin-bond-micron", destination: "/products/resin-bond#micron", permanent: true },
+    { source: "/metal-bond-micron", destination: "/products/metal-bond#micron", permanent: true },
+    { source: "/natural-micron", destination: "/products/natural-grit-powder#micron", permanent: true },
+    { source: "/polycrystalline-micron", destination: "/products/polycrystalline-powder#polycrystalline-powder", permanent: true },
+    { source: "/ebn-micron", destination: "/products/cbn#micron", permanent: true },
+
+    // CVD / monocrystalline / polycrystalline products.
+    { source: "/cvd-single-crystal", destination: "/products/single-crystal#cvd", permanent: true },
+    { source: "/cvd-polycrystalline", destination: "/products/polycrystalline-diamond#dressing-logs", permanent: true },
+    { source: "/mcd", destination: "/products/single-crystal#mcd", permanent: true },
+    { source: "/pcd", destination: "/products/polycrystalline-diamond#pcd-blanks", permanent: true },
+    { source: "/pcbn", destination: "/products/cbn#pcbn", permanent: true },
+
+    // Natural speciality products and surface-enhancement services.
+    { source: "/natural-rotarydiamond", destination: "/products/natural-grit-powder#rotary", permanent: true },
+    { source: "/toolstones", destination: "/products/tool-stones#tool-stones", permanent: true },
+    { source: "/surface-enhancement-coatings", destination: "/surface-enhancements#coatings", permanent: true },
+    { source: "/surface-enhancement-polish-etch", destination: "/surface-enhancements#polish-etch", permanent: true },
+
+    // Wix duplicate pages should consolidate into the canonical destinations.
+    { source: "/copy-of-cvd-single-crystal", destination: "/products/single-crystal#cvd", permanent: true },
+    { source: "/copy-of-home", destination: "/", permanent: true },
   ],
 };
 
