@@ -4,6 +4,7 @@ import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
 import { site } from '@/lib/site'
+import Image from 'next/image'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
@@ -35,13 +36,27 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
               {t(locale, 'Tell us the product or application and our team will route your enquiry to the right person.')}
             </p>
 
-            <div className="mt-6 border-t border-white/10 pt-5">
+            {/* The actual EID House photograph from the current eid-ltd.com
+                About page. Uri specifically asked for the London office image
+                here rather than another decorative globe/map. */}
+            <div className="rounded-control relative mt-5 aspect-[16/7] overflow-hidden border border-white/10 bg-white/5">
+              <Image
+                src="https://static.wixstatic.com/media/10a9d7_aab23325442a47e8a1280bc0685b4e24~mv2.jpg"
+                alt={t(locale, 'EID House, London headquarters in Hatton Garden')}
+                fill
+                sizes="(min-width: 1024px) 34vw, 100vw"
+                className="object-cover"
+              />
+              <span aria-hidden className="from-primary-3/40 absolute inset-0 bg-linear-to-t to-transparent" />
+            </div>
+
+            <div className="mt-5 border-t border-white/10 pt-4">
               <p className="font-mono text-[9px] tracking-[0.18em] text-white/45 uppercase">{t(locale, 'Global Headquarters')}</p>
               <p className="mt-1.5 text-[15px] font-semibold text-white">{t(locale, 'London, United Kingdom')}</p>
               <p className="mt-1 text-[12.5px] leading-relaxed text-white/58">{site.address}</p>
             </div>
 
-            <div className="mt-5 grid grid-cols-3 gap-2 border-t border-white/10 pt-5">
+            <div className="mt-4 grid grid-cols-3 gap-2 border-t border-white/10 pt-4">
               <div>
                 <p className="text-[12px] font-semibold text-white">{t(locale, 'Middle East')}</p>
                 <p className="mt-1 text-[10px] leading-snug text-white/48">{t(locale, 'Primary processing')}</p>
