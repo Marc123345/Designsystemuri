@@ -9,66 +9,36 @@
  * is how a site ends up with a photographed grid on the homepage and a grid of
  * grey placeholders one click later, which reads as broken rather than as
  * pending.
- *
- * A missing key is not an error: `ImageCard` falls back to the labelled
- * Wireframe, so a group added tomorrow degrades to the placeholder rather than
- * to an empty tile.
  */
 
 /**
- * Product group imagery.
+ * Product group imagery from EID's current public website.
  *
- * These are the eight cards on the home range grid, on /applications, and in
- * the related-products carousel on each application page — which is why the
- * map lives here rather than in any one of them.
- *
- * ⚠ Read this before treating them as evidence. They are studio renders of the
- * material types, not photographs of EID's own output, so they belong in the
- * catalogue where the job is to identify a group at a glance, and nowhere that
- * argues a claim. The proof panel on the home page deliberately does not draw
- * from here: it points at /eid/surface-enhancements.jpg and
- * /eid/qc-batch-to-batch.jpg, both electron micrographs carrying their own
- * scale bars.
- *
- * What these replaced, and why it mattered:
- *  - The previous set was 512x279. The cards crop to 4:5 portrait, so roughly
- *    43% of the width survived and was then scaled up about 3x. These are
- *    1264x848 and 1376x768, which is 2.5x the width before the crop.
- *  - The previous resin bond frame carried an overlaid spec panel reading
- *    "SKU: RBDA-450 / Grit: 120/140 / Bond Type: R Standard / Concentration:
- *    100". Those were not EID part numbers, on the one site whose whole
- *    argument is that its numbers are real. It is gone.
+ * Marc asked that the redesigned catalogue use the real product imagery already
+ * published on eid-ltd.com rather than generated stand-ins. These URLs point to
+ * the source media behind the current Wix site, while Next still optimises them
+ * through the remotePatterns entry in next.config.ts.
  */
 const PRODUCT_IMAGES: Record<string, string> = {
-  'natural-grit-powder': '/eid/products/natural-grit-powder.png',
-  'metal-bond': '/eid/products/metal-bond.png',
-  'resin-bond': '/eid/products/resin-bond.png',
-  cbn: '/eid/products/cbn.png',
-  /* ⚠ A lab-bench alternative for these two was generated and REJECTED — the
-     files are still in the folder as *-lab-bench-alt.jpg if anyone wants to
-     look. Both were 16:9 frames of the material sitting on a stainless bench
-     in a wide blue laboratory, and they failed for the reason the brief in
-     image-specs.ts gives: these render as a 4:5 portrait tile, so a landscape
-     frame with its subject in the bottom third crops to two thirds empty bench
-     with the material tucked behind the title scrim. Six of the eight cards
-     are material filling the frame; those two read as photographs of a room.
-     Any replacement has to be shot square-ish with the material large. */
-  'single-crystal': '/eid/products/single-crystal.png',
-  'polycrystalline-diamond': '/eid/products/polycrystalline-diamond.png',
-  'tool-stones': '/eid/products/tool-stones.png',
-  'polycrystalline-powder': '/eid/products/polycrystalline-powder.png',
+  'natural-grit-powder': 'https://static.wixstatic.com/media/10a9d7_1d7ca04453714f74b6acaa20142941a0~mv2.png',
+  'metal-bond': 'https://static.wixstatic.com/media/10a9d7_f7b89c273cf349aea074ba0084fcd833~mv2.jpg',
+  'resin-bond': 'https://static.wixstatic.com/media/10a9d7_194945f4691b416eb8e528e4680a8d65~mv2.jpg',
+  cbn: 'https://static.wixstatic.com/media/10a9d7_56f688a006ab4c8191f890ece2373b18~mv2.jpg',
+  // The current CVD-single page is brochure-led; the MCD product photo on the
+  // same live catalogue is the cleanest real image for the combined CVD & MCD
+  // group used on the redesigned site.
+  'single-crystal': 'https://static.wixstatic.com/media/43b3e7_f5c1d5cd16d74131a6f5ff74802c1dac~mv2.jpg',
+  // PCD is one half of this combined CVD & PCD family and gives the card a
+  // recognisable product form rather than another generic grit photograph.
+  'polycrystalline-diamond': 'https://static.wixstatic.com/media/10a9d7_5cdb96b4f1b34ea9b902a75e726cf273~mv2.png',
+  'tool-stones': 'https://static.wixstatic.com/media/10a9d7_57bda81f7bdf4d9ea17e218ce93f6b24~mv2.jpg',
+  'polycrystalline-powder': 'https://static.wixstatic.com/media/10a9d7_55e960ff79334e40ba45055da6b71364~mv2.jpg',
 }
 
 /**
- * ⚠ ILLUSTRATIVE, and still not evidence. These replaced the openly-licensed
- * stock that stood here — a set generated to the briefs in image-specs.ts, one
- * per hub, each showing the tool or the process that hub's material goes into
- * rather than a generic factory. The file names are unchanged, which is what
- * made the swap a file replace under /public/eid/home/ with no code change;
- * keep that property for whatever replaces them next.
- *
- * Nothing here depicts EID's own premises, staff or customers, and none of it
- * belongs anywhere that argues a claim. Same rule as PRODUCT_IMAGES above.
+ * Application imagery stays on the redesigned photography set. Uri's request
+ * in this review was specifically about replacing the PRODUCT imagery with the
+ * real catalogue shots from the current EID website.
  */
 const APPLICATION_IMAGES: Record<string, string> = {
   dental: '/eid/home/app-dental.jpg',
