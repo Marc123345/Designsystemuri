@@ -1,6 +1,6 @@
 import AboutMosaic from '@/components/about/AboutMosaic'
 import CoreValues from '@/components/about/CoreValues'
-import GlobeSection from '@/components/GlobeSection'
+import SupplyReach from '@/components/about/SupplyReach'
 import VideoHero from '@/components/VideoHero'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
@@ -17,11 +17,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   }
 }
 
-/**
- * Uri's direction for About is to keep it short and company-focused: who EID
- * is, its evidence, its values, and its real production/logistics footprint.
- * QC process detail stays on /quality rather than being repeated here.
- */
 const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
   const { locale } = await params
   setRequestLocale(locale)
@@ -31,23 +26,13 @@ const AboutPage = async ({ params }: { params: Promise<{ locale: Locale }> }) =>
       <VideoHero
         title={t(locale, 'About EID — Industrial Diamond Manufacturer')}
         video="https://ik.imagekit.io/qcvroy8xpd/EID%20NEW.mp4"
-        minHeight="min-h-[48svh]"
+        minHeight="min-h-[42svh]"
         objectPosition="object-center"
       />
 
       <AboutMosaic />
       <CoreValues />
-
-      <GlobeSection
-        eyebrow={t(locale, 'Global logistics reach')}
-        title={t(locale, 'Production infrastructure. Global logistics reach.')}
-        desc={t(
-          locale,
-          'Global headquarters in London, a primary processing plant in the Middle East Hub, a secondary processing facility in the United States, local technical representation across 7 major industrial countries, and established secure trade routes to toolmakers worldwide.'
-        )}
-      />
-
-      <div aria-hidden className="h-12 lg:h-16" />
+      <SupplyReach />
     </>
   )
 }
