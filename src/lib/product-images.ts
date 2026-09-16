@@ -1,47 +1,38 @@
 import type { StaticImageData } from 'next/image'
 
-/**
- * Product imagery from EID's current public website.
- *
- * Marc asked that the redesign use the real catalogue photography already on
- * eid-ltd.com rather than generated stand-ins. The public Wix source files are
- * registered here as StaticImageData-shaped objects so the existing product
- * page components keep their width/height metadata and blur placeholder
- * behaviour while Next optimises the remote images normally.
- */
-const transparentBlur =
-  'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=='
-
-const remoteImage = (src: string, width: number, height: number): StaticImageData => ({
-  src,
-  width,
-  height,
-  blurDataURL: transparentBlur,
-})
-
-const naturalToolStones = remoteImage('https://static.wixstatic.com/media/10a9d7_57bda81f7bdf4d9ea17e218ce93f6b24~mv2.jpg', 980, 293)
-const naturalDiamond = remoteImage('https://static.wixstatic.com/media/10a9d7_1d7ca04453714f74b6acaa20142941a0~mv2.png', 673, 449)
-const metalBond = remoteImage('https://static.wixstatic.com/media/10a9d7_f7b89c273cf349aea074ba0084fcd833~mv2.jpg', 621, 414)
-const resinBond = remoteImage('https://static.wixstatic.com/media/10a9d7_194945f4691b416eb8e528e4680a8d65~mv2.jpg', 785, 414)
-const cbn = remoteImage('https://static.wixstatic.com/media/10a9d7_56f688a006ab4c8191f890ece2373b18~mv2.jpg', 693, 462)
-const pcd = remoteImage('https://static.wixstatic.com/media/10a9d7_5cdb96b4f1b34ea9b902a75e726cf273~mv2.png', 709, 726)
-const pcbn = remoteImage('https://static.wixstatic.com/media/10a9d7_e24d51869f1c4441b293c5c06ba90f29~mv2.png', 303, 191)
-const cvdPoly = remoteImage('https://static.wixstatic.com/media/10a9d7_fafbabff68b04daf92ea5eff5d91ab59~mv2.jpg', 334, 449)
-const polyMicron = remoteImage('https://static.wixstatic.com/media/10a9d7_55e960ff79334e40ba45055da6b71364~mv2.jpg', 749, 376)
-const monoCrystal = remoteImage('https://static.wixstatic.com/media/43b3e7_f5c1d5cd16d74131a6f5ff74802c1dac~mv2.jpg', 387, 218)
+import naturalToolStones from '@/assets/images/products/photo/natural-tool-stones-hero.png'
+import naturalDiamond from '@/assets/images/products/photo/natural-diamond-grit-powder-hero.png'
+import metalBondSaw from '@/assets/images/products/photo/metal-bond-diamond-grit-hero.png'
+import metalBondWheel from '@/assets/images/products/photo/metal-bond-diamond-crystal-closeup-alt.png'
+import resinBondMesh from '@/assets/images/products/photo/resin-bond-diamond-uncoated-nickel-coated-hero.png'
+import resinBondMicron from '@/assets/images/products/photo/resin-bond-diamond-uncoated-nickel-coated-alt-square.png'
+import cbnMesh from '@/assets/images/products/photo/cbn-amber-and-black-grit-hero.png'
+import cbnBlack from '@/assets/images/products/photo/cbn-amber-and-black-grit-alt-warm.png'
+import pcd from '@/assets/images/products/photo/pcd-blanks-discs-inserts-hero.png'
+import formedBlanks from '@/assets/images/products/photo/pcd-blanks-discs-segments-alt.png'
+import polyMicron from '@/assets/images/products/photo/polycrystalline-diamond-powder-hero.png'
+import singleCrystal from '@/assets/images/products/photo/single-crystal-diamond-plates-hero.png'
+import mcdPlates from '@/assets/images/products/photo/single-crystal-diamond-plates-alt-tray.png'
 
 /**
- * Master switch for product photography.
+ * AI catalogue photography, mapped to the source EID product taxonomy.
  *
- * The catalogue reuses a family photograph where the current site does not
- * publish a separate shot for every individual grade. That is preferable to
- * inventing grade-specific imagery: the source photograph is EID's own and the
- * copy/specification carries the grade distinction.
+ * Legacy source pages:
+ * - natural-mesh / natural-micron / natural-rotarydiamond
+ * - metal-bond-mesh / metal-bond-micron
+ * - resin-bond-mesh / resin-bond-micron
+ * - ebn-mesh / ebn-micron / pcbn
+ * - cvd-single-crystal / mcd
+ * - pcd / cvd-polycrystalline
+ * - polycrystalline-micron / toolstones
+ *
+ * The redesigned site consolidates those legacy URLs into eight product pages,
+ * so this registry maps section/grade keys rather than route names.
  */
 export const SHOW_PHOTOS = true
 
 export const productImages: Record<string, StaticImageData> = {
-  // Natural tool stones / rotary products.
+  // NATURAL TOOL STONES + NATURAL ROTARY DIAMOND.
   'toolstone-1': naturalToolStones,
   'toolstone-2': naturalToolStones,
   'toolstone-3': naturalToolStones,
@@ -65,41 +56,40 @@ export const productImages: Record<string, StaticImageData> = {
   rd90: naturalToolStones,
   'congo-rd': naturalToolStones,
 
-  // Natural diamond grit / micron.
+  // NATURAL MESH + NATURAL MICRON.
+  // Keep natural material visually separate from the synthetic metal-bond set.
+  'ns-100-p': naturalDiamond,
+  'mb-100-p': naturalDiamond,
   'mb1um-2-4': naturalDiamond,
   'mb1um-12-22': naturalDiamond,
   'mb1um-30-40': naturalDiamond,
-  'ns-100-p': naturalDiamond,
-  'mb-100-p': naturalDiamond,
 
-  // Metal bond synthetic diamond.
-  'esn-770': metalBond,
-  'eda-2395': metalBond,
-  'metal-bond-micron': metalBond,
+  // METAL BOND MESH + MICRON.
+  'esn-770': metalBondSaw,
+  'eda-2395': metalBondWheel,
+  'metal-bond-micron': metalBondWheel,
 
-  // Resin bond and coated material.
-  'resin-bond-mesh': resinBond,
-  'nickel-coated': resinBond,
-  'erd-um': resinBond,
+  // RESIN BOND MESH + MICRON + COATED MATERIAL.
+  'resin-bond-mesh': resinBondMesh,
+  'nickel-coated': resinBondMesh,
+  'erd-um': resinBondMicron,
 
-  // CBN.
-  'ebn-aa': cbn,
-  'cbn-a-micron': cbn,
-  'cbn-b-micron': cbn,
+  // CBN MESH + MICRON.
+  'ebn-aa': cbnMesh,
+  'cbn-a-micron': cbnMesh,
+  'cbn-b-micron': cbnBlack,
 
-  // Polycrystalline cutting forms.
+  // PCD + PCBN + CVD POLYCRYSTALLINE FORMS.
   pcd,
-  pcbn,
-  'cvd-polycrystalline': cvdPoly,
+  pcbn: formedBlanks,
+  'cvd-polycrystalline': formedBlanks,
 
-  // Polycrystalline micron powder.
+  // POLYCRYSTALLINE MICRON POWDER.
   'poly-micron': polyMicron,
 
-  // The live CVD single-crystal page is brochure-led. EID's live MCD product
-  // photograph is therefore used for the combined single-crystal family until
-  // a separate current-site CVD still is supplied.
-  'cvd-single-crystal': monoCrystal,
-  mcd: monoCrystal,
+  // SINGLE-CRYSTAL CVD + MCD.
+  'cvd-single-crystal': singleCrystal,
+  mcd: mcdPlates,
 }
 
 export const getProductImage = (key?: string): StaticImageData | undefined =>
