@@ -8,6 +8,8 @@ import Image from 'next/image'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
+const AGENT_COUNTRIES = ['Germany', 'Italy', 'Japan', 'South Korea', 'Switzerland', 'Ireland', 'Israel', 'Brazil', 'China', 'Taiwan', 'South Africa', 'India', 'Poland'] as const
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params
   return {
@@ -36,9 +38,6 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
               {t(locale, 'Tell us the product or application and our team will route your enquiry to the right person.')}
             </p>
 
-            {/* The actual EID House photograph from the current eid-ltd.com
-                About page. Uri specifically asked for the London office image
-                here rather than another decorative globe/map. */}
             <div className="rounded-control relative mt-5 aspect-[16/7] overflow-hidden border border-white/10 bg-white/5">
               <Image
                 src="https://static.wixstatic.com/media/10a9d7_aab23325442a47e8a1280bc0685b4e24~mv2.jpg"
@@ -56,19 +55,25 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
               <p className="mt-1 text-[12.5px] leading-relaxed text-white/58">{site.address}</p>
             </div>
 
-            <div className="mt-4 grid grid-cols-3 gap-2 border-t border-white/10 pt-4">
+            <div className="mt-4 grid grid-cols-2 gap-3 border-t border-white/10 pt-4">
               <div>
                 <p className="text-[12px] font-semibold text-white">{t(locale, 'Middle East')}</p>
                 <p className="mt-1 text-[10px] leading-snug text-white/48">{t(locale, 'Primary processing')}</p>
               </div>
               <div className="border-s border-white/10 ps-3">
-                <p className="text-[12px] font-semibold text-white">{t(locale, 'United States')}</p>
+                <p className="text-[12px] font-semibold text-white">{t(locale, 'Boca Raton, Florida, USA')}</p>
                 <p className="mt-1 text-[10px] leading-snug text-white/48">{t(locale, 'Secondary processing')}</p>
               </div>
-              <div className="border-s border-white/10 ps-3">
-                <p className="text-[12px] font-semibold text-white">{t(locale, 'Agent network')}</p>
-                <p className="mt-1 text-[10px] leading-snug text-white/48">{t(locale, '7 major industrial countries')}</p>
+            </div>
+
+            <div className="mt-4 border-t border-white/10 pt-4">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-[12px] font-semibold text-white">{t(locale, 'Local agent network')}</p>
+                <span className="font-mono text-[9px] tracking-[0.16em] text-white/45 uppercase">13 {t(locale, 'countries')}</span>
               </div>
+              <p className="mt-2 text-[10.5px] leading-relaxed text-white/58">
+                {AGENT_COUNTRIES.map((country) => t(locale, country)).join(' · ')}
+              </p>
             </div>
           </div>
 
