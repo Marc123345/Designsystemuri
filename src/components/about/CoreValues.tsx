@@ -1,33 +1,28 @@
-import EvidencePanel from '@/components/EvidencePanel'
-import PhotoCard from '@/components/PhotoCard'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
+import { Icon } from '@iconify/react'
 import { useLocale } from 'next-intl'
 
 const VALUES = [
   {
     name: 'Innovation',
     body: 'New coatings, tighter classifications and crystal orientations shaped around tool-maker requirements.',
-    image: '/eid/facility/crystal-microscopy.png',
-    alt: 'Diamond crystals under the microscope during morphology inspection',
+    icon: 'tabler:bulb',
   },
   {
     name: 'Family',
     body: 'A long-standing team with direct access to the people who work with the material.',
-    image: '/eid/facility/diamond-grading-loupe.png',
-    alt: 'A grader examining diamond grit through a loupe',
+    icon: 'tabler:users-group',
   },
   {
     name: 'Excellence',
     body: 'ISO 9001, lot traceability, certificates of analysis and retained batch samples.',
-    image: '/eid/qc-samples.jpg',
-    alt: 'A laboratory shelf of retention sample jars, one kept from every batch',
+    icon: 'tabler:award',
   },
   {
     name: 'Precision',
     body: 'Measured and graded so repeat orders arrive to the same specification.',
-    image: '/eid/qc-inspection.jpg',
-    alt: 'An optical measurement system with a diamond crystal magnified on screen and its dimensions read out alongside',
+    icon: 'tabler:focus-2',
   },
 ] as const
 
@@ -35,30 +30,29 @@ const CoreValues = () => {
   const locale = useLocale() as Locale
 
   return (
-    <section data-note="core-values" className="py-8 lg:py-10">
+    <section data-note="core-values" className="border-default-200 border-y bg-white py-12 lg:py-16">
       <div className="container">
-        <EvidencePanel className="px-5 py-6 sm:px-7 sm:py-7 lg:px-8 lg:py-7">
-          <div className="flex flex-col gap-5">
-            <div className="text-center">
-              <h2 className="text-[28px] leading-none font-bold tracking-[-0.035em] text-white md:text-[34px]">{t(locale, 'Our core values')}</h2>
-            </div>
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="text-primary font-mono text-[10px] tracking-[0.22em] uppercase">{t(locale, 'Our core values')}</p>
+          <h2 className="text-primary-3 mt-3 text-[28px] leading-tight font-bold tracking-[-0.035em] md:text-[36px]">
+            {t(locale, 'Driving technological excellence to deliver superior products')}
+          </h2>
+        </div>
 
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {VALUES.map((value) => (
-                <PhotoCard
-                  key={value.name}
-                  className="ring-1 ring-white/70 shadow-[0_18px_55px_-34px_rgba(0,0,0,0.65)]"
-                  minHeight="min-h-[210px] lg:min-h-[220px]"
-                  weight="heavy"
-                  title={t(locale, value.name)}
-                  body={t(locale, value.body)}
-                  image={value.image}
-                  alt={t(locale, value.alt)}
-                />
-              ))}
-            </div>
-          </div>
-        </EvidencePanel>
+        <div className="border-default-200 mt-10 grid border-t sm:grid-cols-2 lg:grid-cols-4">
+          {VALUES.map((value, index) => (
+            <article
+              key={value.name}
+              className={`border-default-200 px-5 py-8 text-center lg:px-7 lg:py-9 ${index % 2 === 1 ? 'sm:border-s' : ''} ${index > 1 ? 'sm:border-t lg:border-t-0' : ''} ${index > 0 ? 'lg:border-s' : ''}`}
+            >
+              <div className="bg-primary/8 text-primary mx-auto flex size-14 items-center justify-center rounded-full">
+                <Icon icon={value.icon} className="size-7" aria-hidden />
+              </div>
+              <h3 className="text-primary-3 mt-5 text-[18px] font-semibold tracking-[-0.02em]">{t(locale, value.name)}</h3>
+              <p className="text-default-600 mx-auto mt-3 max-w-[28ch] text-[13.5px] leading-relaxed">{t(locale, value.body)}</p>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   )
