@@ -618,13 +618,7 @@ export const productCatalogue: Product[] = [
   /* =============== 7 · POLYCRYSTALLINE DIAMOND (CVD & PCD) =============== */
   {
     slug: 'polycrystalline-diamond',
-    // Marc: "just PCD". The old label read "Polycrystalline Diamond (CVD &
-    // PCD)", which put CVD in two product names at once — the other being
-    // "Single Crystal Diamond (CVD & MCD)" — and CVD dressing logs are the
-    // minority of what this group sells. `h1`, `metaTitle` and `metaDesc` still
-    // carry CVD, so the page and the search result say it; the nav and card
-    // label do not.
-    name: 'PCD',
+    name: 'Polycrystalline Diamond (CVD & PCD)',
     family: 'Polycrystalline Diamond (CVD & PCD)',
     h1: 'Polycrystalline Diamond — PCD Blanks & CVD Dressing Logs',
     metaTitle: 'CVD Polycrystalline Diamond & PCD Blanks | EID',
@@ -727,10 +721,7 @@ export const productCatalogue: Product[] = [
   /* ================== 8 · POLYCRYSTALLINE DIAMOND POWDER ================== */
   {
     slug: 'polycrystalline-powder',
-    // Marc: "just polycrystalline". Sits beside PCD above, so the pair reads
-    // Polycrystalline / PCD rather than two labels that both open
-    // "Polycrystalline Diamond…". The h1 keeps the full name.
-    name: 'Polycrystalline',
+    name: 'Polycrystalline Diamond Powder',
     family: 'Polycrystalline Diamond Powder',
     h1: 'Polycrystalline Diamond Micron Powder',
     metaTitle: 'Polycrystalline Diamond Powder | Micron Polishing Grades | EID',
