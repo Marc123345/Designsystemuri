@@ -6,13 +6,10 @@ import { useLocale } from 'next-intl'
 const PRODUCTION = [
   ['Global Headquarters', 'London, United Kingdom'],
   ['Primary Processing Plant', 'Middle East Hub'],
-  ['Secondary Processing Facility', 'United States'],
+  ['Secondary Processing Facility', 'Boca Raton, Florida, USA'],
 ] as const
 
-const LOGISTICS = [
-  ['Local Agent Network', 'On-the-ground technical representatives spanning 7 major industrial countries.'],
-  ['Unlimited Global Fulfillment', 'Established, secure trade routes to toolmakers anywhere in the world.'],
-] as const
+const AGENT_COUNTRIES = ['Germany', 'Italy', 'Japan', 'South Korea', 'Switzerland', 'Ireland', 'Israel', 'Brazil', 'China', 'Taiwan', 'South Africa', 'India', 'Poland'] as const
 
 /** Uri's supplied replacement for the globe: two clear columns, all visible. */
 const SupplyReach = () => {
@@ -45,14 +42,28 @@ const SupplyReach = () => {
               </h2>
               <p className="mt-2 text-[13px] font-mono tracking-[0.16em] text-white/50 uppercase">{t(locale, 'Supply Chain & Market Access')}</p>
 
-              <dl className="mt-6 grid gap-5">
-                {LOGISTICS.map(([label, value]) => (
-                  <div key={label} className="border-t border-white/10 pt-4 first:border-t-0 first:pt-0">
-                    <dt className="text-[15px] font-semibold text-white">{t(locale, label)}</dt>
-                    <dd className="mt-1 text-[14px] leading-relaxed text-white/68">{t(locale, value)}</dd>
+              <div className="mt-6">
+                <div>
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <h3 className="text-[15px] font-semibold text-white">{t(locale, 'Local Agent Network')}</h3>
+                    <span className="font-mono text-[10px] tracking-[0.16em] text-white/48 uppercase">13 {t(locale, 'countries')}</span>
                   </div>
-                ))}
-              </dl>
+                  <p className="mt-1 text-[13px] leading-relaxed text-white/68">{t(locale, 'On-the-ground technical representatives in:')}</p>
+                  <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-3">
+                    {AGENT_COUNTRIES.map((country) => (
+                      <div key={country} className="flex items-center gap-2 text-[12px] text-white/78">
+                        <span className="bg-primary-1 size-1.5 shrink-0" aria-hidden />
+                        <span>{t(locale, country)}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mt-6 border-t border-white/10 pt-5">
+                  <h3 className="text-[15px] font-semibold text-white">{t(locale, 'Unlimited Global Fulfillment')}</h3>
+                  <p className="mt-1 text-[14px] leading-relaxed text-white/68">{t(locale, 'Established, secure trade routes to toolmakers anywhere in the world.')}</p>
+                </div>
+              </div>
 
               <div className="mt-7">
                 <ArrowButton href="/contact" label={t(locale, 'Talk to us about supply')} variant="primary" />
