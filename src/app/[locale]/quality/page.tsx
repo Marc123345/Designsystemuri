@@ -96,32 +96,32 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
 
       <section data-note="quality-proof" className="border-default-200 border-b bg-default-50 py-7 lg:py-8">
         <div className="container">
-          <div className="grid gap-4 lg:grid-cols-3">
-            <article className="rounded-card border-default-200 bg-white p-5 border lg:p-6">
-              <div className="flex items-center justify-between gap-4">
-                <h2 className="text-primary-3 text-[20px] font-semibold">{t(locale, 'The Laboratory')}</h2>
-                <span className="border-default-300 text-default-700 rounded-control inline-flex items-center gap-2 border px-2.5 py-1 text-[9px] tracking-[0.15em] uppercase">
-                  <span className="bg-primary size-1.5" aria-hidden />
-                  {t(locale, 'ISO 9001:2015')}
-                </span>
-              </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-[repeat(3,minmax(0,1fr))_160px]">
+            <article className="rounded-card border-default-200 border bg-white p-5 lg:p-6">
+              <h2 className="text-primary-3 text-[20px] font-semibold">{t(locale, 'The Laboratory')}</h2>
               <p className="text-default-600 mt-3 text-[14px] leading-relaxed">
                 {t(locale, 'QC is built into every stage, from raw material selection through grading, cleaning, coating and final inspection. Laboratory testing follows FEPA, ISO 6106 and ANSI standards.')}
               </p>
             </article>
 
-            <article className="rounded-card border-default-200 bg-white p-5 border lg:p-6">
+            <article className="rounded-card border-default-200 border bg-white p-5 lg:p-6">
               <h2 className="text-primary-3 text-[20px] font-semibold">{t(locale, 'Measured, not sampled')}</h2>
               <p className="text-default-600 mt-3 text-[14px] leading-relaxed">
                 {t(locale, 'Every batch is measured for the controls that define its grade, so repeat orders can be checked against a documented specification rather than a spot-check.')}
               </p>
             </article>
 
-            <article className="rounded-card border-default-200 bg-white p-5 border lg:p-6">
+            <article className="rounded-card border-default-200 border bg-white p-5 lg:p-6">
               <h2 className="text-primary-3 text-[20px] font-semibold">{t(locale, 'Documented, not asserted')}</h2>
               <p className="text-default-600 mt-3 text-[14px] leading-relaxed">
                 {t(locale, 'Lot traceability, certificates of analysis on request and retained batch samples give buyers a record to return to when a grade needs answering for.')}
               </p>
+            </article>
+
+            <article className="bg-primary rounded-card flex min-h-[132px] flex-col items-center justify-center p-5 text-center text-white sm:min-h-[150px] lg:min-h-0">
+              <span className="font-mono text-[10px] tracking-[0.22em] text-white/65 uppercase">ISO</span>
+              <strong className="mt-2 text-[19px] leading-none tracking-[-0.03em] text-white">9001:2015</strong>
+              <span className="mt-2 text-[10px] font-semibold tracking-[0.14em] text-white/82 uppercase">{t(locale, 'Certified')}</span>
             </article>
           </div>
         </div>
