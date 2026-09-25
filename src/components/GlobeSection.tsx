@@ -19,14 +19,14 @@ const PRODUCTION = [
   },
   {
     label: 'Secondary Processing Facility',
-    value: 'United States',
+    value: 'Boca Raton, Florida, USA',
   },
 ] as const
 
 const LOGISTICS = [
   {
     label: 'Local Agent Network',
-    value: 'On-the-ground technical representatives spanning 7 major industrial countries.',
+    value: 'Local technical representatives in Germany, Italy, Japan, South Korea, Switzerland, Ireland, Israel, Brazil, China, Taiwan, South Africa, India and Poland.',
   },
   {
     label: 'Unlimited Global Fulfillment',
