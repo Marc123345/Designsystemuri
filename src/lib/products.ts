@@ -69,7 +69,7 @@ export type Product = {
 // forms within a product, not separate pages, but they do get their own
 // sections and spec tables on the bond and CBN pages. Coatings are attribute
 // sections on those pages, never a standalone page or a nav entry.
-export const PRODUCT_FAMILIES = ['Natural Diamond Grit & Powder', 'CBN', 'Single Crystal Diamond (CVD & MCD)', 'Natural Tool Stones', 'Metal Bond Diamond', 'Resin Bond Diamond', 'Polycrystalline Diamond (CVD & PCD)', 'Polycrystalline Diamond Powder'] as const
+export const PRODUCT_FAMILIES = ['Natural Diamond Grit & Powder', 'CBN', 'Single Crystal Diamond (CVD & MCD)', 'Natural Tool Stones', 'Metal Bond Diamond', 'Resin Bond Diamond', 'Polycrystalline Diamond (CVD&PCD)', 'Polycrystalline Diamond powder'] as const
 
 // Mega-menu reading order: 2-2-2-2 grid, four columns of two pages each.
 export const MEGA_MENU_COLUMNS: string[][] = [
@@ -153,7 +153,7 @@ export const productCatalogue: Product[] = [
       },
       {
         title: 'Step up in finish',
-        links: [{ label: 'Polycrystalline Diamond Powder', href: '/products/polycrystalline-powder' }],
+        links: [{ label: 'Polycrystalline Diamond powder', href: '/products/polycrystalline-powder' }],
       },
     ],
     crossApplications: ['grinding-cutting-sawing-drilling', 'polishing-lapping', 'semiconductor-electronics'],
@@ -618,9 +618,9 @@ export const productCatalogue: Product[] = [
   /* =============== 7 · POLYCRYSTALLINE DIAMOND (CVD & PCD) =============== */
   {
     slug: 'polycrystalline-diamond',
-    name: 'Polycrystalline Diamond (CVD & PCD)',
-    family: 'Polycrystalline Diamond (CVD & PCD)',
-    h1: 'Polycrystalline Diamond — PCD Blanks & CVD Dressing Logs',
+    name: 'Polycrystalline Diamond (CVD&PCD)',
+    family: 'Polycrystalline Diamond (CVD&PCD)',
+    h1: 'Polycrystalline Diamond (CVD&PCD)',
     metaTitle: 'CVD Polycrystalline Diamond & PCD Blanks | EID',
     metaDesc: 'PCD discs and blanks for non-ferrous cutting-tool inserts, and CVD polycrystalline dressing logs for truing grinding wheels. Made to spec, QC-tested.',
     eyebrow: 'Products · Group 7',
@@ -721,10 +721,10 @@ export const productCatalogue: Product[] = [
   /* ================== 8 · POLYCRYSTALLINE DIAMOND POWDER ================== */
   {
     slug: 'polycrystalline-powder',
-    name: 'Polycrystalline Diamond Powder',
-    family: 'Polycrystalline Diamond Powder',
-    h1: 'Polycrystalline Diamond Micron Powder',
-    metaTitle: 'Polycrystalline Diamond Powder | Micron Polishing Grades | EID',
+    name: 'Polycrystalline Diamond powder',
+    family: 'Polycrystalline Diamond powder',
+    h1: 'Polycrystalline Diamond powder',
+    metaTitle: 'Polycrystalline Diamond powder | Micron Polishing Grades | EID',
     metaDesc: 'Detonation-synthesis polycrystalline diamond micron powder for the most demanding polishing. Rounded, no-cleavage particles for a finer, uniform finish.',
     eyebrow: 'Products · Group 8',
     cardDesc: 'Engineered polycrystalline powders for precision polishing, lapping, and advanced material finishing.',
