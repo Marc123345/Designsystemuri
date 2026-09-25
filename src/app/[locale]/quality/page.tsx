@@ -96,7 +96,7 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
 
       <section data-note="quality-proof" className="border-default-200 border-b bg-default-50 py-7 lg:py-8">
         <div className="container">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-[repeat(3,minmax(0,1fr))_160px]">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-[repeat(3,minmax(0,1fr))_126px]">
             <article className="rounded-card border-default-200 border bg-white p-5 lg:p-6">
               <h2 className="text-primary-3 text-[20px] font-semibold">{t(locale, 'The Laboratory')}</h2>
               <p className="text-default-600 mt-3 text-[14px] leading-relaxed">
@@ -118,10 +118,10 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
               </p>
             </article>
 
-            <article className="bg-primary rounded-card flex min-h-[132px] flex-col items-center justify-center p-5 text-center text-white sm:min-h-[150px] lg:min-h-0">
-              <span className="font-mono text-[10px] tracking-[0.22em] text-white/65 uppercase">ISO</span>
-              <strong className="mt-2 text-[19px] leading-none tracking-[-0.03em] text-white">9001:2015</strong>
-              <span className="mt-2 text-[10px] font-semibold tracking-[0.14em] text-white/82 uppercase">{t(locale, 'Certified')}</span>
+            <article className="bg-primary rounded-control flex min-h-[94px] flex-col items-center justify-center self-center px-3 py-4 text-center text-white sm:min-h-[104px] lg:min-h-[108px]">
+              <span className="font-mono text-[9px] tracking-[0.22em] text-white/65 uppercase">ISO</span>
+              <strong className="mt-1.5 text-[16px] leading-none tracking-[-0.03em] text-white">9001:2015</strong>
+              <span className="mt-1.5 text-[8px] font-semibold tracking-[0.14em] text-white/82 uppercase">{t(locale, 'Certified')}</span>
             </article>
           </div>
         </div>
