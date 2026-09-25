@@ -12,7 +12,7 @@ const VALUES = [
   {
     name: 'Family',
     body: 'A long-standing team with direct access to the people who work with the material.',
-    icon: 'tabler:users-group',
+    icon: 'tabler:heart-handshake',
   },
   {
     name: 'Excellence',
@@ -22,7 +22,7 @@ const VALUES = [
   {
     name: 'Precision',
     body: 'Measured and graded so repeat orders arrive to the same specification.',
-    icon: 'tabler:focus-2',
+    icon: 'tabler:target-arrow',
   },
 ] as const
 
@@ -30,23 +30,21 @@ const CoreValues = () => {
   const locale = useLocale() as Locale
 
   return (
-    <section data-note="core-values" className="bg-white py-14 lg:py-20">
+    <section data-note="core-values" className="bg-white py-14 lg:py-18">
       <div className="container">
-        <div className="mx-auto max-w-4xl text-center">
-          <p className="text-primary font-mono text-[10px] tracking-[0.24em] uppercase">{t(locale, 'Our core values')}</p>
-          <h2 className="text-primary-3 mx-auto mt-3 max-w-3xl text-[30px] leading-[1.08] font-bold tracking-[-0.04em] md:text-[38px] lg:text-[42px]">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="text-primary font-mono text-[10px] tracking-[0.22em] uppercase">{t(locale, 'Our core values')}</p>
+          <h2 className="text-primary-3 mt-3 text-[28px] leading-tight font-bold tracking-[-0.035em] md:text-[36px]">
             {t(locale, 'Driving technological excellence to deliver superior products')}
           </h2>
         </div>
 
-        <div className="mt-11 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4 lg:gap-x-10">
+        <div className="mt-11 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:mt-13 lg:grid-cols-4">
           {VALUES.map((value) => (
-            <article key={value.name} className="text-center">
-              <div className="text-primary mx-auto flex h-16 items-center justify-center">
-                <Icon icon={value.icon} className="size-11 stroke-[1.35]" aria-hidden />
-              </div>
-              <h3 className="text-primary-3 mt-4 text-[20px] font-semibold tracking-[-0.025em] lg:text-[21px]">{t(locale, value.name)}</h3>
-              <p className="text-default-600 mx-auto mt-3 max-w-[30ch] text-[14px] leading-[1.7]">{t(locale, value.body)}</p>
+            <article key={value.name} className="px-3 text-center">
+              <Icon icon={value.icon} className="text-primary mx-auto size-12" aria-hidden />
+              <h3 className="text-primary-3 mt-5 text-[18px] font-semibold tracking-[-0.02em]">{t(locale, value.name)}</h3>
+              <p className="text-default-600 mx-auto mt-3 max-w-[29ch] text-[13.5px] leading-relaxed">{t(locale, value.body)}</p>
             </article>
           ))}
         </div>
