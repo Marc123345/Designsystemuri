@@ -110,7 +110,7 @@ export const applications: Application[] = [
     // entries here so each anchor gets its own link; the note is the shared one.
     products: [
       {
-        label: 'Polycrystalline Diamond Micron Powder',
+        label: 'Polycrystalline Diamond powder',
         href: '/products/polycrystalline-powder',
         note: 'Sub-micron and fine grades for final polishing of silicon, sapphire, SiC, and GaN wafers, where the rounded, no-cleavage particle gives the lowest, most uniform surface roughness.',
       },
@@ -340,7 +340,7 @@ export const applications: Application[] = [
         note: 'Lapping and intermediate polishing of hard, brittle materials.',
       },
       {
-        label: 'Polycrystalline Diamond Micron Powder',
+        label: 'Polycrystalline Diamond powder',
         href: '/products/polycrystalline-powder',
         note: 'The final, most demanding polish, where the rounded, no-cleavage particle gives the lowest and most uniform Ra.',
       },
