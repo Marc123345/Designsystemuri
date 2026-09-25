@@ -360,9 +360,9 @@ const familyLabels: Partial<Record<Locale, Record<string, string>>> = {
     'Resin Bond Diamond': 'Kunstharzbindung-Diamant',
     CBN: 'CBN',
     'Single Crystal Diamond (CVD & MCD)': 'Einkristalldiamant (CVD & MCD)',
-    'Polycrystalline Diamond (CVD & PCD)': 'Polykristalliner Diamant (CVD & PCD)',
+    'Polycrystalline Diamond (CVD&PCD)': 'Polykristalliner Diamant (CVD & PCD)',
     'Natural Tool Stones': 'Natürliche Werkzeugsteine',
-    'Polycrystalline Diamond Powder': 'Polykristallines Diamantpulver',
+    'Polycrystalline Diamond powder': 'Polykristallines Diamantpulver',
   },
   es: {
     'Natural Diamond Grit & Powder': 'Grano y polvo de diamante natural',
@@ -370,9 +370,9 @@ const familyLabels: Partial<Record<Locale, Record<string, string>>> = {
     'Resin Bond Diamond': 'Diamante de enlace resinoso',
     CBN: 'CBN',
     'Single Crystal Diamond (CVD & MCD)': 'Diamante monocristalino (CVD y MCD)',
-    'Polycrystalline Diamond (CVD & PCD)': 'Diamante policristalino (CVD y PCD)',
+    'Polycrystalline Diamond (CVD&PCD)': 'Diamante policristalino (CVD y PCD)',
     'Natural Tool Stones': 'Piedras naturales para herramientas',
-    'Polycrystalline Diamond Powder': 'Polvo de diamante policristalino',
+    'Polycrystalline Diamond powder': 'Polvo de diamante policristalino',
   },
   it: {
     'Natural Diamond Grit & Powder': 'Grana e polvere di diamante naturale',
@@ -380,9 +380,9 @@ const familyLabels: Partial<Record<Locale, Record<string, string>>> = {
     'Resin Bond Diamond': 'Diamante a legante resinoide',
     CBN: 'CBN',
     'Single Crystal Diamond (CVD & MCD)': 'Diamante monocristallino (CVD e MCD)',
-    'Polycrystalline Diamond (CVD & PCD)': 'Diamante policristallino (CVD e PCD)',
+    'Polycrystalline Diamond (CVD&PCD)': 'Diamante policristallino (CVD e PCD)',
     'Natural Tool Stones': 'Pietre naturali per utensili',
-    'Polycrystalline Diamond Powder': 'Polvere di diamante policristallino',
+    'Polycrystalline Diamond powder': 'Polvere di diamante policristallino',
   },
   ja: {
     'Natural Diamond Grit & Powder': '天然ダイヤモンドグリット＆パウダー',
@@ -390,9 +390,9 @@ const familyLabels: Partial<Record<Locale, Record<string, string>>> = {
     'Resin Bond Diamond': 'レジンボンドダイヤモンド',
     CBN: 'CBN',
     'Single Crystal Diamond (CVD & MCD)': '単結晶ダイヤモンド（CVD・MCD）',
-    'Polycrystalline Diamond (CVD & PCD)': '多結晶ダイヤモンド（CVD・PCD）',
+    'Polycrystalline Diamond (CVD&PCD)': '多結晶ダイヤモンド（CVD・PCD）',
     'Natural Tool Stones': '天然ツールストーン',
-    'Polycrystalline Diamond Powder': '多結晶ダイヤモンドパウダー',
+    'Polycrystalline Diamond powder': '多結晶ダイヤモンドパウダー',
   },
 }
 export const getFamilyLabel = (locale: Locale, family: string): string => familyLabels[locale]?.[family] ?? family
