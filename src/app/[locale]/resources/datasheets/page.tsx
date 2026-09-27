@@ -35,7 +35,7 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
         eyebrow={t(locale, 'Ungated · specifications, grades & sizing')}
         title={t(locale, 'Product Datasheets')}
         desc={t(locale, "Download technical datasheets for EID's full diamond and CBN range: grades, sizes, crystal types, coatings, and packaging. Ungated, free to download.")}
-        bgImage="/eid/qc-samples.jpg"
+        bgImage="https://ik.imagekit.io/qcvroy8xpd/eid-hero-datasheets.png"
         variant="band"
       />
 
