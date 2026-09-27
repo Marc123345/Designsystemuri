@@ -447,7 +447,7 @@ const GradePhoto = ({ imageKey, alt }: { imageKey?: string; alt: string }) => {
       fill
       sizes="(min-width: 1024px) 40vw, 100vw"
       className="motion-safe:animate-grade-fade object-cover"
-      placeholder="blur"
+      placeholder={typeof src === 'string' ? 'empty' : 'blur'}
     />
   )
 }
