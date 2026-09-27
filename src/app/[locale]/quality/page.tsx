@@ -25,8 +25,8 @@ const controls = [
       ['Visual microscope check', 'Microscope checks monitor batch appearance, colour consistency, crystal structure and uniformity.'],
       ['Image Pro validation', 'Final batches are documented for size distribution and shape factor.'],
     ],
-    image: '/eid/qc-sieve.jpg',
-    alt: 'A technician operating a stack of laboratory test sieves beside a tray of graded diamond grit',
+    image: 'https://ik.imagekit.io/qcvroy8xpd/eid-qc-mesh-size-morphology.png',
+    alt: 'Mesh diamond size and morphology quality-control imagery',
   },
   {
     n: '02',
@@ -47,8 +47,8 @@ const controls = [
       ['Surface purity control', 'Treatment clears crystal surfaces to support bond adhesion during tool manufacturing.'],
       ['Visual purity inspection', 'Optical checks confirm cleaned material is consistent.'],
     ],
-    image: '/eid/surface-enhancements.jpg',
-    alt: 'Detailed view of treated diamond surface morphology',
+    image: 'https://ik.imagekit.io/qcvroy8xpd/eid-qc-advanced-chemical-cleaning.png',
+    alt: 'Advanced chemical cleaning quality-control imagery',
   },
   {
     n: '04',
@@ -58,8 +58,8 @@ const controls = [
       ['Targeted mechanical evaluation', 'Room-temperature Toughness Index milling tests are available for specialised high-impact projects.'],
       ['Thermal stability testing', 'Optional Thermal Toughness Index testing measures crystal stability for extreme-heat environments.'],
     ],
-    image: '/eid/quality/01-automated-hardness-test-station.png',
-    alt: 'Automated toughness testing station with a guarded sample stage',
+    image: 'https://ik.imagekit.io/qcvroy8xpd/eid-qc-toughness.png',
+    alt: 'Diamond toughness testing quality-control imagery',
   },
 ] as const
 
@@ -71,7 +71,7 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
     <>
       <section data-note="quality-hero" className="bg-primary-3 rounded-b-card relative isolate flex min-h-[330px] items-end overflow-hidden text-white lg:min-h-[360px]">
         <Image
-          src="/eid/facility/crystal-microscopy.png"
+          src="https://ik.imagekit.io/qcvroy8xpd/eid-hero-quality-control.png"
           alt=""
           fill
           priority
