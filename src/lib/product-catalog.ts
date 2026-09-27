@@ -280,7 +280,7 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
       ],
     },
     coated: {
-      image: 'nickel-coated',
+      image: 'metal-bond-coated',
       coatings: ['Nickel 30%', 'Nickel 56%', 'Nickel 60%', 'Custom % on request'],
     },
   },
@@ -325,7 +325,7 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
       micronSizes: MICRON_STD,
     },
     coated: {
-      image: 'nickel-coated',
+      image: 'resin-bond-coated',
       coatings: ['Nickel 30 / 56 / 60%', 'Copper', 'Custom % on request'],
     },
   },
