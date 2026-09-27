@@ -53,7 +53,7 @@ const BlogPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
         desc={t(locale, 'News, application notes, and technical insight on industrial diamond and CBN from EID Ltd, London-based superabrasive manufacturer.')}
         /* Material macro rather than a room — the blog is about the grit, not the
         building. */
-        bgImage="/eid/home/hero-grit.jpg"
+        bgImage="https://ik.imagekit.io/qcvroy8xpd/eid-hero-blog.png"
         variant="band"
       />
 
