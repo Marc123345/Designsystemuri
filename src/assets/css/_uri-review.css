@@ -4,7 +4,7 @@
  */
 @media (min-width: 1024px) {
   [data-note="navbar"] #navbar :where(a, button, .hs-dropdown-toggle) {
-    font-size: 1rem;
+    font-size: 1.075rem;
   }
 
   [data-note="navbar"] img[alt="EID Ltd"] {
