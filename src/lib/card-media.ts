@@ -1,8 +1,3 @@
-import naturalDiamond from '@/assets/images/products/photo/natural-diamond-grit-powder-hero.png'
-import naturalToolStones from '@/assets/images/products/photo/natural-tool-stones-hero.png'
-import metalBond from '@/assets/images/products/photo/metal-bond-diamond-grit-hero.png'
-import resinBond from '@/assets/images/products/photo/resin-bond-diamond-uncoated-nickel-coated-hero.png'
-import cbn from '@/assets/images/products/photo/cbn-amber-and-black-grit-hero.png'
 import singleCrystal from '@/assets/images/products/photo/single-crystal-diamond-plates-hero.png'
 import polycrystallineDiamond from '@/assets/images/products/photo/pcd-blanks-discs-inserts-hero.png'
 import polycrystallinePowder from '@/assets/images/products/photo/polycrystalline-diamond-powder-hero.png'
@@ -17,13 +12,13 @@ import polycrystallinePowder from '@/assets/images/products/photo/polycrystallin
  * machinery, process shots or generic manufacturing scenes.
  */
 const PRODUCT_IMAGES: Record<string, string> = {
-  'natural-grit-powder': naturalDiamond.src,
-  'metal-bond': metalBond.src,
-  'resin-bond': resinBond.src,
-  cbn: cbn.src,
+  'natural-grit-powder': 'https://ik.imagekit.io/qcvroy8xpd/eid-product-natural-grit-powder.png',
+  'metal-bond': 'https://ik.imagekit.io/qcvroy8xpd/eid-product-metal-bond-diamond.png',
+  'resin-bond': 'https://ik.imagekit.io/qcvroy8xpd/eid-product-resin-bond-diamond.png',
+  cbn: 'https://ik.imagekit.io/qcvroy8xpd/eid-product-cbn.png',
   'single-crystal': singleCrystal.src,
   'polycrystalline-diamond': polycrystallineDiamond.src,
-  'tool-stones': naturalToolStones.src,
+  'tool-stones': 'https://ik.imagekit.io/qcvroy8xpd/eid-product-natural-tool-stones.png',
   'polycrystalline-powder': polycrystallinePowder.src,
 }
 
