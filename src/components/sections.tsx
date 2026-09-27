@@ -915,7 +915,7 @@ export const ProductPhoto = ({ image, alt }: { image: string; alt: string; galle
        were the only square-cornered images on the site and the placeholder
        looked more finished than the asset. */
     <div className="rounded-card relative aspect-[4/3] overflow-hidden">
-      <Image src={src} alt={alt} fill sizes="(min-width: 1024px) 42vw, 100vw" className="object-cover" placeholder="blur" />
+      <Image src={src} alt={alt} fill sizes="(min-width: 1024px) 42vw, 100vw" className="object-cover" placeholder={typeof src === 'string' ? 'empty' : 'blur'} />
     </div>
   )
 }
