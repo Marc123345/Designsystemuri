@@ -29,6 +29,11 @@ const nextConfig: NextConfig = {
         hostname: 'static.wixstatic.com',
         pathname: '/media/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'ik.imagekit.io',
+        pathname: '/qcvroy8xpd/**',
+      },
     ],
     formats: ['image/avif', 'image/webp'],
   },
