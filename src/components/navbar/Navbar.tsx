@@ -15,7 +15,6 @@ const TRANSPARENT_ON = [
   '/',
   '/about',
   '/quality',
-  '/contact',
   '/applications/',
   '/products/',
   '/resources/blog',
