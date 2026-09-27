@@ -6,7 +6,7 @@ import type { Locale } from '@/i18n/routing'
 import { applications } from '@/lib/applications'
 import { applicationImage, productImage } from '@/lib/card-media'
 import { catalog, getSectionCatalog } from '@/lib/product-catalog'
-import { getProductImage } from '@/lib/product-images'
+import { getProductImageSrc } from '@/lib/product-images'
 import { localeAlternates } from '@/lib/hreflang'
 import { getApplication, getApplications, t } from '@/lib/i18n-content'
 import type { Metadata } from 'next'
@@ -216,7 +216,7 @@ const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; s
     const resolved: (string | undefined)[] = app.products.map((ap) => {
       const [parentSlug, anchor] = ap.href.replace('/products/', '').split('#')
       const key = anchor ? getSectionCatalog(parentSlug, anchor)?.image : undefined
-      const src = key ? getProductImage(key)?.src : undefined
+      const src = key ? getProductImageSrc(key) : undefined
       if (src) claimed.add(src)
       return src
     })
@@ -226,7 +226,7 @@ const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; s
       if (!src) {
         const [parentSlug] = ap.href.replace('/products/', '').split('#')
         const options = Object.values(catalog[parentSlug] ?? {})
-          .map((section) => (section.image ? getProductImage(section.image)?.src : undefined))
+          .map((section) => (section.image ? getProductImageSrc(section.image) : undefined))
           .filter((u): u is string => Boolean(u))
         src = options.find((u) => !claimed.has(u)) ?? options[0]
         if (src) claimed.add(src)
