@@ -41,7 +41,7 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
       <div className="container relative z-10">
         <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(520px,0.92fr)] lg:gap-10 xl:gap-[70px]">
           <div className="text-white">
-            <h1 className="text-[#0099ff] text-[48px] leading-[1.02] font-bold tracking-[-0.045em] uppercase sm:text-[58px] lg:text-[66px] xl:text-[72px]">
+            <h1 className="text-white text-[48px] leading-[1.02] font-bold tracking-[-0.045em] uppercase sm:text-[58px] lg:text-[66px] xl:text-[72px]">
               {t(locale, 'Contact Us')}
             </h1>
             <p className="mt-1 text-[28px] leading-none font-light tracking-[-0.025em] text-white sm:text-[32px] lg:text-[38px]">
@@ -49,14 +49,14 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
             </p>
 
             <div className="mt-12 lg:mt-[72px]">
-              <span className="inline-flex rounded-[5px] border border-[#69c4ff] bg-white/[0.08] px-4 py-2 text-[12px] leading-none font-semibold tracking-[0.04em] text-[#8fd3ff] uppercase sm:text-[13px]">
+              <span className="inline-flex rounded-[5px] border border-white/55 bg-white/[0.08] px-4 py-2 text-[12px] leading-none font-semibold tracking-[0.04em] text-white uppercase sm:text-[13px]">
                 {t(locale, 'Headquarters')}
               </span>
 
               <div className="mt-4 border-y border-white/45 py-7 lg:py-8">
                 <div className="grid items-center gap-7 sm:grid-cols-[minmax(0,1fr)_210px] lg:gap-10 xl:grid-cols-[minmax(0,1fr)_227px]">
                   <div>
-                    <h2 className="text-[28px] leading-[1.08] font-semibold tracking-[-0.02em] uppercase sm:text-[31px]">
+                    <h2 className="text-[28px] leading-[1.08] font-semibold tracking-[-0.02em] text-white uppercase sm:text-[31px]">
                       {t(locale, 'London Headquarters')}
                     </h2>
                     <p className="mt-5 max-w-[38ch] text-[15px] leading-[1.45] text-white/90 sm:text-[17px]">
@@ -64,16 +64,16 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
                     </p>
 
                     <div className="mt-7 flex flex-col gap-4 text-[15px] text-white/92 sm:text-[16px]">
-                      <a href={site.phoneHref} className="group flex w-fit items-center gap-3 rounded-sm transition-colors hover:text-[#8fd3ff] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8fd3ff]">
-                        <Icon icon="tabler:phone" className="size-5 shrink-0 text-[#69c4ff]" />
+                      <a href={site.phoneHref} className="group flex w-fit items-center gap-3 rounded-sm transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+                        <Icon icon="tabler:phone" className="size-5 shrink-0 text-white/80" />
                         <span>{t(locale, 'Phone')}: {site.phone}</span>
                       </a>
-                      <a href={`mailto:${site.email}`} className="group flex w-fit items-center gap-3 rounded-sm transition-colors hover:text-[#8fd3ff] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8fd3ff]">
-                        <Icon icon="tabler:mail" className="size-5 shrink-0 text-[#69c4ff]" />
+                      <a href={`mailto:${site.email}`} className="group flex w-fit items-center gap-3 rounded-sm transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+                        <Icon icon="tabler:mail" className="size-5 shrink-0 text-white/80" />
                         <span>{site.email}</span>
                       </a>
                       <div className="flex items-center gap-3 text-white/78">
-                        <Icon icon="tabler:printer" className="size-5 shrink-0 text-[#69c4ff]" />
+                        <Icon icon="tabler:printer" className="size-5 shrink-0 text-white/80" />
                         <span>{t(locale, 'Fax')}: {site.fax}</span>
                       </div>
                     </div>
@@ -93,11 +93,11 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
             </div>
           </div>
 
-          <div className="rounded-[24px] border border-[#dfe3e8] bg-[#f5f5f5] p-7 text-[#111827] shadow-[0_30px_80px_-36px_rgba(2,25,59,0.32)] ring-1 ring-black/[0.02] sm:p-9 lg:p-10 xl:px-[58px] xl:py-[54px]">
-            <h2 className="text-[22px] leading-[1.25] tracking-[-0.02em] text-black sm:text-[24px]">
+          <div className="border-default-200 rounded-[24px] border bg-default-50 p-7 text-default-900 shadow-[0_30px_80px_-36px_rgba(2,25,59,0.32)] ring-1 ring-black/[0.02] sm:p-9 lg:p-10 xl:px-[58px] xl:py-[54px]">
+            <h2 className="text-primary-3 text-[22px] leading-[1.25] tracking-[-0.02em] sm:text-[24px]">
               <strong className="font-bold">{t(locale, 'We’d love to hear from you.')}</strong> {t(locale, 'Contact us.')}
             </h2>
-            <p className="mt-6 max-w-[44ch] text-[16px] leading-relaxed font-normal text-[#374151] sm:text-[18px]">
+            <p className="text-default-700 mt-6 max-w-[44ch] text-[16px] leading-relaxed font-normal sm:text-[18px]">
               {t(locale, 'Tell us what you need and our team will route your enquiry to the right person.')}
             </p>
 
