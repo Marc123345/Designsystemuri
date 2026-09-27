@@ -7,8 +7,8 @@ const CONTROLS = [
   {
     n: '01',
     label: 'Size & Morphology: Mesh',
-    image: '/eid/qc-sieve.jpg',
-    alt: 'A technician operating a stack of laboratory test sieves beside a tray of graded grey diamond grit',
+    image: 'https://ik.imagekit.io/qcvroy8xpd/eid-qc-mesh-size-morphology.png',
+    alt: 'Mesh diamond size and morphology quality-control imagery',
   },
   {
     n: '02',
@@ -19,14 +19,14 @@ const CONTROLS = [
   {
     n: '03',
     label: 'Advanced Chemical Cleaning',
-    image: '/eid/surface-enhancements.jpg',
-    alt: 'Electron micrograph showing treated diamond surface morphology',
+    image: 'https://ik.imagekit.io/qcvroy8xpd/eid-qc-advanced-chemical-cleaning.png',
+    alt: 'Advanced chemical cleaning quality-control imagery',
   },
   {
     n: '04',
     label: 'Toughness (TI / TTI)',
-    image: '/eid/quality/01-automated-hardness-test-station.png',
-    alt: 'An automated impact test station with its indenter lowered over the guarded sample stage',
+    image: 'https://ik.imagekit.io/qcvroy8xpd/eid-qc-toughness.png',
+    alt: 'Diamond toughness testing quality-control imagery',
   },
 ] as const
 
