@@ -24,19 +24,9 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
   return (
     <section
       data-note="contact-strauss-layout"
-      className="relative isolate min-h-[calc(100svh-54px)] overflow-hidden bg-white pt-[92px] pb-8 lg:pt-[112px] lg:pb-10"
+      className="relative isolate min-h-[calc(100svh-54px)] overflow-hidden bg-white pt-[82px] pb-8 lg:pt-[102px] lg:pb-10"
     >
-      <div aria-hidden className="absolute inset-y-0 left-0 w-full lg:w-[66vw]">
-        <Image
-          src="/eid/qc-lab.jpg"
-          alt=""
-          fill
-          priority
-          sizes="(min-width: 1024px) 66vw, 100vw"
-          className="object-cover object-center"
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(55deg,rgba(0,38,77,0.97)_0%,rgba(2,25,59,0.90)_100%)]" />
-      </div>
+      <div aria-hidden className="bg-primary-3 absolute inset-y-0 left-0 w-full lg:w-[66vw]" />
 
       <div className="container relative z-10">
         <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(520px,0.92fr)] lg:gap-10 xl:gap-[70px]">
@@ -48,7 +38,7 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
               EID LTD.
             </p>
 
-            <div className="mt-12 lg:mt-[72px]">
+            <div className="mt-8 lg:mt-10">
               <span className="inline-flex rounded-[5px] border border-white/55 bg-white/[0.08] px-4 py-2 text-[12px] leading-none font-semibold tracking-[0.04em] text-white uppercase sm:text-[13px]">
                 {t(locale, 'Headquarters')}
               </span>
