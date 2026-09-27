@@ -2,82 +2,47 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-const SCRAMBLE_CHARS = '!<>-_\\/[]{}=+*^?#'
-
-type Glyph = { char: string; dud: boolean }
-
-const toGlyphs = (text: string): Glyph[] => Array.from(text).map((char) => ({ char, dud: false }))
-
+/**
+ * A restrained one-time heading reveal.
+ *
+ * Uri's review called the old per-character scramble/jump effect out as
+ * bug-like. Keep the same component API for its existing call sites, but reveal
+ * the real text as one stable block with a small fade + lift instead.
+ */
 const ScrambleHeading = ({ text, className = '' }: { text: string; className?: string }) => {
   const ref = useRef<HTMLHeadingElement>(null)
-  const [glyphs, setGlyphs] = useState<Glyph[]>(() => toGlyphs(text))
+  const [revealed, setRevealed] = useState(false)
 
   useEffect(() => {
-    setGlyphs(toGlyphs(text))
-
     const node = ref.current
     if (!node) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
-    let frameRequest = 0
-    let frame = 0
-    let hasRun = false
-
-    const source = Array.from(text)
-    const queue = source.map((char, index) => ({
-      char,
-      start: 1 + Math.floor(Math.random() * 7) + Math.floor(index * 0.08),
-      end: 10 + Math.floor(Math.random() * 12) + Math.floor(index * 0.12),
-    }))
-
-    const update = () => {
-      frame += 1
-      setGlyphs(
-        queue.map(({ char, start, end }) => {
-          if (/\s/.test(char)) return { char, dud: false }
-          if (frame >= end) return { char, dud: false }
-          if (frame >= start) {
-            return {
-              char: SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)],
-              dud: true,
-            }
-          }
-          return { char, dud: false }
-        }),
-      )
-
-      if (queue.some(({ end }) => frame < end)) {
-        frameRequest = requestAnimationFrame(update)
-      }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setRevealed(true)
+      return
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting || hasRun) return
-        hasRun = true
+        if (!entry.isIntersecting) return
+        setRevealed(true)
         observer.disconnect()
-        frameRequest = requestAnimationFrame(update)
       },
-      { threshold: 0.45 },
+      { threshold: 0.35 },
     )
 
     observer.observe(node)
-
-    return () => {
-      observer.disconnect()
-      cancelAnimationFrame(frameRequest)
-    }
+    return () => observer.disconnect()
   }, [text])
 
   return (
-    <h2 ref={ref} aria-label={text} className={className}>
-      <span aria-hidden>
-        {glyphs.map((glyph, index) => (
-          <span key={`${index}-${glyph.char}`} className={glyph.dud ? 'opacity-[0.35]' : undefined}>
-            {glyph.char}
-          </span>
-        ))}
-      </span>
+    <h2
+      ref={ref}
+      className={`${className} transition-[opacity,transform,filter] duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] motion-reduce:transition-none ${
+        revealed ? 'translate-y-0 opacity-100 blur-0' : 'translate-y-2 opacity-0 blur-[2px]'
+      }`}
+    >
+      {text}
     </h2>
   )
 }
