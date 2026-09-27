@@ -1,14 +1,12 @@
-import Backdrop from '@/components/Backdrop'
 import QuoteForm from '@/components/QuoteForm'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
 import { site } from '@/lib/site'
+import { Icon } from '@iconify/react'
 import Image from 'next/image'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
-
-const AGENT_COUNTRIES = ['Germany', 'Italy', 'Japan', 'South Korea', 'Switzerland', 'Ireland', 'Israel', 'Brazil', 'China', 'Taiwan', 'South Africa', 'India', 'Poland'] as const
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params
@@ -24,65 +22,88 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
   setRequestLocale(locale)
 
   return (
-    <section data-note="contact-compact" className="bg-primary-3 relative isolate overflow-hidden pt-[94px] pb-5 text-white lg:pt-[112px] lg:pb-6">
-      <Backdrop />
+    <section
+      data-note="contact-strauss-layout"
+      className="relative isolate min-h-[calc(100svh-54px)] overflow-hidden bg-white pt-[92px] pb-8 lg:pt-[112px] lg:pb-10"
+    >
+      <div aria-hidden className="absolute inset-y-0 left-0 w-full lg:w-[66vw]">
+        <Image
+          src="/eid/qc-lab.jpg"
+          alt=""
+          fill
+          priority
+          sizes="(min-width: 1024px) 66vw, 100vw"
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(55deg,rgba(0,38,77,0.96)_0%,rgba(2,25,59,0.72)_100%)]" />
+      </div>
 
-      <div className="relative z-10 container">
-        <div className="mx-auto grid max-w-6xl overflow-hidden rounded-card border border-white/12 bg-white/[0.035] shadow-[0_26px_80px_-42px_rgba(0,0,0,0.55)] backdrop-blur-sm lg:grid-cols-[0.72fr_1.28fr]">
-          <div className="p-5 sm:p-6 lg:p-7 xl:p-8">
-            <p className="font-mono text-[9px] tracking-[0.22em] text-white/55 uppercase">{t(locale, 'Contact')}</p>
-            <h1 className="mt-3 text-[38px] leading-[0.94] font-semibold tracking-[-0.045em] text-white md:text-[48px] lg:text-[54px]">
+      <div className="container relative z-10">
+        <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(520px,0.92fr)] lg:gap-10 xl:gap-[70px]">
+          <div className="text-white">
+            <h1 className="text-primary text-[48px] leading-[1.02] font-bold tracking-[-0.045em] uppercase sm:text-[58px] lg:text-[66px] xl:text-[72px]">
               {t(locale, 'Contact Us')}
             </h1>
-            <p className="mt-4 max-w-[38ch] text-[14px] leading-relaxed text-white/72">
-              {t(locale, 'Tell us the product or application and our team will route your enquiry to the right person.')}
+            <p className="mt-1 text-[28px] leading-none font-light tracking-[-0.025em] text-white sm:text-[32px] lg:text-[38px]">
+              EID LTD.
             </p>
 
-            <div className="rounded-control relative mt-5 aspect-[16/7] overflow-hidden border border-white/10 bg-white/5">
-              <Image
-                src="https://static.wixstatic.com/media/10a9d7_aab23325442a47e8a1280bc0685b4e24~mv2.jpg"
-                alt={t(locale, 'EID House, London headquarters in Hatton Garden')}
-                fill
-                sizes="(min-width: 1024px) 34vw, 100vw"
-                className="object-cover"
-              />
-              <span aria-hidden className="from-primary-3/40 absolute inset-0 bg-linear-to-t to-transparent" />
-            </div>
+            <div className="mt-12 lg:mt-[72px]">
+              <span className="border-primary bg-primary/15 text-primary inline-flex rounded-[5px] border px-4 py-2 text-[12px] leading-none font-semibold tracking-[0.04em] uppercase sm:text-[13px]">
+                {t(locale, 'Headquarters')}
+              </span>
 
-            <div className="mt-5 border-t border-white/10 pt-4">
-              <p className="font-mono text-[9px] tracking-[0.18em] text-white/45 uppercase">{t(locale, 'Global Headquarters')}</p>
-              <p className="mt-1.5 text-[15px] font-semibold text-white">{t(locale, 'London, United Kingdom')}</p>
-              <p className="mt-1 text-[12.5px] leading-relaxed text-white/58">{site.address}</p>
-            </div>
+              <div className="mt-4 border-y border-white/45 py-7 lg:py-8">
+                <div className="grid items-center gap-7 sm:grid-cols-[minmax(0,1fr)_210px] lg:gap-10 xl:grid-cols-[minmax(0,1fr)_227px]">
+                  <div>
+                    <h2 className="text-[28px] leading-[1.08] font-semibold tracking-[-0.02em] uppercase sm:text-[31px]">
+                      {t(locale, 'London Headquarters')}
+                    </h2>
+                    <p className="mt-5 max-w-[38ch] text-[15px] leading-[1.45] text-white/90 sm:text-[17px]">
+                      {site.address}
+                    </p>
 
-            <div className="mt-4 grid grid-cols-2 gap-3 border-t border-white/10 pt-4">
-              <div>
-                <p className="text-[12px] font-semibold text-white">{t(locale, 'Middle East')}</p>
-                <p className="mt-1 text-[10px] leading-snug text-white/48">{t(locale, 'Primary processing')}</p>
-              </div>
-              <div className="border-s border-white/10 ps-3">
-                <p className="text-[12px] font-semibold text-white">{t(locale, 'Boca Raton, Florida, USA')}</p>
-                <p className="mt-1 text-[10px] leading-snug text-white/48">{t(locale, 'Secondary processing')}</p>
-              </div>
-            </div>
+                    <div className="mt-7 flex flex-col gap-4 text-[15px] text-white/92 sm:text-[16px]">
+                      <a href={site.phoneHref} className="group flex w-fit items-center gap-3 transition-colors hover:text-primary">
+                        <Icon icon="tabler:phone" className="text-primary size-5 shrink-0" />
+                        <span>{t(locale, 'Phone')}: {site.phone}</span>
+                      </a>
+                      <a href={`mailto:${site.email}`} className="group flex w-fit items-center gap-3 transition-colors hover:text-primary">
+                        <Icon icon="tabler:mail" className="text-primary size-5 shrink-0" />
+                        <span>{site.email}</span>
+                      </a>
+                      <div className="flex items-center gap-3 text-white/78">
+                        <Icon icon="tabler:printer" className="text-primary size-5 shrink-0" />
+                        <span>{t(locale, 'Fax')}: {site.fax}</span>
+                      </div>
+                    </div>
+                  </div>
 
-            <div className="mt-4 border-t border-white/10 pt-4">
-              <div className="flex items-center justify-between gap-3">
-                <p className="text-[12px] font-semibold text-white">{t(locale, 'Local agent network')}</p>
-                <span className="font-mono text-[9px] tracking-[0.16em] text-white/45 uppercase">13 {t(locale, 'countries')}</span>
+                  <div className="relative mx-auto aspect-square w-full max-w-[227px] overflow-hidden rounded-[20px] border border-white/20 bg-white/10 shadow-[0_18px_50px_-30px_rgba(0,0,0,0.5)]">
+                    <Image
+                      src="https://static.wixstatic.com/media/10a9d7_aab23325442a47e8a1280bc0685b4e24~mv2.jpg"
+                      alt={t(locale, 'EID House, London headquarters in Hatton Garden')}
+                      fill
+                      sizes="227px"
+                      className="object-cover object-center"
+                    />
+                  </div>
+                </div>
               </div>
-              <p className="mt-2 text-[10.5px] leading-relaxed text-white/58">
-                {AGENT_COUNTRIES.map((country) => t(locale, country)).join(' · ')}
-              </p>
             </div>
           </div>
 
-          <div className="border-t border-white/10 bg-white p-4 text-default-900 sm:p-5 lg:border-s lg:border-t-0 lg:p-6">
-            <div className="mb-3 flex items-center justify-between gap-4 border-b border-default-200 pb-3">
-              <h2 className="text-[20px] font-semibold tracking-[-0.02em] text-default-900 md:text-[22px]">{t(locale, 'Tell us what you need.')}</h2>
-              <span className="text-primary hidden font-mono text-[8px] tracking-[0.18em] uppercase sm:block">EID · London</span>
+          <div className="rounded-[24px] bg-[#f5f5f5] p-7 text-default-900 shadow-[0_28px_70px_-34px_rgba(2,25,59,0.28)] sm:p-9 lg:p-10 xl:px-[58px] xl:py-[54px]">
+            <h2 className="text-[22px] leading-[1.25] tracking-[-0.02em] text-black sm:text-[24px]">
+              <strong className="font-bold">{t(locale, 'We’d love to hear from you.')}</strong> {t(locale, 'Contact us.')}
+            </h2>
+            <p className="mt-6 text-[16px] font-light text-black sm:text-[18px]">
+              {t(locale, 'Tell us what you need and our team will route your enquiry to the right person.')}
+            </p>
+
+            <div className="mt-5">
+              <QuoteForm formTitle={t(locale, 'Contact EID')} heading={false} />
             </div>
-            <QuoteForm formTitle={t(locale, 'Contact EID')} heading={false} />
           </div>
         </div>
       </div>
