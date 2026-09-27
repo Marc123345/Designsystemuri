@@ -1,96 +1,76 @@
 import type { StaticImageData } from 'next/image'
 
-import naturalToolStones from '@/assets/images/products/photo/natural-tool-stones-hero.png'
-import naturalDiamond from '@/assets/images/products/photo/natural-diamond-grit-powder-hero.png'
-import metalBondSaw from '@/assets/images/products/photo/metal-bond-diamond-grit-hero.png'
-import metalBondWheel from '@/assets/images/products/photo/metal-bond-diamond-crystal-closeup-alt.png'
-import resinBondMesh from '@/assets/images/products/photo/resin-bond-diamond-uncoated-nickel-coated-hero.png'
-import resinBondMicron from '@/assets/images/products/photo/resin-bond-diamond-uncoated-nickel-coated-alt-square.png'
-import cbnMesh from '@/assets/images/products/photo/cbn-amber-and-black-grit-hero.png'
-import cbnBlack from '@/assets/images/products/photo/cbn-amber-and-black-grit-alt-warm.png'
 import pcd from '@/assets/images/products/photo/pcd-blanks-discs-inserts-hero.png'
 import formedBlanks from '@/assets/images/products/photo/pcd-blanks-discs-segments-alt.png'
 import polyMicron from '@/assets/images/products/photo/polycrystalline-diamond-powder-hero.png'
 import singleCrystal from '@/assets/images/products/photo/single-crystal-diamond-plates-hero.png'
 import mcdPlates from '@/assets/images/products/photo/single-crystal-diamond-plates-alt-tray.png'
 
-/**
- * AI catalogue photography, mapped to the source EID product taxonomy.
- *
- * Legacy source pages:
- * - natural-mesh / natural-micron / natural-rotarydiamond
- * - metal-bond-mesh / metal-bond-micron
- * - resin-bond-mesh / resin-bond-micron
- * - ebn-mesh / ebn-micron / pcbn
- * - cvd-single-crystal / mcd
- * - pcd / cvd-polycrystalline
- * - polycrystalline-micron / toolstones
- *
- * The redesigned site consolidates those legacy URLs into eight product pages,
- * so this registry maps section/grade keys rather than route names.
- */
 export const SHOW_PHOTOS = true
 
-export const productImages: Record<string, StaticImageData> = {
-  // NATURAL TOOL STONES + NATURAL ROTARY DIAMOND.
-  'toolstone-1': naturalToolStones,
-  'toolstone-2': naturalToolStones,
-  'toolstone-3': naturalToolStones,
-  'toolstone-4': naturalToolStones,
-  'toolstone-5': naturalToolStones,
-  'toolstone-6': naturalToolStones,
-  'toolstone-7': naturalToolStones,
-  'toolstone-8': naturalToolStones,
-  'toolstone-9': naturalToolStones,
-  'toolstone-10': naturalToolStones,
-  'toolstone-11': naturalToolStones,
-  'toolstone-12': naturalToolStones,
-  'toolstone-13': naturalToolStones,
-  'toolstone-14': naturalToolStones,
-  'toolstone-15': naturalToolStones,
-  'toolstone-16': naturalToolStones,
-  'wd-a': naturalToolStones,
-  'wd-aa': naturalToolStones,
-  'wd-aaa': naturalToolStones,
-  rd10: naturalToolStones,
-  rd90: naturalToolStones,
-  'congo-rd': naturalToolStones,
+type ProductImage = StaticImageData | string
 
-  // NATURAL MESH + NATURAL MICRON.
-  // Keep natural material visually separate from the synthetic metal-bond set.
-  'ns-100-p': naturalDiamond,
-  'mb-100-p': naturalDiamond,
-  'mb1um-2-4': naturalDiamond,
-  'mb1um-12-22': naturalDiamond,
-  'mb1um-30-40': naturalDiamond,
+const NATURAL = 'https://ik.imagekit.io/qcvroy8xpd/eid-product-natural-grit-powder.png'
+const TOOL_STONES = 'https://ik.imagekit.io/qcvroy8xpd/eid-product-natural-tool-stones.png'
+const METAL_BOND = 'https://ik.imagekit.io/qcvroy8xpd/eid-product-metal-bond-diamond.png'
+const RESIN_BOND = 'https://ik.imagekit.io/qcvroy8xpd/eid-product-resin-bond-diamond.png'
+const CBN = 'https://ik.imagekit.io/qcvroy8xpd/eid-product-cbn.png'
 
-  // METAL BOND MESH + MICRON.
-  'esn-770': metalBondSaw,
-  'eda-2395': metalBondWheel,
-  'metal-bond-micron': metalBondWheel,
+export const productImages: Record<string, ProductImage> = {
+  'toolstone-1': TOOL_STONES,
+  'toolstone-2': TOOL_STONES,
+  'toolstone-3': TOOL_STONES,
+  'toolstone-4': TOOL_STONES,
+  'toolstone-5': TOOL_STONES,
+  'toolstone-6': TOOL_STONES,
+  'toolstone-7': TOOL_STONES,
+  'toolstone-8': TOOL_STONES,
+  'toolstone-9': TOOL_STONES,
+  'toolstone-10': TOOL_STONES,
+  'toolstone-11': TOOL_STONES,
+  'toolstone-12': TOOL_STONES,
+  'toolstone-13': TOOL_STONES,
+  'toolstone-14': TOOL_STONES,
+  'toolstone-15': TOOL_STONES,
+  'toolstone-16': TOOL_STONES,
 
-  // RESIN BOND MESH + MICRON + COATED MATERIAL.
-  'resin-bond-mesh': resinBondMesh,
-  'nickel-coated': resinBondMesh,
-  'erd-um': resinBondMicron,
+  'wd-a': NATURAL,
+  'wd-aa': NATURAL,
+  'wd-aaa': NATURAL,
+  rd10: NATURAL,
+  rd90: NATURAL,
+  'congo-rd': NATURAL,
+  'ns-100-p': NATURAL,
+  'mb-100-p': NATURAL,
+  'mb1um-2-4': NATURAL,
+  'mb1um-12-22': NATURAL,
+  'mb1um-30-40': NATURAL,
 
-  // CBN MESH + MICRON.
-  'ebn-aa': cbnMesh,
-  'cbn-a-micron': cbnMesh,
-  'cbn-b-micron': cbnBlack,
+  'esn-770': METAL_BOND,
+  'eda-2395': METAL_BOND,
+  'metal-bond-micron': METAL_BOND,
+  'metal-bond-coated': METAL_BOND,
 
-  // PCD + PCBN + CVD POLYCRYSTALLINE FORMS.
+  'resin-bond-mesh': RESIN_BOND,
+  'erd-um': RESIN_BOND,
+  'resin-bond-coated': RESIN_BOND,
+
+  'ebn-aa': CBN,
+  'cbn-a-micron': CBN,
+  'cbn-b-micron': CBN,
+  pcbn: CBN,
+
   pcd,
-  pcbn: formedBlanks,
   'cvd-polycrystalline': formedBlanks,
-
-  // POLYCRYSTALLINE MICRON POWDER.
   'poly-micron': polyMicron,
-
-  // SINGLE-CRYSTAL CVD + MCD.
   'cvd-single-crystal': singleCrystal,
   mcd: mcdPlates,
 }
 
-export const getProductImage = (key?: string): StaticImageData | undefined =>
+export const getProductImage = (key?: string): ProductImage | undefined =>
   key ? productImages[key] : undefined
+
+export const getProductImageSrc = (key?: string): string | undefined => {
+  const image = getProductImage(key)
+  return typeof image === 'string' ? image : image?.src
+}
