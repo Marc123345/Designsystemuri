@@ -93,11 +93,11 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
             </div>
           </div>
 
-          <div className="border-default-200 rounded-[24px] border bg-default-50 p-7 text-default-900 shadow-[0_30px_80px_-36px_rgba(2,25,59,0.32)] ring-1 ring-black/[0.02] sm:p-9 lg:p-10 xl:px-[58px] xl:py-[54px]">
-            <h2 className="text-primary-3 text-[22px] leading-[1.25] tracking-[-0.02em] sm:text-[24px]">
+          <div className="rounded-[24px] border border-[#dfe3e8] bg-[#f5f5f5] p-7 text-[#111827] shadow-[0_30px_80px_-36px_rgba(2,25,59,0.32)] ring-1 ring-black/[0.02] sm:p-9 lg:p-10 xl:px-[58px] xl:py-[54px]">
+            <h2 className="text-[22px] leading-[1.25] tracking-[-0.02em] text-black sm:text-[24px]">
               <strong className="font-bold">{t(locale, 'We’d love to hear from you.')}</strong> {t(locale, 'Contact us.')}
             </h2>
-            <p className="text-default-700 mt-6 max-w-[44ch] text-[16px] leading-relaxed font-normal sm:text-[18px]">
+            <p className="mt-6 max-w-[44ch] text-[16px] leading-relaxed font-normal text-[#374151] sm:text-[18px]">
               {t(locale, 'Tell us what you need and our team will route your enquiry to the right person.')}
             </p>
 
