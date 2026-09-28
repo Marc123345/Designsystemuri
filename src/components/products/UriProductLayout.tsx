@@ -1,0 +1,529 @@
+import UriGradeModule, { type UriGradeGroup, type UriGradeOption } from '@/components/products/UriGradeModule'
+import { Link } from '@/i18n/navigation'
+import type { Locale } from '@/i18n/routing'
+import { productImage } from '@/lib/card-media'
+import { getSectionCatalog } from '@/lib/i18n-content'
+import { getProductImageSrc } from '@/lib/product-images'
+
+type Slug = 'natural-grit-powder' | 'metal-bond' | 'resin-bond'
+
+const MINERAL = '#d8d1c3'
+const MINERAL_DEEP = '#9b8f7c'
+
+const IMAGE = {
+  natural: 'https://ik.imagekit.io/qcvroy8xpd/eid-product-natural-grit-powder.png',
+  metal: 'https://ik.imagekit.io/qcvroy8xpd/eid-product-metal-bond-diamond.png',
+  resin: 'https://ik.imagekit.io/qcvroy8xpd/eid-product-resin-bond-diamond.png',
+}
+
+const compactSizes = (sizes: string[] | undefined, max = 11) => {
+  if (!sizes?.length) return []
+  if (sizes.length <= max) return sizes
+  return [...sizes.slice(0, max - 2), '…', sizes[sizes.length - 1]]
+}
+
+const AtAGlance = ({ items }: { items: { href: string; title: string; big: string; small?: string }[] }) => (
+  <section className="border-default-200 bg-default-50 border-b py-6 lg:py-7" data-note="uri-product-glance">
+    <div className="container">
+      <div className="text-default-500 mb-3 text-center font-mono text-[10px] tracking-[0.2em] uppercase">At a glance</div>
+      <div className="border-default-200 grid overflow-hidden rounded-[6px] border bg-white md:grid-cols-3">
+        {items.map((item) => (
+          <a
+            key={item.href}
+            href={item.href}
+            className="border-default-200 group p-5 text-center transition-colors hover:bg-default-50 md:border-r md:last:border-r-0 max-md:border-b max-md:last:border-b-0"
+          >
+            <strong className="text-primary-3 block text-[16px] tracking-[0.01em] uppercase">{item.title}</strong>
+            <span className="text-default-800 mt-2 block text-[14px] font-semibold">{item.big}</span>
+            {item.small ? <span className="text-default-500 mt-1 block text-[12px]">{item.small}</span> : null}
+            <span className="text-primary mt-2.5 block text-[10px] font-bold tracking-[0.08em] uppercase">View range ↓</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+)
+
+const Chapter = ({
+  id,
+  eyebrow,
+  title,
+  children,
+  stats,
+}: {
+  id: string
+  eyebrow: string
+  title: string
+  children: React.ReactNode
+  stats: { label: string; value: string }[]
+}) => (
+  <section id={id} className="bg-primary-3 scroll-mt-28 py-7 text-white lg:py-8" data-note="uri-product-chapter">
+    <div className="container">
+      <div className="flex items-start justify-between gap-10">
+        <div className="max-w-4xl">
+          <div className="text-[10px] tracking-[0.2em] text-white/65 uppercase">{eyebrow}</div>
+          <h2 className="mt-1.5 text-[30px] leading-tight font-bold tracking-[-0.03em] text-white lg:text-[34px]">{title}</h2>
+          <div className="mt-3 text-[14px] leading-relaxed text-white/88">{children}</div>
+        </div>
+        <dl className="hidden min-w-[150px] shrink-0 text-right lg:block">
+          {stats.map((stat) => (
+            <div key={stat.label} className="mb-2 last:mb-0">
+              <dt className="text-[9px] tracking-[0.16em] text-white/55 uppercase">{stat.label}</dt>
+              <dd className="mt-0.5 text-[14px] font-bold text-white">{stat.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
+  </section>
+)
+
+const ModuleWrap = ({ children }: { children: React.ReactNode }) => (
+  <section className="py-5 lg:py-8" data-note="uri-product-module">
+    <div className="container">{children}</div>
+  </section>
+)
+
+const Coatings = ({ resin = false }: { resin?: boolean }) => (
+  <>
+    <section id="coated" className="bg-primary-3 scroll-mt-28 py-4 text-white" data-note="uri-product-coatings-title">
+      <div className="container">
+        <div className="text-[10px] tracking-[0.2em] text-white/65 uppercase">Coating options</div>
+        <h2 className="mt-1 text-[23px] font-bold tracking-[-0.02em] text-white">Electroless Nickel &amp; PVD Coatings</h2>
+      </div>
+    </section>
+
+    <section className="border-default-200 bg-default-50 border-y py-8 lg:py-10" data-note="uri-product-coatings">
+      <div className="container">
+        <div className="grid items-start gap-9 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
+          <div>
+            <h3 className="text-primary-3 text-[27px] leading-tight font-bold">Electroless Nickel &amp; PVD Coatings</h3>
+            <p className="text-default-600 mt-3 max-w-2xl text-[13px] leading-relaxed">
+              {resin
+                ? 'Resin bond diamond is available with electroless nickel and specialised PVD metallic coatings for applications requiring improved retention, surface interaction or tailored tool behaviour.'
+                : 'Metal bond diamond is available with our nickel coatings in 30%, 56%, 60% and custom percentages, with either spiky or smooth nickel morphology. We also offer PVD metallic coatings for specialised requirements.'}
+            </p>
+            <div className="mt-5 text-[12px]">
+              <Link href="/contact" className="text-primary font-bold">Discuss coating requirements →</Link>
+              <Link href="/contact" className="mt-1.5 block font-bold tracking-[0.06em] uppercase" style={{ color: MINERAL_DEEP }}>Request a quote →</Link>
+            </div>
+          </div>
+
+          <div>
+            <div className="text-default-500 text-[9px] font-bold tracking-[0.08em] uppercase">Nickel coatings</div>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {(resin
+                ? ['Electroless Nickel 30%', 'Electroless Nickel 56%', 'Electroless Nickel 60%', 'Copper', 'Custom %']
+                : ['Electroless Nickel 30%', 'Electroless Nickel 56%', 'Electroless Nickel 60%', 'Custom %']
+              ).map((item) => (
+                <span key={item} className="border-default-200 rounded-[4px] border bg-white px-3 py-2 text-[11px] font-semibold">{item}</span>
+              ))}
+            </div>
+
+            <div className="text-default-500 mt-5 text-[9px] font-bold tracking-[0.08em] uppercase">PVD metallic coatings</div>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {['Titanium', 'Copper', 'TN', 'TiC', 'TiN', 'TiCN', 'Si', 'Cr', 'Zr', 'Al', 'AlN', 'Others'].map((item) => (
+                <span key={item} className="border-default-200 rounded-[4px] border bg-white px-3 py-2 text-[11px] font-semibold">{item}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </>
+)
+
+const ProcessStrip = ({ steps }: { steps: { n: string; title: string; note: string }[] }) => (
+  <div className="bg-primary-3 mt-6 grid overflow-hidden rounded-[7px] text-white shadow-[0_10px_24px_rgba(9,42,77,0.10)] sm:grid-cols-2 lg:grid-cols-4">
+    {steps.map((step, index) => (
+      <div key={step.n} className="relative border-white/15 p-4 sm:border-r sm:[&:nth-child(2)]:border-r-0 lg:[&:nth-child(2)]:border-r lg:last:border-r-0">
+        <span className="text-[9px] tracking-[0.14em]" style={{ color: MINERAL }}>{step.n}</span>
+        <strong className="mt-1.5 block text-[11px] tracking-[0.02em]">{step.title}</strong>
+        <small className="mt-1 block text-[10px] leading-snug text-white/70">{step.note}</small>
+        {index < steps.length - 1 ? <span aria-hidden className="absolute -right-2 top-4 z-10 hidden bg-primary-3 px-1 text-[15px] lg:block" style={{ color: MINERAL }}>→</span> : null}
+      </div>
+    ))}
+  </div>
+)
+
+const Spectrum = ({
+  title,
+  from,
+  to,
+  points,
+}: {
+  title: string
+  from: string
+  to: string
+  points: { title: string; lines: string[] }[]
+}) => (
+  <div className="border-default-200 relative mt-5 rounded-[7px] border border-t-4 bg-white p-5 shadow-[0_8px_22px_rgba(26,43,58,0.05)] lg:p-6" style={{ borderTopColor: MINERAL }}>
+    <div className="text-[9px] font-bold tracking-[0.17em] uppercase" style={{ color: MINERAL_DEEP }}>{title}</div>
+    <div className="text-default-500 mt-4 flex justify-between gap-6 text-[9px] font-bold uppercase">
+      <span>{from}</span>
+      <span className="text-right">{to}</span>
+    </div>
+    <div className="bg-default-300 relative my-2.5 h-0.5" />
+    <div className={`grid gap-3 ${points.length > 4 ? 'sm:grid-cols-2 lg:grid-cols-5' : points.length === 4 ? 'sm:grid-cols-2 lg:grid-cols-4' : 'sm:grid-cols-3'}`}>
+      {points.map((point) => (
+        <div key={point.title} className="border-t-3 px-2 pt-3 text-center" style={{ borderTopColor: MINERAL_DEEP }}>
+          <strong className="text-primary-3 block text-[13px]">{point.title}</strong>
+          {point.lines.map((line) => <span key={line} className="text-default-500 mt-1 block text-[10px] leading-snug">{line}</span>)}
+        </div>
+      ))}
+    </div>
+  </div>
+)
+
+const Insight = ({
+  kicker,
+  title,
+  children,
+  steps,
+  spectra,
+}: {
+  kicker: string
+  title: string
+  children: React.ReactNode
+  steps: { n: string; title: string; note: string }[]
+  spectra: React.ReactNode
+}) => (
+  <section className="border-default-200 relative overflow-hidden border-y bg-[linear-gradient(120deg,#f3f0ea_0%,#fff_43%,#edf3f6_100%)] py-12 lg:py-14" data-note="uri-product-insight">
+    <div aria-hidden className="absolute inset-y-0 left-0 w-2" style={{ background: MINERAL }} />
+    <div className="container relative">
+      <div className="max-w-5xl">
+        <div className="text-[10px] font-bold tracking-[0.2em] uppercase" style={{ color: MINERAL_DEEP }}>{kicker}</div>
+        <h2 className="text-primary-3 mt-2 text-[30px] leading-[1.08] font-bold tracking-[-0.035em] lg:text-[36px]">{title}</h2>
+        <div className="text-default-600 mt-3 max-w-3xl text-[14px] leading-[1.7]">{children}</div>
+        <ProcessStrip steps={steps} />
+        {spectra}
+      </div>
+    </div>
+  </section>
+)
+
+const sourceOption = (
+  id: string,
+  label: string,
+  detail: string | undefined,
+  title: string,
+  subtitle: string,
+  description: string,
+  image: string,
+  sizes?: string[],
+  sizeLabel?: string,
+  specs?: { label: string; value: string }[],
+): UriGradeOption => ({ id, label, detail, title, subtitle, description, image, sizes, sizeLabel, specs })
+
+const catalogGroups = ({
+  locale,
+  slug,
+  section,
+  image,
+  fallbacks,
+}: {
+  locale: Locale
+  slug: Slug
+  section: string
+  image: string
+  fallbacks: string[]
+}): UriGradeGroup[] => {
+  const cat = getSectionCatalog(locale, slug, section)
+  if (!cat?.series?.length) return []
+
+  return cat.series.map((series, seriesIndex) => {
+    const sectionSizes =
+      series.sizes ??
+      cat.meshSizes?.[seriesIndex]?.sizes ??
+      cat.micronSizes
+
+    return {
+      label: series.title.toUpperCase(),
+      options: series.grades.map((grade, gradeIndex) => ({
+        id: `${section}-${seriesIndex}-${gradeIndex}-${grade.code}-${grade.tag ?? ''}`,
+        label: grade.code,
+        title: grade.code,
+        subtitle: grade.tag ?? series.short ?? '',
+        description: grade.desc ?? series.note ?? fallbacks[seriesIndex] ?? fallbacks[0] ?? '',
+        image: getProductImageSrc(grade.image ?? series.image ?? cat.image) ?? image,
+        sizes: compactSizes(sectionSizes),
+        sizeLabel: cat.micronSizes ? 'AVAILABLE SIZES (µm)' : 'AVAILABLE SIZES (MESH)',
+      })),
+    }
+  })
+}
+
+const NaturalLayout = ({ locale }: { locale: Locale }) => {
+  const image = IMAGE.natural
+  const meshSizes = ['12/14', '14/16', '16/18', '18/20', '20/25', '25/30', '30/40', '40/50', '50/60', '…', '400/500']
+  const micronSizes = ['0–0.20', '0–0.25', '0–0.50', '0.25–0.75', '0–1', '0.50–1', '0.50–1.5', '0.75–1.25', '0–2', '1–2', '1–3', '2–4', '3–5', '3–6', '4–6', '4–8', '5–10', '6–12', '8–12', '8–16', '10–20', '12–22', '15–25', '20–30', '20–40', '30–40', '30–50', '40–50', '40–60']
+
+  const mesh: UriGradeGroup[] = [{
+    options: [
+      sourceOption('natural-blocky', 'BLOCKY', 'NS-100-P / MB-100-P', 'NS-100-P / MB-100-P', 'BLOCKY · HIGHER STRENGTH', 'Tough, strong natural diamond grit with a predominantly blocky morphology for applications requiring high crystal strength, durability and controlled cutting action.', image, meshSizes, 'AVAILABLE SIZES (MESH)'),
+      sourceOption('natural-regular', 'REGULAR', 'NS-1-P / MB-1-P', 'NS-1-P / MB-1-P', 'REGULAR · BALANCED MORPHOLOGY', 'General-purpose natural diamond grit with a balanced irregular morphology, combining good crystal strength with effective cutting action across a broad range of abrasive applications.', image, meshSizes, 'AVAILABLE SIZES (MESH)'),
+      sourceOption('natural-sharp', 'SHARP', 'NS-1-S / MB-1-S', 'NS-1-S / MB-1-S', 'SHARP · FREE-CUTTING', 'Sharp, angular natural diamond grit engineered for aggressive cutting and efficient material removal where a more free-cutting crystal morphology is preferred.', image, meshSizes, 'AVAILABLE SIZES (MESH)'),
+    ],
+  }]
+
+  const micron: UriGradeGroup[] = [{
+    options: [
+      sourceOption('natural-micron', 'MB-1-UM', undefined, 'MB-1-UM', '', 'Natural diamond micron powder with controlled particle-size distribution for consistent lapping, polishing and fine abrasive performance.', image, micronSizes, 'AVAILABLE SIZES (µm)'),
+    ],
+  }]
+
+  const rotary: UriGradeGroup[] = [
+    {
+      label: 'WD SERIES',
+      options: ['WD-AAA', 'WD-AA', 'WD-A'].map((code) => sourceOption(`wd-${code}`, code, undefined, 'Wholestone Diamonds', `WD SERIES · ${code}`, 'Natural rough industrial diamonds selected for strength, shape and suitability for industrial tooling.', image, undefined, undefined, [
+        { label: 'Series', value: 'WD' },
+        { label: 'Grades', value: 'WD-AAA · WD-AA · WD-A' },
+        { label: 'Sizing', value: 'Grade specific' },
+      ])),
+    },
+    {
+      label: 'RD SERIES',
+      options: ['RD90', 'RD10', 'RD Congo'].map((code) => sourceOption(`rd-${code}`, code, undefined, 'Rotary Diamonds', `RD SERIES · ${code}`, 'Natural industrial diamonds selected and graded for rotary tool applications where controlled crystal characteristics and dependable performance are required.', image, undefined, undefined, [
+        { label: 'Series', value: 'RD' },
+        { label: 'Grades', value: 'RD90 · RD10 · RD Congo' },
+        { label: 'Sizing', value: 'Grade specific' },
+      ])),
+    },
+  ]
+
+  return (
+    <>
+      <AtAGlance items={[
+        { href: '#grit', title: 'Natural Mesh', big: '3 grades', small: '12–500 mesh' },
+        { href: '#micron', title: 'Natural Micron', big: '1 grade', small: '0–0.25 → 40–60 µm' },
+        { href: '#rotary', title: 'Natural Rotary', big: '2 product lines · 6 grades' },
+      ]} />
+
+      <Chapter id="grit" eyebrow="01 / NATURAL MESH" title="Natural Diamond Mesh" stats={[{ label: 'Grades', value: '3' }, { label: 'Size range', value: '12–500' }]}>
+        Natural diamond mesh engineered across three distinct crystal morphologies, providing the right balance of toughness, cutting action and application performance.
+      </Chapter>
+      <ModuleWrap>
+        <UriGradeModule groups={mesh} variant="tiles" axis={{ from: '← Higher toughness', to: 'More free-cutting →' }} />
+      </ModuleWrap>
+
+      <Chapter id="micron" eyebrow="02 / NATURAL MICRON" title="Natural Diamond Micron Powder" stats={[{ label: 'Grades', value: '1' }, { label: 'Range', value: '0–0.25 → 40–60 µm' }]}>
+        Precision-graded natural diamond micron powder for controlled lapping, polishing and fine abrasive applications.
+      </Chapter>
+      <ModuleWrap>
+        <UriGradeModule groups={micron} variant="none" />
+      </ModuleWrap>
+
+      <Chapter id="rotary" eyebrow="03 / NATURAL ROTARY" title="Natural Rotary Diamonds" stats={[{ label: 'Product lines', value: '2' }, { label: 'Grades', value: '6' }]}>
+        <div className="grid gap-5 md:grid-cols-2 md:gap-9">
+          <p><strong className="text-white">Wholestone Diamonds</strong> — Our Wholestone Rough Industrial diamonds are mined diamonds in their natural state, before any processing or polishing has occurred.</p>
+          <p><strong className="text-white">Rotary Diamonds</strong> — Rotary Diamond Dressers are recognised as being an efficient and economic means of dressing grinding wheels to the correct form, tolerance and condition, for exceptional accuracy.</p>
+        </div>
+      </Chapter>
+      <ModuleWrap>
+        <UriGradeModule groups={rotary} variant="rows" ctaLead="Need a grade or selection not listed?" />
+      </ModuleWrap>
+
+      <Insight
+        kicker="Technical insight · From raw diamond to controlled abrasive"
+        title="How Natural Diamond Becomes a Precision Abrasive"
+        steps={[
+          { n: '01', title: 'RAW NATURAL DIAMOND', note: 'Selected industrial feedstock' },
+          { n: '02', title: 'CRUSHING & SHAPING', note: 'Particle morphology is developed' },
+          { n: '03', title: 'PRECISION GRADING', note: 'Controlled, repeatable size distribution' },
+          { n: '04', title: 'CONTROLLED ABRASIVE', note: 'Defined size, shape & cutting behaviour' },
+        ]}
+        spectra={
+          <Spectrum
+            title="Grade characteristics · Morphology"
+            from="Higher toughness / durability"
+            to="More free-cutting / aggressive"
+            points={[
+              { title: 'BLOCKY', lines: ['Strength · durability · controlled cutting'] },
+              { title: 'REGULAR', lines: ['Balanced strength and cutting action'] },
+              { title: 'SHARP', lines: ['Angular · aggressive material removal'] },
+            ]}
+          />
+        }
+      >
+        Natural diamond begins with inherent variation in crystal structure, shape and strength. Through controlled crushing, shaping and precision grading, that variable raw material is transformed into repeatable industrial abrasive grades with defined particle size and morphology. The result is a controlled balance between crystal strength, durability and cutting action for different tooling requirements.
+      </Insight>
+    </>
+  )
+}
+
+const MetalLayout = ({ locale }: { locale: Locale }) => {
+  const image = IMAGE.metal
+  const meshGroups = catalogGroups({
+    locale,
+    slug: 'metal-bond',
+    section: 'mesh',
+    image,
+    fallbacks: [
+      'Synthetic diamond grit engineered for sawing and drilling applications, with low, well-distributed metallic inclusion content for high thermal stability and particle strength.',
+      'Synthetic diamond grit developed for precision abrasive tooling, with a broad range of grades for metal, resin, vitrified and electroplated bond systems.',
+    ],
+  })
+  const micronGroups = catalogGroups({
+    locale,
+    slug: 'metal-bond',
+    section: 'micron',
+    image,
+    fallbacks: ['EID Metal Bond Synthetic Diamond Powders combine strong bond retention, high particle strength and thermal stability for demanding lapping, finishing and grinding applications.'],
+  })
+
+  return (
+    <>
+      <AtAGlance items={[
+        { href: '#mesh', title: 'Metal Bond Mesh', big: '16/18 → 400/500 mesh', small: '2 series · 17 grades' },
+        { href: '#micron', title: 'Metal Bond Micron', big: '0–0.20 → 40–60 µm', small: '1 series · 5 grades' },
+        { href: '#coated', title: 'Coating Options', big: 'Electroless Nickel & PVD', small: 'Coating technologies' },
+      ]} />
+
+      <Chapter id="mesh" eyebrow="01 / METAL BOND MESH" title="Metal Bond Mesh" stats={[{ label: 'Series', value: '2' }, { label: 'Grades', value: '17' }]}>
+        <p><strong className="text-white">ESN “Saw Grade” Series</strong> — Synthetic diamond grit engineered for sawing and drilling applications, with low, well-distributed metallic inclusion content for high thermal stability and particle strength.</p>
+        <p className="mt-2"><strong className="text-white">EDA “Wheel Grade” Series</strong> — Synthetic diamond grit developed for precision abrasive tooling, with a broad range of grades for metal, resin, vitrified and electroplated bond systems.</p>
+      </Chapter>
+      <ModuleWrap>
+        <UriGradeModule selectorTitle="SELECT SERIES & GRADE" groups={meshGroups} variant="rows" />
+      </ModuleWrap>
+
+      <Chapter id="micron" eyebrow="02 / METAL BOND MICRON" title="Metal Bond Micron" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '5' }]}>
+        EID Metal Bond Synthetic Diamond Powders combine strong bond retention, high particle strength and thermal stability for demanding lapping, finishing and grinding applications. Their blocky cubo-octahedral morphology and multiple cutting edges provide controlled abrasive performance across applications including glass, tungsten carbide and stone surfacing.
+      </Chapter>
+      <ModuleWrap>
+        <UriGradeModule groups={micronGroups} variant="buttons" />
+      </ModuleWrap>
+
+      <Coatings />
+
+      <Insight
+        kicker="Technical insight · Bond behaviour"
+        title="How Metal Bond Works"
+        steps={[
+          { n: '01', title: 'DIAMOND PARTICLE', note: 'Strength & morphology' },
+          { n: '02', title: 'BOND RETENTION', note: 'Held in hard matrix' },
+          { n: '03', title: 'CONTROLLED WEAR', note: 'Bond gradually recedes' },
+          { n: '04', title: 'FRESH EXPOSURE', note: 'Cutting action maintained' },
+        ]}
+        spectra={
+          <>
+            <Spectrum
+              title="ESN series · Saw grade"
+              from="Higher strength / thermal stability"
+              to="More free-cutting / cost-effective"
+              points={[
+                { title: 'ESN 770', lines: ['Supreme strength'] },
+                { title: 'ESN 750', lines: ['Extremely high strength'] },
+                { title: 'ESN 700', lines: ['Extremely high strength'] },
+                { title: 'ESN 600', lines: ['High strength'] },
+                { title: 'ESN 500', lines: ['High strength'] },
+                { title: 'ESN 400', lines: ['General purpose'] },
+                { title: 'ESN 300', lines: ['Medium strength'] },
+                { title: 'ESN 200', lines: ['Medium strength'] },
+                { title: 'ESN 75', lines: ['Medium–low strength'] },
+                { title: 'ESN 50', lines: ['Free cutting'] },
+              ]}
+            />
+            <Spectrum
+              title="EDA series · Wheel grade"
+              from="Higher toughness / impact resistance"
+              to="More free-cutting / lower abrasive strength"
+              points={[
+                { title: 'EDA 2395', lines: ['Extra tough'] },
+                { title: 'EDA 2360', lines: ['High toughness'] },
+                { title: 'EDA 2300', lines: ['Impact resistant'] },
+                { title: 'EDA 2215', lines: ['High strength'] },
+                { title: 'EDA 2125', lines: ['Life / finish balance'] },
+                { title: 'EDA 2050', lines: ['Fast cutting'] },
+                { title: 'EDA 2025', lines: ['Free cutting'] },
+              ]}
+            />
+          </>
+        }
+      >
+        Metal bond holds diamond mechanically within a hard, wear-resistant matrix. As the bond gradually wears, diamond particles are exposed to maintain cutting action. Performance depends on matching the <strong>strength, shape and thermal stability of the diamond to the bond and application</strong>, while selected coatings can further influence diamond retention and bond interaction.
+      </Insight>
+    </>
+  )
+}
+
+const ResinLayout = ({ locale }: { locale: Locale }) => {
+  const image = IMAGE.resin
+  const meshGroups = catalogGroups({
+    locale,
+    slug: 'resin-bond',
+    section: 'mesh',
+    image,
+    fallbacks: ['Crystals of irregular shape with a rough, mosaic structure for excellent bond retention and controlled micro-fracturing. A proven choice for high-quality resin and vitrified bonds in wet and dry grinding of tungsten carbide.'],
+  })
+  const micronGroups = catalogGroups({
+    locale,
+    slug: 'resin-bond',
+    section: 'micron',
+    image,
+    fallbacks: ['High surface toughness and tightly graded particles for resin bond wheels and tools. Effective for soft polishing and grinding of ceramics, carbides, glass and other hard materials where excellent surface finish is required.'],
+  })
+
+  return (
+    <>
+      <AtAGlance items={[
+        { href: '#mesh', title: 'Resin Bond Mesh', big: '50/60 → 400/500 mesh', small: '1 series · 4 grades' },
+        { href: '#micron', title: 'Resin Bond Micron', big: '0–0.20 → 40–60 µm', small: '1 series · 2 grades' },
+        { href: '#coated', title: 'Coating Options', big: 'Electroless Nickel & PVD', small: 'Coating technologies' },
+      ]} />
+
+      <Chapter id="mesh" eyebrow="01 / RESIN BOND MESH" title="Resin Bond Mesh" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '4' }]}>
+        EID Resin Bond Mesh is engineered for resin-bonded diamond wheels and non-ferrous grinding applications. Its multi-crystalline mosaic structure, rough surface and controlled friability continuously expose fresh cutting edges for fast, consistent cutting and long tool life.
+      </Chapter>
+      <ModuleWrap>
+        <UriGradeModule groups={meshGroups} variant="rows" />
+      </ModuleWrap>
+
+      <Chapter id="micron" eyebrow="02 / RESIN BOND MICRON" title="Resin Bond Micron" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '2' }]}>
+        EID Resin Bond Synthetic Diamond Powders combine friability, mosaic structure and irregular blocky particle morphology for soft polishing, lapping and fine grinding. Under stress, the diamond fractures to expose fresh cutting points, supporting fast cutting and excellent surface finish.
+      </Chapter>
+      <ModuleWrap>
+        <UriGradeModule groups={micronGroups} variant="buttons" />
+      </ModuleWrap>
+
+      <Coatings resin />
+
+      <Insight
+        kicker="Technical insight · Crystal behaviour"
+        title="Why Friability Matters in a Resin Bond"
+        steps={[
+          { n: '01', title: 'DIAMOND CRYSTAL', note: 'Friable structure' },
+          { n: '02', title: 'MICRO-FRACTURE', note: 'Controlled breakdown' },
+          { n: '03', title: 'FRESH EDGES', note: 'New cutting points' },
+          { n: '04', title: 'CONTINUED CUTTING', note: 'Sharp, cool action' },
+        ]}
+        spectra={
+          <Spectrum
+            title="Grade characteristics"
+            from="Higher strength / bond retention"
+            to="Higher friability / micro-fracturing"
+            points={[
+              { title: 'EDA 2023', lines: ['Intermediate strength', 'Controlled micro-fracturing'] },
+              { title: 'EFRD-S', lines: ['Self-sharpening', 'High bond retention'] },
+              { title: 'EDA 2021', lines: ['Friable', 'Cost-effective grinding'] },
+              { title: 'EDA 2020', lines: ['Highest friability', 'Precision surface finish'] },
+            ]}
+          />
+        }
+      >
+        A resin bond is softer than a metal bond and releases diamond more readily. Paired with a friable, multi-crystalline diamond, the crystal breaks down in a controlled way, continually exposing fresh cutting points rather than glazing over. This helps the tool stay sharp and cut cool, protecting surface finish on carbide, ceramic and glass. <strong>The grade determines how quickly this breakdown occurs, making the right level of friability an important part of matching the diamond to the application.</strong>
+      </Insight>
+    </>
+  )
+}
+
+const UriProductLayout = ({ slug, locale }: { slug: Slug; locale: Locale }) => {
+  if (slug === 'natural-grit-powder') return <NaturalLayout locale={locale} />
+  if (slug === 'metal-bond') return <MetalLayout locale={locale} />
+  return <ResinLayout locale={locale} />
+}
+
+export const isUriProductLayout = (slug: string): slug is Slug =>
+  slug === 'natural-grit-powder' || slug === 'metal-bond' || slug === 'resin-bond'
+
+export default UriProductLayout
