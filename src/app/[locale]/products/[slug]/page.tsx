@@ -120,21 +120,17 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
 
-      <PageHero
-        title={p.h1}
-        desc={p.metaDesc}
-        /* The group's own card render, so all eight product pages open on
-           different material instead of the same bordered header. These are
-           studio renders rather than EID's own output — fine behind a scrim
-           where the job is to identify the group, and they argue nothing. */
-        bgImage={productImage(p.slug)}
-        variant="band"
-      />
-
       {isUriProductLayout(slug) ? (
-        <UriProductLayout slug={slug} locale={locale} />
+        <UriProductLayout slug={slug} locale={locale} title={p.h1} desc={p.metaDesc} />
       ) : (
         <>
+          <PageHero
+            title={p.h1}
+            desc={p.metaDesc}
+            bgImage={productImage(p.slug)}
+            variant="band"
+          />
+
           {isSplit && <JumpNav items={p.sections.map((s) => ({ id: s.id, label: s.label }))} />}
 
       {/* ── OVERVIEW ─────────────────────────────────────────────────────
