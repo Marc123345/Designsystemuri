@@ -1,4 +1,5 @@
 import { RichParagraphs, RichText } from '@/components/RichText'
+import UriProductLayout, { isUriProductLayout } from '@/components/products/UriProductLayout'
 import Wireframe from '@/components/Wireframe'
 import { CatalogSpecs, CrossLinks, JumpNav, PageHero, ProductPhoto, SpecTable } from '@/components/sections'
 import { ArrowLink } from '@/components/ui'
@@ -130,7 +131,11 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
         variant="band"
       />
 
-      {isSplit && <JumpNav items={p.sections.map((s) => ({ id: s.id, label: s.label }))} />}
+      {isUriProductLayout(slug) ? (
+        <UriProductLayout slug={slug} locale={locale} />
+      ) : (
+        <>
+          {isSplit && <JumpNav items={p.sections.map((s) => ({ id: s.id, label: s.label }))} />}
 
       {/* ── OVERVIEW ─────────────────────────────────────────────────────
           About's `TheCompany` block on the left, the product's own summary as a
@@ -267,6 +272,8 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
           },
         ]}
       />
+        </>
+      )}
     </>
   )
 }
