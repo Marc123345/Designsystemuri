@@ -22,16 +22,27 @@ const compactSizes = (sizes: string[] | undefined, max = 11) => {
   return [...sizes.slice(0, max - 2), '…', sizes[sizes.length - 1]]
 }
 
-const AtAGlance = ({ items }: { items: { href: string; title: string; big: string; small?: string }[] }) => (
+const UriHero = ({ title, desc, centered = false }: { title: string; desc: string; centered?: boolean }) => (
+  <section className="bg-primary-3 pt-36 pb-14 text-white lg:pt-44 lg:pb-16" data-note="uri-product-hero">
+    <div className={`container ${centered ? 'text-center' : ''}`}>
+      <h1 className={`text-[38px] leading-[1.04] font-bold tracking-[-0.04em] text-white sm:text-[44px] lg:text-[48px] ${centered ? 'mx-auto' : ''}`}>
+        {title}
+      </h1>
+      <p className={`mt-4 max-w-3xl text-[14px] leading-[1.65] text-white/84 ${centered ? 'mx-auto' : ''}`}>{desc}</p>
+    </div>
+  </section>
+)
+
+const AtAGlance = ({ items, align = 'center' }: { items: { href: string; title: string; big: string; small?: string }[]; align?: 'left' | 'center' }) => (
   <section className="border-default-200 bg-default-50 border-b py-6 lg:py-7" data-note="uri-product-glance">
     <div className="container">
-      <div className="text-default-500 mb-3 text-center font-mono text-[10px] tracking-[0.2em] uppercase">At a glance</div>
+      <div className={`text-default-500 mb-3 font-mono text-[10px] tracking-[0.2em] uppercase ${align === 'center' ? 'text-center' : 'text-left'}`}>At a glance</div>
       <div className="border-default-200 grid overflow-hidden rounded-[6px] border bg-white md:grid-cols-3">
         {items.map((item) => (
           <a
             key={item.href}
             href={item.href}
-            className="border-default-200 group p-5 text-center transition-colors hover:bg-default-50 md:border-r md:last:border-r-0 max-md:border-b max-md:last:border-b-0"
+            className={`border-default-200 group p-5 transition-colors hover:bg-[#f3f0ea] md:border-r md:last:border-r-0 max-md:border-b max-md:last:border-b-0 ${align === 'center' ? 'text-center' : 'text-left'}`}
           >
             <strong className="text-primary-3 block text-[16px] tracking-[0.01em] uppercase">{item.title}</strong>
             <span className="text-default-800 mt-2 block text-[14px] font-semibold">{item.big}</span>
@@ -86,7 +97,8 @@ const ModuleWrap = ({ children }: { children: React.ReactNode }) => (
 
 const Coatings = ({ resin = false }: { resin?: boolean }) => (
   <>
-    <section id="coated" className="bg-primary-3 scroll-mt-28 py-4 text-white" data-note="uri-product-coatings-title">
+    <span id="coated" className="block scroll-mt-28" aria-hidden />
+    <section id="coating-options" className="bg-primary-3 scroll-mt-28 py-4 text-white" data-note="uri-product-coatings-title">
       <div className="container">
         <div className="text-[10px] tracking-[0.2em] text-white/65 uppercase">Coating options</div>
         <h2 className="mt-1 text-[23px] font-bold tracking-[-0.02em] text-white">Electroless Nickel &amp; PVD Coatings</h2>
@@ -99,9 +111,7 @@ const Coatings = ({ resin = false }: { resin?: boolean }) => (
           <div>
             <h3 className="text-primary-3 text-[27px] leading-tight font-bold">Electroless Nickel &amp; PVD Coatings</h3>
             <p className="text-default-600 mt-3 max-w-2xl text-[13px] leading-relaxed">
-              {resin
-                ? 'Resin bond diamond is available with electroless nickel and specialised PVD metallic coatings for applications requiring improved retention, surface interaction or tailored tool behaviour.'
-                : 'Metal bond diamond is available with our nickel coatings in 30%, 56%, 60% and custom percentages, with either spiky or smooth nickel morphology. We also offer PVD metallic coatings for specialised requirements.'}
+              {'Metal bond diamond is available with our nickel coatings in 30%, 56%, 60% and custom percentages, with either spiky or smooth nickel morphology. We also offer PVD metallic coatings for specialised requirements.'}
             </p>
             <div className="mt-5 text-[12px]">
               <Link href="/contact" className="text-primary font-bold">Discuss coating requirements →</Link>
@@ -151,23 +161,26 @@ const Spectrum = ({
   from,
   to,
   points,
+  note,
 }: {
   title: string
   from: string
   to: string
   points: { title: string; lines: string[] }[]
+  note?: string
 }) => (
   <div className="border-default-200 relative mt-5 rounded-[7px] border border-t-4 bg-white p-5 shadow-[0_8px_22px_rgba(26,43,58,0.05)] lg:p-6" style={{ borderTopColor: MINERAL }}>
     <div className="text-[9px] font-bold tracking-[0.17em] uppercase" style={{ color: MINERAL_DEEP }}>{title}</div>
+    {note ? <p className="text-default-500 mt-2 max-w-3xl text-[12px] leading-relaxed">{note}</p> : null}
     <div className="text-default-500 mt-4 flex justify-between gap-6 text-[9px] font-bold uppercase">
       <span>{from}</span>
       <span className="text-right">{to}</span>
     </div>
     <div className="bg-default-300 relative my-2.5 h-0.5" />
-    <div className={`grid gap-3 ${points.length > 4 ? 'sm:grid-cols-2 lg:grid-cols-5' : points.length === 4 ? 'sm:grid-cols-2 lg:grid-cols-4' : 'sm:grid-cols-3'}`}>
+    <div className={`grid gap-2 ${points.length === 10 ? 'sm:grid-cols-2 lg:grid-cols-10' : points.length === 7 ? 'sm:grid-cols-2 lg:grid-cols-7' : points.length === 4 ? 'sm:grid-cols-2 lg:grid-cols-4' : 'sm:grid-cols-3'}`}>
       {points.map((point) => (
         <div key={point.title} className="border-t-3 px-2 pt-3 text-center" style={{ borderTopColor: MINERAL_DEEP }}>
-          <strong className="text-primary-3 block text-[13px]">{point.title}</strong>
+          <strong className={`text-primary-3 block ${points.length > 4 ? 'text-[11px]' : 'text-[13px]'}`}>{point.title}</strong>
           {point.lines.map((line) => <span key={line} className="text-default-500 mt-1 block text-[10px] leading-snug">{line}</span>)}
         </div>
       ))}
@@ -253,7 +266,7 @@ const catalogGroups = ({
   })
 }
 
-const NaturalLayout = ({ locale }: { locale: Locale }) => {
+const NaturalLayout = ({ locale, title, desc }: { locale: Locale; title: string; desc: string }) => {
   const image = IMAGE.natural
   const meshSizes = ['12/14', '14/16', '16/18', '18/20', '20/25', '25/30', '30/40', '40/50', '50/60', '…', '400/500']
   const micronSizes = ['0–0.20', '0–0.25', '0–0.50', '0.25–0.75', '0–1', '0.50–1', '0.50–1.5', '0.75–1.25', '0–2', '1–2', '1–3', '2–4', '3–5', '3–6', '4–6', '4–8', '5–10', '6–12', '8–12', '8–16', '10–20', '12–22', '15–25', '20–30', '20–40', '30–40', '30–50', '40–50', '40–60']
@@ -293,13 +306,15 @@ const NaturalLayout = ({ locale }: { locale: Locale }) => {
 
   return (
     <>
-      <AtAGlance items={[
-        { href: '#grit', title: 'Natural Mesh', big: '3 grades', small: '12–500 mesh' },
+      <UriHero title={title} desc={desc} />
+      <AtAGlance align="left" items={[
+        { href: '#mesh', title: 'Natural Mesh', big: '3 grades', small: '12–500 mesh' },
         { href: '#micron', title: 'Natural Micron', big: '1 grade', small: '0–0.25 → 40–60 µm' },
         { href: '#rotary', title: 'Natural Rotary', big: '2 product lines · 6 grades' },
       ]} />
 
-      <Chapter id="grit" eyebrow="01 / NATURAL MESH" title="Natural Diamond Mesh" stats={[{ label: 'Grades', value: '3' }, { label: 'Size range', value: '12–500' }]}>
+      <span id="grit" className="block scroll-mt-28" aria-hidden />
+      <Chapter id="mesh" eyebrow="01 / NATURAL MESH" title="Natural Diamond Mesh" stats={[{ label: 'Grades', value: '3' }, { label: 'Size range', value: '12–500' }]}>
         Natural diamond mesh engineered across three distinct crystal morphologies, providing the right balance of toughness, cutting action and application performance.
       </Chapter>
       <ModuleWrap>
@@ -351,7 +366,7 @@ const NaturalLayout = ({ locale }: { locale: Locale }) => {
   )
 }
 
-const MetalLayout = ({ locale }: { locale: Locale }) => {
+const MetalLayout = ({ locale, title, desc }: { locale: Locale; title: string; desc: string }) => {
   const image = IMAGE.metal
   const meshGroups = catalogGroups({
     locale,
@@ -373,13 +388,15 @@ const MetalLayout = ({ locale }: { locale: Locale }) => {
 
   return (
     <>
+      <UriHero title={title} desc={desc} centered />
       <AtAGlance items={[
-        { href: '#mesh', title: 'Metal Bond Mesh', big: '16/18 → 400/500 mesh', small: '2 series · 17 grades' },
-        { href: '#micron', title: 'Metal Bond Micron', big: '0–0.20 → 40–60 µm', small: '1 series · 5 grades' },
-        { href: '#coated', title: 'Coating Options', big: 'Electroless Nickel & PVD', small: 'Coating technologies' },
+        { href: '#metal-bond-mesh', title: 'Metal Bond Mesh', big: '16/18 → 400/500 mesh', small: '2 series · 17 grades' },
+        { href: '#metal-bond-micron', title: 'Metal Bond Micron', big: '0–0.20 → 40–60 µm', small: '1 series · 5 grades' },
+        { href: '#coating-options', title: 'Coating Options', big: 'Electroless Nickel & PVD', small: 'Coating technologies' },
       ]} />
 
-      <Chapter id="mesh" eyebrow="01 / METAL BOND MESH" title="Metal Bond Mesh" stats={[{ label: 'Series', value: '2' }, { label: 'Grades', value: '17' }]}>
+      <span id="mesh" className="block scroll-mt-28" aria-hidden />
+      <Chapter id="metal-bond-mesh" eyebrow="01 / METAL BOND MESH" title="Metal Bond Mesh" stats={[{ label: 'Series', value: '2' }, { label: 'Grades', value: '17' }]}>
         <p><strong className="text-white">ESN “Saw Grade” Series</strong> — Synthetic diamond grit engineered for sawing and drilling applications, with low, well-distributed metallic inclusion content for high thermal stability and particle strength.</p>
         <p className="mt-2"><strong className="text-white">EDA “Wheel Grade” Series</strong> — Synthetic diamond grit developed for precision abrasive tooling, with a broad range of grades for metal, resin, vitrified and electroplated bond systems.</p>
       </Chapter>
@@ -387,7 +404,8 @@ const MetalLayout = ({ locale }: { locale: Locale }) => {
         <UriGradeModule selectorTitle="SELECT SERIES & GRADE" groups={meshGroups} variant="rows" />
       </ModuleWrap>
 
-      <Chapter id="micron" eyebrow="02 / METAL BOND MICRON" title="Metal Bond Micron" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '5' }]}>
+      <span id="micron" className="block scroll-mt-28" aria-hidden />
+      <Chapter id="metal-bond-micron" eyebrow="02 / METAL BOND MICRON" title="Metal Bond Micron" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '5' }]}>
         EID Metal Bond Synthetic Diamond Powders combine strong bond retention, high particle strength and thermal stability for demanding lapping, finishing and grinding applications. Their blocky cubo-octahedral morphology and multiple cutting edges provide controlled abrasive performance across applications including glass, tungsten carbide and stone surfacing.
       </Chapter>
       <ModuleWrap>
@@ -409,6 +427,7 @@ const MetalLayout = ({ locale }: { locale: Locale }) => {
           <>
             <Spectrum
               title="ESN series · Saw grade"
+              note="The two Metal Bond Mesh series are shown separately because ESN Saw Grades and EDA Wheel Grades are engineered for different tooling environments."
               from="Higher strength / thermal stability"
               to="More free-cutting / cost-effective"
               points={[
@@ -447,7 +466,7 @@ const MetalLayout = ({ locale }: { locale: Locale }) => {
   )
 }
 
-const ResinLayout = ({ locale }: { locale: Locale }) => {
+const ResinLayout = ({ locale, title, desc }: { locale: Locale; title: string; desc: string }) => {
   const image = IMAGE.resin
   const meshGroups = catalogGroups({
     locale,
@@ -466,20 +485,23 @@ const ResinLayout = ({ locale }: { locale: Locale }) => {
 
   return (
     <>
+      <UriHero title={title} desc={desc} centered />
       <AtAGlance items={[
-        { href: '#mesh', title: 'Resin Bond Mesh', big: '50/60 → 400/500 mesh', small: '1 series · 4 grades' },
-        { href: '#micron', title: 'Resin Bond Micron', big: '0–0.20 → 40–60 µm', small: '1 series · 2 grades' },
-        { href: '#coated', title: 'Coating Options', big: 'Electroless Nickel & PVD', small: 'Coating technologies' },
+        { href: '#resin-bond-mesh', title: 'Resin Bond Mesh', big: '50/60 → 400/500 mesh', small: '1 series · 4 grades' },
+        { href: '#resin-bond-micron', title: 'Resin Bond Micron', big: '0–0.20 → 40–60 µm', small: '1 series · 2 grades' },
+        { href: '#coating-options', title: 'Coating Options', big: 'Electroless Nickel & PVD', small: 'Coating technologies' },
       ]} />
 
-      <Chapter id="mesh" eyebrow="01 / RESIN BOND MESH" title="Resin Bond Mesh" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '4' }]}>
+      <span id="mesh" className="block scroll-mt-28" aria-hidden />
+      <Chapter id="resin-bond-mesh" eyebrow="01 / RESIN BOND MESH" title="Resin Bond Mesh" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '4' }]}>
         EID Resin Bond Mesh is engineered for resin-bonded diamond wheels and non-ferrous grinding applications. Its multi-crystalline mosaic structure, rough surface and controlled friability continuously expose fresh cutting edges for fast, consistent cutting and long tool life.
       </Chapter>
       <ModuleWrap>
         <UriGradeModule groups={meshGroups} variant="rows" />
       </ModuleWrap>
 
-      <Chapter id="micron" eyebrow="02 / RESIN BOND MICRON" title="Resin Bond Micron" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '2' }]}>
+      <span id="micron" className="block scroll-mt-28" aria-hidden />
+      <Chapter id="resin-bond-micron" eyebrow="02 / RESIN BOND MICRON" title="Resin Bond Micron" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '2' }]}>
         EID Resin Bond Synthetic Diamond Powders combine friability, mosaic structure and irregular blocky particle morphology for soft polishing, lapping and fine grinding. Under stress, the diamond fractures to expose fresh cutting points, supporting fast cutting and excellent surface finish.
       </Chapter>
       <ModuleWrap>
@@ -517,10 +539,10 @@ const ResinLayout = ({ locale }: { locale: Locale }) => {
   )
 }
 
-const UriProductLayout = ({ slug, locale }: { slug: Slug; locale: Locale }) => {
-  if (slug === 'natural-grit-powder') return <NaturalLayout locale={locale} />
-  if (slug === 'metal-bond') return <MetalLayout locale={locale} />
-  return <ResinLayout locale={locale} />
+const UriProductLayout = ({ slug, locale, title, desc }: { slug: Slug; locale: Locale; title: string; desc: string }) => {
+  if (slug === 'natural-grit-powder') return <NaturalLayout locale={locale} title={title} desc={desc} />
+  if (slug === 'metal-bond') return <MetalLayout locale={locale} title={title} desc={desc} />
+  return <ResinLayout locale={locale} title={title} desc={desc} />
 }
 
 export const isUriProductLayout = (slug: string): slug is Slug =>
