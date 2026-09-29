@@ -120,17 +120,17 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
 
+      <PageHero
+        title={p.h1}
+        desc={p.metaDesc}
+        bgImage={productImage(p.slug)}
+        variant="band"
+      />
+
       {isUriProductLayout(slug) ? (
-        <UriProductLayout slug={slug} locale={locale} title={p.h1} desc={p.metaDesc} />
+        <UriProductLayout slug={slug} locale={locale} />
       ) : (
         <>
-          <PageHero
-            title={p.h1}
-            desc={p.metaDesc}
-            bgImage={productImage(p.slug)}
-            variant="band"
-          />
-
           {isSplit && <JumpNav items={p.sections.map((s) => ({ id: s.id, label: s.label }))} />}
 
       {/* ── OVERVIEW ─────────────────────────────────────────────────────
