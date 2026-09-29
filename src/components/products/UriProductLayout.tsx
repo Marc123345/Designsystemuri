@@ -22,17 +22,6 @@ const compactSizes = (sizes: string[] | undefined, max = 11) => {
   return [...sizes.slice(0, max - 2), '…', sizes[sizes.length - 1]]
 }
 
-const UriHero = ({ title, desc, centered = false }: { title: string; desc: string; centered?: boolean }) => (
-  <section className="bg-primary-3 pt-36 pb-14 text-white lg:pt-44 lg:pb-16" data-note="uri-product-hero">
-    <div className={`container ${centered ? 'text-center' : ''}`}>
-      <h1 className={`text-[38px] leading-[1.04] font-bold tracking-[-0.04em] text-white sm:text-[44px] lg:text-[48px] ${centered ? 'mx-auto' : ''}`}>
-        {title}
-      </h1>
-      <p className={`mt-4 max-w-3xl text-[14px] leading-[1.65] text-white/84 ${centered ? 'mx-auto' : ''}`}>{desc}</p>
-    </div>
-  </section>
-)
-
 const AtAGlance = ({ items, align = 'center' }: { items: { href: string; title: string; big: string; small?: string }[]; align?: 'left' | 'center' }) => (
   <section className="border-default-200 bg-default-50 border-b py-6 lg:py-7" data-note="uri-product-glance">
     <div className="container">
@@ -266,7 +255,7 @@ const catalogGroups = ({
   })
 }
 
-const NaturalLayout = ({ locale, title, desc }: { locale: Locale; title: string; desc: string }) => {
+const NaturalLayout = ({ locale }: { locale: Locale }) => {
   const image = IMAGE.natural
   const meshSizes = ['12/14', '14/16', '16/18', '18/20', '20/25', '25/30', '30/40', '40/50', '50/60', '…', '400/500']
   const micronSizes = ['0–0.20', '0–0.25', '0–0.50', '0.25–0.75', '0–1', '0.50–1', '0.50–1.5', '0.75–1.25', '0–2', '1–2', '1–3', '2–4', '3–5', '3–6', '4–6', '4–8', '5–10', '6–12', '8–12', '8–16', '10–20', '12–22', '15–25', '20–30', '20–40', '30–40', '30–50', '40–50', '40–60']
@@ -306,7 +295,6 @@ const NaturalLayout = ({ locale, title, desc }: { locale: Locale; title: string;
 
   return (
     <>
-      <UriHero title={title} desc={desc} />
       <AtAGlance align="left" items={[
         { href: '#mesh', title: 'Natural Mesh', big: '3 grades', small: '12–500 mesh' },
         { href: '#micron', title: 'Natural Micron', big: '1 grade', small: '0–0.25 → 40–60 µm' },
@@ -366,7 +354,7 @@ const NaturalLayout = ({ locale, title, desc }: { locale: Locale; title: string;
   )
 }
 
-const MetalLayout = ({ locale, title, desc }: { locale: Locale; title: string; desc: string }) => {
+const MetalLayout = ({ locale }: { locale: Locale }) => {
   const image = IMAGE.metal
   const meshGroups = catalogGroups({
     locale,
@@ -388,7 +376,6 @@ const MetalLayout = ({ locale, title, desc }: { locale: Locale; title: string; d
 
   return (
     <>
-      <UriHero title={title} desc={desc} centered />
       <AtAGlance items={[
         { href: '#metal-bond-mesh', title: 'Metal Bond Mesh', big: '16/18 → 400/500 mesh', small: '2 series · 17 grades' },
         { href: '#metal-bond-micron', title: 'Metal Bond Micron', big: '0–0.20 → 40–60 µm', small: '1 series · 5 grades' },
@@ -466,7 +453,7 @@ const MetalLayout = ({ locale, title, desc }: { locale: Locale; title: string; d
   )
 }
 
-const ResinLayout = ({ locale, title, desc }: { locale: Locale; title: string; desc: string }) => {
+const ResinLayout = ({ locale }: { locale: Locale }) => {
   const image = IMAGE.resin
   const meshGroups = catalogGroups({
     locale,
@@ -539,10 +526,10 @@ const ResinLayout = ({ locale, title, desc }: { locale: Locale; title: string; d
   )
 }
 
-const UriProductLayout = ({ slug, locale, title, desc }: { slug: Slug; locale: Locale; title: string; desc: string }) => {
-  if (slug === 'natural-grit-powder') return <NaturalLayout locale={locale} title={title} desc={desc} />
-  if (slug === 'metal-bond') return <MetalLayout locale={locale} title={title} desc={desc} />
-  return <ResinLayout locale={locale} title={title} desc={desc} />
+const UriProductLayout = ({ slug, locale }: { slug: Slug; locale: Locale }) => {
+  if (slug === 'natural-grit-powder') return <NaturalLayout locale={locale} />
+  if (slug === 'metal-bond') return <MetalLayout locale={locale} />
+  return <ResinLayout locale={locale} />
 }
 
 export const isUriProductLayout = (slug: string): slug is Slug =>
