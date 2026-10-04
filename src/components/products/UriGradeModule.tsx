@@ -14,7 +14,10 @@ export type UriGradeOption = {
   image: string
   sizes?: string[]
   sizeLabel?: string
+  /** Several labelled chip rows (NS / MB series, drilling / mesh) in place of `sizes`. */
+  sizeSeries?: { label: string; sizes: string[] }[]
   specs?: { label: string; value: string }[]
+  note?: { lead: string; text: string }
 }
 
 export type UriGradeGroup = {
@@ -25,8 +28,10 @@ export type UriGradeGroup = {
 type Props = {
   selectorTitle?: string
   groups: UriGradeGroup[]
-  variant?: 'tiles' | 'rows' | 'buttons' | 'none'
+  variant?: 'tiles' | 'grouped-tiles' | 'rows' | 'buttons' | 'none'
   axis?: { from: string; to: string }
+  /** A one-line explanation printed under the selector. */
+  selectorNote?: { lead: string; text: string }
   ctaLead?: string
 }
 
@@ -35,6 +40,7 @@ const UriGradeModule = ({
   groups,
   variant = 'buttons',
   axis,
+  selectorNote,
   ctaLead = 'Need a size or format not listed?',
 }: Props) => {
   const all = useMemo(() => groups.flatMap((group) => group.options), [groups])
@@ -77,6 +83,32 @@ const UriGradeModule = ({
                   </button>
                 )
               })}
+            </div>
+          ) : variant === 'grouped-tiles' ? (
+            <div>
+              {groups.map((group, index) => (
+                <div key={group.label ?? index} className="border-default-200 [&+&]:mt-5 [&+&]:border-t [&+&]:pt-5">
+                  {group.label ? <div className="text-primary-3 mb-2.5 text-[10px] font-bold tracking-[0.11em] uppercase">{group.label}</div> : null}
+                  <div className="grid gap-2 sm:grid-cols-3">
+                    {group.options.map((option) => {
+                      const on = option.id === active.id
+                      return (
+                        <button
+                          key={option.id}
+                          type="button"
+                          onClick={() => setActiveId(option.id)}
+                          aria-pressed={on}
+                          className={`min-h-[66px] rounded-[4px] border px-3 py-2 text-center text-[13px] font-bold transition-colors ${
+                            on ? 'border-primary bg-primary/[0.07] text-primary border-2' : 'border-default-200 hover:border-[#9b8f7c] text-default-900 bg-white'
+                          }`}
+                        >
+                          {option.label}
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
           ) : variant === 'rows' ? (
             <div className="border-default-200 overflow-hidden rounded-[4px] border bg-white">
@@ -124,6 +156,12 @@ const UriGradeModule = ({
               })}
             </div>
           )}
+
+          {selectorNote ? (
+            <p className="text-default-500 mx-auto mt-4 max-w-3xl text-center text-[11px] leading-relaxed">
+              <strong className="text-default-700">{selectorNote.lead}</strong> {selectorNote.text}
+            </p>
+          ) : null}
         </div>
       ) : null}
 
@@ -156,6 +194,30 @@ const UriGradeModule = ({
                 ))}
               </div>
             </div>
+          ) : null}
+
+          {active.sizeSeries?.length ? (
+            <div className="border-default-200 mt-5 border-t pt-4">
+              {active.sizeLabel ? <div className="text-default-500 mb-2.5 text-[9px] font-bold tracking-[0.08em] uppercase">{active.sizeLabel}</div> : null}
+              {active.sizeSeries.map((series) => (
+                <div key={series.label} className="mt-3 first:mt-0">
+                  <div className="text-default-500 mb-2 text-[9px] font-bold tracking-[0.08em] uppercase">{series.label}</div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {series.sizes.map((size) => (
+                      <span key={size} className="border-default-200 text-default-700 rounded-[4px] border bg-white px-2.5 py-1.5 text-[10px]">
+                        {size}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : null}
+
+          {active.note ? (
+            <p className="text-default-500 mt-3 text-[11px] leading-relaxed">
+              <strong className="text-default-700">{active.note.lead}</strong> {active.note.text}
+            </p>
           ) : null}
 
           {active.specs?.length ? (

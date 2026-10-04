@@ -1,5 +1,5 @@
 import { RichParagraphs, RichText } from '@/components/RichText'
-import UriProductLayout, { isUriProductLayout } from '@/components/products/UriProductLayout'
+import UriProductLayout, { URI_HERO, isUriProductLayout } from '@/components/products/UriProductLayout'
 import Wireframe from '@/components/Wireframe'
 import { CatalogSpecs, CrossLinks, JumpNav, PageHero, ProductPhoto, SpecTable } from '@/components/sections'
 import { ArrowLink } from '@/components/ui'
@@ -121,8 +121,9 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
 
       <PageHero
+        eyebrow={isUriProductLayout(slug) ? URI_HERO[slug]?.eyebrow : undefined}
         title={p.h1}
-        desc={p.metaDesc}
+        desc={(isUriProductLayout(slug) && URI_HERO[slug]?.desc) || p.metaDesc}
         bgImage={productImage(p.slug)}
         variant="band"
       />

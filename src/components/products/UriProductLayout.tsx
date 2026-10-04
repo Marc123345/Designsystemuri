@@ -133,7 +133,7 @@ const Coatings = ({ resin = false }: { resin?: boolean }) => (
 )
 
 const ProcessStrip = ({ steps }: { steps: { n: string; title: string; note: string }[] }) => (
-  <div className="bg-primary-3 mt-6 grid overflow-hidden rounded-[7px] text-white shadow-[0_10px_24px_rgba(9,42,77,0.10)] sm:grid-cols-2 lg:grid-cols-4">
+  <div className={`bg-primary-3 mt-6 grid overflow-hidden rounded-[7px] text-white shadow-[0_10px_24px_rgba(9,42,77,0.10)] sm:grid-cols-2 ${steps.length === 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'}`}>
     {steps.map((step, index) => (
       <div key={step.n} className="relative border-white/15 p-4 sm:border-r sm:[&:nth-child(2)]:border-r-0 lg:[&:nth-child(2)]:border-r lg:last:border-r-0">
         <span className="text-[9px] tracking-[0.14em]" style={{ color: MINERAL }}>{step.n}</span>
@@ -255,41 +255,76 @@ const catalogGroups = ({
   })
 }
 
-const NaturalLayout = ({ locale }: { locale: Locale }) => {
+const NATURAL_MESH_PHOTO = {
+  superBlocky: 'https://ik.imagekit.io/qcvroy8xpd/super%20blocky.png',
+  blocky: 'https://ik.imagekit.io/qcvroy8xpd/blocky.png',
+  sharp: 'https://ik.imagekit.io/qcvroy8xpd/sharp.png',
+}
+const NATURAL_MICRON_PHOTO = 'https://ik.imagekit.io/qcvroy8xpd/natural%20micron.jpg'
+
+// Hero copy for the Uri layouts that carry their own wording; the product page
+// falls back to the catalogue h1 and meta description for anything not listed.
+export const URI_HERO: Partial<Record<Slug, { eyebrow: string; desc: string }>> = {
+  'natural-grit-powder': {
+    eyebrow: 'Natural Diamond',
+    desc: 'Natural industrial diamond in graded mesh, micron powder and rotary grades — processed in-house for controlled morphology, precision sizing and consistent abrasive performance.',
+  },
+}
+
+const NaturalLayout = () => {
   const image = IMAGE.natural
-  const meshSizes = ['12/14', '14/16', '16/18', '18/20', '20/25', '25/30', '30/40', '40/50', '50/60', '…', '400/500']
+  const meshSeries = [
+    { label: 'NS series', sizes: ['16/18', '18/20', '20/25', '20/30', '25/30', '30/35', '30/40', '35/40', '35/45', '40/45', '40/50', '45/50', '45/60', '50/60', '50/70'] },
+    { label: 'MB series', sizes: ['60/70', '60/80', '70/80', '80/100', '100/120', '120/140', '140/170', '170/200', '200/230', '230/270', '270/325', '325/400', '400/500'] },
+  ]
   const micronSizes = ['0–0.20', '0–0.25', '0–0.50', '0.25–0.75', '0–1', '0.50–1', '0.50–1.5', '0.75–1.25', '0–2', '1–2', '1–3', '2–4', '3–5', '3–6', '4–6', '4–8', '5–10', '6–12', '8–12', '8–16', '10–20', '12–22', '15–25', '20–30', '20–40', '30–40', '30–50', '40–50', '40–60']
+  const rotarySeries = [
+    { label: 'Available drilling sizes', sizes: ['1 carat', '3/4 ct', '1/2 ct', '1/3 ct', '5–6 SPC', '6–8 SPC', '8–10 SPC', 'Through to 500 SPC'] },
+    { label: 'Available mesh sizes', sizes: ['16/18', '18/20', '20/25', '25/30', '30/40', '40/50', '50/60', '60/80'] },
+  ]
+  const shapeNote = { lead: 'Shape factors:', text: 'Additional shape factors are available to suit specific client requirements.' }
+
+  const meshOption = (id: string, label: string, code: string, subtitle: string, description: string, photo: string): UriGradeOption => ({
+    ...sourceOption(id, label, code, code, subtitle, description, photo, undefined, 'AVAILABLE SIZES (MESH)'),
+    sizeSeries: meshSeries,
+  })
 
   const mesh: UriGradeGroup[] = [{
     options: [
-      sourceOption('natural-blocky', 'BLOCKY', 'NS-100-P / MB-100-P', 'NS-100-P / MB-100-P', 'BLOCKY · HIGHER STRENGTH', 'Tough, strong natural diamond grit with a predominantly blocky morphology for applications requiring high crystal strength, durability and controlled cutting action.', image, meshSizes, 'AVAILABLE SIZES (MESH)'),
-      sourceOption('natural-regular', 'REGULAR', 'NS-1-P / MB-1-P', 'NS-1-P / MB-1-P', 'REGULAR · BALANCED MORPHOLOGY', 'General-purpose natural diamond grit with a balanced irregular morphology, combining good crystal strength with effective cutting action across a broad range of abrasive applications.', image, meshSizes, 'AVAILABLE SIZES (MESH)'),
-      sourceOption('natural-sharp', 'SHARP', 'NS-1-S / MB-1-S', 'NS-1-S / MB-1-S', 'SHARP · FREE-CUTTING', 'Sharp, angular natural diamond grit engineered for aggressive cutting and efficient material removal where a more free-cutting crystal morphology is preferred.', image, meshSizes, 'AVAILABLE SIZES (MESH)'),
+      meshOption('natural-super-blocky', 'SUPER BLOCKY', 'NS-100-P / MB-100-P', 'SUPER BLOCKY · HIGHER STRENGTH', 'A high-strength, engineered natural diamond abrasive characterised by well-shaped, super-blocky crystals, excellent thermal stability and sharp cutting edges. Developed for demanding drilling, sawing and grinding applications across materials including concrete, masonry, glass, ceramics, plastics and tungsten carbide. Well suited to electroplated and metal-bond tooling, including free-cutting diamond tools and dental burs.', NATURAL_MESH_PHOTO.superBlocky),
+      meshOption('natural-blocky', 'BLOCKY', 'NS-1-P / MB-1-P', 'BLOCKY · BALANCED MORPHOLOGY', 'A versatile natural diamond abrasive engineered for dependable, free-cutting performance across everyday industrial tooling. Its strong, well-formed crystals combine sharp cutting edges with controlled wear and good thermal stability, providing an effective balance of cutting efficiency, tool life and cost. Designed for sawing, drilling and grinding stone, concrete, masonry and refractories, and well suited to metal-bond and electroplated tools.', NATURAL_MESH_PHOTO.blocky),
+      meshOption('natural-sharp', 'SHARP', 'NS-1-S / MB-1-S', 'SHARP · FREE-CUTTING', 'A sharp, angular natural diamond abrasive developed for fast, free-cutting action and efficient material removal. Its more irregular morphology provides aggressive cutting edges for applications where cutting speed and an open abrasive action are prioritised.', NATURAL_MESH_PHOTO.sharp),
     ],
   }]
 
   const micron: UriGradeGroup[] = [{
     options: [
-      sourceOption('natural-micron', 'MB-1-UM', undefined, 'MB-1-UM', '', 'Natural diamond micron powder with controlled particle-size distribution for consistent lapping, polishing and fine abrasive performance.', image, micronSizes, 'AVAILABLE SIZES (µm)'),
+      sourceOption('natural-micron', 'MB-1-UM', undefined, 'MB-1-UM', '', 'A precision-sized natural diamond powder combining the inherent hardness and cutting efficiency of natural diamond with tightly controlled particle sizing. Available across a broad micron range, MB-1-UM delivers consistent abrasive action and surface finish for precision lapping, polishing and fine grinding applications.', NATURAL_MICRON_PHOTO, micronSizes, 'AVAILABLE SIZES (µm)'),
     ],
   }]
 
+  const rotaryOption = (code: string, subtitle: string, description: string): UriGradeOption => ({
+    ...sourceOption(`rotary-${code}`, code, undefined, code, subtitle, description, image),
+    sizeSeries: rotarySeries,
+    note: shapeNote,
+  })
+
   const rotary: UriGradeGroup[] = [
     {
-      label: 'WD SERIES',
-      options: ['WD-AAA', 'WD-AA', 'WD-A'].map((code) => sourceOption(`wd-${code}`, code, undefined, 'Wholestone Diamonds', `WD SERIES · ${code}`, 'Natural rough industrial diamonds selected for strength, shape and suitability for industrial tooling.', image, undefined, undefined, [
-        { label: 'Series', value: 'WD' },
-        { label: 'Grades', value: 'WD-AAA · WD-AA · WD-A' },
-        { label: 'Sizing', value: 'Grade specific' },
-      ])),
+      label: 'Wholestone Diamonds',
+      options: [
+        rotaryOption('WD-AAA', 'Wholestone Diamond', 'Premium natural Wholestone diamond selected for the highest degree of natural crystal form in the range.'),
+        rotaryOption('WD-AA', 'Wholestone Diamond', 'High-quality natural Wholestone diamond with a highly crystalline natural form, selected slightly below WD-AAA in crystal definition.'),
+        rotaryOption('WD-A', 'Wholestone Diamond', 'Selected natural Wholestone diamond with good natural crystal form, grading slightly below WD-AA in crystal definition.'),
+      ],
     },
     {
-      label: 'RD SERIES',
-      options: ['RD90', 'RD10', 'RD Congo'].map((code) => sourceOption(`rd-${code}`, code, undefined, 'Rotary Diamonds', `RD SERIES · ${code}`, 'Natural industrial diamonds selected and graded for rotary tool applications where controlled crystal characteristics and dependable performance are required.', image, undefined, undefined, [
-        { label: 'Series', value: 'RD' },
-        { label: 'Grades', value: 'RD90 · RD10 · RD Congo' },
-        { label: 'Sizing', value: 'Grade specific' },
-      ])),
+      label: 'Rotary Diamonds',
+      options: [
+        rotaryOption('RD90', 'Rotary Diamond', 'A top-quality natural diamond grade selected for rotary dressing applications, offering strong, well-formed crystals for consistent dressing performance.'),
+        rotaryOption('RD10', 'Rotary Diamond', 'A lightly tumbled natural diamond grade with a more rounded morphology, developed for rotary dressing applications requiring a less angular crystal profile.'),
+        rotaryOption('RD CONGO', 'Rotary Diamond', 'A natural diamond grade with characteristics comparable to RD90, produced specifically from selected Congo-origin natural diamond raw material for rotary dressing applications.'),
+      ],
     },
   ]
 
@@ -302,15 +337,20 @@ const NaturalLayout = ({ locale }: { locale: Locale }) => {
       ]} />
 
       <span id="grit" className="block scroll-mt-28" aria-hidden />
-      <Chapter id="mesh" eyebrow="01 / NATURAL MESH" title="Natural Diamond Mesh" stats={[{ label: 'Grades', value: '3' }, { label: 'Size range', value: '12–500' }]}>
-        Natural diamond mesh engineered across three distinct crystal morphologies, providing the right balance of toughness, cutting action and application performance.
+      <Chapter id="mesh" eyebrow="01 / NATURAL MESH" title="Natural Mesh" stats={[{ label: 'Grades', value: '3' }, { label: 'Size range', value: '16/18 → 400/500 mesh' }]}>
+        Natural diamond grit engineered across distinct crystal morphologies to balance strength, durability and cutting action for demanding industrial abrasive applications.
       </Chapter>
       <ModuleWrap>
-        <UriGradeModule groups={mesh} variant="tiles" axis={{ from: '← Higher toughness', to: 'More free-cutting →' }} />
+        <UriGradeModule
+          groups={mesh}
+          variant="tiles"
+          axis={{ from: '← Higher toughness', to: 'More free-cutting →' }}
+          selectorNote={{ lead: 'NS / MB designation refers to sizing range.', text: 'Grade characteristics and morphology remain consistent across both designations.' }}
+        />
       </ModuleWrap>
 
-      <Chapter id="micron" eyebrow="02 / NATURAL MICRON" title="Natural Diamond Micron Powder" stats={[{ label: 'Grades', value: '1' }, { label: 'Range', value: '0–0.25 → 40–60 µm' }]}>
-        Precision-graded natural diamond micron powder for controlled lapping, polishing and fine abrasive applications.
+      <Chapter id="micron" eyebrow="02 / NATURAL MICRON" title="Natural Micron" stats={[{ label: 'Grades', value: '1' }, { label: 'Size range', value: '0–0.20 → 40–60 µm' }]}>
+        Precision-graded natural diamond powder engineered around the exceptional hardness and cutting efficiency of natural diamond. Strong, well-shaped crystalline particles combine controlled blocky morphology with sharp cutting edges to deliver consistent abrasive action, efficient material removal and high-quality surface finishes across precision lapping, polishing and fine grinding applications.
       </Chapter>
       <ModuleWrap>
         <UriGradeModule groups={micron} variant="none" />
@@ -319,11 +359,11 @@ const NaturalLayout = ({ locale }: { locale: Locale }) => {
       <Chapter id="rotary" eyebrow="03 / NATURAL ROTARY" title="Natural Rotary Diamonds" stats={[{ label: 'Product lines', value: '2' }, { label: 'Grades', value: '6' }]}>
         <div className="grid gap-5 md:grid-cols-2 md:gap-9">
           <p><strong className="text-white">Wholestone Diamonds</strong> — Our Wholestone Rough Industrial diamonds are mined diamonds in their natural state, before any processing or polishing has occurred.</p>
-          <p><strong className="text-white">Rotary Diamonds</strong> — Rotary Diamond Dressers are recognised as being an efficient and economic means of dressing grinding wheels to the correct form, tolerance and condition, for exceptional accuracy.</p>
+          <p><strong className="text-white">Rotary Diamonds</strong> — Rotary Diamond Dressers provide an efficient, economical means of dressing grinding wheels to the correct form, tolerance and condition for exceptional accuracy.</p>
         </div>
       </Chapter>
       <ModuleWrap>
-        <UriGradeModule groups={rotary} variant="rows" ctaLead="Need a grade or selection not listed?" />
+        <UriGradeModule groups={rotary} variant="grouped-tiles" ctaLead="Need a grade or selection not listed?" />
       </ModuleWrap>
 
       <Insight
@@ -331,9 +371,10 @@ const NaturalLayout = ({ locale }: { locale: Locale }) => {
         title="How Natural Diamond Becomes a Precision Abrasive"
         steps={[
           { n: '01', title: 'RAW NATURAL DIAMOND', note: 'Selected industrial feedstock' },
-          { n: '02', title: 'CRUSHING & SHAPING', note: 'Particle morphology is developed' },
-          { n: '03', title: 'PRECISION GRADING', note: 'Controlled, repeatable size distribution' },
-          { n: '04', title: 'CONTROLLED ABRASIVE', note: 'Defined size, shape & cutting behaviour' },
+          { n: '02', title: 'CONTROLLED CRUSHING', note: 'Raw diamond is reduced for further processing' },
+          { n: '03', title: 'ADVANCED CHEMICAL CLEANING', note: 'Residual processing contaminants are removed' },
+          { n: '04', title: 'PRECISION GRADING & SHAPING', note: 'Controlled sizing and morphology to application requirements' },
+          { n: '05', title: 'CONTROLLED ABRASIVE', note: 'Defined size, shape & cutting behaviour' },
         ]}
         spectra={
           <Spectrum
@@ -341,14 +382,14 @@ const NaturalLayout = ({ locale }: { locale: Locale }) => {
             from="Higher toughness / durability"
             to="More free-cutting / aggressive"
             points={[
-              { title: 'BLOCKY', lines: ['Strength · durability · controlled cutting'] },
-              { title: 'REGULAR', lines: ['Balanced strength and cutting action'] },
+              { title: 'SUPER BLOCKY', lines: ['Well-formed crystals · strength · durability'] },
+              { title: 'BLOCKY', lines: ['Strong crystalline form · balanced cutting action'] },
               { title: 'SHARP', lines: ['Angular · aggressive material removal'] },
             ]}
           />
         }
       >
-        Natural diamond begins with inherent variation in crystal structure, shape and strength. Through controlled crushing, shaping and precision grading, that variable raw material is transformed into repeatable industrial abrasive grades with defined particle size and morphology. The result is a controlled balance between crystal strength, durability and cutting action for different tooling requirements.
+        Natural diamond begins with inherent variation in crystal structure, shape and strength. Through controlled crushing, advanced chemical cleaning, precision grading and shaping, that variable raw material is transformed into repeatable industrial abrasive grades with defined particle size and morphology. The result is a controlled balance between crystal strength, durability and cutting action for different tooling requirements.
       </Insight>
     </>
   )
@@ -472,7 +513,6 @@ const ResinLayout = ({ locale }: { locale: Locale }) => {
 
   return (
     <>
-      <UriHero title={title} desc={desc} centered />
       <AtAGlance items={[
         { href: '#resin-bond-mesh', title: 'Resin Bond Mesh', big: '50/60 → 400/500 mesh', small: '1 series · 4 grades' },
         { href: '#resin-bond-micron', title: 'Resin Bond Micron', big: '0–0.20 → 40–60 µm', small: '1 series · 2 grades' },
@@ -527,7 +567,7 @@ const ResinLayout = ({ locale }: { locale: Locale }) => {
 }
 
 const UriProductLayout = ({ slug, locale }: { slug: Slug; locale: Locale }) => {
-  if (slug === 'natural-grit-powder') return <NaturalLayout locale={locale} />
+  if (slug === 'natural-grit-powder') return <NaturalLayout />
   if (slug === 'metal-bond') return <MetalLayout locale={locale} />
   return <ResinLayout locale={locale} />
 }
