@@ -261,6 +261,7 @@ const NATURAL_MESH_PHOTO = {
   sharp: 'https://ik.imagekit.io/qcvroy8xpd/sharp.png',
 }
 const NATURAL_MICRON_PHOTO = 'https://ik.imagekit.io/qcvroy8xpd/natural%20micron.jpg'
+const NATURAL_MICRON_SEM = 'https://ik.imagekit.io/qcvroy8xpd/MB-1-UM%2012-22%20jpg.jpg'
 
 // Hero copy for the Uri layouts that carry their own wording; the product page
 // falls back to the catalogue h1 and meta description for anything not listed.
@@ -274,13 +275,13 @@ export const URI_HERO: Partial<Record<Slug, { eyebrow: string; desc: string }>> 
 const NaturalLayout = () => {
   const image = IMAGE.natural
   const meshSeries = [
-    { label: 'NS series', sizes: ['16/18', '18/20', '20/25', '20/30', '25/30', '30/35', '30/40', '35/40', '35/45', '40/45', '40/50', '45/50', '45/60', '50/60', '50/70'] },
-    { label: 'MB series', sizes: ['60/70', '60/80', '70/80', '80/100', '100/120', '120/140', '140/170', '170/200', '200/230', '230/270', '270/325', '325/400', '400/500'] },
+    { label: 'NS SERIES', sizes: ['16/18', '18/20', '20/25', '20/30', '25/30', '30/35', '30/40', '35/40', '35/45', '40/45', '40/50', '45/50', '45/60', '50/60', '50/70'] },
+    { label: 'MB SERIES', sizes: ['60/70', '60/80', '70/80', '80/100', '100/120', '120/140', '140/170', '170/200', '200/230', '230/270', '270/325', '325/400', '400/500'] },
   ]
   const micronSizes = ['0–0.20', '0–0.25', '0–0.50', '0.25–0.75', '0–1', '0.50–1', '0.50–1.5', '0.75–1.25', '0–2', '1–2', '1–3', '2–4', '3–5', '3–6', '4–6', '4–8', '5–10', '6–12', '8–12', '8–16', '10–20', '12–22', '15–25', '20–30', '20–40', '30–40', '30–50', '40–50', '40–60']
   const rotarySeries = [
-    { label: 'Available drilling sizes', sizes: ['1 carat', '3/4 ct', '1/2 ct', '1/3 ct', '5–6 SPC', '6–8 SPC', '8–10 SPC', 'Through to 500 SPC'] },
-    { label: 'Available mesh sizes', sizes: ['16/18', '18/20', '20/25', '25/30', '30/40', '40/50', '50/60', '60/80'] },
+    { label: 'AVAILABLE DRILLING SIZES', sizes: ['1 carat', '3/4 ct', '1/2 ct', '1/3 ct', '5–6 SPC', '6–8 SPC', '8–10 SPC', 'Through to 500 SPC'] },
+    { label: 'AVAILABLE MESH SIZES', sizes: ['16/18', '18/20', '20/25', '25/30', '30/40', '40/50', '50/60', '60/80'] },
   ]
   const shapeNote = { lead: 'Shape factors:', text: 'Additional shape factors are available to suit specific client requirements.' }
 
@@ -299,7 +300,13 @@ const NaturalLayout = () => {
 
   const micron: UriGradeGroup[] = [{
     options: [
-      sourceOption('natural-micron', 'MB-1-UM', undefined, 'MB-1-UM', '', 'A precision-sized natural diamond powder combining the inherent hardness and cutting efficiency of natural diamond with tightly controlled particle sizing. Available across a broad micron range, MB-1-UM delivers consistent abrasive action and surface finish for precision lapping, polishing and fine grinding applications.', NATURAL_MICRON_PHOTO, micronSizes, 'AVAILABLE SIZES (µm)'),
+      {
+        ...sourceOption('natural-micron', 'MB-1-UM', undefined, 'MB-1-UM', '', 'A precision-sized natural diamond powder combining the inherent hardness and cutting efficiency of natural diamond with tightly controlled particle sizing. Available across a broad micron range, MB-1-UM delivers consistent abrasive action and surface finish for precision lapping, polishing and fine grinding applications.', NATURAL_MICRON_PHOTO, micronSizes, 'AVAILABLE SIZES (µm)'),
+        gallery: [
+          { src: NATURAL_MICRON_SEM, alt: 'SEM micrograph of MB-1-UM natural diamond micron powder, 12–22 micrometres', caption: 'MB-1-UM · SEM MORPHOLOGY · 12–22 µm', className: 'h-[235px] md:h-[260px] [&_img]:object-[center_43%]' },
+          { src: NATURAL_MICRON_PHOTO, alt: 'EID MB-1-UM natural diamond micron powder in labelled sample containers', caption: 'MB-1-UM · NATURAL MICRON RANGE', className: 'h-[154px] md:h-[170px]' },
+        ],
+      },
     ],
   }]
 

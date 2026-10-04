@@ -223,7 +223,11 @@ const Navbar = () => {
 
           <div className="ms-auto flex shrink-0 items-center gap-2.5 lg:ms-0 lg:gap-4">
             <LanguageSwitcher />
-            <ArrowButton href="/contact" label={t(locale, 'Contact')} size="sm" className="hidden md:inline-flex" />
+            {/* Desktop only: below lg the hamburger shows and Contact lives in the menu. Wrapped
+                because ArrowButton's own inline-flex can override a `hidden` passed to it. */}
+            <div className="hidden lg:block">
+              <ArrowButton href="/contact" label={t(locale, 'Contact')} size="sm" />
+            </div>
 
             <button
               type="button"

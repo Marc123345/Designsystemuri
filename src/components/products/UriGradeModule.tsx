@@ -18,6 +18,8 @@ export type UriGradeOption = {
   sizeSeries?: { label: string; sizes: string[] }[]
   specs?: { label: string; value: string }[]
   note?: { lead: string; text: string }
+  /** Captioned photos stacked in the image column in place of `image`. */
+  gallery?: { src: string; alt: string; caption: string; className?: string }[]
 }
 
 export type UriGradeGroup = {
@@ -166,16 +168,29 @@ const UriGradeModule = ({
       ) : null}
 
       <div className="grid md:grid-cols-[42%_58%]">
-        <div className="border-default-200 bg-default-100 relative min-h-[230px] overflow-hidden border-b md:min-h-[310px] md:border-r md:border-b-0">
-          <Image
-            key={active.id}
-            src={active.image}
-            alt={`${active.title} — EID`}
-            fill
-            sizes="(min-width: 768px) 42vw, 100vw"
-            className="object-cover"
-          />
-        </div>
+        {active.gallery?.length ? (
+          <div className="border-default-200 bg-default-100 flex flex-col justify-center gap-2.5 border-b p-3 md:border-r md:border-b-0">
+            {active.gallery.map((photo) => (
+              <figure key={photo.src} className="border-default-200 m-0 overflow-hidden rounded-[4px] border bg-white">
+                <div className={`relative ${photo.className ?? 'h-[235px]'}`}>
+                  <Image src={photo.src} alt={photo.alt} fill sizes="(min-width: 768px) 42vw, 100vw" className="object-cover" />
+                </div>
+                <figcaption className="text-default-500 px-2.5 py-2 text-[9px] font-bold tracking-[0.08em]">{photo.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
+        ) : (
+          <div className="border-default-200 bg-default-100 relative min-h-[230px] overflow-hidden border-b md:min-h-[310px] md:border-r md:border-b-0">
+            <Image
+              key={active.id}
+              src={active.image}
+              alt={`${active.title} — EID`}
+              fill
+              sizes="(min-width: 768px) 42vw, 100vw"
+              className="object-cover"
+            />
+          </div>
+        )}
 
         <div className="p-6 lg:p-8">
           <h3 className="text-primary-3 text-[24px] leading-tight font-bold tracking-[-0.025em] lg:text-[27px]">{active.title}</h3>
@@ -185,7 +200,8 @@ const UriGradeModule = ({
 
           {active.sizes?.length ? (
             <div className="border-default-200 mt-5 border-t pt-4">
-              <div className="text-default-500 text-[9px] font-bold tracking-[0.08em] uppercase">{active.sizeLabel ?? 'AVAILABLE SIZES'}</div>
+              {/* No `uppercase`: CSS uppercasing turns µ into M, so labels are written in caps. */}
+              <div className="text-default-500 text-[9px] font-bold tracking-[0.08em]">{active.sizeLabel ?? 'AVAILABLE SIZES'}</div>
               <div className="mt-2 flex flex-wrap gap-1.5">
                 {active.sizes.map((size) => (
                   <span key={size} className="border-default-200 text-default-700 rounded-[4px] border bg-white px-2.5 py-1.5 text-[10px]">
@@ -198,10 +214,10 @@ const UriGradeModule = ({
 
           {active.sizeSeries?.length ? (
             <div className="border-default-200 mt-5 border-t pt-4">
-              {active.sizeLabel ? <div className="text-default-500 mb-2.5 text-[9px] font-bold tracking-[0.08em] uppercase">{active.sizeLabel}</div> : null}
+              {active.sizeLabel ? <div className="text-default-500 mb-2.5 text-[9px] font-bold tracking-[0.08em]">{active.sizeLabel}</div> : null}
               {active.sizeSeries.map((series) => (
                 <div key={series.label} className="mt-3 first:mt-0">
-                  <div className="text-default-500 mb-2 text-[9px] font-bold tracking-[0.08em] uppercase">{series.label}</div>
+                  <div className="text-default-500 mb-2 text-[9px] font-bold tracking-[0.08em]">{series.label}</div>
                   <div className="flex flex-wrap gap-1.5">
                     {series.sizes.map((size) => (
                       <span key={size} className="border-default-200 text-default-700 rounded-[4px] border bg-white px-2.5 py-1.5 text-[10px]">
