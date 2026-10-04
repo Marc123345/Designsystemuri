@@ -8,8 +8,6 @@ import { T } from '@/components/products/uriType'
 
 type Slug = 'natural-grit-powder' | 'metal-bond' | 'resin-bond'
 
-const MINERAL = '#d8d1c3'
-const MINERAL_DEEP = '#9b8f7c'
 
 const IMAGE = {
   natural: 'https://ik.imagekit.io/qcvroy8xpd/eid-product-natural-grit-powder.png',
@@ -32,7 +30,7 @@ const AtAGlance = ({ items, align = 'center' }: { items: { href: string; title: 
           <a
             key={item.href}
             href={item.href}
-            className={`border-default-200 group p-5 transition-colors hover:bg-[#f3f0ea] md:border-r md:last:border-r-0 max-md:border-b max-md:last:border-b-0 ${align === 'center' ? 'text-center' : 'text-left'}`}
+            className={`border-default-200 group p-5 transition-colors hover:bg-default-50 md:border-r md:last:border-r-0 max-md:border-b max-md:last:border-b-0 ${align === 'center' ? 'text-center' : 'text-left'}`}
           >
             <strong className="text-primary-3 block text-base font-bold uppercase">{item.title}</strong>
             <span className="text-default-800 mt-2 block text-sm font-semibold">{item.big}</span>
@@ -105,7 +103,7 @@ const Coatings = ({ resin = false }: { resin?: boolean }) => (
             </p>
             <div className={`mt-5 ${T.small}`}>
               <Link href="/contact" className="text-primary inline-flex min-h-11 items-center font-bold lg:inline lg:min-h-0">Discuss coating requirements →</Link>
-              <Link href="/contact" className="flex min-h-11 items-center font-bold tracking-[0.06em] uppercase lg:mt-1.5 lg:block lg:min-h-0" style={{ color: MINERAL_DEEP }}>Request a quote →</Link>
+              <Link href="/contact" className="text-primary flex min-h-11 items-center font-bold tracking-[0.06em] uppercase lg:mt-1.5 lg:block lg:min-h-0">Request a quote →</Link>
             </div>
           </div>
 
@@ -137,10 +135,10 @@ const ProcessStrip = ({ steps }: { steps: { n: string; title: string; note: stri
   <div className={`bg-primary-3 mt-6 grid overflow-hidden rounded-card text-white shadow-[0_10px_24px_rgba(9,42,77,0.10)] sm:grid-cols-2 ${steps.length === 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'}`}>
     {steps.map((step, index) => (
       <div key={step.n} className="relative border-white/15 p-4 sm:border-r sm:[&:nth-child(2)]:border-r-0 lg:[&:nth-child(2)]:border-r lg:last:border-r-0">
-        <span className={T.eyebrow} style={{ color: MINERAL }}>{step.n}</span>
+        <span className={`text-white/60 ${T.eyebrow}`}>{step.n}</span>
         <strong className={`mt-2 block ${T.control}`}>{step.title}</strong>
         <small className="mt-1 block text-sm leading-snug text-white/75">{step.note}</small>
-        {index < steps.length - 1 ? <span aria-hidden className="absolute -right-2 top-4 z-10 hidden bg-primary-3 px-1 text-[15px] lg:block" style={{ color: MINERAL }}>→</span> : null}
+        {index < steps.length - 1 ? <span aria-hidden className="absolute -right-2 top-4 z-10 hidden bg-primary-3 px-1 text-[15px] text-white/60 lg:block">→</span> : null}
       </div>
     ))}
   </div>
@@ -159,8 +157,8 @@ const Spectrum = ({
   points: { title: string; lines: string[] }[]
   note?: string
 }) => (
-  <div className="border-default-200 relative mt-5 overflow-hidden rounded-card border border-t-4 bg-white p-5 shadow-[0_8px_22px_rgba(26,43,58,0.05)] lg:p-6" style={{ borderTopColor: MINERAL }}>
-    <div className={T.eyebrow} style={{ color: MINERAL_DEEP }}>{title}</div>
+  <div className="border-default-200 relative mt-5 overflow-hidden rounded-card border bg-white p-5 shadow-[0_8px_22px_rgba(26,43,58,0.05)] lg:p-6">
+    <div className={`text-primary ${T.eyebrow}`}>{title}</div>
     {note ? <p className={`text-default-500 mt-2 max-w-3xl ${T.small}`}>{note}</p> : null}
     <div className={`text-default-500 mt-4 flex justify-between gap-6 uppercase ${T.label}`}>
       <span>{from}</span>
@@ -169,7 +167,7 @@ const Spectrum = ({
     <div className="bg-default-300 relative my-2.5 h-0.5" />
     <div className={`grid gap-2 ${points.length === 10 ? 'grid-cols-2 lg:grid-cols-10' : points.length === 7 ? 'grid-cols-2 lg:grid-cols-7' : points.length === 4 ? 'grid-cols-2 lg:grid-cols-4' : 'sm:grid-cols-3'}`}>
       {points.map((point) => (
-        <div key={point.title} className="border-t-3 px-2 pt-3 text-center" style={{ borderTopColor: MINERAL_DEEP }}>
+        <div key={point.title} className="border-primary border-t-3 px-2 pt-3 text-center">
           <strong className={`text-primary-3 block ${points.length > 4 ? 'text-xs font-bold' : T.control}`}>{point.title}</strong>
           {point.lines.map((line) => <span key={line} className="text-default-500 mt-1 block text-sm leading-snug">{line}</span>)}
         </div>
@@ -191,11 +189,10 @@ const Insight = ({
   steps: { n: string; title: string; note: string }[]
   spectra: React.ReactNode
 }) => (
-  <section className="border-default-200 relative overflow-hidden border-y bg-[linear-gradient(120deg,#f3f0ea_0%,#fff_43%,#edf3f6_100%)] py-12 lg:py-14" data-note="uri-product-insight">
-    <div aria-hidden className="absolute inset-y-0 left-0 w-2" style={{ background: MINERAL }} />
+  <section className="border-default-200 relative overflow-hidden border-y bg-white py-12 lg:py-14" data-note="uri-product-insight">
     <div className="container relative">
       <div className="max-w-5xl">
-        <div className={T.eyebrow} style={{ color: MINERAL_DEEP }}>{kicker}</div>
+        <div className={`text-primary ${T.eyebrow}`}>{kicker}</div>
         <h2 className={`text-primary-3 mt-2 ${T.h2}`}>{title}</h2>
         <div className={`text-default-600 mt-3 max-w-3xl ${T.body}`}>{children}</div>
         <ProcessStrip steps={steps} />

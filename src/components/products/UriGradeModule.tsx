@@ -78,7 +78,7 @@ const UriGradeModule = ({
                     onClick={() => setActiveId(option.id)}
                     aria-pressed={on}
                     className={`min-h-[66px] rounded-[4px] border px-3 py-2 text-center transition-colors ${
-                      on ? 'border-primary bg-primary/[0.07] text-primary border-2' : 'border-default-200 hover:border-[#9b8f7c] text-default-900 bg-white'
+                      on ? 'border-primary bg-primary/[0.07] text-primary border-2' : 'border-default-200 hover:border-primary text-default-900 bg-white'
                     }`}
                   >
                     <span className={`block ${T.control}`}>{option.label}</span>
@@ -102,7 +102,7 @@ const UriGradeModule = ({
                           onClick={() => setActiveId(option.id)}
                           aria-pressed={on}
                           className={`min-h-[66px] rounded-[4px] border px-3 py-2 text-center ${T.control} transition-colors ${
-                            on ? 'border-primary bg-primary/[0.07] text-primary border-2' : 'border-default-200 hover:border-[#9b8f7c] text-default-900 bg-white'
+                            on ? 'border-primary bg-primary/[0.07] text-primary border-2' : 'border-default-200 hover:border-primary text-default-900 bg-white'
                           }`}
                         >
                           {option.label}
@@ -128,7 +128,7 @@ const UriGradeModule = ({
                           onClick={() => setActiveId(option.id)}
                           aria-pressed={on}
                           className={`min-h-11 rounded-[4px] border px-3 py-2 ${T.control} transition-colors ${
-                            on ? 'border-primary bg-primary text-white shadow-[inset_0_-3px_0_#d8d1c3]' : 'border-default-200 text-default-700 hover:border-[#9b8f7c] bg-white'
+                            on ? 'border-primary bg-primary text-white' : 'border-default-200 text-default-700 hover:border-primary bg-white'
                           }`}
                         >
                           {option.label}
@@ -150,7 +150,7 @@ const UriGradeModule = ({
                     onClick={() => setActiveId(option.id)}
                     aria-pressed={on}
                     className={`min-h-11 rounded-[4px] border px-3.5 py-2.5 ${T.control} transition-colors ${
-                      on ? 'border-primary bg-primary text-white shadow-[inset_0_-3px_0_#d8d1c3]' : 'border-default-200 text-default-700 hover:border-[#9b8f7c] bg-white'
+                      on ? 'border-primary bg-primary text-white' : 'border-default-200 text-default-700 hover:border-primary bg-white'
                     }`}
                   >
                     {option.label}
@@ -195,7 +195,7 @@ const UriGradeModule = ({
 
         <div className="p-6 lg:p-8">
           <h3 className={`text-primary-3 ${T.h3}`}>{active.title}</h3>
-          {active.subtitle ? <div className={`mt-2 text-[#9b8f7c] uppercase ${T.label}`}>{active.subtitle}</div> : null}
+          {active.subtitle ? <div className={`text-primary mt-2 uppercase ${T.label}`}>{active.subtitle}</div> : null}
 
           <p className={`text-default-600 mt-4 ${T.body}`}>{active.description}</p>
 
@@ -251,7 +251,7 @@ const UriGradeModule = ({
           <div className={`border-default-200 mt-6 border-t pt-4 ${T.small}`}>
             <strong className="text-default-900">{ctaLead}</strong>{' '}
             <Link href="/contact" className="text-primary inline-flex min-h-11 items-center font-bold hover:underline lg:inline lg:min-h-0">Ask our technical team →</Link>
-            <Link href="/contact" className="flex min-h-11 items-center font-bold tracking-[0.04em] text-[#9b8f7c] uppercase lg:mt-1.5 lg:block lg:min-h-0">Request a quote →</Link>
+            <Link href="/contact" className="flex min-h-11 items-center text-primary font-bold tracking-[0.04em] uppercase lg:mt-1.5 lg:block lg:min-h-0">Request a quote →</Link>
           </div>
         </div>
       </div>
