@@ -4,6 +4,7 @@ import type { Locale } from '@/i18n/routing'
 import { productImage } from '@/lib/card-media'
 import { getSectionCatalog } from '@/lib/i18n-content'
 import { getProductImageSrc } from '@/lib/product-images'
+import { T } from '@/components/products/uriType'
 
 type Slug = 'natural-grit-powder' | 'metal-bond' | 'resin-bond'
 
@@ -25,7 +26,7 @@ const compactSizes = (sizes: string[] | undefined, max = 11) => {
 const AtAGlance = ({ items, align = 'center' }: { items: { href: string; title: string; big: string; small?: string }[]; align?: 'left' | 'center' }) => (
   <section className="border-default-200 bg-default-50 border-b py-6 lg:py-7" data-note="uri-product-glance">
     <div className="container">
-      <div className={`text-default-500 mb-3 font-mono text-[10px] tracking-[0.2em] uppercase ${align === 'center' ? 'text-center' : 'text-left'}`}>At a glance</div>
+      <div className={`text-default-500 mb-3 ${T.eyebrow} ${align === 'center' ? 'text-center' : 'text-left'}`}>At a glance</div>
       <div className="border-default-200 grid overflow-hidden rounded-card border bg-white md:grid-cols-3">
         {items.map((item) => (
           <a
@@ -33,10 +34,10 @@ const AtAGlance = ({ items, align = 'center' }: { items: { href: string; title: 
             href={item.href}
             className={`border-default-200 group p-5 transition-colors hover:bg-[#f3f0ea] md:border-r md:last:border-r-0 max-md:border-b max-md:last:border-b-0 ${align === 'center' ? 'text-center' : 'text-left'}`}
           >
-            <strong className="text-primary-3 block text-[16px] tracking-[0.01em] uppercase">{item.title}</strong>
-            <span className="text-default-800 mt-2 block text-[14px] font-semibold">{item.big}</span>
-            {item.small ? <span className="text-default-500 mt-1 block text-[12px]">{item.small}</span> : null}
-            <span className="text-primary mt-2.5 block text-[10px] font-bold tracking-[0.08em] uppercase">View range ↓</span>
+            <strong className="text-primary-3 block text-base font-bold uppercase">{item.title}</strong>
+            <span className="text-default-800 mt-2 block text-sm font-semibold">{item.big}</span>
+            {item.small ? <span className="text-default-500 mt-1 block text-sm">{item.small}</span> : null}
+            <span className={`text-primary mt-2.5 block uppercase ${T.label}`}>View range ↓</span>
           </a>
         ))}
       </div>
@@ -61,15 +62,15 @@ const Chapter = ({
     <div className="container">
       <div className="flex items-start justify-between gap-10">
         <div className="max-w-4xl">
-          <div className="text-[10px] tracking-[0.2em] text-white/65 uppercase">{eyebrow}</div>
-          <h2 className="mt-1.5 text-[30px] leading-tight font-bold tracking-[-0.03em] text-white lg:text-[34px]">{title}</h2>
-          <div className="mt-3 text-[14px] leading-relaxed text-white/88">{children}</div>
+          <div className={`text-white/70 ${T.eyebrow}`}>{eyebrow}</div>
+          <h2 className={`mt-2 text-white ${T.h2}`}>{title}</h2>
+          <div className={`mt-3 text-white/88 ${T.body}`}>{children}</div>
         </div>
         <dl className="hidden min-w-[150px] shrink-0 text-right lg:block">
           {stats.map((stat) => (
             <div key={stat.label} className="mb-2 last:mb-0">
-              <dt className="text-[9px] tracking-[0.16em] text-white/55 uppercase">{stat.label}</dt>
-              <dd className="mt-0.5 text-[14px] font-bold text-white">{stat.value}</dd>
+              <dt className={`text-white/60 uppercase ${T.label}`}>{stat.label}</dt>
+              <dd className="mt-0.5 text-base font-bold text-white">{stat.value}</dd>
             </div>
           ))}
         </dl>
@@ -89,8 +90,8 @@ const Coatings = ({ resin = false }: { resin?: boolean }) => (
     <span id="coated" className="block scroll-mt-28" aria-hidden />
     <section id="coating-options" className="bg-primary-3 scroll-mt-28 py-4 text-white" data-note="uri-product-coatings-title">
       <div className="container">
-        <div className="text-[10px] tracking-[0.2em] text-white/65 uppercase">Coating options</div>
-        <h2 className="mt-1 text-[23px] font-bold tracking-[-0.02em] text-white">Electroless Nickel &amp; PVD Coatings</h2>
+        <div className={`text-white/70 ${T.eyebrow}`}>Coating options</div>
+        <h2 className={`mt-2 text-white ${T.h2}`}>Electroless Nickel &amp; PVD Coatings</h2>
       </div>
     </section>
 
@@ -98,31 +99,31 @@ const Coatings = ({ resin = false }: { resin?: boolean }) => (
       <div className="container">
         <div className="grid items-start gap-9 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
           <div>
-            <h3 className="text-primary-3 text-[27px] leading-tight font-bold">Electroless Nickel &amp; PVD Coatings</h3>
-            <p className="text-default-600 mt-3 max-w-2xl text-[13px] leading-relaxed">
+            <h3 className={`text-primary-3 ${T.h3}`}>Electroless Nickel &amp; PVD Coatings</h3>
+            <p className={`text-default-600 mt-3 max-w-2xl ${T.body}`}>
               {'Metal bond diamond is available with our nickel coatings in 30%, 56%, 60% and custom percentages, with either spiky or smooth nickel morphology. We also offer PVD metallic coatings for specialised requirements.'}
             </p>
-            <div className="mt-5 text-[12px]">
+            <div className={`mt-5 ${T.small}`}>
               <Link href="/contact" className="text-primary font-bold">Discuss coating requirements →</Link>
               <Link href="/contact" className="mt-1.5 block font-bold tracking-[0.06em] uppercase" style={{ color: MINERAL_DEEP }}>Request a quote →</Link>
             </div>
           </div>
 
           <div>
-            <div className="text-default-500 text-[9px] font-bold tracking-[0.08em] uppercase">Nickel coatings</div>
+            <div className={`text-default-500 uppercase ${T.label}`}>Nickel coatings</div>
             <div className="mt-2 flex flex-wrap gap-2">
               {(resin
                 ? ['Electroless Nickel 30%', 'Electroless Nickel 56%', 'Electroless Nickel 60%', 'Copper', 'Custom %']
                 : ['Electroless Nickel 30%', 'Electroless Nickel 56%', 'Electroless Nickel 60%', 'Custom %']
               ).map((item) => (
-                <span key={item} className="border-default-200 rounded-[4px] border bg-white px-3 py-2 text-[11px] font-semibold">{item}</span>
+                <span key={item} className={`border-default-200 rounded-[4px] border bg-white px-3 py-2 font-semibold ${T.chip}`}>{item}</span>
               ))}
             </div>
 
-            <div className="text-default-500 mt-5 text-[9px] font-bold tracking-[0.08em] uppercase">PVD metallic coatings</div>
+            <div className={`text-default-500 mt-5 uppercase ${T.label}`}>PVD metallic coatings</div>
             <div className="mt-2 flex flex-wrap gap-2">
               {['Titanium', 'Copper', 'TN', 'TiC', 'TiN', 'TiCN', 'Si', 'Cr', 'Zr', 'Al', 'AlN', 'Others'].map((item) => (
-                <span key={item} className="border-default-200 rounded-[4px] border bg-white px-3 py-2 text-[11px] font-semibold">{item}</span>
+                <span key={item} className={`border-default-200 rounded-[4px] border bg-white px-3 py-2 font-semibold ${T.chip}`}>{item}</span>
               ))}
             </div>
           </div>
@@ -136,9 +137,9 @@ const ProcessStrip = ({ steps }: { steps: { n: string; title: string; note: stri
   <div className={`bg-primary-3 mt-6 grid overflow-hidden rounded-card text-white shadow-[0_10px_24px_rgba(9,42,77,0.10)] sm:grid-cols-2 ${steps.length === 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'}`}>
     {steps.map((step, index) => (
       <div key={step.n} className="relative border-white/15 p-4 sm:border-r sm:[&:nth-child(2)]:border-r-0 lg:[&:nth-child(2)]:border-r lg:last:border-r-0">
-        <span className="text-[9px] tracking-[0.14em]" style={{ color: MINERAL }}>{step.n}</span>
-        <strong className="mt-1.5 block text-[11px] tracking-[0.02em]">{step.title}</strong>
-        <small className="mt-1 block text-[10px] leading-snug text-white/70">{step.note}</small>
+        <span className={T.eyebrow} style={{ color: MINERAL }}>{step.n}</span>
+        <strong className={`mt-2 block ${T.control}`}>{step.title}</strong>
+        <small className="mt-1 block text-sm leading-snug text-white/75">{step.note}</small>
         {index < steps.length - 1 ? <span aria-hidden className="absolute -right-2 top-4 z-10 hidden bg-primary-3 px-1 text-[15px] lg:block" style={{ color: MINERAL }}>→</span> : null}
       </div>
     ))}
@@ -159,9 +160,9 @@ const Spectrum = ({
   note?: string
 }) => (
   <div className="border-default-200 relative mt-5 overflow-hidden rounded-card border border-t-4 bg-white p-5 shadow-[0_8px_22px_rgba(26,43,58,0.05)] lg:p-6" style={{ borderTopColor: MINERAL }}>
-    <div className="text-[9px] font-bold tracking-[0.17em] uppercase" style={{ color: MINERAL_DEEP }}>{title}</div>
-    {note ? <p className="text-default-500 mt-2 max-w-3xl text-[12px] leading-relaxed">{note}</p> : null}
-    <div className="text-default-500 mt-4 flex justify-between gap-6 text-[9px] font-bold uppercase">
+    <div className={T.eyebrow} style={{ color: MINERAL_DEEP }}>{title}</div>
+    {note ? <p className={`text-default-500 mt-2 max-w-3xl ${T.small}`}>{note}</p> : null}
+    <div className={`text-default-500 mt-4 flex justify-between gap-6 uppercase ${T.label}`}>
       <span>{from}</span>
       <span className="text-right">{to}</span>
     </div>
@@ -169,8 +170,8 @@ const Spectrum = ({
     <div className={`grid gap-2 ${points.length === 10 ? 'sm:grid-cols-2 lg:grid-cols-10' : points.length === 7 ? 'sm:grid-cols-2 lg:grid-cols-7' : points.length === 4 ? 'sm:grid-cols-2 lg:grid-cols-4' : 'sm:grid-cols-3'}`}>
       {points.map((point) => (
         <div key={point.title} className="border-t-3 px-2 pt-3 text-center" style={{ borderTopColor: MINERAL_DEEP }}>
-          <strong className={`text-primary-3 block ${points.length > 4 ? 'text-[11px]' : 'text-[13px]'}`}>{point.title}</strong>
-          {point.lines.map((line) => <span key={line} className="text-default-500 mt-1 block text-[10px] leading-snug">{line}</span>)}
+          <strong className={`text-primary-3 block ${points.length > 4 ? 'text-xs font-bold' : T.control}`}>{point.title}</strong>
+          {point.lines.map((line) => <span key={line} className="text-default-500 mt-1 block text-sm leading-snug">{line}</span>)}
         </div>
       ))}
     </div>
@@ -194,9 +195,9 @@ const Insight = ({
     <div aria-hidden className="absolute inset-y-0 left-0 w-2" style={{ background: MINERAL }} />
     <div className="container relative">
       <div className="max-w-5xl">
-        <div className="text-[10px] font-bold tracking-[0.2em] uppercase" style={{ color: MINERAL_DEEP }}>{kicker}</div>
-        <h2 className="text-primary-3 mt-2 text-[30px] leading-[1.08] font-bold tracking-[-0.035em] lg:text-[36px]">{title}</h2>
-        <div className="text-default-600 mt-3 max-w-3xl text-[14px] leading-[1.7]">{children}</div>
+        <div className={T.eyebrow} style={{ color: MINERAL_DEEP }}>{kicker}</div>
+        <h2 className={`text-primary-3 mt-2 ${T.h2}`}>{title}</h2>
+        <div className={`text-default-600 mt-3 max-w-3xl ${T.body}`}>{children}</div>
         <ProcessStrip steps={steps} />
         {spectra}
       </div>
@@ -280,7 +281,7 @@ const NaturalLayout = () => {
   ]
   const micronSizes = ['0–0.20', '0–0.25', '0–0.50', '0.25–0.75', '0–1', '0.50–1', '0.50–1.5', '0.75–1.25', '0–2', '1–2', '1–3', '2–4', '3–5', '3–6', '4–6', '4–8', '5–10', '6–12', '8–12', '8–16', '10–20', '12–22', '15–25', '20–30', '20–40', '30–40', '30–50', '40–50', '40–60']
   const rotarySeries = [
-    { label: 'AVAILABLE DRILLING SIZES', sizes: ['1 carat', '3/4 ct', '1/2 ct', '1/3 ct', '5–6 SPC', '6–8 SPC', '8–10 SPC', 'Through to 500 SPC'] },
+    { label: 'AVAILABLE DRILLING SIZES', sizes: ['1 CARAT', '3/4 CT', '1/2 CT', '1/3 CT', '5–6 SPC', '6–8 SPC', '8–10 SPC', 'THROUGH TO 500 SPC'] },
     { label: 'AVAILABLE MESH SIZES', sizes: ['16/18', '18/20', '20/25', '25/30', '30/40', '40/50', '50/60', '60/80'] },
   ]
   const shapeNote = { lead: 'Shape factors:', text: 'Additional shape factors are available to suit specific client requirements.' }
