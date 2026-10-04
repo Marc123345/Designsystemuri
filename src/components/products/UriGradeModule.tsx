@@ -52,7 +52,7 @@ const UriGradeModule = ({
   const selector = variant !== 'none' && all.length > 1
 
   return (
-    <div className="border-default-200 overflow-hidden rounded-[7px] border bg-white shadow-[0_5px_18px_rgba(20,36,50,0.05)]">
+    <div className="border-default-200 overflow-hidden rounded-card border bg-white shadow-[0_5px_18px_rgba(20,36,50,0.05)]">
       {selector ? (
         <div className="border-default-200 bg-default-50 border-b p-5 lg:p-6">
           <div className="text-default-500 mb-3 text-center font-mono text-[9px] font-bold tracking-[0.2em] uppercase">{selectorTitle}</div>

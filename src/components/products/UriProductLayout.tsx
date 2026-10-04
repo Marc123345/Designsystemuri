@@ -26,7 +26,7 @@ const AtAGlance = ({ items, align = 'center' }: { items: { href: string; title: 
   <section className="border-default-200 bg-default-50 border-b py-6 lg:py-7" data-note="uri-product-glance">
     <div className="container">
       <div className={`text-default-500 mb-3 font-mono text-[10px] tracking-[0.2em] uppercase ${align === 'center' ? 'text-center' : 'text-left'}`}>At a glance</div>
-      <div className="border-default-200 grid overflow-hidden rounded-[6px] border bg-white md:grid-cols-3">
+      <div className="border-default-200 grid overflow-hidden rounded-card border bg-white md:grid-cols-3">
         {items.map((item) => (
           <a
             key={item.href}
@@ -133,7 +133,7 @@ const Coatings = ({ resin = false }: { resin?: boolean }) => (
 )
 
 const ProcessStrip = ({ steps }: { steps: { n: string; title: string; note: string }[] }) => (
-  <div className={`bg-primary-3 mt-6 grid overflow-hidden rounded-[7px] text-white shadow-[0_10px_24px_rgba(9,42,77,0.10)] sm:grid-cols-2 ${steps.length === 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'}`}>
+  <div className={`bg-primary-3 mt-6 grid overflow-hidden rounded-card text-white shadow-[0_10px_24px_rgba(9,42,77,0.10)] sm:grid-cols-2 ${steps.length === 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'}`}>
     {steps.map((step, index) => (
       <div key={step.n} className="relative border-white/15 p-4 sm:border-r sm:[&:nth-child(2)]:border-r-0 lg:[&:nth-child(2)]:border-r lg:last:border-r-0">
         <span className="text-[9px] tracking-[0.14em]" style={{ color: MINERAL }}>{step.n}</span>
@@ -158,7 +158,7 @@ const Spectrum = ({
   points: { title: string; lines: string[] }[]
   note?: string
 }) => (
-  <div className="border-default-200 relative mt-5 rounded-[7px] border border-t-4 bg-white p-5 shadow-[0_8px_22px_rgba(26,43,58,0.05)] lg:p-6" style={{ borderTopColor: MINERAL }}>
+  <div className="border-default-200 relative mt-5 overflow-hidden rounded-card border border-t-4 bg-white p-5 shadow-[0_8px_22px_rgba(26,43,58,0.05)] lg:p-6" style={{ borderTopColor: MINERAL }}>
     <div className="text-[9px] font-bold tracking-[0.17em] uppercase" style={{ color: MINERAL_DEEP }}>{title}</div>
     {note ? <p className="text-default-500 mt-2 max-w-3xl text-[12px] leading-relaxed">{note}</p> : null}
     <div className="text-default-500 mt-4 flex justify-between gap-6 text-[9px] font-bold uppercase">
