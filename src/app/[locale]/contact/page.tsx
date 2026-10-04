@@ -3,7 +3,6 @@ import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
 import { site } from '@/lib/site'
-import { Icon } from '@iconify/react'
 import Image from 'next/image'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
@@ -40,54 +39,36 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
       </div>
 
       <div className="container relative z-10">
-        <div className="grid items-center gap-8 lg:items-stretch lg:grid-cols-[minmax(0,1.08fr)_minmax(520px,0.92fr)] lg:gap-10 xl:gap-[70px]">
-          {/* Desktop: the column spans the form card's full height, title pinned
-              to the card's first field and the details block to its submit row,
-              so the two halves share a top and a bottom instead of a short block
-              floating beside a tall card. */}
-          <div className="text-white lg:flex lg:flex-col lg:justify-between lg:py-[72px]">
-            <div>
-              <h1 className="text-white text-[48px] leading-[1.02] font-bold tracking-[-0.045em] uppercase sm:text-[58px] lg:text-[66px] xl:text-[72px]">
-                {t(locale, 'Contact Us')}
-              </h1>
-              <p className="mt-1 text-[28px] leading-none font-light tracking-[-0.025em] text-white sm:text-[32px] lg:text-[38px]">
-                EID LTD.
-              </p>
-            </div>
+        {/* Two columns that share a top line. The left is one compact group,
+            eyebrow, title, then the details as a labelled list (the way a spec
+            sheet reads), so it holds its own against the form card instead of
+            being stretched or floated beside it. `lg:pt-*` matches the card's
+            inner padding so the title sits level with the first field. */}
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(520px,0.95fr)] lg:items-start lg:gap-16 xl:gap-24">
+          <div className="text-white lg:pt-10 xl:pt-[54px]">
+            <p className="font-mono text-[11px] tracking-[0.22em] text-white/70 uppercase">
+              {t(locale, 'London Headquarters')}
+            </p>
+            <h1 className="mt-4 text-[48px] leading-[1.02] font-bold tracking-[-0.045em] text-white uppercase sm:text-[58px] lg:text-[66px] xl:text-[72px]">
+              {t(locale, 'Contact Us')}
+            </h1>
+            <p className="mt-1 text-[28px] leading-none font-light tracking-[-0.025em] text-white sm:text-[32px] lg:text-[38px]">
+              EID LTD.
+            </p>
 
-            <div className="mt-8 lg:mt-10">
-              <span className="inline-flex rounded-[5px] border border-white/55 bg-white/[0.08] px-4 py-2 text-[12px] leading-none font-semibold tracking-[0.04em] text-white uppercase sm:text-[13px]">
-                {t(locale, 'Headquarters')}
-              </span>
-
-              <div className="mt-4 border-y border-white/45 py-7 lg:py-8">
-                <div className="grid items-center gap-7">
-                  <div>
-                    <h2 className="text-[28px] leading-[1.08] font-semibold tracking-[-0.02em] text-white uppercase sm:text-[31px]">
-                      {t(locale, 'London Headquarters')}
-                    </h2>
-                    <p className="mt-5 max-w-[38ch] text-[15px] leading-[1.45] text-white/90 sm:text-[17px]">
-                      {site.address}
-                    </p>
-
-                    <div className="mt-7 flex flex-col gap-1 text-[15px] lg:gap-4 text-white/92 sm:text-[16px]">
-                      <a href={site.phoneHref} className="group flex min-h-11 w-fit items-center gap-3 rounded-sm transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white lg:min-h-0">
-                        <Icon icon="tabler:phone" className="size-5 shrink-0 text-white/80" />
-                        <span>{t(locale, 'Phone')}: {site.phone}</span>
-                      </a>
-                      <a href={`mailto:${site.email}`} className="group flex min-h-11 w-fit items-center gap-3 rounded-sm transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white lg:min-h-0">
-                        <Icon icon="tabler:mail" className="size-5 shrink-0 text-white/80" />
-                        <span>{site.email}</span>
-                      </a>
-                      <div className="flex items-center gap-3 text-white/78">
-                        <Icon icon="tabler:printer" className="size-5 shrink-0 text-white/80" />
-                        <span>{t(locale, 'Fax')}: {site.fax}</span>
-                      </div>
-                    </div>
-                  </div>
+            <dl className="mt-10 border-t border-white/20 lg:mt-14">
+              {[
+                { label: t(locale, 'Address'), value: <span className="max-w-[34ch]">{site.address}</span> },
+                { label: t(locale, 'Phone'), value: <a href={site.phoneHref} className="hover:text-white inline-flex min-h-11 items-center transition-colors lg:min-h-0">{site.phone}</a> },
+                { label: t(locale, 'Email'), value: <a href={`mailto:${site.email}`} className="hover:text-white inline-flex min-h-11 items-center transition-colors lg:min-h-0">{site.email}</a> },
+                { label: t(locale, 'Fax'), value: <span className="text-white/75">{site.fax}</span> },
+              ].map((row) => (
+                <div key={row.label} className="grid grid-cols-[84px_minmax(0,1fr)] items-baseline gap-5 border-b border-white/20 py-3.5 sm:grid-cols-[120px_minmax(0,1fr)] lg:py-5">
+                  <dt className="font-mono text-[11px] tracking-[0.22em] text-white/60 uppercase">{row.label}</dt>
+                  <dd className="text-[16px] leading-[1.45] text-white/92 sm:text-[17px]">{row.value}</dd>
                 </div>
-              </div>
-            </div>
+              ))}
+            </dl>
           </div>
 
           <div className="rounded-[24px] border border-[#dfe3e8] bg-[#f5f5f5] px-3 py-5 text-[#111827] shadow-[0_30px_80px_-36px_rgba(2,25,59,0.32)] ring-1 ring-black/[0.02] sm:p-9 lg:p-10 xl:px-[58px] xl:py-[54px]">

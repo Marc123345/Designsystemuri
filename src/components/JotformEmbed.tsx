@@ -71,8 +71,9 @@ const FORM_ID = '262084626654058'
 // - `isIframeEmbed=1` is in the first URL so the form renders in embed mode.
 // - preconnect: the form document and its ~15 scripts come from two hosts.
 // - `eager` on /contact, where the form is the page. QuoteSection stays lazy.
-// - Reserved height matches the form's settled height (883px phone/desktop
-//   column, 620px at md) so nothing jumps; a skeleton covers the wait.
+// - Reserved height matches the form's settled height with the compact
+//   Jotform CSS (788px in a phone-width iframe, 712px wider) so nothing jumps;
+//   a skeleton covers the wait.
 const BASE = `https://form.jotform.com/${FORM_ID}?isIframeEmbed=1`
 
 const JotformEmbed = ({ title, eager = false }: { title: string; eager?: boolean }) => {
@@ -128,7 +129,7 @@ const JotformEmbed = ({ title, eager = false }: { title: string; eager?: boolean
         // @ts-expect-error -- fetchpriority is valid HTML on iframes; React 19 passes it through
         fetchpriority={eager ? 'high' : undefined}
         onLoad={() => setLoaded(true)}
-        className={`w-full border-0 transition-opacity duration-300 ${height ? '' : 'h-[883px] md:h-[620px] lg:h-[883px]'} ${loaded ? 'opacity-100' : 'opacity-0'}`}
+        className={`w-full border-0 transition-opacity duration-300 ${height ? '' : 'h-[788px] sm:h-[712px]'} ${loaded ? 'opacity-100' : 'opacity-0'}`}
         style={{ minWidth: '100%', maxWidth: '100%', border: 'none', ...(height ? { height } : null) }}
       />
 
