@@ -24,7 +24,7 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
   return (
     <section
       data-note="contact-strauss-layout"
-      className="relative isolate min-h-[calc(100svh-54px)] overflow-hidden bg-white pt-[108px] pb-8 lg:pt-[102px] lg:pb-10"
+      className="relative isolate min-h-[calc(100svh-54px)] overflow-hidden bg-white pt-[108px] pb-8 lg:pt-[136px] lg:pb-16"
     >
       {/* EID House behind the navy half, under a navy scrim so the white type stays legible. */}
       <div aria-hidden className="bg-primary-3 absolute inset-y-0 left-0 w-full overflow-hidden lg:w-[66vw]">
@@ -40,14 +40,20 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
       </div>
 
       <div className="container relative z-10">
-        <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(520px,0.92fr)] lg:gap-10 xl:gap-[70px]">
-          <div className="text-white">
-            <h1 className="text-white text-[48px] leading-[1.02] font-bold tracking-[-0.045em] uppercase sm:text-[58px] lg:text-[66px] xl:text-[72px]">
-              {t(locale, 'Contact Us')}
-            </h1>
-            <p className="mt-1 text-[28px] leading-none font-light tracking-[-0.025em] text-white sm:text-[32px] lg:text-[38px]">
-              EID LTD.
-            </p>
+        <div className="grid items-center gap-8 lg:items-stretch lg:grid-cols-[minmax(0,1.08fr)_minmax(520px,0.92fr)] lg:gap-10 xl:gap-[70px]">
+          {/* Desktop: the column spans the form card's full height, title pinned
+              to the card's first field and the details block to its submit row,
+              so the two halves share a top and a bottom instead of a short block
+              floating beside a tall card. */}
+          <div className="text-white lg:flex lg:flex-col lg:justify-between lg:py-[72px]">
+            <div>
+              <h1 className="text-white text-[48px] leading-[1.02] font-bold tracking-[-0.045em] uppercase sm:text-[58px] lg:text-[66px] xl:text-[72px]">
+                {t(locale, 'Contact Us')}
+              </h1>
+              <p className="mt-1 text-[28px] leading-none font-light tracking-[-0.025em] text-white sm:text-[32px] lg:text-[38px]">
+                EID LTD.
+              </p>
+            </div>
 
             <div className="mt-8 lg:mt-10">
               <span className="inline-flex rounded-[5px] border border-white/55 bg-white/[0.08] px-4 py-2 text-[12px] leading-none font-semibold tracking-[0.04em] text-white uppercase sm:text-[13px]">
