@@ -72,7 +72,7 @@ const QualityMosaic = () => {
                   {STACKED.map((figure) => (
                     <div key={figure.label} className="bg-primary-3/88 px-3 py-4 text-center backdrop-blur-sm">
                       <dd className="text-[28px] leading-none font-bold text-white lg:text-[34px]"><CountUp value={figure.value} /></dd>
-                      <dt className="mt-2 text-[9px] font-semibold tracking-[0.15em] text-white/65 uppercase lg:text-[10px]">{t(locale, figure.label)}</dt>
+                      <dt className="mt-2 text-[11px] font-semibold tracking-[0.15em] text-white/65 uppercase lg:text-[11px]">{t(locale, figure.label)}</dt>
                     </div>
                   ))}
                 </dl>

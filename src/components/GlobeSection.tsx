@@ -84,7 +84,7 @@ const GlobeSection = ({
 
             <div className="mt-8 grid overflow-hidden rounded-card border border-white/12 bg-default-950/28 backdrop-blur-sm lg:grid-cols-2">
               <div className="p-5 lg:border-r lg:border-white/12 lg:p-6">
-                <p className="font-mono text-[10px] tracking-[0.2em] text-white/55 uppercase">{t(locale, 'Column 1 · Production infrastructure')}</p>
+                <p className="font-mono text-[11px] tracking-[0.2em] text-white/55 uppercase">{t(locale, 'Column 1 · Production infrastructure')}</p>
                 <h3 className="mt-5 text-[17px] font-semibold tracking-[-0.01em] text-white">{t(locale, 'Manufacturing & Processing')}</h3>
 
                 <dl className="mt-5 space-y-5">
@@ -98,7 +98,7 @@ const GlobeSection = ({
               </div>
 
               <div className="border-t border-white/12 p-5 lg:border-t-0 lg:p-6">
-                <p className="font-mono text-[10px] tracking-[0.2em] text-white/55 uppercase">{t(locale, 'Column 2 · Global logistics reach')}</p>
+                <p className="font-mono text-[11px] tracking-[0.2em] text-white/55 uppercase">{t(locale, 'Column 2 · Global logistics reach')}</p>
                 <h3 className="mt-5 text-[17px] font-semibold tracking-[-0.01em] text-white">{t(locale, 'Supply Chain & Market Access')}</h3>
 
                 <dl className="mt-5 space-y-5">
@@ -119,7 +119,7 @@ const GlobeSection = ({
 
           <div className="relative lg:col-span-5">
             <Globe size={520} />
-            <p className="mt-3 text-center font-mono text-[10px] tracking-[0.28em] text-white/40 uppercase">{t(locale, 'Drag to explore')}</p>
+            <p className="mt-3 text-center font-mono text-[11px] tracking-[0.28em] text-white/40 uppercase">{t(locale, 'Drag to explore')}</p>
           </div>
         </div>
       </div>

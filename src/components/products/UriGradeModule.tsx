@@ -127,7 +127,7 @@ const UriGradeModule = ({
                           type="button"
                           onClick={() => setActiveId(option.id)}
                           aria-pressed={on}
-                          className={`min-h-10 rounded-[4px] border px-3 py-2 ${T.control} transition-colors ${
+                          className={`min-h-11 rounded-[4px] border px-3 py-2 ${T.control} transition-colors ${
                             on ? 'border-primary bg-primary text-white shadow-[inset_0_-3px_0_#d8d1c3]' : 'border-default-200 text-default-700 hover:border-[#9b8f7c] bg-white'
                           }`}
                         >
@@ -149,7 +149,7 @@ const UriGradeModule = ({
                     type="button"
                     onClick={() => setActiveId(option.id)}
                     aria-pressed={on}
-                    className={`rounded-[4px] border px-3.5 py-2.5 ${T.control} transition-colors ${
+                    className={`min-h-11 rounded-[4px] border px-3.5 py-2.5 ${T.control} transition-colors ${
                       on ? 'border-primary bg-primary text-white shadow-[inset_0_-3px_0_#d8d1c3]' : 'border-default-200 text-default-700 hover:border-[#9b8f7c] bg-white'
                     }`}
                   >
@@ -250,8 +250,8 @@ const UriGradeModule = ({
 
           <div className={`border-default-200 mt-6 border-t pt-4 ${T.small}`}>
             <strong className="text-default-900">{ctaLead}</strong>{' '}
-            <Link href="/contact" className="text-primary font-bold hover:underline">Ask our technical team →</Link>
-            <Link href="/contact" className="mt-1.5 block font-bold tracking-[0.04em] text-[#9b8f7c] uppercase">Request a quote →</Link>
+            <Link href="/contact" className="text-primary inline-flex min-h-11 items-center font-bold hover:underline lg:inline lg:min-h-0">Ask our technical team →</Link>
+            <Link href="/contact" className="flex min-h-11 items-center font-bold tracking-[0.04em] text-[#9b8f7c] uppercase lg:mt-1.5 lg:block lg:min-h-0">Request a quote →</Link>
           </div>
         </div>
       </div>

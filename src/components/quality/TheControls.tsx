@@ -108,7 +108,7 @@ const TheControls = () => {
 
             <div className="eid-sticky-viewport col-span-4 flex items-center justify-center px-2">
               <div className="rounded-card w-full border border-white/18 bg-white/[0.07] px-7 py-10 text-center shadow-[0_24px_80px_-38px_rgba(0,0,0,0.6)] backdrop-blur-sm">
-                <p className="font-mono text-[10px] tracking-[0.24em] text-white/55 uppercase">{t(locale, 'Quality control')}</p>
+                <p className="font-mono text-[11px] tracking-[0.24em] text-white/55 uppercase">{t(locale, 'Quality control')}</p>
                 <h2 className="mt-4 text-[38px] leading-[0.98] font-bold tracking-[-0.035em] text-white text-balance xl:text-[46px]">
                   {t(locale, 'The four controls')}
                 </h2>
@@ -116,7 +116,7 @@ const TheControls = () => {
                 <div aria-hidden className="mx-auto mt-9 flex max-w-[220px] items-center justify-between">
                   {CONTROLS.map((control, index) => (
                     <div key={control.n} className="flex items-center">
-                      <span className="rounded-control flex size-9 items-center justify-center border border-white/25 bg-white/8 font-mono text-[10px] font-semibold text-white/82">
+                      <span className="rounded-control flex size-9 items-center justify-center border border-white/25 bg-white/8 font-mono text-[11px] font-semibold text-white/82">
                         {control.n}
                       </span>
                       {index < CONTROLS.length - 1 && <span className="mx-1 h-px w-4 bg-white/20 xl:w-6" />}

@@ -208,7 +208,7 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
                     /* White, not `text-primary`. The same trap the two
                        resources pages document: brand navy on a brand-navy
                        panel is invisible. */
-                    <Link href="/resources/datasheets" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white underline-offset-4 transition-colors hover:underline">
+                    <Link href="/resources/datasheets" className="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-white underline-offset-4 transition-colors hover:underline">
                       <Icon icon="tabler:download" className="size-5" />
                       {t(locale, 'Datasheets for this range')}
                     </Link>
@@ -445,7 +445,7 @@ copy field rather than render as literal markdown. */}
                       </p>
                     )}
                     {section.datasheet && (
-                      <a href={doc?.file ?? '/resources/datasheets'} download={doc ? '' : undefined} className="text-primary mt-6 inline-flex items-center gap-2 text-sm font-semibold">
+                      <a href={doc?.file ?? '/resources/datasheets'} download={doc ? '' : undefined} className="text-primary mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-semibold">
                         <Icon icon="tabler:download" className="size-5" />
                         {t(locale, 'Download the')} {section.datasheet} {t(locale, '(PDF)')}
                       </a>
@@ -461,7 +461,7 @@ copy field rather than render as literal markdown. */}
                 <div className="mb-10 flex flex-wrap items-baseline gap-3">
                   <h3 className="text-default-900 text-2xl font-bold">{t(locale, 'Grades & specifications')}</h3>
                   {section.datasheet && (
-                    <a href={doc?.file ?? '/resources/datasheets'} download={doc ? '' : undefined} className="text-primary inline-flex items-center gap-1.5 text-sm font-semibold">
+                    <a href={doc?.file ?? '/resources/datasheets'} download={doc ? '' : undefined} className="text-primary inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold">
                       <Icon icon="tabler:download" className="size-4" />
                       {section.datasheet}
                     </a>

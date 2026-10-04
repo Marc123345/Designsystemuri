@@ -24,7 +24,7 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
   return (
     <section
       data-note="contact-strauss-layout"
-      className="relative isolate min-h-[calc(100svh-54px)] overflow-hidden bg-white pt-[82px] pb-8 lg:pt-[102px] lg:pb-10"
+      className="relative isolate min-h-[calc(100svh-54px)] overflow-hidden bg-white pt-[108px] pb-8 lg:pt-[102px] lg:pb-10"
     >
       {/* EID House behind the navy half, under a navy scrim so the white type stays legible. */}
       <div aria-hidden className="bg-primary-3 absolute inset-y-0 left-0 w-full overflow-hidden lg:w-[66vw]">
@@ -64,12 +64,12 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
                       {site.address}
                     </p>
 
-                    <div className="mt-7 flex flex-col gap-4 text-[15px] text-white/92 sm:text-[16px]">
-                      <a href={site.phoneHref} className="group flex w-fit items-center gap-3 rounded-sm transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+                    <div className="mt-7 flex flex-col gap-1 text-[15px] lg:gap-4 text-white/92 sm:text-[16px]">
+                      <a href={site.phoneHref} className="group flex min-h-11 w-fit items-center gap-3 rounded-sm transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white lg:min-h-0">
                         <Icon icon="tabler:phone" className="size-5 shrink-0 text-white/80" />
                         <span>{t(locale, 'Phone')}: {site.phone}</span>
                       </a>
-                      <a href={`mailto:${site.email}`} className="group flex w-fit items-center gap-3 rounded-sm transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+                      <a href={`mailto:${site.email}`} className="group flex min-h-11 w-fit items-center gap-3 rounded-sm transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white lg:min-h-0">
                         <Icon icon="tabler:mail" className="size-5 shrink-0 text-white/80" />
                         <span>{site.email}</span>
                       </a>
@@ -84,7 +84,7 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
             </div>
           </div>
 
-          <div className="rounded-[24px] border border-[#dfe3e8] bg-[#f5f5f5] p-7 text-[#111827] shadow-[0_30px_80px_-36px_rgba(2,25,59,0.32)] ring-1 ring-black/[0.02] sm:p-9 lg:p-10 xl:px-[58px] xl:py-[54px]">
+          <div className="rounded-[24px] border border-[#dfe3e8] bg-[#f5f5f5] px-3 py-5 text-[#111827] shadow-[0_30px_80px_-36px_rgba(2,25,59,0.32)] ring-1 ring-black/[0.02] sm:p-9 lg:p-10 xl:px-[58px] xl:py-[54px]">
             {/* Visible heading and intro removed at Marc's request; sr-only h2 keeps the heading order intact. */}
             <h2 className="sr-only">{t(locale, 'Contact us.')}</h2>
             <QuoteForm formTitle={t(locale, 'Contact EID')} heading={false} />

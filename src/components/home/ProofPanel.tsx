@@ -59,9 +59,9 @@ const ProofPanel = ({
         <div className="grid items-center gap-6 lg:grid-cols-[minmax(250px,0.8fr)_minmax(0,1.7fr)] lg:gap-8 xl:gap-10">
           <div>
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-white">
-              {eyebrow && <span className="font-mono text-[9px] tracking-[0.22em] text-white/65 uppercase">{eyebrow}</span>}
+              {eyebrow && <span className="font-mono text-[11px] tracking-[0.22em] text-white/65 uppercase">{eyebrow}</span>}
               <span aria-hidden className="h-px w-7 bg-white/18" />
-              <span className="font-mono text-[9px] tracking-[0.22em] text-white/40 uppercase">03 proof points</span>
+              <span className="font-mono text-[11px] tracking-[0.22em] text-white/40 uppercase">03 proof points</span>
             </div>
 
             <div className="mt-3 max-w-[17ch]">
@@ -91,10 +91,10 @@ const ProofPanel = ({
 
                 <div className="relative z-10 flex h-full flex-col justify-between p-4 lg:p-4.5">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="font-mono text-[8px] tracking-[0.2em] text-white/80 uppercase">
+                    <span className="font-mono text-[11px] tracking-[0.2em] text-white/80 uppercase">
                       {String(index + 1).padStart(2, '0')} · {item.meta}
                     </span>
-                    <span className="font-mono text-[8px] tracking-[0.18em] text-white/45 uppercase">Proof</span>
+                    <span className="font-mono text-[11px] tracking-[0.18em] text-white/45 uppercase">Proof</span>
                   </div>
 
                   <div className="flex items-end justify-between gap-3">

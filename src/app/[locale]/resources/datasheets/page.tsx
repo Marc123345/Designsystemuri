@@ -67,7 +67,7 @@ const DatasheetsPage = async ({ params }: { params: Promise<{ locale: Locale }> 
                     {stats.map((stat) => (
                       <div key={stat.k} className="bg-primary px-3 py-4 sm:px-4">
                         <dd className="text-[25px] leading-none font-bold text-white lg:text-[29px]"><CountUp value={stat.v} /></dd>
-                        <dt className="mt-2 text-[9px] font-semibold tracking-[0.14em] text-white/68 uppercase lg:text-[10px]">{t(locale, stat.k)}</dt>
+                        <dt className="mt-2 text-[11px] font-semibold tracking-[0.14em] text-white/68 uppercase lg:text-[11px]">{t(locale, stat.k)}</dt>
                       </div>
                     ))}
                   </dl>

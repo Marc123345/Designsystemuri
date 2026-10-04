@@ -33,7 +33,7 @@ const ScrollCue = ({ className = '' }: { className?: string }) => (
     <span className="relative block h-9 w-[22px] rounded-full border border-white/35">
       <span className="scroll-cue-dot absolute left-1/2 top-2 block size-1 -translate-x-1/2 rounded-full bg-white/80 motion-reduce:animate-none" />
     </span>
-    <span className="font-mono text-[10px] tracking-[0.2em] text-white/45 uppercase">Scroll</span>
+    <span className="font-mono text-[11px] tracking-[0.2em] text-white/45 uppercase">Scroll</span>
   </span>
 )
 

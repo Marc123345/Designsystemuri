@@ -182,7 +182,7 @@ const Navbar = () => {
         />
 
         <div className="relative flex h-full items-center px-4 md:px-7.5 lg:px-12.5">
-          <Link href="/" className="relative z-10 flex shrink-0 items-center" aria-label="EID Ltd — home">
+          <Link href="/" className="relative z-10 flex min-h-11 shrink-0 items-center" aria-label="EID Ltd — home">
             <Image src="/eid/logo-white.png" alt="EID Ltd" width={650} height={221} priority className="w-27 transition-opacity hover:opacity-80 sm:w-32 lg:w-40" />
           </Link>
 
@@ -275,10 +275,10 @@ const Navbar = () => {
         <div className="relative flex h-full flex-col overflow-y-auto overscroll-contain px-4 pt-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:px-6">
           <div className="mb-5 flex items-end justify-between gap-4">
             <div>
-              <p className="text-primary font-mono text-[9px] font-semibold tracking-[0.22em] uppercase">EID navigation</p>
+              <p className="text-primary font-mono text-[11px] font-semibold tracking-[0.22em] uppercase">EID navigation</p>
               <p className="text-default-900 mt-1 text-[23px] leading-tight font-semibold tracking-[-0.025em]">Find what you need.</p>
             </div>
-            <span className="text-default-400 font-mono text-[9px] tracking-[0.18em] uppercase">Since 1970</span>
+            <span className="text-default-500 font-mono text-[11px] tracking-[0.18em] uppercase">Since 1970</span>
           </div>
 
           <nav aria-label="Mobile navigation" className="grid gap-2.5">

@@ -20,16 +20,16 @@ const Footer = () => {
   if (pathname === '/contact') {
     return (
       <footer data-note="footer-contact" id="footer" className="bg-primary-3 border-t border-white/10 text-white">
-        <div className="container flex flex-col gap-3 py-4 text-[12px] sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-white/72">
+        <div className="container flex flex-col gap-1 py-3 text-[13px] sm:gap-3 sm:py-4 sm:text-[12px] sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-0 text-white/72 sm:gap-y-2">
             <span className="font-semibold text-white">{site.name}</span>
             <span>{t(locale, 'London, United Kingdom')}</span>
-            <a href={`mailto:${site.email}`} className="transition-colors hover:text-white">{site.email}</a>
-            <a href={site.phoneHref} className="transition-colors hover:text-white">{site.phone}</a>
+            <a href={`mailto:${site.email}`} className="inline-flex min-h-11 items-center transition-colors hover:text-white sm:min-h-0">{site.email}</a>
+            <a href={site.phoneHref} className="inline-flex min-h-11 items-center transition-colors hover:text-white sm:min-h-0">{site.phone}</a>
           </div>
           <div className="flex items-center gap-5">
             {legalLinks.filter((link) => link.ready).map((link) => (
-              <a key={link.href} href={link.href} className="text-white/65 transition-colors hover:text-white">{link.label}</a>
+              <a key={link.href} href={link.href} className="inline-flex min-h-11 items-center text-white/65 transition-colors hover:text-white sm:min-h-0">{link.label}</a>
             ))}
           </div>
         </div>
@@ -47,22 +47,22 @@ const Footer = () => {
           <p className="mb-10 max-w-md text-[0.95rem] leading-[1.75] text-white/85">{t(locale, 'footerAbout')}</p>
 
           <h3 className="mb-5 text-lg font-semibold text-white">{t(locale, 'Contact')}</h3>
-          <ul className="space-y-4 text-[0.93rem] text-white/85">
+          <ul className="space-y-2 text-[0.93rem] text-white/85 lg:space-y-4">
             <li className="flex items-start gap-3">
               <Icon icon="tabler:map-pin" className="mt-1 size-4 shrink-0 text-white/50" />
               <span>{site.address}</span>
             </li>
             <li className="flex items-center gap-3">
               <Icon icon="tabler:phone" className="size-4 shrink-0 text-white/50" />
-              <a href={site.phoneHref} className="inline-block py-px transition-colors hover:text-white">{site.phone}</a>
+              <a href={site.phoneHref} className="inline-flex min-h-11 items-center transition-colors hover:text-white lg:min-h-0 lg:py-px">{site.phone}</a>
             </li>
             <li className="flex items-center gap-3">
               <Icon icon="tabler:mail" className="size-4 shrink-0 text-white/50" />
-              <a href={`mailto:${site.email}`} className="inline-block break-all py-px transition-colors hover:text-white">{site.email}</a>
+              <a href={`mailto:${site.email}`} className="inline-flex min-h-11 items-center break-all transition-colors hover:text-white lg:min-h-0 lg:py-px">{site.email}</a>
             </li>
           </ul>
 
-          <a href={site.whatsappHref} target="_blank" rel="noopener noreferrer" className="rounded-control mt-8 inline-flex items-center gap-2 border border-white/15 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40">
+          <a href={site.whatsappHref} target="_blank" rel="noopener noreferrer" className="rounded-control mt-8 inline-flex min-h-11 items-center gap-2 border border-white/15 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40">
             <Icon icon="tabler:brand-whatsapp" className="size-5" />
             {t(locale, 'WhatsApp us')}
           </a>
@@ -84,10 +84,10 @@ const Footer = () => {
                 {group.map((column) => (
                   <div key={column.title}>
                     <h3 className="text-default-900 mb-5 text-lg font-semibold">{t(locale, column.title)}</h3>
-                    <ul className="space-y-1">
+                    <ul className="lg:space-y-1">
                       {column.links.map((link) => (
                         <li key={link.href + link.label}>
-                          <Link href={link.href} className="text-default-500 hover:text-primary inline-block py-[3px] text-[0.88rem] transition-colors">
+                          <Link href={link.href} className="text-default-500 hover:text-primary inline-flex min-h-11 min-w-11 items-center text-[0.95rem] transition-colors lg:min-h-0 lg:py-[3px] lg:text-[0.88rem]">
                             {t(locale, link.label)}
                           </Link>
                         </li>
@@ -104,7 +104,7 @@ const Footer = () => {
       <div className="bg-primary-3 flex flex-col items-start justify-end gap-3 border-t border-white/15 px-4 py-5 sm:flex-row sm:items-center md:px-7.5 lg:px-12.5">
         <div className="flex items-center gap-6">
           {legalLinks.filter((link) => link.ready).map((link) => (
-            <a key={link.href} href={link.href} className="inline-block py-0.5 text-[0.8rem] text-white/80 transition-colors hover:text-white">
+            <a key={link.href} href={link.href} className="inline-flex min-h-11 items-center text-[0.85rem] text-white/80 transition-colors hover:text-white lg:min-h-0 lg:py-0.5 lg:text-[0.8rem]">
               {link.label}
             </a>
           ))}

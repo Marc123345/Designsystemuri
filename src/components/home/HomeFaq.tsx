@@ -25,7 +25,7 @@ const HomeFaq = ({
       <div className="container">
         <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:gap-10">
           <div className="lg:pt-1">
-            <p className="text-primary font-mono text-[10px] tracking-[0.22em] uppercase">{eyebrow}</p>
+            <p className="text-primary font-mono text-[11px] tracking-[0.22em] uppercase">{eyebrow}</p>
             <h2 className="text-primary-3 mt-3 max-w-[14ch] text-[30px] leading-[1.02] font-bold tracking-[-0.035em] md:text-[36px] lg:text-[40px]">{title}</h2>
             {desc ? <p className="text-default-600 mt-4 max-w-[42ch] text-[14px] leading-relaxed lg:text-[15px]">{desc}</p> : null}
           </div>

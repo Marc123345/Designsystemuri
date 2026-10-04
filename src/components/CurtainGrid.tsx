@@ -60,7 +60,7 @@ const ProductTile = ({ item, sizes }: { item: CurtainItem; sizes: string }) => {
           <div className="bg-primary-3 flex min-h-[92px] items-center justify-between gap-3 rounded-[16px] border border-white/20 px-4 py-4 text-white shadow-[0_12px_30px_rgba(15,24,52,0.22)] transition-transform duration-300 group-hover:-translate-y-0.5 group-focus-visible:-translate-y-0.5 sm:min-h-[98px] sm:px-5">
             <div className="min-w-0 flex-1">
               {item.meta && (
-                <span className="mb-1.5 block text-[9px] font-semibold tracking-[0.18em] text-white/68 uppercase sm:text-[10px]">
+                <span className="mb-1.5 block text-[11px] font-semibold tracking-[0.18em] text-white/68 uppercase sm:text-[11px]">
                   {item.meta}
                 </span>
               )}

@@ -95,7 +95,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
         <CanvasField density="coarse" mark="end" />
         <div className="container">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-primary font-mono text-[10px] tracking-[0.22em] uppercase">{t(locale, 'The range')}</p>
+            <p className="text-primary font-mono text-[11px] tracking-[0.22em] uppercase">{t(locale, 'The range')}</p>
             <h2 className="mt-3 text-[26px] font-bold text-balance md:text-[32px] lg:text-[36px]">
               {t(locale, 'Every industrial diamond and CBN product, from one source.')}
             </h2>

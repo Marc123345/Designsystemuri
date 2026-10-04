@@ -31,7 +31,7 @@ const SurfaceEnhancementsPage = async ({ params }: { params: Promise<{ locale: L
       <section id="coatings" className="py-16 lg:py-22">
         <div className="container grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
           <div>
-            <p className="font-mono text-[10px] tracking-[0.22em] text-default-500 uppercase">{t(locale, 'Coatings')}</p>
+            <p className="font-mono text-[11px] tracking-[0.22em] text-default-500 uppercase">{t(locale, 'Coatings')}</p>
             <h2 className="mt-3 text-[30px] font-semibold tracking-[-0.035em] text-default-950 md:text-[38px]">{t(locale, 'Electroless and metallic coatings.')}</h2>
           </div>
           <div className="space-y-7 text-[16px] leading-7 text-default-650">
@@ -52,7 +52,7 @@ const SurfaceEnhancementsPage = async ({ params }: { params: Promise<{ locale: L
       <section id="polish-etch" className="bg-canvas py-16 lg:py-22">
         <div className="container">
           <div className="max-w-3xl">
-            <p className="font-mono text-[10px] tracking-[0.22em] text-default-500 uppercase">{t(locale, 'Polish / Etch / CRT')}</p>
+            <p className="font-mono text-[11px] tracking-[0.22em] text-default-500 uppercase">{t(locale, 'Polish / Etch / CRT')}</p>
             <h2 className="mt-3 text-[30px] font-semibold tracking-[-0.035em] text-default-950 md:text-[38px]">{t(locale, 'Engineered diamond surfaces.')}</h2>
           </div>
 
@@ -79,7 +79,7 @@ const SurfaceEnhancementsPage = async ({ params }: { params: Promise<{ locale: L
           </div>
 
           <div className="mt-10">
-            <Link href="/contact" className="text-primary inline-flex items-center gap-2 text-sm font-semibold">
+            <Link href="/contact" className="text-primary inline-flex min-h-11 items-center gap-2 text-sm font-semibold">
               {t(locale, 'Discuss a surface-enhancement specification')} <span aria-hidden>→</span>
             </Link>
           </div>

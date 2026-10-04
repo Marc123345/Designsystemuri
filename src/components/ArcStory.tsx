@@ -75,7 +75,7 @@ const ArcStory = ({ items, ariaLabel, cardHeight = 470 }: ArcStoryProps) => {
             className="bg-primary-3 absolute inset-x-4 bottom-4 overflow-hidden rounded-[18px] px-5 py-5 text-left text-white shadow-[0_18px_38px_-20px_rgba(2,6,23,0.72)] transition-transform duration-500 group-hover:-translate-y-1 md:inset-x-5 md:bottom-5 md:px-6 md:py-6"
             style={{ clipPath: 'polygon(0 0, 100% 0, 100% 76%, 88% 100%, 0 100%)' }}
           >
-            <span className="font-mono text-[10px] tracking-[0.22em] text-white/64 uppercase">
+            <span className="font-mono text-[11px] tracking-[0.22em] text-white/64 uppercase">
               {item.kicker ?? String(index + 1).padStart(2, '0')}
             </span>
             {item.value && <div className="mt-2 text-[42px] leading-none font-bold tracking-[-0.05em] text-white"><CountUp value={item.value} /></div>}
@@ -84,7 +84,7 @@ const ArcStory = ({ items, ariaLabel, cardHeight = 470 }: ArcStoryProps) => {
           </div>
         ) : (
           <div className={`absolute inset-0 flex flex-col ${hasImage ? 'justify-end p-7 md:p-8' : 'justify-center p-8 md:p-10'}`}>
-            <span className={`font-mono text-[10px] tracking-[0.24em] uppercase ${tone === 'light' ? 'text-primary' : 'text-white/62'}`}>
+            <span className={`font-mono text-[11px] tracking-[0.24em] uppercase ${tone === 'light' ? 'text-primary' : 'text-white/62'}`}>
               {item.kicker ?? String(index + 1).padStart(2, '0')}
             </span>
             {item.value && (
@@ -236,7 +236,7 @@ const ArcStory = ({ items, ariaLabel, cardHeight = 470 }: ArcStoryProps) => {
       </div>
 
       <div className="mt-5 hidden flex-col items-center gap-4 md:flex" aria-live="polite">
-        <p className="font-mono text-[10px] tracking-[0.24em] text-default-500 uppercase">
+        <p className="font-mono text-[11px] tracking-[0.24em] text-default-500 uppercase">
           {String(activeIndex + 1).padStart(2, '0')} / {String(items.length).padStart(2, '0')} · {items[activeIndex].title}
         </p>
         <div className="flex items-center gap-2" aria-label="Choose card">

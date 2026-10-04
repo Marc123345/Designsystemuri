@@ -99,7 +99,7 @@ export const JumpNav = ({ items }: { items: { id: string; label: string }[] }) =
               key={item.id}
               href={`#${item.id}`}
               aria-current={isActive ? 'true' : undefined}
-              className={`rounded-control border px-3.5 py-1.5 text-sm transition-colors ${isActive ? 'border-primary bg-primary text-white' : 'border-default-300 text-default-800 hover:border-primary hover:text-primary'}`}
+              className={`rounded-control inline-flex min-h-11 items-center border px-3.5 py-1.5 text-sm transition-colors lg:min-h-0 ${isActive ? 'border-primary bg-primary text-white' : 'border-default-300 text-default-800 hover:border-primary hover:text-primary'}`}
             >
               {item.label}
             </a>

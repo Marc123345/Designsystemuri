@@ -86,7 +86,7 @@ const BlogPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
 
             <div className="flex flex-wrap items-center gap-2.5">
               <span className="rounded-control inline-flex items-center gap-1.5 border border-white/25 px-3.5 py-1.25 text-sm text-white">{t(locale, posts[0].category)}</span>
-              <span className="rounded-control inline-flex items-center gap-1.5 border border-white/30 px-3 py-1 font-mono text-[10px] tracking-[0.18em] text-white uppercase">
+              <span className="rounded-control inline-flex items-center gap-1.5 border border-white/30 px-3 py-1 font-mono text-[11px] tracking-[0.18em] text-white uppercase">
                 {posts[0].readMinutes} {t(locale, 'min read')}
               </span>
             </div>

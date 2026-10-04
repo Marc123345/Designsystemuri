@@ -83,7 +83,7 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
 
         <div className="container pb-9 pt-28 lg:pb-10 lg:pt-32">
           <div className="mx-auto max-w-4xl text-center">
-            <p className="font-mono text-[10px] tracking-[0.22em] text-white/70 uppercase">{t(locale, 'Quality control')}</p>
+            <p className="font-mono text-[11px] tracking-[0.22em] text-white/70 uppercase">{t(locale, 'Quality control')}</p>
             <h1 className="mt-3 text-[32px] leading-[1.02] font-bold tracking-[-0.04em] text-white md:text-[42px] lg:text-[48px]">
               {t(locale, 'Our Quality Control & Laboratory Standards')}
             </h1>
@@ -119,9 +119,9 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
             </article>
 
             <article className="bg-primary rounded-control flex min-h-[94px] flex-col items-center justify-center self-center px-3 py-4 text-center text-white sm:min-h-[104px] lg:min-h-[108px]">
-              <span className="font-mono text-[9px] tracking-[0.22em] text-white/65 uppercase">ISO</span>
+              <span className="font-mono text-[11px] tracking-[0.22em] text-white/65 uppercase">ISO</span>
               <strong className="mt-1.5 text-[16px] leading-none tracking-[-0.03em] text-white">9001:2015</strong>
-              <span className="mt-1.5 text-[8px] font-semibold tracking-[0.14em] text-white/82 uppercase">{t(locale, 'Certified')}</span>
+              <span className="mt-1.5 text-[11px] font-semibold tracking-[0.14em] text-white/82 uppercase">{t(locale, 'Certified')}</span>
             </article>
           </div>
         </div>
@@ -131,7 +131,7 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
         <div className="container">
           <div className="mb-6 flex items-end justify-between gap-6">
             <div>
-              <p className="text-primary font-mono text-[10px] tracking-[0.22em] uppercase">{t(locale, 'The four controls')}</p>
+              <p className="text-primary font-mono text-[11px] tracking-[0.22em] uppercase">{t(locale, 'The four controls')}</p>
               <h2 className="text-primary-3 mt-2 text-[28px] leading-tight font-bold tracking-[-0.03em] md:text-[34px]">{t(locale, 'What buyers need to see.')}</h2>
             </div>
             <p className="text-default-500 hidden max-w-[38ch] text-right text-[13px] leading-relaxed lg:block">
@@ -145,7 +145,7 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
                 <div className="relative aspect-[16/5] min-h-[150px] overflow-hidden bg-default-100">
                   <Image src={control.image} alt={t(locale, control.alt)} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
                   <span aria-hidden className="from-primary-3/70 absolute inset-0 bg-linear-to-t via-transparent to-transparent" />
-                  <span className="absolute bottom-3 left-4 font-mono text-[9px] tracking-[0.2em] text-white/85 uppercase">{control.n}</span>
+                  <span className="absolute bottom-3 left-4 font-mono text-[11px] tracking-[0.2em] text-white/85 uppercase">{control.n}</span>
                 </div>
 
                 <div className="p-5 lg:p-6">

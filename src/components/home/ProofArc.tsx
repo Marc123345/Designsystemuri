@@ -108,10 +108,10 @@ const ProofArc = ({ items, aspect = 'portrait' }: ProofArcProps) => {
               <div aria-hidden className="from-primary-3 via-primary-3/34 absolute inset-0 bg-linear-to-t to-transparent" />
 
               <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4">
-                <span className="font-mono text-[8px] tracking-[0.2em] text-white/85 uppercase">
+                <span className="font-mono text-[11px] tracking-[0.2em] text-white/85 uppercase">
                   {String(index + 1).padStart(2, '0')} · {item.meta}
                 </span>
-                <span className="font-mono text-[8px] tracking-[0.18em] text-white/42 uppercase">Proof</span>
+                <span className="font-mono text-[11px] tracking-[0.18em] text-white/42 uppercase">Proof</span>
               </div>
 
               <div className="absolute inset-x-0 bottom-0 p-4">
@@ -214,10 +214,10 @@ const ProofArc = ({ items, aspect = 'portrait' }: ProofArcProps) => {
                   />
 
                   <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4.5">
-                    <span className="font-mono text-[8px] tracking-[0.21em] text-white/86 uppercase">
+                    <span className="font-mono text-[11px] tracking-[0.21em] text-white/86 uppercase">
                       {String(index + 1).padStart(2, '0')} · {item.meta}
                     </span>
-                    <span className="font-mono text-[8px] tracking-[0.18em] text-white/42 uppercase">Proof</span>
+                    <span className="font-mono text-[11px] tracking-[0.18em] text-white/42 uppercase">Proof</span>
                   </div>
 
                   <div className="absolute inset-x-0 bottom-0 p-4.5">

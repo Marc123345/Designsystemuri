@@ -46,7 +46,7 @@ const SupplyReach = () => {
                 <div>
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
                     <h3 className="text-[15px] font-semibold text-white">{t(locale, 'Local Agent Network')}</h3>
-                    <span className="font-mono text-[10px] tracking-[0.16em] text-white/48 uppercase">13 {t(locale, 'countries')}</span>
+                    <span className="font-mono text-[11px] tracking-[0.16em] text-white/48 uppercase">13 {t(locale, 'countries')}</span>
                   </div>
                   <p className="mt-1 text-[13px] leading-relaxed text-white/68">{t(locale, 'On-the-ground technical representatives in:')}</p>
                   <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-3">

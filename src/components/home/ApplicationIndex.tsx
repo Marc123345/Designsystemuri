@@ -53,7 +53,7 @@ export default function ApplicationIndex({ hubs, locale }: { hubs: HubEntry[]; l
 
               <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-5 p-6 lg:p-7">
                 <div className="min-w-0">
-                  <span className="mb-2 block font-mono text-[10px] tracking-[0.22em] text-white/65 uppercase">
+                  <span className="mb-2 block font-mono text-[11px] tracking-[0.22em] text-white/65 uppercase">
                     {String(index + 1).padStart(2, '0')} · {t(locale, 'Application')}
                   </span>
                   <h3 className="max-w-[18ch] text-[20px] leading-[1.08] font-semibold tracking-[-0.02em] text-white text-balance lg:text-[23px]">

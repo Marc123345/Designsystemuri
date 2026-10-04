@@ -69,7 +69,7 @@ const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
                   </p>
 
                   <div className="mt-9 border-t border-white/15 pt-6">
-                    <span className="font-mono text-[10px] tracking-[0.2em] text-white/52 uppercase">
+                    <span className="font-mono text-[11px] tracking-[0.2em] text-white/52 uppercase">
                       {t(locale, 'Handling, storage & regulatory information')}
                     </span>
                   </div>

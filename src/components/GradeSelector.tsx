@@ -235,7 +235,7 @@ const GradeSelector = ({ series, fallbackImage, sectionTitle, productName }: { s
                 type="button"
                 onClick={() => chooseMode(m)}
                 aria-pressed={mode === m}
-                className={['flex items-center gap-1.5 rounded-[calc(var(--radius-control)-4px)] px-3 py-1.5 text-sm font-medium transition-colors', mode === m ? 'text-default-950 bg-white' : 'text-white/70 hover:text-white'].join(' ')}
+                className={['flex min-h-11 items-center gap-1.5 rounded-[calc(var(--radius-control)-4px)] px-3 py-1.5 text-sm font-medium transition-colors lg:min-h-0', mode === m ? 'text-default-950 bg-white' : 'text-white/70 hover:text-white'].join(' ')}
               >
                 <Icon icon={m === 'explore' ? 'tabler:photo' : 'tabler:table'} className="size-4" aria-hidden />
                 {t(locale, m === 'explore' ? 'Explore' : 'Compare')}
@@ -328,7 +328,7 @@ const GradeSelector = ({ series, fallbackImage, sectionTitle, productName }: { s
                             tabRefs.current[i] = el
                           }}
                           onClick={() => selectGrade(i)}
-                          className={['group flex min-w-0 flex-col gap-2 outline-none', first ? 'items-start text-left' : last ? 'items-end text-right' : 'items-center text-center'].join(' ')}
+                          className={['group flex min-h-11 min-w-0 flex-col gap-2 outline-none', first ? 'items-start text-left' : last ? 'items-end text-right' : 'items-center text-center'].join(' ')}
                         >
                           <span
                             aria-hidden
@@ -416,7 +416,7 @@ const GradeSelector = ({ series, fallbackImage, sectionTitle, productName }: { s
                     variant the application hubs use on their brand tile, for
                     the same reason. */}
                 <div className="mt-auto">
-                  <ArrowButton href={`/contact?product=${encodeURIComponent(productName)}&grade=${encodeURIComponent(grade.code)}`} label={`${t(locale, 'Request a quote for')} ${grade.code}`} variant="light" />
+                  <ArrowButton href={`/contact?product=${encodeURIComponent(productName)}&grade=${encodeURIComponent(grade.code)}`} label={t(locale, 'Request a quote')} variant="light" />
                 </div>
               </div>
             </div>

@@ -32,7 +32,7 @@ const LanguageSwitcher = () => {
           the only thing on screen to say — matched nothing. Including the code
           keeps the purpose clear for a screen reader and keeps the visible word
           addressable. */}
-      <button type="button" className="hs-dropdown-toggle border-default-200 text-default-800 hover:border-primary hover:text-primary rounded-control flex items-center gap-1.5 border px-3 py-2 text-sm font-semibold transition-all" aria-haspopup="menu" aria-expanded="false" aria-label={`Language: ${LABELS[active]}`}>
+      <button type="button" className="hs-dropdown-toggle border-default-200 text-default-800 hover:border-primary hover:text-primary rounded-control flex min-h-11 items-center gap-1.5 border px-3 py-2 text-sm lg:min-h-0 font-semibold transition-all" aria-haspopup="menu" aria-expanded="false" aria-label={`Language: ${LABELS[active]}`}>
         <Icon icon="tabler:world" className="size-4" />
         {LABELS[active]}
         <Icon icon="tabler:chevron-down" className="size-3.5 opacity-70" />
@@ -52,7 +52,7 @@ const LanguageSwitcher = () => {
               href={pathname}
               locale={l}
               aria-current={l === active ? 'true' : undefined}
-              className={`hover:bg-primary/10 hover:text-primary block px-4 py-1.5 text-sm font-medium transition-colors ${l === active ? 'bg-primary/10 text-primary font-semibold' : 'text-default-700'}`}
+              className={`hover:bg-primary/10 hover:text-primary block px-4 py-3 text-sm lg:py-1.5 font-medium transition-colors ${l === active ? 'bg-primary/10 text-primary font-semibold' : 'text-default-700'}`}
             >
               {LABELS[l]}
             </Link>

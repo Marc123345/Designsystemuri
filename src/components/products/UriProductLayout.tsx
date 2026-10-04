@@ -104,8 +104,8 @@ const Coatings = ({ resin = false }: { resin?: boolean }) => (
               {'Metal bond diamond is available with our nickel coatings in 30%, 56%, 60% and custom percentages, with either spiky or smooth nickel morphology. We also offer PVD metallic coatings for specialised requirements.'}
             </p>
             <div className={`mt-5 ${T.small}`}>
-              <Link href="/contact" className="text-primary font-bold">Discuss coating requirements →</Link>
-              <Link href="/contact" className="mt-1.5 block font-bold tracking-[0.06em] uppercase" style={{ color: MINERAL_DEEP }}>Request a quote →</Link>
+              <Link href="/contact" className="text-primary inline-flex min-h-11 items-center font-bold lg:inline lg:min-h-0">Discuss coating requirements →</Link>
+              <Link href="/contact" className="flex min-h-11 items-center font-bold tracking-[0.06em] uppercase lg:mt-1.5 lg:block lg:min-h-0" style={{ color: MINERAL_DEEP }}>Request a quote →</Link>
             </div>
           </div>
 
@@ -167,7 +167,7 @@ const Spectrum = ({
       <span className="text-right">{to}</span>
     </div>
     <div className="bg-default-300 relative my-2.5 h-0.5" />
-    <div className={`grid gap-2 ${points.length === 10 ? 'sm:grid-cols-2 lg:grid-cols-10' : points.length === 7 ? 'sm:grid-cols-2 lg:grid-cols-7' : points.length === 4 ? 'sm:grid-cols-2 lg:grid-cols-4' : 'sm:grid-cols-3'}`}>
+    <div className={`grid gap-2 ${points.length === 10 ? 'grid-cols-2 lg:grid-cols-10' : points.length === 7 ? 'grid-cols-2 lg:grid-cols-7' : points.length === 4 ? 'grid-cols-2 lg:grid-cols-4' : 'sm:grid-cols-3'}`}>
       {points.map((point) => (
         <div key={point.title} className="border-t-3 px-2 pt-3 text-center" style={{ borderTopColor: MINERAL_DEEP }}>
           <strong className={`text-primary-3 block ${points.length > 4 ? 'text-xs font-bold' : T.control}`}>{point.title}</strong>

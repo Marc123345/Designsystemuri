@@ -33,7 +33,7 @@ const CoreValues = () => {
     <section data-note="core-values" className="bg-white py-14 lg:py-18">
       <div className="container">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-primary font-mono text-[10px] tracking-[0.22em] uppercase">{t(locale, 'Our core values')}</p>
+          <p className="text-primary font-mono text-[11px] tracking-[0.22em] uppercase">{t(locale, 'Our core values')}</p>
           <h2 className="text-primary-3 mt-3 text-[28px] leading-tight font-bold tracking-[-0.035em] md:text-[36px]">
             {t(locale, 'Driving technological excellence to deliver superior products')}
           </h2>
