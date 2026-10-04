@@ -21,7 +21,7 @@ import JotformEmbed from '@/components/JotformEmbed'
  * iframe with no title is announced as "frame" and nothing else, so dropping
  * the heading from the page must not drop the label from the embed.
  */
-const QuoteForm = ({ formTitle, formDesc, heading = true }: { formTitle: string; formDesc?: string; heading?: boolean }) => (
+const QuoteForm = ({ formTitle, formDesc, heading = true, eager = false }: { formTitle: string; formDesc?: string; heading?: boolean; eager?: boolean }) => (
   <div>
     {heading && (
       <>
@@ -31,7 +31,7 @@ const QuoteForm = ({ formTitle, formDesc, heading = true }: { formTitle: string;
     )}
 
     <div className={heading ? 'mt-8' : ''}>
-      <JotformEmbed title={formTitle} />
+      <JotformEmbed title={formTitle} eager={eager} />
     </div>
   </div>
 )

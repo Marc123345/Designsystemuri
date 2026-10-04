@@ -87,7 +87,7 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
           <div className="rounded-[24px] border border-[#dfe3e8] bg-[#f5f5f5] px-3 py-5 text-[#111827] shadow-[0_30px_80px_-36px_rgba(2,25,59,0.32)] ring-1 ring-black/[0.02] sm:p-9 lg:p-10 xl:px-[58px] xl:py-[54px]">
             {/* Visible heading and intro removed at Marc's request; sr-only h2 keeps the heading order intact. */}
             <h2 className="sr-only">{t(locale, 'Contact us.')}</h2>
-            <QuoteForm formTitle={t(locale, 'Contact EID')} heading={false} />
+            <QuoteForm formTitle={t(locale, 'Contact EID')} heading={false} eager />
           </div>
         </div>
       </div>

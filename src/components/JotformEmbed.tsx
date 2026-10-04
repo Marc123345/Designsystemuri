@@ -1,7 +1,7 @@
 'use client'
 
-import Script from 'next/script'
 import { useEffect, useState } from 'react'
+import { preconnect } from 'react-dom'
 
 /**
  * EID's Jotform quote form, embedded.
@@ -15,13 +15,9 @@ import { useEffect, useState } from 'react'
  *  - Their snippet carries onload="window.parent.scrollTo(0,0)". On a page
  *    where the form sits below the fold, that yanks the reader back to the top
  *    the moment the iframe loads. Dropped.
- *  - The embed handler script is loaded through next/script and initialised on
- *    ready rather than with an inline <script>, so it does not block and it
- *    survives client-side navigation.
- *
- * The handler messages the iframe to report its height and resizes it, so the
- * form never scrolls inside its own box. `minHeight` is only what is reserved
- * before that first message lands.
+ *  - Jotform's embed handler script is not used at all (see the speed notes
+ *    below): the form's own `setHeight` messages resize the iframe, so the
+ *    form never scrolls inside its own box.
  */
 
 /**
@@ -60,18 +56,35 @@ import { useEffect, useState } from 'react'
  * count is the reason, and it is the single biggest thing left on this page.
  */
 const FORM_ID = '262084626654058'
-const EMBED_HANDLER = 'https://cdn.jotfor.ms/s/umd/latest/for-form-embed-handler.js'
 
-const JotformEmbed = ({ title, minHeight = 539 }: { title: string; minHeight?: number }) => {
-  const [src, setSrc] = useState(`https://form.jotform.com/${FORM_ID}`)
+// Speed notes (Oct 2026, "the contact form takes too long to load"):
+//
+// ⚠ No Jotform embed handler. Its script rebuilt the iframe URL (adding
+// isIframeEmbed/parentURL and re-appending our query) and, whenever that URL
+// differed from the one rendered, CLONED the iframe and swapped it in. Every
+// visitor therefore downloaded the form twice, and the real load could not
+// start until the handler itself had downloaded. The handler's only job we need
+// is resizing, and the form already posts `setHeight:<px>:<formId>` (and
+// `formSettled`) to the parent, so that is handled here instead and the iframe
+// is loaded once, by React, and never replaced.
+//
+// - `isIframeEmbed=1` is in the first URL so the form renders in embed mode.
+// - preconnect: the form document and its ~15 scripts come from two hosts.
+// - `eager` on /contact, where the form is the page. QuoteSection stays lazy.
+// - Reserved height matches the form's settled height (883px phone/desktop
+//   column, 620px at md) so nothing jumps; a skeleton covers the wait.
+const BASE = `https://form.jotform.com/${FORM_ID}?isIframeEmbed=1`
 
-  // Carry a product/grade selection through to the form. The grade selector
-  // links to /contact?product=…&grade=…, and Jotform prefills any field whose
-  // unique name matches a query parameter.
-  //
-  // NOTE: this only prefills if the Jotform fields are actually named `product`
-  // and `grade`. Confirm those two field names in the form builder — if they
-  // differ, change the keys here, not the links.
+const JotformEmbed = ({ title, eager = false }: { title: string; eager?: boolean }) => {
+  preconnect('https://form.jotform.com')
+  preconnect('https://cdn.jotfor.ms')
+
+  const [src, setSrc] = useState(BASE)
+  const [height, setHeight] = useState<number | null>(null)
+  const [loaded, setLoaded] = useState(false)
+
+  // product/grade from a "Request a quote" link prefill the form. Only those
+  // visits pay a second load; the common case keeps the server-rendered URL.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const pass = new URLSearchParams()
@@ -79,42 +92,62 @@ const JotformEmbed = ({ title, minHeight = 539 }: { title: string; minHeight?: n
       const v = params.get(key)
       if (v) pass.set(key, v)
     }
-    if ([...pass].length) setSrc(`https://form.jotform.com/${FORM_ID}?${pass}`)
+    if ([...pass].length) setSrc(`${BASE}&${pass}`)
+  }, [])
+
+  useEffect(() => {
+    const onMessage = (e: MessageEvent) => {
+      if (typeof e.origin !== 'string' || !e.origin.includes('jotform') || typeof e.data !== 'string') return
+      const [kind, value, id] = e.data.split(':')
+      if (kind === 'setHeight' && id === FORM_ID) {
+        const px = Number(value)
+        if (px > 0) setHeight(px)
+        setLoaded(true)
+      } else if (kind === 'formSettled') {
+        setLoaded(true)
+      }
+    }
+    window.addEventListener('message', onMessage)
+    // Never leave the placeholder up if a message is missed.
+    const fallback = window.setTimeout(() => setLoaded(true), 4000)
+    return () => {
+      window.removeEventListener('message', onMessage)
+      window.clearTimeout(fallback)
+    }
   }, [])
 
   return (
-    <>
+    <div className="relative">
       <iframe
         id={`JotFormIFrame-${FORM_ID}`}
         title={title}
         src={src}
-        // Jotform's copy-paste snippet grants geolocation, microphone and
-        // payment as well. A quote form asks for a product, grade, size and
-        // quantity — it has no business being handed the visitor's location or
-        // microphone, and `payment` on a form that takes no payment is a
-        // capability to withhold rather than pass along by default. Narrowed to
-        // what a form plausibly uses: camera and fullscreen are kept because a
-        // file-upload or photo widget can want them, and breaking a working
-        // field is a worse trade than leaving those two in place. If the form
-        // has no upload field, drop them too.
         allow="camera; fullscreen"
-        allowTransparency
         scrolling="no"
-        // Third-party iframe. On the home page it sits near the bottom, so
-        // eager loading meant every visitor fetched Jotform whether or not they
-        // ever scrolled to it.
-        loading="lazy"
-        className="w-full border-0"
-        style={{ minWidth: '100%', maxWidth: '100%', height: minHeight, border: 'none' }}
+        loading={eager ? 'eager' : 'lazy'}
+        // @ts-expect-error -- fetchpriority is valid HTML on iframes; React 19 passes it through
+        fetchpriority={eager ? 'high' : undefined}
+        onLoad={() => setLoaded(true)}
+        className={`w-full border-0 transition-opacity duration-300 ${height ? '' : 'h-[883px] md:h-[620px] lg:h-[883px]'} ${loaded ? 'opacity-100' : 'opacity-0'}`}
+        style={{ minWidth: '100%', maxWidth: '100%', border: 'none', ...(height ? { height } : null) }}
       />
-      <Script
-        src={EMBED_HANDLER}
-        strategy="afterInteractive"
-        onReady={() => {
-          ;(window as unknown as { jotformEmbedHandler?: (sel: string, origin: string) => void }).jotformEmbedHandler?.(`iframe[id='JotFormIFrame-${FORM_ID}']`, 'https://form.jotform.com/')
-        }}
-      />
-    </>
+
+      {!loaded && (
+        <div aria-hidden className="pointer-events-none absolute inset-0 flex flex-col gap-5 px-1 pt-2">
+          {['w-24', 'w-28', 'w-20', 'w-28', 'w-32'].map((w, i) => (
+            <div key={i} className="flex flex-col gap-2">
+              <div className={`bg-default-200 h-3 animate-pulse rounded ${w}`} />
+              <div className="bg-default-100 border-default-200 rounded-control h-12 animate-pulse border" />
+            </div>
+          ))}
+          <div className="flex flex-col gap-2">
+            <div className="bg-default-200 h-3 w-20 animate-pulse rounded" />
+            <div className="bg-default-100 border-default-200 rounded-control h-32 animate-pulse border" />
+          </div>
+          <div className="bg-primary/20 rounded-control h-12 w-40 animate-pulse" />
+        </div>
+      )}
+    </div>
   )
 }
 

@@ -124,6 +124,12 @@ const LocaleLayout = async ({ children, params }: { children: React.ReactNode; p
             opens a connection the browser then cannot reuse. */}
         <link rel="preconnect" href="https://ik.imagekit.io" crossOrigin="" />
 
+        {/* Contact form (Jotform iframe + its CDN). DNS only, site-wide: cheap,
+            and it means the lookup is already cached when someone clicks
+            Contact. The full preconnect happens in JotformEmbed itself. */}
+        <link rel="dns-prefetch" href="https://form.jotform.com" />
+        <link rel="dns-prefetch" href="https://cdn.jotfor.ms" />
+
         {/* The `.site-loader` noscript rule that used to sit here is gone with
             SiteLoader. It hid the overlay for visitors without JavaScript,
             because a script-dismissed panel would otherwise cover the site
