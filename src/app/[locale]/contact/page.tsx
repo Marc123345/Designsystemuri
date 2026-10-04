@@ -26,7 +26,18 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
       data-note="contact-strauss-layout"
       className="relative isolate min-h-[calc(100svh-54px)] overflow-hidden bg-white pt-[82px] pb-8 lg:pt-[102px] lg:pb-10"
     >
-      <div aria-hidden className="bg-primary-3 absolute inset-y-0 left-0 w-full lg:w-[66vw]" />
+      {/* EID House behind the navy half, under a navy scrim so the white type stays legible. */}
+      <div aria-hidden className="bg-primary-3 absolute inset-y-0 left-0 w-full overflow-hidden lg:w-[66vw]">
+        <Image
+          src="https://static.wixstatic.com/media/10a9d7_aab23325442a47e8a1280bc0685b4e24~mv2.jpg"
+          alt=""
+          fill
+          priority
+          sizes="(min-width: 1024px) 66vw, 100vw"
+          className="object-cover object-center"
+        />
+        <div className="bg-primary-3/80 absolute inset-0" />
+      </div>
 
       <div className="container relative z-10">
         <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(520px,0.92fr)] lg:gap-10 xl:gap-[70px]">
@@ -44,7 +55,7 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
               </span>
 
               <div className="mt-4 border-y border-white/45 py-7 lg:py-8">
-                <div className="grid items-center gap-7 sm:grid-cols-[minmax(0,1fr)_210px] lg:gap-10 xl:grid-cols-[minmax(0,1fr)_227px]">
+                <div className="grid items-center gap-7">
                   <div>
                     <h2 className="text-[28px] leading-[1.08] font-semibold tracking-[-0.02em] text-white uppercase sm:text-[31px]">
                       {t(locale, 'London Headquarters')}
@@ -67,16 +78,6 @@ const ContactPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
                         <span>{t(locale, 'Fax')}: {site.fax}</span>
                       </div>
                     </div>
-                  </div>
-
-                  <div className="relative mx-auto aspect-square w-full max-w-[227px] overflow-hidden rounded-[20px] border border-white/20 bg-white/10 shadow-[0_18px_50px_-30px_rgba(0,0,0,0.5)]">
-                    <Image
-                      src="https://static.wixstatic.com/media/10a9d7_aab23325442a47e8a1280bc0685b4e24~mv2.jpg"
-                      alt={t(locale, 'EID House, London headquarters in Hatton Garden')}
-                      fill
-                      sizes="227px"
-                      className="object-cover object-center"
-                    />
                   </div>
                 </div>
               </div>
