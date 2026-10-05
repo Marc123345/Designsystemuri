@@ -10,7 +10,8 @@
     "format": "prettier --write './src/**/*.{ts,tsx,js,jsx}'",
     "icons": "tsx scripts/generate-icons.ts",
     "translate": "tsx scripts/translate.ts",
-    "prebuild": "tsx scripts/translate.ts --auto"
+    "prebuild": "tsx scripts/translate.ts --auto",
+    "videos": "tsx scripts/sync-videos.ts"
   },
   "dependencies": {
     "@iconify/react": "^6.0.2",

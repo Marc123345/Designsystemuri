@@ -8,6 +8,12 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   headers: async () => [
     {
+      // Hero/intro renditions copied from ImageKit by scripts/sync-videos.ts.
+      // Names carry a content hash, so they can be cached for a year.
+      source: '/video/:path*',
+      headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+    },
+    {
       source: '/:path*',
       headers: [
         { key: 'X-Content-Type-Options', value: 'nosniff' },

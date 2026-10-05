@@ -1,0 +1,18 @@
+{
+  "https://ik.imagekit.io/qcvroy8xpd/EID%20NEW.mp4": {
+    "webm-720": "/video/eid-new.720.831bc06573.webm",
+    "webm-960": "/video/eid-new.960.a03fa2989a.webm",
+    "webm-full": "/video/eid-new.full.839617dff6.webm",
+    "mp4-720": "/video/eid-new.720.23e1790b3f.mp4",
+    "mp4-960": "/video/eid-new.960.d9d92cb467.mp4",
+    "mp4-full": "/video/eid-new.full.e5f831b7d6.mp4"
+  },
+  "https://ik.imagekit.io/qcvroy8xpd/EID%20VIDEO%20HERO.mp4": {
+    "webm-720": "/video/eid-video-hero.720.075409de80.webm",
+    "webm-960": "/video/eid-video-hero.960.147b436370.webm",
+    "webm-full": "/video/eid-video-hero.full.e7d02f7d81.webm",
+    "mp4-720": "/video/eid-video-hero.720.8121e3cd70.mp4",
+    "mp4-960": "/video/eid-video-hero.960.04a823c627.mp4",
+    "mp4-full": "/video/eid-video-hero.full.ee669aabdb.mp4"
+  }
+}

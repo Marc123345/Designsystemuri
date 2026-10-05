@@ -1,3 +1,5 @@
+import manifest from '@/lib/video-manifest.json'
+
 /**
  * Turns an ImageKit MP4 into the responsive source ladder a <video> should
  * offer, plus its poster.
@@ -172,12 +174,44 @@ const LADDER: { media?: string; w: number | null }[] = [
   { w: null },
 ]
 
-export function videoSources(mp4Url: string): VideoSource[] {
+/**
+ * ImageKit URL for one rung of the ladder. Exported for scripts/sync-videos.ts,
+ * which downloads exactly these renditions.
+ *
+ * `f-mp4` is explicit: without a format, ImageKit's automatic format
+ * conversion answers per browser (Android Chrome got WebM from the .mp4 URL)
+ * and marks the response `Vary: User-Agent`.
+ */
+export function videoVariantUrl(mp4Url: string, w: number | null, webm: boolean) {
   const q = qualityFor(mp4Url)
-  const at = (w: number | null, webm: boolean) => {
-    const tr = [webm ? 'f-webm' : null, w ? `w-${w}` : null, `q-${q}`, AUDIO_OFF].filter(Boolean).join(',')
-    return `${mp4Url}?tr=${tr}`
-  }
+  const tr = [webm ? 'f-webm' : 'f-mp4', w ? `w-${w}` : null, `q-${q}`, AUDIO_OFF].filter(Boolean).join(',')
+  return `${mp4Url}?tr=${tr}`
+}
+
+export const VIDEO_LADDER = LADDER
+
+/**
+ * ⚠ SERVED FROM THIS SITE, NOT FROM IMAGEKIT, WHEN A LOCAL COPY EXISTS.
+ *
+ * Measured Oct 2026: ImageKit's CDN keys cached video on the full User-Agent
+ * string. Same iPhone UA twice: hit, 33-89ms. Change one digit of the iOS
+ * version: miss, 230-600ms, and up to 1.4s on some renditions. Every visitor
+ * on a slightly different browser build is therefore a cold fetch, and the
+ * files themselves are tiny (95-290 KB), so the wait was never the bytes.
+ *
+ * scripts/sync-videos.ts downloads every rendition into public/video/ with a
+ * content hash in the name and records them in src/lib/video-manifest.json.
+ * Vercel's CDN caches those for every browser (71ms HIT, connection already
+ * open because it is the site's own origin). ImageKit stays the place clips
+ * are uploaded and transcoded; re-run `npm run videos` after replacing one.
+ * A clip missing from the manifest falls back to ImageKit transparently.
+ */
+const local = manifest as Record<string, Record<string, string>>
+
+export function videoSources(mp4Url: string): VideoSource[] {
+  const copies = local[mp4Url]
+  const at = (w: number | null, webm: boolean) =>
+    copies?.[`${webm ? 'webm' : 'mp4'}-${w ?? 'full'}`] ?? videoVariantUrl(mp4Url, w, webm)
 
   return [
     // WebM ladder — what almost everything takes.
