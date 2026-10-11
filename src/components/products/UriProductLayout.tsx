@@ -401,17 +401,17 @@ const NaturalLayout = () => {
 }
 
 const MB_IMAGES: Record<string, string> = {
-  // ESN images remain on their existing source until ImageKit URLs are supplied.
-  'ESN 770': 'https://drive.google.com/uc?export=view&id=1IG8x_iZoVr-oVTDgAvJaVx714EH4UApj',
-  'ESN 750': 'https://drive.google.com/uc?export=view&id=1EVLoJqYwAsic87rNCiiCl0L-OHkp-8rJ',
-  'ESN 700': 'https://drive.google.com/uc?export=view&id=1LorKixyCOJteMrCFGG4VOSQmDPhRsBYh',
-  'ESN 600': 'https://drive.google.com/uc?export=view&id=12O6uRSkq04op4G88HquFbdEuKacZRP-f',
-  'ESN 500': 'https://drive.google.com/uc?export=view&id=14U6gio6Z9hE975ih0zmP4GYRkrCPQ8tV',
-  'ESN 400': 'https://drive.google.com/uc?export=view&id=1SaJaBTQVIyS8-SeSFn0Q5AGCM-Fee1PN',
-  'ESN 300': 'https://drive.google.com/uc?export=view&id=1ENxjRk4OP4Hzu2BSatt3ohxbFOG7o3eF',
-  'ESN 200': 'https://drive.google.com/uc?export=view&id=1dMMAVSRB0LdCfCajV9yNR0-nyFpHczqc',
-  'ESN 75': 'https://drive.google.com/uc?export=view&id=17zYN2UQlMskJ2r-B-GS6jFvTrK80hjvT',
-  'ESN 50': 'https://drive.google.com/uc?export=view&id=18zIGW67BToEpaCsdBgtbSWE6AoiTsNnB',
+  // Metal Bond grade images served from EID's ImageKit account.
+  'ESN 770': 'https://ik.imagekit.io/qcvroy8xpd/esn770.png',
+  'ESN 750': 'https://ik.imagekit.io/qcvroy8xpd/esn%20750.png',
+  'ESN 700': 'https://ik.imagekit.io/qcvroy8xpd/esn%20700%20.png',
+  'ESN 600': 'https://ik.imagekit.io/qcvroy8xpd/esn%20600.png',
+  'ESN 500': 'https://ik.imagekit.io/qcvroy8xpd/esn%20500.png',
+  'ESN 400': 'https://ik.imagekit.io/qcvroy8xpd/esn%20400.png',
+  'ESN 300': 'https://ik.imagekit.io/qcvroy8xpd/esn%20300.png',
+  'ESN 200': 'https://ik.imagekit.io/qcvroy8xpd/esn%20200.png',
+  'ESN 75': 'https://ik.imagekit.io/qcvroy8xpd/esn%2075.png',
+  'ESN 50': 'https://ik.imagekit.io/qcvroy8xpd/esn%2050.png',
 
   'EDA 2395': 'https://ik.imagekit.io/qcvroy8xpd/eda%202395.png',
   'EDA 2360': 'https://ik.imagekit.io/qcvroy8xpd/eda%202360.png',
