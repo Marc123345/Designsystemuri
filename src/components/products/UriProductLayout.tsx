@@ -44,17 +44,17 @@ const AtAGlance = ({
     <div className="container">
       <div className={`text-primary-3 mb-4 ${T.eyebrow} ${align === 'center' ? 'text-center' : 'text-left'}`}>At a glance</div>
 
-      <div className={`grid gap-3 lg:gap-4 ${items.length === 1 ? 'md:grid-cols-1' : items.length === 2 ? 'md:grid-cols-2' : items.length === 4 ? 'md:grid-cols-2 xl:grid-cols-4' : 'md:grid-cols-3'}`}>
+      <div className={`grid auto-rows-fr items-stretch gap-3 lg:gap-4 ${items.length === 1 ? 'md:grid-cols-1' : items.length === 2 ? 'md:grid-cols-2' : items.length === 4 ? 'md:grid-cols-2 xl:grid-cols-4' : 'md:grid-cols-3'}`}>
         {items.map((item, index) => (
           <a
             key={item.href}
             href={item.href}
-            className={`group bg-primary-3 border-primary-1/35 relative flex min-h-[180px] overflow-hidden rounded-card border p-5 text-white shadow-[0_20px_55px_-42px_rgba(28,39,73,0.68)] transition-[transform,box-shadow,background-color] duration-300 hover:-translate-y-1 hover:bg-primary-2 hover:shadow-[0_26px_65px_-40px_rgba(28,39,73,0.78)] focus-visible:outline-primary focus-visible:outline-2 focus-visible:outline-offset-2 md:p-6 ${align === 'center' ? 'text-center' : 'text-left'}`}
+            className={`group bg-primary-3 border-primary-1/35 relative flex h-full min-h-[180px] w-full self-stretch overflow-hidden rounded-card border p-5 text-white shadow-[0_20px_55px_-42px_rgba(28,39,73,0.68)] transition-[transform,box-shadow,background-color] duration-300 hover:-translate-y-1 hover:bg-primary-2 hover:shadow-[0_26px_65px_-40px_rgba(28,39,73,0.78)] focus-visible:outline-primary focus-visible:outline-2 focus-visible:outline-offset-2 md:p-6 ${align === 'center' ? 'text-center' : 'text-left'}`}
           >
             <span aria-hidden className={`absolute inset-x-0 top-0 h-1 ${accent ? 'bg-champagne' : 'bg-primary-1'}`} />
             <span aria-hidden className="bg-primary-1/10 absolute -right-10 -top-12 size-32 rounded-full transition-transform duration-500 group-hover:scale-125" />
 
-            <div className="relative z-10 flex w-full flex-col">
+            <div className="relative z-10 flex h-full w-full flex-1 flex-col">
               <div className={`flex items-start gap-3 ${align === 'center' ? 'justify-center' : 'justify-between'}`}>
                 <strong className="block text-[15px] font-bold tracking-[-0.01em] text-white uppercase lg:text-base">{item.title}</strong>
                 {align === 'left' ? (
