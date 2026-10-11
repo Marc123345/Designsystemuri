@@ -135,7 +135,7 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
           <div className="bg-primary-3 relative mb-6 overflow-hidden rounded-card px-6 py-6 text-white shadow-[0_20px_58px_-42px_rgba(28,39,73,0.62)] sm:px-7 lg:flex lg:items-end lg:justify-between lg:gap-8 lg:px-9 lg:py-7">
             <span aria-hidden className="bg-primary-1 absolute inset-y-0 left-0 w-1.5" />
             <div>
-              <p className="font-mono text-[11px] tracking-[0.22em] text-primary-1 uppercase">{t(locale, 'The four controls')}</p>
+              <p className="font-mono text-[11px] tracking-[0.22em] text-champagne uppercase">{t(locale, 'The four controls')}</p>
               <h2 className="mt-2 text-[28px] leading-tight font-bold tracking-[-0.03em] text-white md:text-[34px]">{t(locale, 'What buyers need to see.')}</h2>
             </div>
             <p className="mt-4 max-w-[42ch] text-[13px] leading-relaxed text-white/72 lg:mt-0 lg:text-right">
