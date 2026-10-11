@@ -97,34 +97,46 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
       <section data-note="quality-proof" className="border-primary/10 border-b bg-canvas py-8 lg:py-10">
         <div className="container">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-[repeat(3,minmax(0,1fr))_126px]">
-            <article className="bg-primary-3 rounded-card relative overflow-hidden border border-white/10 p-5 text-white shadow-[0_18px_50px_-38px_rgba(28,39,73,0.55)] lg:p-6">
-              <span aria-hidden className="bg-primary-1 absolute inset-y-0 left-0 w-1.5" />
+            <article className="rounded-card relative isolate overflow-hidden border border-white/10 p-5 text-white shadow-[0_18px_50px_-38px_rgba(28,39,73,0.55)] lg:p-6">
+              <Image src="https://ik.imagekit.io/qcvroy8xpd/eid-hero-quality-control.png" alt="" fill sizes="(min-width: 1024px) 25vw, 50vw" className="-z-30 object-cover object-center" />
+              <span aria-hidden className="bg-primary-3/74 absolute inset-0 -z-20" />
+              <span aria-hidden className="from-primary-3/96 via-primary-3/72 absolute inset-0 -z-10 bg-linear-to-t to-primary/46" />
+              <span aria-hidden className="bg-champagne absolute inset-y-0 left-0 w-1.5" />
               <h2 className="text-[20px] font-semibold text-white">{t(locale, 'The Laboratory')}</h2>
-              <p className="mt-3 text-[14px] leading-relaxed text-white/78">
+              <p className="mt-3 text-[14px] leading-relaxed text-white/82">
                 {t(locale, 'QC is built into every stage, from raw material selection through grading, cleaning, coating and final inspection. Laboratory testing follows FEPA, ISO 6106 and ANSI standards.')}
               </p>
             </article>
 
-            <article className="bg-primary rounded-card relative overflow-hidden border border-primary-1/35 p-5 text-white shadow-[0_18px_50px_-38px_rgba(28,39,73,0.45)] lg:p-6">
-              <span aria-hidden className="bg-primary-1 absolute inset-y-0 left-0 w-1.5" />
+            <article className="rounded-card relative isolate overflow-hidden border border-white/10 p-5 text-white shadow-[0_18px_50px_-38px_rgba(28,39,73,0.55)] lg:p-6">
+              <Image src="/eid/quality/06-precision-scale-diamond-grit.png" alt="" fill sizes="(min-width: 1024px) 25vw, 50vw" className="-z-30 object-cover object-center" />
+              <span aria-hidden className="bg-primary-3/72 absolute inset-0 -z-20" />
+              <span aria-hidden className="from-primary-3/96 via-primary-3/70 absolute inset-0 -z-10 bg-linear-to-t to-primary/42" />
+              <span aria-hidden className="bg-champagne absolute inset-y-0 left-0 w-1.5" />
               <h2 className="text-[20px] font-semibold text-white">{t(locale, 'Measured, not sampled')}</h2>
-              <p className="mt-3 text-[14px] leading-relaxed text-white/80">
+              <p className="mt-3 text-[14px] leading-relaxed text-white/82">
                 {t(locale, 'Every batch is measured for the controls that define its grade, so repeat orders can be checked against a documented specification rather than a spot-check.')}
               </p>
             </article>
 
-            <article className="bg-primary-3 rounded-card relative overflow-hidden border border-white/10 p-5 text-white shadow-[0_18px_50px_-38px_rgba(28,39,73,0.55)] lg:p-6">
-              <span aria-hidden className="bg-primary-1 absolute inset-y-0 left-0 w-1.5" />
+            <article className="rounded-card relative isolate overflow-hidden border border-white/10 p-5 text-white shadow-[0_18px_50px_-38px_rgba(28,39,73,0.55)] lg:p-6">
+              <Image src="/eid/quality/05-labeled-sample-storage-cabinet.png" alt="" fill sizes="(min-width: 1024px) 25vw, 50vw" className="-z-30 object-cover object-center" />
+              <span aria-hidden className="bg-primary-3/74 absolute inset-0 -z-20" />
+              <span aria-hidden className="from-primary-3/96 via-primary-3/72 absolute inset-0 -z-10 bg-linear-to-t to-primary/44" />
+              <span aria-hidden className="bg-champagne absolute inset-y-0 left-0 w-1.5" />
               <h2 className="text-[20px] font-semibold text-white">{t(locale, 'Documented, not asserted')}</h2>
-              <p className="mt-3 text-[14px] leading-relaxed text-white/78">
+              <p className="mt-3 text-[14px] leading-relaxed text-white/82">
                 {t(locale, 'Lot traceability, certificates of analysis on request and retained batch samples give buyers a record to return to when a grade needs answering for.')}
               </p>
             </article>
 
-            <article className="bg-primary-1 rounded-card flex min-h-[94px] flex-col items-center justify-center self-stretch px-3 py-4 text-center text-white shadow-[0_18px_50px_-38px_rgba(28,39,73,0.4)] sm:min-h-[104px] lg:min-h-[108px]">
-              <span className="font-mono text-[11px] tracking-[0.22em] text-white/65 uppercase">ISO</span>
+            <article className="rounded-card relative isolate flex min-h-[94px] flex-col items-center justify-center self-stretch overflow-hidden border border-white/10 px-3 py-4 text-center text-white shadow-[0_18px_50px_-38px_rgba(28,39,73,0.5)] sm:min-h-[104px] lg:min-h-[108px]">
+              <Image src="/eid/qc-samples.jpg" alt="" fill sizes="126px" className="-z-30 object-cover object-center" />
+              <span aria-hidden className="bg-primary-3/80 absolute inset-0 -z-20" />
+              <span aria-hidden className="from-primary-3/95 absolute inset-0 -z-10 bg-linear-to-t to-primary/54" />
+              <span className="font-mono text-[11px] tracking-[0.22em] text-champagne uppercase">ISO</span>
               <strong className="mt-1.5 text-[16px] leading-none tracking-[-0.03em] text-white">9001:2015</strong>
-              <span className="mt-1.5 text-[11px] font-semibold tracking-[0.14em] text-white/82 uppercase">{t(locale, 'Certified')}</span>
+              <span className="mt-1.5 text-[11px] font-semibold tracking-[0.14em] text-white/86 uppercase">{t(locale, 'Certified')}</span>
             </article>
           </div>
         </div>
