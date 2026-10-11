@@ -156,8 +156,10 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
                 </div>
 
                 <div className="bg-primary-3 border-t border-white/10 px-5 py-4 text-white lg:px-6 lg:py-5">
-                  <h3 className="text-[20px] font-bold tracking-[-0.02em] text-white lg:text-[22px]">{t(locale, control.title)}</h3>
-                  {'note' in control && control.note ? <p className="mt-1.5 text-[12px] italic text-white/68">{t(locale, control.note)}</p> : null}
+                  <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1.5">
+                    <h3 className="text-[20px] font-bold tracking-[-0.02em] text-white lg:text-[22px]">{t(locale, control.title)}</h3>
+                    {'note' in control && control.note ? <p className="text-[12px] italic text-white/68">{t(locale, control.note)}</p> : null}
+                  </div>
                 </div>
 
                 <div className="p-5 lg:p-6">
