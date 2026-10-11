@@ -400,7 +400,8 @@ const NaturalLayout = () => {
   )
 }
 
-const MB_DRIVE_IMAGES: Record<string, string> = {
+const MB_IMAGES: Record<string, string> = {
+  // ESN images remain on their existing source until ImageKit URLs are supplied.
   'ESN 770': 'https://drive.google.com/uc?export=view&id=1IG8x_iZoVr-oVTDgAvJaVx714EH4UApj',
   'ESN 750': 'https://drive.google.com/uc?export=view&id=1EVLoJqYwAsic87rNCiiCl0L-OHkp-8rJ',
   'ESN 700': 'https://drive.google.com/uc?export=view&id=1LorKixyCOJteMrCFGG4VOSQmDPhRsBYh',
@@ -411,27 +412,52 @@ const MB_DRIVE_IMAGES: Record<string, string> = {
   'ESN 200': 'https://drive.google.com/uc?export=view&id=1dMMAVSRB0LdCfCajV9yNR0-nyFpHczqc',
   'ESN 75': 'https://drive.google.com/uc?export=view&id=17zYN2UQlMskJ2r-B-GS6jFvTrK80hjvT',
   'ESN 50': 'https://drive.google.com/uc?export=view&id=18zIGW67BToEpaCsdBgtbSWE6AoiTsNnB',
-  'EDA 2395': 'https://drive.google.com/uc?export=view&id=16T4Sr2BrcSeO8xAlLFUnfVXdubQJOanw',
-  'EDA 2360': 'https://drive.google.com/uc?export=view&id=1pdm7bA7JYPPpejR2lazWpI2j-ZwsA5tf',
-  'EDA 2300': 'https://drive.google.com/uc?export=view&id=1vfd-TXhG3-p19gA7JLqons1BjqHLXgw2',
-  'EDA 2215': 'https://drive.google.com/uc?export=view&id=1D9-PdqOjf5tSVrzTrWg9_RZrDgbMeO54',
-  'EDA 2125': 'https://drive.google.com/uc?export=view&id=1BFyDEzIKPPzcGzyxjlfiODSEb4e6XSlz',
-  'EDA 2050': 'https://drive.google.com/uc?export=view&id=1tVRwIwU5JskCM3CWv0-aAYHd-rxQQ3bp',
-  'EDA 2025': 'https://drive.google.com/uc?export=view&id=1g0XGNIxrpqCNwmiJw8UhKZSU_bzLnlP8',
-  'MB500-um': 'https://drive.google.com/uc?export=view&id=1ZXPELid_HOCWOB-IICn9YCZaN0HC5C2B',
-  'MB400-um': 'https://drive.google.com/uc?export=view&id=1ehCHtkdJfn8dnEV9dyFR4tJjkvJP5VRX',
-  'MB300-um': 'https://drive.google.com/uc?export=view&id=1JwuJERaWCgYa-pG7-sHK7a8iqIhCSU6x',
-  'MB200-um': 'https://drive.google.com/uc?export=view&id=1faI1cXoyDWpOBEdSRltw7MO3fMm7q9Ud',
-  EGM: 'https://drive.google.com/uc?export=view&id=1uZ2cZdGVpmWlDLXG2n7YI2_VO33W_SrX',
+
+  'EDA 2395': 'https://ik.imagekit.io/qcvroy8xpd/eda%202395.png',
+  'EDA 2360': 'https://ik.imagekit.io/qcvroy8xpd/eda%202360.png',
+  'EDA 2300': 'https://ik.imagekit.io/qcvroy8xpd/eda%202300.png',
+  'EDA 2215': 'https://ik.imagekit.io/qcvroy8xpd/eda%202215.png',
+  'EDA 2125': 'https://ik.imagekit.io/qcvroy8xpd/eda%202125.png',
+  'EDA 2050': 'https://ik.imagekit.io/qcvroy8xpd/eda%202050.png',
+  'EDA 2025': 'https://ik.imagekit.io/qcvroy8xpd/eda%202025.png',
+
+  'MB500-um': 'https://ik.imagekit.io/qcvroy8xpd/mb%20500%20um%20jpg%20copy.jpg',
+  'MB400-um': 'https://ik.imagekit.io/qcvroy8xpd/mb%20400-um%20jpg%20%20copy.jpg',
+  'MB300-um': 'https://ik.imagekit.io/qcvroy8xpd/mb300-um%20jpg%20copy.jpg',
+  'MB200-um': 'https://ik.imagekit.io/qcvroy8xpd/mb200-um%20jpg%20copy.jpg',
+  EGM: 'https://ik.imagekit.io/qcvroy8xpd/EGM%20copy.jpg',
 }
 
-const applyMetalDriveImages = (groups: UriGradeGroup[]): UriGradeGroup[] =>
+const MB_MICRON_BOTTLES = 'https://ik.imagekit.io/qcvroy8xpd/mb%20micron%20bottles.JPG'
+
+const applyMetalImages = (groups: UriGradeGroup[], withMicronGallery = false): UriGradeGroup[] =>
   groups.map((group) => ({
     ...group,
-    options: group.options.map((option) => ({
-      ...option,
-      image: MB_DRIVE_IMAGES[option.label] ?? option.image,
-    })),
+    options: group.options.map((option) => {
+      const gradeImage = MB_IMAGES[option.label] ?? option.image
+      return {
+        ...option,
+        image: gradeImage,
+        ...(withMicronGallery
+          ? {
+              gallery: [
+                {
+                  src: gradeImage,
+                  alt: `${option.title} metal bond diamond micron powder`,
+                  caption: `${option.title} · METAL BOND MICRON`,
+                  className: 'h-[235px] md:h-[260px]',
+                },
+                {
+                  src: MB_MICRON_BOTTLES,
+                  alt: 'EID metal bond micron powder range in labelled sample bottles',
+                  caption: 'EID · METAL BOND MICRON RANGE',
+                  className: 'h-[154px] md:h-[170px]',
+                },
+              ],
+            }
+          : {}),
+      }
+    }),
   }))
 
 const MetalLayout = ({ locale }: { locale: Locale }) => {
@@ -446,14 +472,14 @@ const MetalLayout = ({ locale }: { locale: Locale }) => {
       'Synthetic diamond grit developed for precision abrasive tooling, with a broad range of grades for metal, resin, vitrified and electroplated bond systems.',
     ],
   })
-  const micronGroups = applyMetalDriveImages(catalogGroups({
+  const micronGroups = applyMetalImages(catalogGroups({
     locale,
     slug: 'metal-bond',
     section: 'micron',
     image,
     fallbacks: ['EID Metal Bond Synthetic Diamond Powders combine strong bond retention, high particle strength and thermal stability for demanding lapping, finishing and grinding applications.'],
-  }))
-  const meshGroupsWithDriveImages = applyMetalDriveImages(meshGroups)
+  }), true)
+  const meshGroupsWithImages = applyMetalImages(meshGroups)
 
   return (
     <>
@@ -469,7 +495,7 @@ const MetalLayout = ({ locale }: { locale: Locale }) => {
         <p className="mt-2"><strong className="text-white">EDA “Wheel Grade” Series</strong> — Synthetic diamond grit developed for precision abrasive tooling, with a broad range of grades for metal, resin, vitrified and electroplated bond systems.</p>
       </Chapter>
       <ModuleWrap>
-        <UriGradeModule selectorTitle="SELECT SERIES & GRADE" groups={meshGroupsWithDriveImages} variant="rows" />
+        <UriGradeModule selectorTitle="SELECT SERIES & GRADE" groups={meshGroupsWithImages} variant="rows" />
       </ModuleWrap>
 
       <span id="micron" className="block scroll-mt-28" aria-hidden />
