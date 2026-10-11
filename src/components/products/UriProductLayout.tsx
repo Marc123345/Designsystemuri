@@ -40,21 +40,36 @@ const AtAGlance = ({
   align?: 'left' | 'center'
   accent?: boolean
 }) => (
-  <section className={`border-b py-7 lg:py-9 ${accent ? 'border-champagne bg-canvas' : 'border-default-200 bg-default-50'}`} data-note="uri-product-glance">
+  <section className="border-primary/10 bg-canvas border-b py-8 lg:py-10" data-note="uri-product-glance">
     <div className="container">
-      <div className={`${accent ? 'text-champagne-deep' : 'text-default-500'} mb-4 ${T.eyebrow} ${align === 'center' ? 'text-center' : 'text-left'}`}>At a glance</div>
-      <div className={`grid overflow-hidden rounded-card border shadow-[0_18px_50px_-42px_rgba(28,39,73,0.35)] ${items.length === 1 ? 'md:grid-cols-1' : items.length === 2 ? 'md:grid-cols-2' : items.length === 4 ? 'md:grid-cols-2 xl:grid-cols-4' : 'md:grid-cols-3'} ${accent ? 'border-champagne bg-champagne' : 'border-default-200 bg-default-200'} gap-px`}>
-        {items.map((item) => (
+      <div className={`text-primary-3 mb-4 ${T.eyebrow} ${align === 'center' ? 'text-center' : 'text-left'}`}>At a glance</div>
+
+      <div className={`grid gap-3 lg:gap-4 ${items.length === 1 ? 'md:grid-cols-1' : items.length === 2 ? 'md:grid-cols-2' : items.length === 4 ? 'md:grid-cols-2 xl:grid-cols-4' : 'md:grid-cols-3'}`}>
+        {items.map((item, index) => (
           <a
             key={item.href}
             href={item.href}
-            className={`group relative bg-white p-5 transition-[background,box-shadow,transform] duration-200 hover:-translate-y-px hover:bg-canvas md:p-6 ${align === 'center' ? 'text-center' : 'text-left'}`}
+            className={`group bg-primary-3 border-primary-1/35 relative flex min-h-[180px] overflow-hidden rounded-card border p-5 text-white shadow-[0_20px_55px_-42px_rgba(28,39,73,0.68)] transition-[transform,box-shadow,background-color] duration-300 hover:-translate-y-1 hover:bg-primary-2 hover:shadow-[0_26px_65px_-40px_rgba(28,39,73,0.78)] focus-visible:outline-primary focus-visible:outline-2 focus-visible:outline-offset-2 md:p-6 ${align === 'center' ? 'text-center' : 'text-left'}`}
           >
-            {accent ? <span aria-hidden className="bg-champagne absolute inset-x-0 top-0 h-1 opacity-0 transition-opacity group-hover:opacity-100" /> : null}
-            <strong className="text-primary-3 block text-[15px] font-bold tracking-[-0.01em] uppercase lg:text-base">{item.title}</strong>
-            <span className="text-default-800 mt-2.5 block text-sm font-semibold">{item.big}</span>
-            {item.small ? <span className="text-default-500 mt-1.5 block text-[13px]">{item.small}</span> : null}
-            <span className={`${accent ? 'text-champagne-deep' : 'text-primary'} mt-3 block uppercase ${T.label}`}>View range ↓</span>
+            <span aria-hidden className={`absolute inset-x-0 top-0 h-1 ${accent ? 'bg-champagne' : 'bg-primary-1'}`} />
+            <span aria-hidden className="bg-primary-1/10 absolute -right-10 -top-12 size-32 rounded-full transition-transform duration-500 group-hover:scale-125" />
+
+            <div className="relative z-10 flex w-full flex-col">
+              <div className={`flex items-start gap-3 ${align === 'center' ? 'justify-center' : 'justify-between'}`}>
+                <strong className="block text-[15px] font-bold tracking-[-0.01em] text-white uppercase lg:text-base">{item.title}</strong>
+                {align === 'left' ? (
+                  <span className="text-champagne/75 shrink-0 font-mono text-[10px] tracking-[0.18em]">{String(index + 1).padStart(2, '0')}</span>
+                ) : null}
+              </div>
+
+              <span className="mt-3 block text-[15px] leading-snug font-semibold text-white/92">{item.big}</span>
+              {item.small ? <span className="mt-1.5 block text-[13px] leading-relaxed text-white/65">{item.small}</span> : null}
+
+              <span className={`border-white/12 text-champagne mt-auto flex items-center gap-2 border-t pt-4 uppercase ${T.label} ${align === 'center' ? 'justify-center' : 'justify-start'}`}>
+                View range
+                <span aria-hidden className="transition-transform duration-300 group-hover:translate-y-0.5">↓</span>
+              </span>
+            </div>
           </a>
         ))}
       </div>
