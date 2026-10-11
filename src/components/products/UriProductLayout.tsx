@@ -6,6 +6,7 @@ import { getProduct, getSectionCatalog } from '@/lib/i18n-content'
 import { RichText } from '@/components/RichText'
 import { getProductImageSrc } from '@/lib/product-images'
 import { T } from '@/components/products/uriType'
+import Image from 'next/image'
 
 type Slug =
   | 'natural-grit-powder'
@@ -675,6 +676,17 @@ const ResinLayout = ({ locale }: { locale: Locale }) => {
   )
 }
 
+const GenericSectionImage = ({ image, alt }: { image?: string; alt: string }) => {
+  const src = getProductImageSrc(image)
+  if (!src) return null
+  return (
+    <div className="border-champagne relative min-h-[280px] overflow-hidden rounded-card border bg-[#f7f6f2] shadow-[0_18px_55px_-42px_rgba(28,39,73,0.28)] md:min-h-[360px]">
+      <Image src={src} alt={alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
+      <span aria-hidden className="from-primary-3/18 absolute inset-0 bg-linear-to-t to-transparent" />
+    </div>
+  )
+}
+
 const GenericDataCard = ({
   properties,
   coatings,
@@ -829,7 +841,7 @@ const GenericLayout = ({ slug, locale }: { slug: Slug; locale: Locale }) => {
               stats={genericSectionStats(cat, index, product.sections.length)}
             >
               {section.intro.map((paragraph, paragraphIndex) => (
-                <p key={paragraphIndex} className={paragraphIndex ? 'mt-3' : undefined}>
+                <p key={paragraphIndex} className={`${paragraphIndex ? 'mt-3' : ''} [&_a]:text-white [&_a]:underline [&_a]:decoration-champagne/70`}>
                   <RichText>{paragraph}</RichText>
                 </p>
               ))}
@@ -847,10 +859,12 @@ const GenericLayout = ({ slug, locale }: { slug: Slug; locale: Locale }) => {
                     />
                   ) : null}
 
+                  {!groups.length && cat?.image ? <GenericSectionImage image={cat.image} alt={`${section.title} — EID`} /> : null}
+
                   <GenericCallouts callouts={section.callouts} />
 
                   {(section.applications?.length || details) ? (
-                    <div className="grid gap-6 lg:grid-cols-2">
+                    <div className={`grid gap-6 ${section.applications?.length && details ? 'lg:grid-cols-2' : 'lg:grid-cols-1'}`}>
                       <GenericApplications title={section.applicationsTitle} items={section.applications} note={section.applicationsNote} />
                       <GenericDataCard
                         properties={cat?.properties}
