@@ -353,18 +353,19 @@ const NaturalLayout = () => {
 
   return (
     <>
-      <AtAGlance align="left" items={[
+      <AtAGlance align="left" accent items={[
         { href: '#mesh', title: 'Natural Mesh', big: '3 grades', small: '12–500 mesh' },
         { href: '#micron', title: 'Natural Micron', big: '1 grade', small: '0–0.25 → 40–60 µm' },
         { href: '#rotary', title: 'Natural Rotary', big: '2 product lines · 6 grades' },
       ]} />
 
       <span id="grit" className="block scroll-mt-28" aria-hidden />
-      <Chapter id="mesh" eyebrow="01 / NATURAL MESH" title="Natural Mesh" stats={[{ label: 'Grades', value: '3' }, { label: 'Size range', value: '16/18 → 400/500 mesh' }]}>
+      <Chapter accent id="mesh" eyebrow="01 / NATURAL MESH" title="Natural Mesh" stats={[{ label: 'Grades', value: '3' }, { label: 'Size range', value: '16/18 → 400/500 mesh' }]}>
         Natural diamond grit engineered across distinct crystal morphologies to balance strength, durability and cutting action for demanding industrial abrasive applications.
       </Chapter>
-      <ModuleWrap>
+      <ModuleWrap accent>
         <UriGradeModule
+          accent="champagne"
           groups={mesh}
           variant="tiles"
           axis={{ from: '← Higher toughness', to: 'More free-cutting →' }}
@@ -372,24 +373,25 @@ const NaturalLayout = () => {
         />
       </ModuleWrap>
 
-      <Chapter id="micron" eyebrow="02 / NATURAL MICRON" title="Natural Micron" stats={[{ label: 'Grades', value: '1' }, { label: 'Size range', value: '0–0.20 → 40–60 µm' }]}>
+      <Chapter accent id="micron" eyebrow="02 / NATURAL MICRON" title="Natural Micron" stats={[{ label: 'Grades', value: '1' }, { label: 'Size range', value: '0–0.20 → 40–60 µm' }]}>
         Precision-graded natural diamond powder engineered around the exceptional hardness and cutting efficiency of natural diamond. Strong, well-shaped crystalline particles combine controlled blocky morphology with sharp cutting edges to deliver consistent abrasive action, efficient material removal and high-quality surface finishes across precision lapping, polishing and fine grinding applications.
       </Chapter>
-      <ModuleWrap>
-        <UriGradeModule groups={micron} variant="none" />
+      <ModuleWrap accent>
+        <UriGradeModule accent="champagne" groups={micron} variant="none" />
       </ModuleWrap>
 
-      <Chapter id="rotary" eyebrow="03 / NATURAL ROTARY" title="Natural Rotary Diamonds" stats={[{ label: 'Product lines', value: '2' }, { label: 'Grades', value: '6' }]}>
+      <Chapter accent id="rotary" eyebrow="03 / NATURAL ROTARY" title="Natural Rotary Diamonds" stats={[{ label: 'Product lines', value: '2' }, { label: 'Grades', value: '6' }]}>
         <div className="grid gap-5 md:grid-cols-2 md:gap-9">
           <p><strong className="text-white">Wholestone Diamonds</strong> — Our Wholestone Rough Industrial diamonds are mined diamonds in their natural state, before any processing or polishing has occurred.</p>
           <p><strong className="text-white">Rotary Diamonds</strong> — Rotary Diamond Dressers provide an efficient, economical means of dressing grinding wheels to the correct form, tolerance and condition for exceptional accuracy.</p>
         </div>
       </Chapter>
-      <ModuleWrap>
-        <UriGradeModule groups={rotary} variant="grouped-tiles" ctaLead="Need a grade or selection not listed?" />
+      <ModuleWrap accent>
+        <UriGradeModule accent="champagne" groups={rotary} variant="grouped-tiles" ctaLead="Need a grade or selection not listed?" />
       </ModuleWrap>
 
       <Insight
+        accent
         kicker="Technical insight · From raw diamond to controlled abrasive"
         title="How Natural Diamond Becomes a Precision Abrasive"
         steps={[
@@ -401,6 +403,7 @@ const NaturalLayout = () => {
         ]}
         spectra={
           <Spectrum
+            accent
             title="Grade characteristics · Morphology"
             from="Higher toughness / durability"
             to="More free-cutting / aggressive"
