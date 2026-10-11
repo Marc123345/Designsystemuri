@@ -45,8 +45,8 @@ const SupplyReach = () => {
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 className="-z-30 object-cover object-[58%_42%]"
               />
-              <span aria-hidden className="bg-primary-3/68 absolute inset-0 -z-20" />
-              <span aria-hidden className="from-primary-3/96 via-primary-3/78 absolute inset-0 -z-10 bg-linear-to-r to-primary/48" />
+              <span aria-hidden className="bg-primary-3/42 absolute inset-0 -z-20" />
+              <span aria-hidden className="from-primary-3/88 via-primary-3/54 absolute inset-0 -z-10 bg-linear-to-r to-primary/18" />
 
               <div className="relative z-10">
                 <h2 className="text-[24px] leading-tight font-semibold tracking-[-0.025em] text-white lg:text-[28px]">
