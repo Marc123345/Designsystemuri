@@ -201,7 +201,7 @@ const PhotoCard = ({ image, alt = '', eyebrow, title, body, points, note, href, 
     </>
   )
 
-  const shell = `group rounded-card relative isolate flex overflow-hidden ${minHeight} ${className}`
+  const shell = `group rounded-card relative isolate flex h-full w-full self-stretch overflow-hidden ${minHeight} ${className}`
 
   return href ? (
     <Link href={href} className={`${shell} focus-visible:outline-primary focus-visible:outline-2 focus-visible:outline-offset-2`}>
