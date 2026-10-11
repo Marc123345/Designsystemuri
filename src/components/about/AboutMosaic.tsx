@@ -58,9 +58,12 @@ const AboutMosaic = () => {
       <div className="container">
         <div className="mx-auto max-w-5xl text-center">
           <p className="text-primary font-mono text-[11px] tracking-[0.22em] uppercase">{t(locale, 'About EID')}</p>
-          <h1 className="text-primary-3 mx-auto mt-3 max-w-[24ch] text-[34px] leading-[1.02] font-bold tracking-[-0.04em] text-balance md:text-[44px] lg:text-[52px]">
-            {t(locale, 'Headquartered in London, EID is trusted worldwide for quality, consistency and service.')}
-          </h1>
+          <h2 className="text-primary-3 mx-auto mt-3 max-w-[24ch] text-[clamp(2.125rem,1.2rem+3.2vw,3.25rem)] leading-[1.08] font-bold tracking-[-0.025em] text-balance hyphens-auto break-words md:tracking-[-0.04em]">
+            {t(locale, 'Industrial diamond and CBN for toolmakers since 1970.')}
+          </h2>
+          <p className="text-default-600 mx-auto mt-4 max-w-[68ch] text-[15px] leading-relaxed md:text-base">
+            {t(locale, 'Headquartered in London, EID manufactures, grades and quality-controls superabrasives supplied to toolmakers in 80 countries.')}
+          </p>
         </div>
 
         <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
