@@ -2,11 +2,20 @@ import UriGradeModule, { type UriGradeGroup, type UriGradeOption } from '@/compo
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { productImage } from '@/lib/card-media'
-import { getSectionCatalog } from '@/lib/i18n-content'
+import { getProduct, getSectionCatalog } from '@/lib/i18n-content'
+import { RichText } from '@/components/RichText'
 import { getProductImageSrc } from '@/lib/product-images'
 import { T } from '@/components/products/uriType'
 
-type Slug = 'natural-grit-powder' | 'metal-bond' | 'resin-bond'
+type Slug =
+  | 'natural-grit-powder'
+  | 'metal-bond'
+  | 'resin-bond'
+  | 'cbn'
+  | 'single-crystal'
+  | 'polycrystalline-diamond'
+  | 'tool-stones'
+  | 'polycrystalline-powder'
 
 
 const IMAGE = {
@@ -33,12 +42,12 @@ const AtAGlance = ({
   <section className={`border-b py-7 lg:py-9 ${accent ? 'border-champagne bg-canvas' : 'border-default-200 bg-default-50'}`} data-note="uri-product-glance">
     <div className="container">
       <div className={`${accent ? 'text-champagne-deep' : 'text-default-500'} mb-4 ${T.eyebrow} ${align === 'center' ? 'text-center' : 'text-left'}`}>At a glance</div>
-      <div className={`grid overflow-hidden rounded-card border bg-white shadow-[0_18px_50px_-42px_rgba(28,39,73,0.35)] md:grid-cols-3 ${accent ? 'border-champagne' : 'border-default-200'}`}>
+      <div className={`grid overflow-hidden rounded-card border shadow-[0_18px_50px_-42px_rgba(28,39,73,0.35)] ${items.length === 1 ? 'md:grid-cols-1' : items.length === 2 ? 'md:grid-cols-2' : items.length === 4 ? 'md:grid-cols-2 xl:grid-cols-4' : 'md:grid-cols-3'} ${accent ? 'border-champagne bg-champagne' : 'border-default-200 bg-default-200'} gap-px`}>
         {items.map((item) => (
           <a
             key={item.href}
             href={item.href}
-            className={`group relative p-5 transition-[background,box-shadow,transform] duration-200 hover:-translate-y-px hover:bg-canvas md:p-6 md:border-r md:last:border-r-0 max-md:border-b max-md:last:border-b-0 ${accent ? 'border-champagne/80' : 'border-default-200'} ${align === 'center' ? 'text-center' : 'text-left'}`}
+            className={`group relative bg-white p-5 transition-[background,box-shadow,transform] duration-200 hover:-translate-y-px hover:bg-canvas md:p-6 ${align === 'center' ? 'text-center' : 'text-left'}`}
           >
             {accent ? <span aria-hidden className="bg-champagne absolute inset-x-0 top-0 h-1 opacity-0 transition-opacity group-hover:opacity-100" /> : null}
             <strong className="text-primary-3 block text-[15px] font-bold tracking-[-0.01em] uppercase lg:text-base">{item.title}</strong>
@@ -611,31 +620,32 @@ const ResinLayout = ({ locale }: { locale: Locale }) => {
 
   return (
     <>
-      <AtAGlance items={[
+      <AtAGlance align="left" accent items={[
         { href: '#resin-bond-mesh', title: 'Resin Bond Mesh', big: '50/60 → 400/500 mesh', small: '1 series · 4 grades' },
         { href: '#resin-bond-micron', title: 'Resin Bond Micron', big: '0–0.20 → 40–60 µm', small: '1 series · 2 grades' },
         { href: '#coating-options', title: 'Coating Options', big: 'Electroless Nickel & PVD', small: 'Coating technologies' },
       ]} />
 
       <span id="mesh" className="block scroll-mt-28" aria-hidden />
-      <Chapter id="resin-bond-mesh" eyebrow="01 / RESIN BOND MESH" title="Resin Bond Mesh" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '4' }]}>
+      <Chapter accent id="resin-bond-mesh" eyebrow="01 / RESIN BOND MESH" title="Resin Bond Mesh" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '4' }]}>
         EID Resin Bond Mesh is engineered for resin-bonded diamond wheels and non-ferrous grinding applications. Its multi-crystalline mosaic structure, rough surface and controlled friability continuously expose fresh cutting edges for fast, consistent cutting and long tool life.
       </Chapter>
-      <ModuleWrap>
-        <UriGradeModule groups={meshGroups} variant="rows" />
+      <ModuleWrap accent>
+        <UriGradeModule accent="champagne" groups={meshGroups} variant="rows" />
       </ModuleWrap>
 
       <span id="micron" className="block scroll-mt-28" aria-hidden />
-      <Chapter id="resin-bond-micron" eyebrow="02 / RESIN BOND MICRON" title="Resin Bond Micron" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '2' }]}>
+      <Chapter accent id="resin-bond-micron" eyebrow="02 / RESIN BOND MICRON" title="Resin Bond Micron" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '2' }]}>
         EID Resin Bond Synthetic Diamond Powders combine friability, mosaic structure and irregular blocky particle morphology for soft polishing, lapping and fine grinding. Under stress, the diamond fractures to expose fresh cutting points, supporting fast cutting and excellent surface finish.
       </Chapter>
-      <ModuleWrap>
-        <UriGradeModule groups={micronGroups} variant="buttons" />
+      <ModuleWrap accent>
+        <UriGradeModule accent="champagne" groups={micronGroups} variant="buttons" />
       </ModuleWrap>
 
-      <Coatings resin />
+      <Coatings resin accent />
 
       <Insight
+        accent
         kicker="Technical insight · Crystal behaviour"
         title="Why Friability Matters in a Resin Bond"
         steps={[
@@ -646,6 +656,7 @@ const ResinLayout = ({ locale }: { locale: Locale }) => {
         ]}
         spectra={
           <Spectrum
+            accent
             title="Grade characteristics"
             from="Higher strength / bond retention"
             to="Higher friability / micro-fracturing"
@@ -664,13 +675,235 @@ const ResinLayout = ({ locale }: { locale: Locale }) => {
   )
 }
 
+const GenericDataCard = ({
+  properties,
+  coatings,
+  micronNote,
+  specs,
+}: {
+  properties?: { label: string; value: string }[]
+  coatings?: string[]
+  micronNote?: string
+  specs?: { label: string; value: string }[]
+}) => {
+  const rows = properties?.length ? properties : specs
+  if (!rows?.length && !coatings?.length && !micronNote) return null
+
+  return (
+    <div className="border-champagne rounded-card border bg-white p-6 shadow-[0_18px_55px_-42px_rgba(28,39,73,0.28)] lg:p-8">
+      <div className={`text-champagne-deep ${T.eyebrow}`}>Technical details</div>
+      {rows?.length ? (
+        <dl className="border-champagne/70 mt-4 divide-y divide-champagne/70 border-y">
+          {rows.map((row) => (
+            <div key={row.label} className="grid gap-1 py-3 sm:grid-cols-[170px_1fr] sm:gap-5">
+              <dt className={`text-default-500 uppercase ${T.label}`}>{row.label}</dt>
+              <dd className={`text-default-700 ${T.small}`}>{row.value}</dd>
+            </div>
+          ))}
+        </dl>
+      ) : null}
+      {coatings?.length ? (
+        <div className={rows?.length ? 'mt-5' : 'mt-4'}>
+          <div className={`text-default-500 uppercase ${T.label}`}>Available coatings</div>
+          <div className="mt-2.5 flex flex-wrap gap-2">
+            {coatings.map((item) => (
+              <span key={item} className={`border-champagne rounded-control border bg-champagne-light/45 px-3 py-2 text-default-700 ${T.chip}`}>{item}</span>
+            ))}
+          </div>
+        </div>
+      ) : null}
+      {micronNote ? <p className={`text-default-600 mt-5 ${T.small}`}>{micronNote}</p> : null}
+    </div>
+  )
+}
+
+const GenericApplications = ({
+  title,
+  items,
+  note,
+}: {
+  title?: string
+  items?: string[]
+  note?: string
+}) => {
+  if (!items?.length) return null
+  return (
+    <div className="bg-primary-3 rounded-card p-6 text-white shadow-[0_22px_60px_-44px_rgba(28,39,73,0.72)] lg:p-8">
+      <div className={`text-champagne ${T.eyebrow}`}>{title ?? 'Typical applications'}</div>
+      <ul className="mt-5 space-y-3">
+        {items.map((item) => (
+          <li key={item} className={`flex gap-3 text-white/88 ${T.body}`}>
+            <span aria-hidden className="bg-champagne mt-[0.62em] size-1.5 shrink-0 rounded-full" />
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+      {note ? (
+        <div className={`mt-6 border-t border-white/15 pt-5 text-white/75 [&_a]:text-white [&_a]:underline ${T.small}`}>
+          <RichText>{note}</RichText>
+        </div>
+      ) : null}
+    </div>
+  )
+}
+
+const GenericCallouts = ({ callouts }: { callouts?: { title: string; body: string | string[] }[] }) => {
+  if (!callouts?.length) return null
+  return (
+    <div className="grid gap-4 md:grid-cols-2">
+      {callouts.map((callout) => (
+        <div key={callout.title} className="border-champagne rounded-card border bg-champagne-light/40 p-6 lg:p-7">
+          <div className={`text-champagne-deep ${T.eyebrow}`}>{callout.title}</div>
+          <div className={`text-default-600 mt-3 space-y-3 [&_a]:text-primary [&_a]:underline ${T.small}`}>
+            {(Array.isArray(callout.body) ? callout.body : [callout.body]).map((body, index) => (
+              <p key={index}><RichText>{body}</RichText></p>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+const genericSectionStats = (cat: ReturnType<typeof getSectionCatalog>, index: number, total: number) => {
+  const series = cat?.series?.length ?? 0
+  const grades = cat?.series?.reduce((sum, item) => sum + item.grades.length, 0) ?? 0
+  if (series || grades) {
+    return [
+      ...(series ? [{ label: 'Series', value: String(series) }] : []),
+      ...(grades ? [{ label: 'Grades', value: String(grades) }] : []),
+    ].slice(0, 2)
+  }
+  if (cat?.micronSizes?.length) return [{ label: 'Sizes', value: String(cat.micronSizes.length) }]
+  if (cat?.properties?.length) return [{ label: 'Properties', value: String(cat.properties.length) }]
+  return [{ label: 'Section', value: `${index + 1} of ${total}` }]
+}
+
+const genericAtAGlance = (locale: Locale, slug: Slug, sections: ReturnType<typeof getProduct> extends infer P ? any[] : never) =>
+  sections.map((section: any) => {
+    const cat = getSectionCatalog(locale, slug, section.id)
+    const series = cat?.series?.length ?? 0
+    const grades = cat?.series?.reduce((sum, item) => sum + item.grades.length, 0) ?? 0
+    const sizes = cat?.micronSizes
+    return {
+      href: `#${section.id}`,
+      title: section.label,
+      big: grades ? `${grades} grade${grades === 1 ? '' : 's'}` : series ? `${series} series` : 'Product range',
+      small: sizes?.length ? `${sizes[0]} → ${sizes[sizes.length - 1]} µm` : cat?.properties?.length ? `${cat.properties.length} technical properties` : 'View details',
+    }
+  })
+
+const GenericLayout = ({ slug, locale }: { slug: Slug; locale: Locale }) => {
+  const product = getProduct(locale, slug)
+  if (!product) return null
+  const image = productImage(slug) ?? ''
+
+  return (
+    <>
+      <AtAGlance align="left" accent items={genericAtAGlance(locale, slug, product.sections)} />
+
+      {product.sections.map((section, index) => {
+        const cat = getSectionCatalog(locale, slug, section.id)
+        const groups = cat?.series?.length
+          ? catalogGroups({
+              locale,
+              slug,
+              section: section.id,
+              image,
+              fallbacks: section.intro,
+            })
+          : []
+        const optionCount = groups.reduce((sum, group) => sum + group.options.length, 0)
+        const variant: 'grouped-tiles' | 'rows' | 'buttons' | 'none' =
+          optionCount <= 1 ? 'none' : groups.length > 1 ? 'grouped-tiles' : optionCount > 6 ? 'rows' : 'buttons'
+        const details = Boolean(cat?.properties?.length || cat?.coatings?.length || cat?.micronNote || section.specs?.length)
+        const supporting = Boolean(section.applications?.length || section.callouts?.length || details || section.enquiryCta || section.datasheet)
+
+        return (
+          <div key={section.id}>
+            <Chapter
+              accent
+              id={section.id}
+              eyebrow={`${String(index + 1).padStart(2, '0')} / ${section.label.toUpperCase()}`}
+              title={section.title}
+              stats={genericSectionStats(cat, index, product.sections.length)}
+            >
+              {section.intro.map((paragraph, paragraphIndex) => (
+                <p key={paragraphIndex} className={paragraphIndex ? 'mt-3' : undefined}>
+                  <RichText>{paragraph}</RichText>
+                </p>
+              ))}
+            </Chapter>
+
+            {(groups.length || supporting) ? (
+              <ModuleWrap accent>
+                <div className="space-y-6 lg:space-y-8">
+                  {groups.length ? (
+                    <UriGradeModule
+                      accent="champagne"
+                      selectorTitle={groups.length > 1 ? 'SELECT SERIES & GRADE' : 'SELECT GRADE'}
+                      groups={groups}
+                      variant={variant}
+                    />
+                  ) : null}
+
+                  <GenericCallouts callouts={section.callouts} />
+
+                  {(section.applications?.length || details) ? (
+                    <div className="grid gap-6 lg:grid-cols-2">
+                      <GenericApplications title={section.applicationsTitle} items={section.applications} note={section.applicationsNote} />
+                      <GenericDataCard
+                        properties={cat?.properties}
+                        coatings={cat?.coatings}
+                        micronNote={cat?.micronNote}
+                        specs={section.specs}
+                      />
+                    </div>
+                  ) : null}
+
+                  {(section.enquiryCta || section.datasheet) ? (
+                    <div className="border-champagne flex flex-wrap items-center gap-x-6 gap-y-2 border-t pt-5">
+                      {section.enquiryCta ? (
+                        <Link href={section.enquiryCta.href} className="text-primary text-sm font-semibold hover:underline">
+                          {section.enquiryCta.label} →
+                        </Link>
+                      ) : null}
+                      {section.datasheet ? (
+                        <Link href="/resources/datasheets" className="text-primary text-sm font-semibold hover:underline">
+                          {section.datasheet} →
+                        </Link>
+                      ) : null}
+                    </div>
+                  ) : null}
+                </div>
+              </ModuleWrap>
+            ) : null}
+          </div>
+        )
+      })}
+    </>
+  )
+}
+
 const UriProductLayout = ({ slug, locale }: { slug: Slug; locale: Locale }) => {
   if (slug === 'natural-grit-powder') return <NaturalLayout />
   if (slug === 'metal-bond') return <MetalLayout locale={locale} />
-  return <ResinLayout locale={locale} />
+  if (slug === 'resin-bond') return <ResinLayout locale={locale} />
+  return <GenericLayout slug={slug} locale={locale} />
 }
 
+const URI_PRODUCT_SLUGS: Slug[] = [
+  'natural-grit-powder',
+  'metal-bond',
+  'resin-bond',
+  'cbn',
+  'single-crystal',
+  'polycrystalline-diamond',
+  'tool-stones',
+  'polycrystalline-powder',
+]
+
 export const isUriProductLayout = (slug: string): slug is Slug =>
-  slug === 'natural-grit-powder' || slug === 'metal-bond' || slug === 'resin-bond'
+  URI_PRODUCT_SLUGS.includes(slug as Slug)
 
 export default UriProductLayout
