@@ -11,6 +11,14 @@
     --color-primary-2: #2c3c6c;
     --color-primary-3: #1c2749;
 
+    /* EID secondary material accent. Drawn from Uri's Metal Bond wireframe,
+       but tuned for the live site's cooler industrial-blue system. The light
+       values are decorative surfaces/borders; only the deep value carries
+       small text so contrast remains comfortably accessible. */
+    --color-champagne: #d8d1c3;
+    --color-champagne-light: #f3f0ea;
+    --color-champagne-deep: #766a58;
+
     /* ── Card radius ─────────────────────────────────────────────────────
        Uri's note, off Strauss: 24px on the cards and on the hero.
 
