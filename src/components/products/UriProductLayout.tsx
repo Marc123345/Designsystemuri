@@ -49,12 +49,13 @@ const AtAGlance = ({
           <a
             key={item.href}
             href={item.href}
-            className={`group bg-primary-3 border-primary-1/35 relative flex h-full min-h-[180px] w-full self-stretch overflow-hidden rounded-card border p-5 text-white shadow-[0_20px_55px_-42px_rgba(28,39,73,0.68)] transition-[transform,box-shadow,background-color] duration-300 hover:-translate-y-1 hover:bg-primary-2 hover:shadow-[0_26px_65px_-40px_rgba(28,39,73,0.78)] focus-visible:outline-primary focus-visible:outline-2 focus-visible:outline-offset-2 md:p-6 ${align === 'center' ? 'text-center' : 'text-left'}`}
+            className={`group border-primary-1/35 relative isolate flex h-full min-h-[180px] w-full self-stretch overflow-hidden rounded-card border p-5 text-white shadow-[0_20px_55px_-42px_rgba(28,39,73,0.68)] transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_26px_65px_-40px_rgba(28,39,73,0.78)] focus-visible:outline-primary focus-visible:outline-2 focus-visible:outline-offset-2 md:p-6 ${align === 'center' ? 'text-center' : 'text-left'}`}
           >
-            <span aria-hidden className={`absolute inset-x-0 top-0 h-1 ${accent ? 'bg-champagne' : 'bg-primary-1'}`} />
-            <span aria-hidden className="bg-primary-1/10 absolute -right-10 -top-12 size-32 rounded-full transition-transform duration-500 group-hover:scale-125" />
+            <span aria-hidden className="bg-primary-3 absolute inset-0 z-0 transition-colors duration-300 group-hover:bg-primary-2" />
+            <span aria-hidden className={`absolute inset-x-0 top-0 z-10 h-1 ${accent ? 'bg-champagne' : 'bg-primary-1'}`} />
+            <span aria-hidden className="bg-primary-1/10 absolute -right-10 -top-12 z-10 size-32 rounded-full transition-transform duration-500 group-hover:scale-125" />
 
-            <div className="relative z-10 flex h-full w-full flex-1 flex-col">
+            <div className="relative z-20 flex h-full w-full flex-1 flex-col">
               <div className={`flex items-start gap-3 ${align === 'center' ? 'justify-center' : 'justify-between'}`}>
                 <strong className="block text-[15px] font-bold tracking-[-0.01em] text-white uppercase lg:text-base">{item.title}</strong>
                 {align === 'left' ? (
@@ -98,9 +99,10 @@ const Chapter = ({
     data-note="uri-product-chapter"
   >
     <div className="container">
-      <div className="bg-primary-3 relative overflow-hidden rounded-card px-6 py-7 text-white shadow-[0_22px_60px_-44px_rgba(28,39,73,0.72)] sm:px-7 lg:px-9 lg:py-9">
-        {accent ? <span aria-hidden className="bg-champagne absolute inset-y-0 left-0 w-1.5" /> : null}
-        <div className="flex items-start justify-between gap-10 lg:gap-14">
+      <div className="relative isolate overflow-hidden rounded-card px-6 py-7 text-white shadow-[0_22px_60px_-44px_rgba(28,39,73,0.72)] sm:px-7 lg:px-9 lg:py-9">
+        <span aria-hidden className="bg-primary-3 absolute inset-0 z-0" />
+        {accent ? <span aria-hidden className="bg-champagne absolute inset-y-0 left-0 z-10 w-1.5" /> : null}
+        <div className="relative z-20 flex items-start justify-between gap-10 lg:gap-14">
           <div className="max-w-4xl">
             <div className={`${accent ? 'text-champagne' : 'text-white/70'} ${T.eyebrow}`}>{eyebrow}</div>
             <h2 className={`mt-2.5 text-white ${T.h2}`}>{title}</h2>
@@ -131,10 +133,13 @@ const Coatings = ({ resin = false, accent = false }: { resin?: boolean; accent?:
     <span id="coated" className="block scroll-mt-28" aria-hidden />
     <section id="coating-options" className={`scroll-mt-28 py-3 lg:py-4 ${accent ? 'bg-canvas' : 'bg-white'}`} data-note="uri-product-coatings-title">
       <div className="container">
-        <div className="bg-primary-3 relative overflow-hidden rounded-card px-6 py-6 text-white shadow-[0_22px_60px_-44px_rgba(28,39,73,0.72)] sm:px-7 lg:px-9 lg:py-7">
-          {accent ? <span aria-hidden className="bg-champagne absolute inset-y-0 left-0 w-1.5" /> : null}
-          <div className={`${accent ? 'text-champagne' : 'text-white/70'} ${T.eyebrow}`}>Coating options</div>
-          <h2 className={`mt-2.5 text-white ${T.h2}`}>Electroless Nickel &amp; PVD Coatings</h2>
+        <div className="relative isolate overflow-hidden rounded-card px-6 py-6 text-white shadow-[0_22px_60px_-44px_rgba(28,39,73,0.72)] sm:px-7 lg:px-9 lg:py-7">
+          <span aria-hidden className="bg-primary-3 absolute inset-0 z-0" />
+          {accent ? <span aria-hidden className="bg-champagne absolute inset-y-0 left-0 z-10 w-1.5" /> : null}
+          <div className="relative z-20">
+            <div className={`${accent ? 'text-champagne' : 'text-white/70'} ${T.eyebrow}`}>Coating options</div>
+            <h2 className={`mt-2.5 text-white ${T.h2}`}>Electroless Nickel &amp; PVD Coatings</h2>
+          </div>
         </div>
       </div>
     </section>
@@ -178,9 +183,10 @@ const Coatings = ({ resin = false, accent = false }: { resin?: boolean; accent?:
 )
 
 const ProcessStrip = ({ steps, accent = false }: { steps: { n: string; title: string; note: string }[]; accent?: boolean }) => (
-  <div className={`bg-primary-3 mt-6 grid overflow-hidden rounded-card text-white shadow-[0_10px_24px_rgba(9,42,77,0.10)] sm:grid-cols-2 ${steps.length === 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'}`}>
+  <div className={`relative isolate mt-6 grid overflow-hidden rounded-card text-white shadow-[0_10px_24px_rgba(9,42,77,0.10)] sm:grid-cols-2 ${steps.length === 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'}`}>
+    <span aria-hidden className="bg-primary-3 absolute inset-0 z-0" />
     {steps.map((step, index) => (
-      <div key={step.n} className="relative border-white/15 p-4 sm:border-r sm:[&:nth-child(2)]:border-r-0 lg:[&:nth-child(2)]:border-r lg:last:border-r-0">
+      <div key={step.n} className="relative z-10 border-white/15 p-4 sm:border-r sm:[&:nth-child(2)]:border-r-0 lg:[&:nth-child(2)]:border-r lg:last:border-r-0">
         <span className={`${accent ? 'text-champagne' : 'text-white/60'} ${T.eyebrow}`}>{step.n}</span>
         <strong className={`mt-2 block ${T.control}`}>{step.title}</strong>
         <small className="mt-1 block text-sm leading-snug text-white/75">{step.note}</small>
@@ -755,21 +761,24 @@ const GenericApplications = ({
 }) => {
   if (!items?.length) return null
   return (
-    <div className="bg-primary-3 rounded-card p-6 text-white shadow-[0_22px_60px_-44px_rgba(28,39,73,0.72)] lg:p-8">
-      <div className={`text-champagne ${T.eyebrow}`}>{title ?? 'Typical applications'}</div>
-      <ul className="mt-5 space-y-3">
-        {items.map((item) => (
-          <li key={item} className={`flex gap-3 text-white/88 ${T.body}`}>
-            <span aria-hidden className="bg-champagne mt-[0.62em] size-1.5 shrink-0 rounded-full" />
-            <span>{item}</span>
-          </li>
-        ))}
-      </ul>
-      {note ? (
-        <div className={`mt-6 border-t border-white/15 pt-5 text-white/75 [&_a]:text-white [&_a]:underline ${T.small}`}>
-          <RichText>{note}</RichText>
-        </div>
-      ) : null}
+    <div className="relative isolate overflow-hidden rounded-card p-6 text-white shadow-[0_22px_60px_-44px_rgba(28,39,73,0.72)] lg:p-8">
+      <span aria-hidden className="bg-primary-3 absolute inset-0 z-0" />
+      <div className="relative z-10">
+        <div className={`text-champagne ${T.eyebrow}`}>{title ?? 'Typical applications'}</div>
+        <ul className="mt-5 space-y-3">
+          {items.map((item) => (
+            <li key={item} className={`flex gap-3 text-white/88 ${T.body}`}>
+              <span aria-hidden className="bg-champagne mt-[0.62em] size-1.5 shrink-0 rounded-full" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+        {note ? (
+          <div className={`mt-6 border-t border-white/15 pt-5 text-white/75 [&_a]:text-white [&_a]:underline ${T.small}`}>
+            <RichText>{note}</RichText>
+          </div>
+        ) : null}
+      </div>
     </div>
   )
 }
