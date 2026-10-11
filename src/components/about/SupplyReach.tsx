@@ -1,6 +1,7 @@
 import { ArrowButton } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
+import Image from 'next/image'
 import { useLocale } from 'next-intl'
 
 const PRODUCTION = [
@@ -36,37 +37,49 @@ const SupplyReach = () => {
               </dl>
             </div>
 
-            <div className="border-t border-white/10 p-6 lg:border-t-0 lg:p-8 xl:p-9">
-              <h2 className="text-[24px] leading-tight font-semibold tracking-[-0.025em] text-white lg:text-[28px]">
-                {t(locale, 'Global Logistics Reach')}
-              </h2>
-              <p className="mt-2 text-[13px] font-mono tracking-[0.16em] text-white/50 uppercase">{t(locale, 'Supply Chain & Market Access')}</p>
+            <div className="relative isolate overflow-hidden border-t border-white/10 p-6 lg:border-t-0 lg:p-8 xl:p-9">
+              <Image
+                src="/images/earth-night.jpg"
+                alt=""
+                fill
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="-z-30 object-cover object-[58%_42%]"
+              />
+              <span aria-hidden className="bg-primary-3/68 absolute inset-0 -z-20" />
+              <span aria-hidden className="from-primary-3/96 via-primary-3/78 absolute inset-0 -z-10 bg-linear-to-r to-primary/48" />
 
-              <div className="mt-6">
-                <div>
-                  <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <h3 className="text-[15px] font-semibold text-white">{t(locale, 'Local Agent Network')}</h3>
-                    <span className="font-mono text-[11px] tracking-[0.16em] text-white/48 uppercase">13 {t(locale, 'countries')}</span>
+              <div className="relative z-10">
+                <h2 className="text-[24px] leading-tight font-semibold tracking-[-0.025em] text-white lg:text-[28px]">
+                  {t(locale, 'Global Logistics Reach')}
+                </h2>
+                <p className="mt-2 text-[13px] font-mono tracking-[0.16em] text-white/72 uppercase">{t(locale, 'Supply Chain & Market Access')}</p>
+
+                <div className="mt-6">
+                  <div>
+                    <div className="flex flex-wrap items-baseline justify-between gap-2">
+                      <h3 className="text-[15px] font-semibold text-white">{t(locale, 'Local Agent Network')}</h3>
+                      <span className="font-mono text-[11px] tracking-[0.16em] text-white/70 uppercase">13 {t(locale, 'countries')}</span>
+                    </div>
+                    <p className="mt-1 text-[13px] leading-relaxed text-white/80">{t(locale, 'On-the-ground technical representatives in:')}</p>
+                    <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-3">
+                      {AGENT_COUNTRIES.map((country) => (
+                        <div key={country} className="flex items-center gap-2 text-[12px] text-white/88">
+                          <span className="bg-champagne size-1.5 shrink-0" aria-hidden />
+                          <span>{t(locale, country)}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <p className="mt-1 text-[13px] leading-relaxed text-white/68">{t(locale, 'On-the-ground technical representatives in:')}</p>
-                  <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-3">
-                    {AGENT_COUNTRIES.map((country) => (
-                      <div key={country} className="flex items-center gap-2 text-[12px] text-white/78">
-                        <span className="bg-primary-1 size-1.5 shrink-0" aria-hidden />
-                        <span>{t(locale, country)}</span>
-                      </div>
-                    ))}
+
+                  <div className="mt-6 border-t border-white/18 pt-5">
+                    <h3 className="text-[15px] font-semibold text-white">{t(locale, 'Unlimited Global Fulfillment')}</h3>
+                    <p className="mt-1 text-[14px] leading-relaxed text-white/80">{t(locale, 'Established, secure trade routes to toolmakers anywhere in the world.')}</p>
                   </div>
                 </div>
 
-                <div className="mt-6 border-t border-white/10 pt-5">
-                  <h3 className="text-[15px] font-semibold text-white">{t(locale, 'Unlimited Global Fulfillment')}</h3>
-                  <p className="mt-1 text-[14px] leading-relaxed text-white/68">{t(locale, 'Established, secure trade routes to toolmakers anywhere in the world.')}</p>
+                <div className="mt-7">
+                  <ArrowButton href="/contact" label={t(locale, 'Talk to us about supply')} variant="primary" />
                 </div>
-              </div>
-
-              <div className="mt-7">
-                <ArrowButton href="/contact" label={t(locale, 'Talk to us about supply')} variant="primary" />
               </div>
             </div>
           </div>
