@@ -94,31 +94,34 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
         </div>
       </section>
 
-      <section data-note="quality-proof" className="border-default-200 border-b bg-default-50 py-7 lg:py-8">
+      <section data-note="quality-proof" className="border-primary/10 border-b bg-canvas py-8 lg:py-10">
         <div className="container">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-[repeat(3,minmax(0,1fr))_126px]">
-            <article className="rounded-card border-default-200 border bg-white p-5 lg:p-6">
-              <h2 className="text-primary-3 text-[20px] font-semibold">{t(locale, 'The Laboratory')}</h2>
-              <p className="text-default-600 mt-3 text-[14px] leading-relaxed">
+            <article className="bg-primary-3 rounded-card relative overflow-hidden border border-white/10 p-5 text-white shadow-[0_18px_50px_-38px_rgba(28,39,73,0.55)] lg:p-6">
+              <span aria-hidden className="bg-primary-1 absolute inset-y-0 left-0 w-1.5" />
+              <h2 className="text-[20px] font-semibold text-white">{t(locale, 'The Laboratory')}</h2>
+              <p className="mt-3 text-[14px] leading-relaxed text-white/78">
                 {t(locale, 'QC is built into every stage, from raw material selection through grading, cleaning, coating and final inspection. Laboratory testing follows FEPA, ISO 6106 and ANSI standards.')}
               </p>
             </article>
 
-            <article className="rounded-card border-default-200 border bg-white p-5 lg:p-6">
-              <h2 className="text-primary-3 text-[20px] font-semibold">{t(locale, 'Measured, not sampled')}</h2>
-              <p className="text-default-600 mt-3 text-[14px] leading-relaxed">
+            <article className="bg-primary rounded-card relative overflow-hidden border border-primary-1/35 p-5 text-white shadow-[0_18px_50px_-38px_rgba(28,39,73,0.45)] lg:p-6">
+              <span aria-hidden className="bg-primary-1 absolute inset-y-0 left-0 w-1.5" />
+              <h2 className="text-[20px] font-semibold text-white">{t(locale, 'Measured, not sampled')}</h2>
+              <p className="mt-3 text-[14px] leading-relaxed text-white/80">
                 {t(locale, 'Every batch is measured for the controls that define its grade, so repeat orders can be checked against a documented specification rather than a spot-check.')}
               </p>
             </article>
 
-            <article className="rounded-card border-default-200 border bg-white p-5 lg:p-6">
-              <h2 className="text-primary-3 text-[20px] font-semibold">{t(locale, 'Documented, not asserted')}</h2>
-              <p className="text-default-600 mt-3 text-[14px] leading-relaxed">
+            <article className="bg-primary-3 rounded-card relative overflow-hidden border border-white/10 p-5 text-white shadow-[0_18px_50px_-38px_rgba(28,39,73,0.55)] lg:p-6">
+              <span aria-hidden className="bg-primary-1 absolute inset-y-0 left-0 w-1.5" />
+              <h2 className="text-[20px] font-semibold text-white">{t(locale, 'Documented, not asserted')}</h2>
+              <p className="mt-3 text-[14px] leading-relaxed text-white/78">
                 {t(locale, 'Lot traceability, certificates of analysis on request and retained batch samples give buyers a record to return to when a grade needs answering for.')}
               </p>
             </article>
 
-            <article className="bg-primary rounded-control flex min-h-[94px] flex-col items-center justify-center self-center px-3 py-4 text-center text-white sm:min-h-[104px] lg:min-h-[108px]">
+            <article className="bg-primary-1 rounded-card flex min-h-[94px] flex-col items-center justify-center self-stretch px-3 py-4 text-center text-white shadow-[0_18px_50px_-38px_rgba(28,39,73,0.4)] sm:min-h-[104px] lg:min-h-[108px]">
               <span className="font-mono text-[11px] tracking-[0.22em] text-white/65 uppercase">ISO</span>
               <strong className="mt-1.5 text-[16px] leading-none tracking-[-0.03em] text-white">9001:2015</strong>
               <span className="mt-1.5 text-[11px] font-semibold tracking-[0.14em] text-white/82 uppercase">{t(locale, 'Certified')}</span>
@@ -127,35 +130,38 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
         </div>
       </section>
 
-      <section data-note="qc-controls" className="py-8 lg:py-10">
+      <section data-note="qc-controls" className="bg-[linear-gradient(180deg,var(--color-canvas)_0%,white_26%,white_100%)] py-9 lg:py-12">
         <div className="container">
-          <div className="mb-6 flex items-end justify-between gap-6">
+          <div className="bg-primary-3 relative mb-6 overflow-hidden rounded-card px-6 py-6 text-white shadow-[0_20px_58px_-42px_rgba(28,39,73,0.62)] sm:px-7 lg:flex lg:items-end lg:justify-between lg:gap-8 lg:px-9 lg:py-7">
+            <span aria-hidden className="bg-primary-1 absolute inset-y-0 left-0 w-1.5" />
             <div>
-              <p className="text-primary font-mono text-[11px] tracking-[0.22em] uppercase">{t(locale, 'The four controls')}</p>
-              <h2 className="text-primary-3 mt-2 text-[28px] leading-tight font-bold tracking-[-0.03em] md:text-[34px]">{t(locale, 'What buyers need to see.')}</h2>
+              <p className="font-mono text-[11px] tracking-[0.22em] text-primary-1 uppercase">{t(locale, 'The four controls')}</p>
+              <h2 className="mt-2 text-[28px] leading-tight font-bold tracking-[-0.03em] text-white md:text-[34px]">{t(locale, 'What buyers need to see.')}</h2>
             </div>
-            <p className="text-default-500 hidden max-w-[38ch] text-right text-[13px] leading-relaxed lg:block">
+            <p className="mt-4 max-w-[42ch] text-[13px] leading-relaxed text-white/72 lg:mt-0 lg:text-right">
               {t(locale, 'Mesh, micron, chemical cleaning and optional toughness testing are separate controls — not steps in a sequence.')}
             </p>
           </div>
 
           <div className="grid gap-4 lg:grid-cols-2">
             {controls.map((control) => (
-              <article key={control.n} className="rounded-card border-default-200 overflow-hidden border bg-white">
+              <article key={control.n} className="border-primary/20 rounded-card overflow-hidden border bg-white shadow-[0_16px_48px_-40px_rgba(28,39,73,0.45)]">
                 <div className="relative aspect-[16/5] min-h-[150px] overflow-hidden bg-default-100">
                   <Image src={control.image} alt={t(locale, control.alt)} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
-                  <span aria-hidden className="from-primary-3/70 absolute inset-0 bg-linear-to-t via-transparent to-transparent" />
-                  <span className="absolute bottom-3 left-4 font-mono text-[11px] tracking-[0.2em] text-white/85 uppercase">{control.n}</span>
+                  <span aria-hidden className="from-primary-3/78 absolute inset-0 bg-linear-to-t via-primary-3/10 to-transparent" />
+                  <span className="bg-primary-3/92 absolute bottom-3 left-4 rounded-control border border-white/15 px-2.5 py-1.5 font-mono text-[11px] tracking-[0.2em] text-white uppercase">{control.n}</span>
+                </div>
+
+                <div className="bg-primary-3 border-t border-white/10 px-5 py-4 text-white lg:px-6 lg:py-5">
+                  <h3 className="text-[20px] font-bold tracking-[-0.02em] text-white lg:text-[22px]">{t(locale, control.title)}</h3>
+                  {'note' in control && control.note ? <p className="mt-1.5 text-[12px] italic text-white/68">{t(locale, control.note)}</p> : null}
                 </div>
 
                 <div className="p-5 lg:p-6">
-                  <h3 className="text-[20px] font-bold tracking-[-0.02em] text-default-900 lg:text-[22px]">{t(locale, control.title)}</h3>
-                  {'note' in control && control.note ? <p className="text-default-500 mt-1.5 text-[12px] italic">{t(locale, control.note)}</p> : null}
-
-                  <dl className="mt-4 grid gap-x-5 gap-y-3 sm:grid-cols-2">
+                  <dl className="grid gap-x-5 gap-y-3 sm:grid-cols-2">
                     {control.points.map(([label, body]) => (
-                      <div key={label} className="border-default-200 border-t pt-3">
-                        <dt className="text-[13px] font-semibold text-default-900">{t(locale, label)}</dt>
+                      <div key={label} className="border-primary/15 border-t pt-3">
+                        <dt className="text-primary-3 text-[13px] font-semibold">{t(locale, label)}</dt>
                         <dd className="text-default-600 mt-1 text-[12.5px] leading-relaxed">{t(locale, body)}</dd>
                       </div>
                     ))}
