@@ -1,5 +1,4 @@
 import PhotoCard from '@/components/PhotoCard'
-import { ArrowButton } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { localeAlternates } from '@/lib/hreflang'
 import { t } from '@/lib/i18n-content'
@@ -178,21 +177,6 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
         </div>
       </section>
 
-      <section className="bg-primary-3 py-9 text-white lg:py-10">
-        <div className="container">
-          <div className="grid items-center gap-6 lg:grid-cols-12 lg:gap-10">
-            <div className="lg:col-span-8">
-              <h2 className="text-[25px] font-bold text-white md:text-[28px]">{t(locale, 'Test our consistency')}</h2>
-              <p className="mt-2 max-w-[62ch] text-[14px] leading-relaxed text-white/72">
-                {t(locale, 'Contact our technical team to arrange a sample batch tailored to your exact specifications.')}
-              </p>
-            </div>
-            <div className="lg:col-span-4 lg:justify-self-end">
-              <ArrowButton href="/contact" label={t(locale, 'Contact us / request a sample')} />
-            </div>
-          </div>
-        </div>
-      </section>
     </>
   )
 }
