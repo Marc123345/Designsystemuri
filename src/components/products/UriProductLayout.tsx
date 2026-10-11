@@ -402,33 +402,33 @@ const NaturalLayout = () => {
 
 const MB_IMAGES: Record<string, string> = {
   // Metal Bond grade images served from EID's ImageKit account.
-  'ESN 770': 'https://ik.imagekit.io/qcvroy8xpd/esn770.png',
-  'ESN 750': 'https://ik.imagekit.io/qcvroy8xpd/esn%20750.png',
-  'ESN 700': 'https://ik.imagekit.io/qcvroy8xpd/esn%20700%20.png',
-  'ESN 600': 'https://ik.imagekit.io/qcvroy8xpd/esn%20600.png',
-  'ESN 500': 'https://ik.imagekit.io/qcvroy8xpd/esn%20500.png',
-  'ESN 400': 'https://ik.imagekit.io/qcvroy8xpd/esn%20400.png',
-  'ESN 300': 'https://ik.imagekit.io/qcvroy8xpd/esn%20300.png',
-  'ESN 200': 'https://ik.imagekit.io/qcvroy8xpd/esn%20200.png',
-  'ESN 75': 'https://ik.imagekit.io/qcvroy8xpd/esn%2075.png',
-  'ESN 50': 'https://ik.imagekit.io/qcvroy8xpd/esn%2050.png',
+  'ESN 770': 'https://ik.imagekit.io/qcvroy8xpd/esn770.png?updatedAt=1791721766504',
+  'ESN 750': 'https://ik.imagekit.io/qcvroy8xpd/esn%20750.png?updatedAt=1791721758854',
+  'ESN 700': 'https://ik.imagekit.io/qcvroy8xpd/esn%20700%20.png?updatedAt=1791721765020',
+  'ESN 600': 'https://ik.imagekit.io/qcvroy8xpd/esn%20600.png?updatedAt=1791721757836',
+  'ESN 500': 'https://ik.imagekit.io/qcvroy8xpd/esn%20500.png?updatedAt=1791721762744',
+  'ESN 400': 'https://ik.imagekit.io/qcvroy8xpd/esn%20400.png?updatedAt=1791721767060',
+  'ESN 300': 'https://ik.imagekit.io/qcvroy8xpd/esn%20300.png?updatedAt=1791721761549',
+  'ESN 200': 'https://ik.imagekit.io/qcvroy8xpd/esn%20200.png?updatedAt=1791721763845',
+  'ESN 75': 'https://ik.imagekit.io/qcvroy8xpd/esn%2075.png?updatedAt=1791721765913',
+  'ESN 50': 'https://ik.imagekit.io/qcvroy8xpd/esn%2050.png?updatedAt=1791721758442',
 
-  'EDA 2395': 'https://ik.imagekit.io/qcvroy8xpd/eda%202395.png',
-  'EDA 2360': 'https://ik.imagekit.io/qcvroy8xpd/eda%202360.png',
-  'EDA 2300': 'https://ik.imagekit.io/qcvroy8xpd/eda%202300.png',
-  'EDA 2215': 'https://ik.imagekit.io/qcvroy8xpd/eda%202215.png',
-  'EDA 2125': 'https://ik.imagekit.io/qcvroy8xpd/eda%202125.png',
-  'EDA 2050': 'https://ik.imagekit.io/qcvroy8xpd/eda%202050.png',
-  'EDA 2025': 'https://ik.imagekit.io/qcvroy8xpd/eda%202025.png',
+  'EDA 2395': 'https://ik.imagekit.io/qcvroy8xpd/eda%202395.png?updatedAt=1791211257504',
+  'EDA 2360': 'https://ik.imagekit.io/qcvroy8xpd/eda%202360.png?updatedAt=1791211254599',
+  'EDA 2300': 'https://ik.imagekit.io/qcvroy8xpd/eda%202300.png?updatedAt=1791211254329',
+  'EDA 2215': 'https://ik.imagekit.io/qcvroy8xpd/eda%202215.png?updatedAt=1791211262137',
+  'EDA 2125': 'https://ik.imagekit.io/qcvroy8xpd/eda%202125.png?updatedAt=1791211253397',
+  'EDA 2050': 'https://ik.imagekit.io/qcvroy8xpd/eda%202050.png?updatedAt=1791211254004',
+  'EDA 2025': 'https://ik.imagekit.io/qcvroy8xpd/eda%202025.png?updatedAt=1791211261262',
 
-  'MB500-um': 'https://ik.imagekit.io/qcvroy8xpd/mb%20500%20um%20jpg%20copy.jpg',
-  'MB400-um': 'https://ik.imagekit.io/qcvroy8xpd/mb%20400-um%20jpg%20%20copy.jpg',
-  'MB300-um': 'https://ik.imagekit.io/qcvroy8xpd/mb300-um%20jpg%20copy.jpg',
-  'MB200-um': 'https://ik.imagekit.io/qcvroy8xpd/mb200-um%20jpg%20copy.jpg',
-  EGM: 'https://ik.imagekit.io/qcvroy8xpd/EGM%20copy.jpg',
+  'MB500-um': 'https://ik.imagekit.io/qcvroy8xpd/mb%20500%20um%20jpg%20copy.jpg?updatedAt=1791211258108',
+  'MB400-um': 'https://ik.imagekit.io/qcvroy8xpd/mb%20400-um%20jpg%20%20copy.jpg?updatedAt=1791211258629',
+  'MB300-um': 'https://ik.imagekit.io/qcvroy8xpd/mb300-um%20jpg%20copy.jpg?updatedAt=1791211254948',
+  'MB200-um': 'https://ik.imagekit.io/qcvroy8xpd/mb200-um%20jpg%20copy.jpg?updatedAt=1791211257934',
+  EGM: 'https://ik.imagekit.io/qcvroy8xpd/EGM%20copy.jpg?updatedAt=1791211260649',
 }
 
-const MB_MICRON_BOTTLES = 'https://ik.imagekit.io/qcvroy8xpd/mb%20micron%20bottles.JPG'
+const MB_MICRON_BOTTLES = 'https://ik.imagekit.io/qcvroy8xpd/mb%20micron%20bottles.JPG?updatedAt=1791211261220'
 
 const applyMetalImages = (groups: UriGradeGroup[], withMicronGallery = false): UriGradeGroup[] =>
   groups.map((group) => ({
