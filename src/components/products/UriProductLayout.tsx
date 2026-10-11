@@ -21,21 +21,30 @@ const compactSizes = (sizes: string[] | undefined, max = 11) => {
   return [...sizes.slice(0, max - 2), '…', sizes[sizes.length - 1]]
 }
 
-const AtAGlance = ({ items, align = 'center' }: { items: { href: string; title: string; big: string; small?: string }[]; align?: 'left' | 'center' }) => (
-  <section className="border-default-200 bg-default-50 border-b py-6 lg:py-7" data-note="uri-product-glance">
+const AtAGlance = ({
+  items,
+  align = 'center',
+  accent = false,
+}: {
+  items: { href: string; title: string; big: string; small?: string }[]
+  align?: 'left' | 'center'
+  accent?: boolean
+}) => (
+  <section className={`border-b py-7 lg:py-9 ${accent ? 'border-champagne bg-canvas' : 'border-default-200 bg-default-50'}`} data-note="uri-product-glance">
     <div className="container">
-      <div className={`text-default-500 mb-3 ${T.eyebrow} ${align === 'center' ? 'text-center' : 'text-left'}`}>At a glance</div>
-      <div className="border-default-200 grid overflow-hidden rounded-card border bg-white md:grid-cols-3">
+      <div className={`${accent ? 'text-champagne-deep' : 'text-default-500'} mb-4 ${T.eyebrow} ${align === 'center' ? 'text-center' : 'text-left'}`}>At a glance</div>
+      <div className={`grid overflow-hidden rounded-card border bg-white shadow-[0_18px_50px_-42px_rgba(28,39,73,0.35)] md:grid-cols-3 ${accent ? 'border-champagne' : 'border-default-200'}`}>
         {items.map((item) => (
           <a
             key={item.href}
             href={item.href}
-            className={`border-default-200 group p-5 transition-colors hover:bg-default-50 md:border-r md:last:border-r-0 max-md:border-b max-md:last:border-b-0 ${align === 'center' ? 'text-center' : 'text-left'}`}
+            className={`group relative p-5 transition-[background,box-shadow,transform] duration-200 hover:-translate-y-px hover:bg-canvas md:p-6 md:border-r md:last:border-r-0 max-md:border-b max-md:last:border-b-0 ${accent ? 'border-champagne/80' : 'border-default-200'} ${align === 'center' ? 'text-center' : 'text-left'}`}
           >
-            <strong className="text-primary-3 block text-base font-bold uppercase">{item.title}</strong>
-            <span className="text-default-800 mt-2 block text-sm font-semibold">{item.big}</span>
-            {item.small ? <span className="text-default-500 mt-1 block text-sm">{item.small}</span> : null}
-            <span className={`text-primary mt-2.5 block uppercase ${T.label}`}>View range ↓</span>
+            {accent ? <span aria-hidden className="bg-champagne absolute inset-x-0 top-0 h-1 opacity-0 transition-opacity group-hover:opacity-100" /> : null}
+            <strong className="text-primary-3 block text-[15px] font-bold tracking-[-0.01em] uppercase lg:text-base">{item.title}</strong>
+            <span className="text-default-800 mt-2.5 block text-sm font-semibold">{item.big}</span>
+            {item.small ? <span className="text-default-500 mt-1.5 block text-[13px]">{item.small}</span> : null}
+            <span className={`${accent ? 'text-champagne-deep' : 'text-primary'} mt-3 block uppercase ${T.label}`}>View range ↓</span>
           </a>
         ))}
       </div>
@@ -49,26 +58,29 @@ const Chapter = ({
   title,
   children,
   stats,
+  accent = false,
 }: {
   id: string
   eyebrow: string
   title: string
   children: React.ReactNode
   stats: { label: string; value: string }[]
+  accent?: boolean
 }) => (
-  <section id={id} className="bg-primary-3 scroll-mt-28 py-7 text-white lg:py-8" data-note="uri-product-chapter">
+  <section id={id} className="bg-primary-3 relative scroll-mt-28 overflow-hidden py-8 text-white lg:py-10" data-note="uri-product-chapter">
+    {accent ? <span aria-hidden className="bg-champagne absolute inset-y-0 left-0 w-1.5" /> : null}
     <div className="container">
-      <div className="flex items-start justify-between gap-10">
+      <div className="flex items-start justify-between gap-10 lg:gap-14">
         <div className="max-w-4xl">
-          <div className={`text-white/70 ${T.eyebrow}`}>{eyebrow}</div>
-          <h2 className={`mt-2 text-white ${T.h2}`}>{title}</h2>
-          <div className={`mt-3 text-white/88 ${T.body}`}>{children}</div>
+          <div className={`${accent ? 'text-champagne' : 'text-white/70'} ${T.eyebrow}`}>{eyebrow}</div>
+          <h2 className={`mt-2.5 text-white ${T.h2}`}>{title}</h2>
+          <div className={`mt-4 max-w-[78ch] text-white/88 ${T.body}`}>{children}</div>
         </div>
-        <dl className="hidden min-w-[150px] shrink-0 text-right lg:block">
+        <dl className="hidden min-w-[170px] shrink-0 text-right lg:block">
           {stats.map((stat) => (
-            <div key={stat.label} className="mb-2 last:mb-0">
-              <dt className={`text-white/60 uppercase ${T.label}`}>{stat.label}</dt>
-              <dd className="mt-0.5 text-base font-bold text-white">{stat.value}</dd>
+            <div key={stat.label} className="mb-3 last:mb-0">
+              <dt className={`${accent ? 'text-champagne' : 'text-white/60'} uppercase ${T.label}`}>{stat.label}</dt>
+              <dd className="mt-1 text-[17px] font-bold text-white">{stat.value}</dd>
             </div>
           ))}
         </dl>
@@ -77,23 +89,24 @@ const Chapter = ({
   </section>
 )
 
-const ModuleWrap = ({ children }: { children: React.ReactNode }) => (
-  <section className="py-5 lg:py-8" data-note="uri-product-module">
+const ModuleWrap = ({ children, accent = false }: { children: React.ReactNode; accent?: boolean }) => (
+  <section className={`py-8 lg:py-11 ${accent ? 'bg-canvas' : ''}`} data-note="uri-product-module">
     <div className="container">{children}</div>
   </section>
 )
 
-const Coatings = ({ resin = false }: { resin?: boolean }) => (
+const Coatings = ({ resin = false, accent = false }: { resin?: boolean; accent?: boolean }) => (
   <>
     <span id="coated" className="block scroll-mt-28" aria-hidden />
-    <section id="coating-options" className="bg-primary-3 scroll-mt-28 py-4 text-white" data-note="uri-product-coatings-title">
+    <section id="coating-options" className="bg-primary-3 relative scroll-mt-28 overflow-hidden py-5 text-white lg:py-6" data-note="uri-product-coatings-title">
+      {accent ? <span aria-hidden className="bg-champagne absolute inset-y-0 left-0 w-1.5" /> : null}
       <div className="container">
-        <div className={`text-white/70 ${T.eyebrow}`}>Coating options</div>
+        <div className={`${accent ? 'text-champagne' : 'text-white/70'} ${T.eyebrow}`}>Coating options</div>
         <h2 className={`mt-2 text-white ${T.h2}`}>Electroless Nickel &amp; PVD Coatings</h2>
       </div>
     </section>
 
-    <section className="border-default-200 bg-default-50 border-y py-8 lg:py-10" data-note="uri-product-coatings">
+    <section className={`border-y py-10 lg:py-12 ${accent ? 'border-champagne bg-[linear-gradient(110deg,var(--color-champagne-light)_-30%,var(--color-canvas)_38%,white_100%)]' : 'border-default-200 bg-default-50'}`} data-note="uri-product-coatings">
       <div className="container">
         <div className="grid items-start gap-9 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
           <div>
@@ -114,14 +127,14 @@ const Coatings = ({ resin = false }: { resin?: boolean }) => (
                 ? ['Electroless Nickel 30%', 'Electroless Nickel 56%', 'Electroless Nickel 60%', 'Copper', 'Custom %']
                 : ['Electroless Nickel 30%', 'Electroless Nickel 56%', 'Electroless Nickel 60%', 'Custom %']
               ).map((item) => (
-                <span key={item} className={`border-default-200 rounded-[4px] border bg-white px-3 py-2 font-semibold ${T.chip}`}>{item}</span>
+                <span key={item} className={`${accent ? 'border-champagne' : 'border-default-200'} rounded-control border bg-white px-3 py-2.5 font-semibold ${T.chip}`}>{item}</span>
               ))}
             </div>
 
             <div className={`text-default-500 mt-5 uppercase ${T.label}`}>PVD metallic coatings</div>
             <div className="mt-2 flex flex-wrap gap-2">
               {['Titanium', 'Copper', 'TN', 'TiC', 'TiN', 'TiCN', 'Si', 'Cr', 'Zr', 'Al', 'AlN', 'Others'].map((item) => (
-                <span key={item} className={`border-default-200 rounded-[4px] border bg-white px-3 py-2 font-semibold ${T.chip}`}>{item}</span>
+                <span key={item} className={`${accent ? 'border-champagne' : 'border-default-200'} rounded-control border bg-white px-3 py-2.5 font-semibold ${T.chip}`}>{item}</span>
               ))}
             </div>
           </div>
@@ -131,11 +144,11 @@ const Coatings = ({ resin = false }: { resin?: boolean }) => (
   </>
 )
 
-const ProcessStrip = ({ steps }: { steps: { n: string; title: string; note: string }[] }) => (
+const ProcessStrip = ({ steps, accent = false }: { steps: { n: string; title: string; note: string }[]; accent?: boolean }) => (
   <div className={`bg-primary-3 mt-6 grid overflow-hidden rounded-card text-white shadow-[0_10px_24px_rgba(9,42,77,0.10)] sm:grid-cols-2 ${steps.length === 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'}`}>
     {steps.map((step, index) => (
       <div key={step.n} className="relative border-white/15 p-4 sm:border-r sm:[&:nth-child(2)]:border-r-0 lg:[&:nth-child(2)]:border-r lg:last:border-r-0">
-        <span className={`text-white/60 ${T.eyebrow}`}>{step.n}</span>
+        <span className={`${accent ? 'text-champagne' : 'text-white/60'} ${T.eyebrow}`}>{step.n}</span>
         <strong className={`mt-2 block ${T.control}`}>{step.title}</strong>
         <small className="mt-1 block text-sm leading-snug text-white/75">{step.note}</small>
         {index < steps.length - 1 ? <span aria-hidden className="absolute -right-2 top-4 z-10 hidden bg-primary-3 px-1 text-[15px] text-white/60 lg:block">→</span> : null}
@@ -150,24 +163,26 @@ const Spectrum = ({
   to,
   points,
   note,
+  accent = false,
 }: {
   title: string
   from: string
   to: string
   points: { title: string; lines: string[] }[]
   note?: string
+  accent?: boolean
 }) => (
-  <div className="border-default-200 relative mt-5 overflow-hidden rounded-card border bg-white p-5 shadow-[0_8px_22px_rgba(26,43,58,0.05)] lg:p-6">
-    <div className={`text-primary ${T.eyebrow}`}>{title}</div>
+  <div className={`relative mt-6 overflow-hidden rounded-card border bg-white p-5 shadow-[0_18px_55px_-42px_rgba(28,39,73,0.28)] lg:p-7 ${accent ? 'border-champagne border-t-4' : 'border-default-200'}`}>
+    <div className={`${accent ? 'text-champagne-deep' : 'text-primary'} ${T.eyebrow}`}>{title}</div>
     {note ? <p className={`text-default-500 mt-2 max-w-3xl ${T.small}`}>{note}</p> : null}
     <div className={`text-default-500 mt-4 flex justify-between gap-6 uppercase ${T.label}`}>
       <span>{from}</span>
       <span className="text-right">{to}</span>
     </div>
     <div className="bg-default-300 relative my-2.5 h-0.5" />
-    <div className={`grid gap-2 ${points.length === 10 ? 'grid-cols-2 lg:grid-cols-10' : points.length === 7 ? 'grid-cols-2 lg:grid-cols-7' : points.length === 4 ? 'grid-cols-2 lg:grid-cols-4' : 'sm:grid-cols-3'}`}>
+    <div className={`grid gap-2.5 ${points.length === 10 ? 'grid-cols-2 sm:grid-cols-5 xl:grid-cols-10' : points.length === 7 ? 'grid-cols-2 sm:grid-cols-4 xl:grid-cols-7' : points.length === 4 ? 'grid-cols-2 lg:grid-cols-4' : 'sm:grid-cols-3'}`}>
       {points.map((point) => (
-        <div key={point.title} className="border-primary border-t-3 px-2 pt-3 text-center">
+        <div key={point.title} className={`${accent ? 'border-champagne-deep' : 'border-primary'} border-t-3 px-2 pt-3 text-center`}>
           <strong className={`text-primary-3 block ${points.length > 4 ? 'text-xs font-bold' : T.control}`}>{point.title}</strong>
           {point.lines.map((line) => <span key={line} className="text-default-500 mt-1 block text-sm leading-snug">{line}</span>)}
         </div>
@@ -182,20 +197,23 @@ const Insight = ({
   children,
   steps,
   spectra,
+  accent = false,
 }: {
   kicker: string
   title: string
   children: React.ReactNode
   steps: { n: string; title: string; note: string }[]
   spectra: React.ReactNode
+  accent?: boolean
 }) => (
-  <section className="border-default-200 relative overflow-hidden border-y bg-white py-12 lg:py-14" data-note="uri-product-insight">
+  <section className={`relative overflow-hidden border-y py-12 lg:py-16 ${accent ? 'border-champagne bg-[linear-gradient(120deg,var(--color-champagne-light)_0%,white_44%,#f1f4f8_100%)]' : 'border-default-200 bg-white'}`} data-note="uri-product-insight">
+    {accent ? <span aria-hidden className="bg-champagne absolute inset-y-0 left-0 w-1.5" /> : null}
     <div className="container relative">
       <div className="max-w-5xl">
-        <div className={`text-primary ${T.eyebrow}`}>{kicker}</div>
+        <div className={`${accent ? 'text-champagne-deep' : 'text-primary'} ${T.eyebrow}`}>{kicker}</div>
         <h2 className={`text-primary-3 mt-2 ${T.h2}`}>{title}</h2>
         <div className={`text-default-600 mt-3 max-w-3xl ${T.body}`}>{children}</div>
-        <ProcessStrip steps={steps} />
+        <ProcessStrip steps={steps} accent={accent} />
         {spectra}
       </div>
     </div>
@@ -483,32 +501,33 @@ const MetalLayout = ({ locale }: { locale: Locale }) => {
 
   return (
     <>
-      <AtAGlance items={[
+      <AtAGlance align="left" accent items={[
         { href: '#metal-bond-mesh', title: 'Metal Bond Mesh', big: '16/18 → 400/500 mesh', small: '2 series · 17 grades' },
         { href: '#metal-bond-micron', title: 'Metal Bond Micron', big: '0–0.20 → 40–60 µm', small: '1 series · 5 grades' },
         { href: '#coating-options', title: 'Coating Options', big: 'Electroless Nickel & PVD', small: 'Coating technologies' },
       ]} />
 
       <span id="mesh" className="block scroll-mt-28" aria-hidden />
-      <Chapter id="metal-bond-mesh" eyebrow="01 / METAL BOND MESH" title="Metal Bond Mesh" stats={[{ label: 'Series', value: '2' }, { label: 'Grades', value: '17' }]}>
+      <Chapter accent id="metal-bond-mesh" eyebrow="01 / METAL BOND MESH" title="Metal Bond Mesh" stats={[{ label: 'Series', value: '2' }, { label: 'Grades', value: '17' }]}>
         <p><strong className="text-white">ESN “Saw Grade” Series</strong> — Synthetic diamond grit engineered for sawing and drilling applications, with low, well-distributed metallic inclusion content for high thermal stability and particle strength.</p>
         <p className="mt-2"><strong className="text-white">EDA “Wheel Grade” Series</strong> — Synthetic diamond grit developed for precision abrasive tooling, with a broad range of grades for metal, resin, vitrified and electroplated bond systems.</p>
       </Chapter>
-      <ModuleWrap>
-        <UriGradeModule selectorTitle="SELECT SERIES & GRADE" groups={meshGroupsWithImages} variant="rows" />
+      <ModuleWrap accent>
+        <UriGradeModule accent="champagne" selectorTitle="SELECT SERIES & GRADE" groups={meshGroupsWithImages} variant="rows" />
       </ModuleWrap>
 
       <span id="micron" className="block scroll-mt-28" aria-hidden />
-      <Chapter id="metal-bond-micron" eyebrow="02 / METAL BOND MICRON" title="Metal Bond Micron" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '5' }]}>
+      <Chapter accent id="metal-bond-micron" eyebrow="02 / METAL BOND MICRON" title="Metal Bond Micron" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '5' }]}>
         EID Metal Bond Synthetic Diamond Powders combine strong bond retention, high particle strength and thermal stability for demanding lapping, finishing and grinding applications. Their blocky cubo-octahedral morphology and multiple cutting edges provide controlled abrasive performance across applications including glass, tungsten carbide and stone surfacing.
       </Chapter>
-      <ModuleWrap>
-        <UriGradeModule groups={micronGroups} variant="buttons" />
+      <ModuleWrap accent>
+        <UriGradeModule accent="champagne" groups={micronGroups} variant="buttons" />
       </ModuleWrap>
 
-      <Coatings />
+      <Coatings accent />
 
       <Insight
+        accent
         kicker="Technical insight · Bond behaviour"
         title="How Metal Bond Works"
         steps={[
@@ -520,6 +539,7 @@ const MetalLayout = ({ locale }: { locale: Locale }) => {
         spectra={
           <>
             <Spectrum
+              accent
               title="ESN series · Saw grade"
               note="The two Metal Bond Mesh series are shown separately because ESN Saw Grades and EDA Wheel Grades are engineered for different tooling environments."
               from="Higher strength / thermal stability"
@@ -538,6 +558,7 @@ const MetalLayout = ({ locale }: { locale: Locale }) => {
               ]}
             />
             <Spectrum
+              accent
               title="EDA series · Wheel grade"
               from="Higher toughness / impact resistance"
               to="More free-cutting / lower abrasive strength"
