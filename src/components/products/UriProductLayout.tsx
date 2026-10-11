@@ -67,23 +67,29 @@ const Chapter = ({
   stats: { label: string; value: string }[]
   accent?: boolean
 }) => (
-  <section id={id} className="bg-primary-3 relative scroll-mt-28 overflow-hidden py-8 text-white lg:py-10" data-note="uri-product-chapter">
-    {accent ? <span aria-hidden className="bg-champagne absolute inset-y-0 left-0 w-1.5" /> : null}
+  <section
+    id={id}
+    className={`scroll-mt-28 py-3 lg:py-4 ${accent ? 'bg-canvas' : 'bg-white'}`}
+    data-note="uri-product-chapter"
+  >
     <div className="container">
-      <div className="flex items-start justify-between gap-10 lg:gap-14">
-        <div className="max-w-4xl">
-          <div className={`${accent ? 'text-champagne' : 'text-white/70'} ${T.eyebrow}`}>{eyebrow}</div>
-          <h2 className={`mt-2.5 text-white ${T.h2}`}>{title}</h2>
-          <div className={`mt-4 max-w-[78ch] text-white/88 ${T.body}`}>{children}</div>
+      <div className="bg-primary-3 relative overflow-hidden rounded-card px-6 py-7 text-white shadow-[0_22px_60px_-44px_rgba(28,39,73,0.72)] sm:px-7 lg:px-9 lg:py-9">
+        {accent ? <span aria-hidden className="bg-champagne absolute inset-y-0 left-0 w-1.5" /> : null}
+        <div className="flex items-start justify-between gap-10 lg:gap-14">
+          <div className="max-w-4xl">
+            <div className={`${accent ? 'text-champagne' : 'text-white/70'} ${T.eyebrow}`}>{eyebrow}</div>
+            <h2 className={`mt-2.5 text-white ${T.h2}`}>{title}</h2>
+            <div className={`mt-4 max-w-[78ch] text-white/88 ${T.body}`}>{children}</div>
+          </div>
+          <dl className={`hidden min-w-[185px] shrink-0 border-l pl-7 text-right lg:block ${accent ? 'border-champagne/45' : 'border-white/15'}`}>
+            {stats.map((stat) => (
+              <div key={stat.label} className="mb-3 last:mb-0">
+                <dt className={`${accent ? 'text-champagne' : 'text-white/60'} uppercase ${T.label}`}>{stat.label}</dt>
+                <dd className="mt-1 text-base font-bold text-white">{stat.value}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
-        <dl className="hidden min-w-[170px] shrink-0 text-right lg:block">
-          {stats.map((stat) => (
-            <div key={stat.label} className="mb-3 last:mb-0">
-              <dt className={`${accent ? 'text-champagne' : 'text-white/60'} uppercase ${T.label}`}>{stat.label}</dt>
-              <dd className="mt-1 text-[17px] font-bold text-white">{stat.value}</dd>
-            </div>
-          ))}
-        </dl>
       </div>
     </div>
   </section>
@@ -98,11 +104,13 @@ const ModuleWrap = ({ children, accent = false }: { children: React.ReactNode; a
 const Coatings = ({ resin = false, accent = false }: { resin?: boolean; accent?: boolean }) => (
   <>
     <span id="coated" className="block scroll-mt-28" aria-hidden />
-    <section id="coating-options" className="bg-primary-3 relative scroll-mt-28 overflow-hidden py-5 text-white lg:py-6" data-note="uri-product-coatings-title">
-      {accent ? <span aria-hidden className="bg-champagne absolute inset-y-0 left-0 w-1.5" /> : null}
+    <section id="coating-options" className={`scroll-mt-28 py-3 lg:py-4 ${accent ? 'bg-canvas' : 'bg-white'}`} data-note="uri-product-coatings-title">
       <div className="container">
-        <div className={`${accent ? 'text-champagne' : 'text-white/70'} ${T.eyebrow}`}>Coating options</div>
-        <h2 className={`mt-2 text-white ${T.h2}`}>Electroless Nickel &amp; PVD Coatings</h2>
+        <div className="bg-primary-3 relative overflow-hidden rounded-card px-6 py-6 text-white shadow-[0_22px_60px_-44px_rgba(28,39,73,0.72)] sm:px-7 lg:px-9 lg:py-7">
+          {accent ? <span aria-hidden className="bg-champagne absolute inset-y-0 left-0 w-1.5" /> : null}
+          <div className={`${accent ? 'text-champagne' : 'text-white/70'} ${T.eyebrow}`}>Coating options</div>
+          <h2 className={`mt-2.5 text-white ${T.h2}`}>Electroless Nickel &amp; PVD Coatings</h2>
+        </div>
       </div>
     </section>
 
