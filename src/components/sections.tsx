@@ -145,7 +145,11 @@ export const PageHero = ({
 
         {/* The brand wash. Every gradient here is neutral near-black, which on
             a pale photograph leaves a grey canvas rather than an EID one. */}
-        <div aria-hidden className="bg-primary-3/45 absolute inset-0 -z-10" />
+        {/* Darker on the band (product / application / resource heroes) at
+            Marc's request, 18 Oct 2026: the photo read too bright behind the
+            white headline. The full variant keeps 45% — see the note below
+            about About's bench going flat navy. */}
+        <div aria-hidden className={`absolute inset-0 -z-10 ${variant === 'band' ? 'bg-primary-3/60' : 'bg-primary-3/45'}`} />
 
         {/* One vertical gradient, seating the block on the bottom edge.
             There used to be a second running left-to-right, because the copy
@@ -163,7 +167,7 @@ export const PageHero = ({
         <div
           aria-hidden
           className={`absolute inset-0 -z-10 bg-linear-to-t to-transparent ${
-            variant === 'band' ? 'from-default-950/80 via-default-950/26 via-52%' : 'from-default-950/84 via-default-950/24 via-56%'
+            variant === 'band' ? 'from-default-950/85 via-default-950/38 via-52%' : 'from-default-950/84 via-default-950/24 via-56%'
           }`}
         />
 
