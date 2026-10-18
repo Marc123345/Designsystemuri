@@ -154,23 +154,6 @@ const Coatings = ({ resin = false, accent = false }: { resin?: boolean; accent?:
                 ? 'Electroless nickel is our primary coating option for resin bond diamond, helping improve abrasive retention and performance in suitable bond systems. Available in 30%, 56%, 60% and custom percentages, with smooth or spiky morphology. Selected PVD coatings are also available for specific requirements.'
                 : 'EID offers electroless nickel coatings in 30%, 56%, 60% and custom percentages, with smooth or spiky morphology. Selected PVD metallic coatings are also available to suit specific bond systems and application requirements.'}
             </p>
-            <dl className="mt-5 grid gap-4 sm:grid-cols-2">
-              {(resin
-                ? [
-                    ['Standard electroless nickel', 'Uniform coating for controlled coverage and improved retention in resin-bonded tools.'],
-                    ['Spiky electroless nickel', 'Highly textured morphology for increased mechanical anchoring in the resin matrix.'],
-                  ]
-                : [
-                    ['Standard electroless nickel', 'Uniform electroless coating for controlled coverage and general bonded-tool requirements.'],
-                    ['Spiky electroless nickel', 'Textured morphology designed to increase mechanical anchoring and grain retention in the bond.'],
-                  ]
-              ).map(([term, def]) => (
-                <div key={term} className={`${accent ? 'border-champagne' : 'border-default-200'} border-l-2 pl-3`}>
-                  <dt className={`text-primary-3 uppercase ${T.label}`}>{term}</dt>
-                  <dd className={`text-default-600 mt-1 ${T.small}`}>{def}</dd>
-                </div>
-              ))}
-            </dl>
             <div className={`mt-5 ${T.small}`}>
               <Link href="/contact" className="text-primary inline-flex min-h-11 items-center font-bold lg:inline lg:min-h-0">Discuss coating requirements →</Link>
               <Link href="/contact" className="text-primary flex min-h-11 items-center font-bold tracking-[0.06em] uppercase lg:mt-1.5 lg:block lg:min-h-0">Request a quote →</Link>
@@ -178,10 +161,42 @@ const Coatings = ({ resin = false, accent = false }: { resin?: boolean; accent?:
           </div>
 
           <div>
-            <div className={`text-default-500 uppercase ${T.label}`}>Nickel coatings</div>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {['Electroless Nickel 30%', 'Electroless Nickel 56%', 'Electroless Nickel 60%', 'Custom %'].map((item) => (
-                <span key={item} className={`${accent ? 'border-champagne' : 'border-default-200'} rounded-control border bg-white px-3 py-2.5 font-semibold ${T.chip}`}>{item}</span>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className={`text-default-500 uppercase ${T.label}`}>Nickel coatings</div>
+              <div className="flex flex-wrap gap-1.5">
+                {['30%', '56%', '60%', 'Custom %'].map((item) => (
+                  <span key={item} className={`${accent ? 'border-champagne' : 'border-default-200'} text-primary-3 rounded-control border bg-white px-2 py-1 text-[11px] font-bold`}>{item}</span>
+                ))}
+              </div>
+            </div>
+            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              {[
+                {
+                  title: 'Standard electroless nickel',
+                  image: '/images/products/uri/nickel-smooth.webp',
+                  alt: 'SEM image of diamond particles with a smooth electroless nickel coating',
+                  text: resin
+                    ? 'Uniform coating for controlled coverage and improved retention in resin-bonded tools.'
+                    : 'Uniform electroless coating for controlled coverage and general bonded-tool requirements.',
+                },
+                {
+                  title: 'Spiky electroless nickel',
+                  image: '/images/products/uri/nickel-spiky.webp',
+                  alt: 'SEM image of diamond particles with a spiky electroless nickel coating',
+                  text: resin
+                    ? 'Highly textured morphology for increased mechanical anchoring in the resin matrix.'
+                    : 'Textured morphology designed to increase mechanical anchoring and grain retention in the bond.',
+                },
+              ].map((card) => (
+                <div key={card.title} className={`${accent ? 'border-champagne' : 'border-default-200'} grid grid-cols-[96px_minmax(0,1fr)] gap-3 rounded-control border bg-white p-2.5 sm:grid-cols-[104px_minmax(0,1fr)]`}>
+                  <div className="relative aspect-square overflow-hidden rounded-[4px] bg-default-100">
+                    <Image src={card.image} alt={card.alt} fill sizes="104px" className="object-cover" />
+                  </div>
+                  <div className="min-w-0">
+                    <strong className={`text-primary-3 block uppercase ${T.label}`}>{card.title}</strong>
+                    <p className={`text-default-600 mt-1.5 text-[13px] leading-snug`}>{card.text}</p>
+                  </div>
+                </div>
               ))}
             </div>
 
@@ -244,6 +259,71 @@ const Spectrum = ({
           <strong className={`text-primary-3 block ${points.length > 4 ? 'text-xs font-bold' : T.control}`}>{point.title}</strong>
           {point.lines.map((line) => <span key={line} className="text-default-500 mt-1 block text-sm leading-snug">{line}</span>)}
         </div>
+      ))}
+    </div>
+  </div>
+)
+
+// Two-axis grade map from Uri's mb diamond.html ("Particle characteristics ·
+// Morphology × performance"). x/y are his percentages within the plot box:
+// x runs more irregular → well-formed, y runs top (stronger/tougher) → bottom
+// (more free-cutting). Styled with the site's tokens rather than his CSS.
+type MapPanel = {
+  series: string
+  grade: string
+  top: string
+  bottom: string
+  points: { label: string; x: number; y: number }[]
+}
+
+const GradeMap = ({ panels, accent = false }: { panels: MapPanel[]; accent?: boolean }) => (
+  <div className={`relative mt-6 overflow-hidden rounded-card border bg-white p-5 shadow-[0_18px_55px_-42px_rgba(28,39,73,0.28)] lg:p-7 ${accent ? 'border-champagne border-t-4' : 'border-default-200'}`}>
+    <div className="flex flex-wrap items-baseline justify-between gap-3">
+      <div className={`${accent ? 'text-champagne-deep' : 'text-primary'} ${T.eyebrow}`}>Particle characteristics</div>
+      <div className={`text-default-500 ${T.label}`}>MORPHOLOGY × PERFORMANCE</div>
+    </div>
+    <div className="mt-5 grid gap-5 lg:grid-cols-2">
+      {panels.map((panel) => (
+        <figure key={panel.series} className="min-w-0">
+          <figcaption className={`text-primary-3 mb-2.5 ${T.control}`}>
+            {panel.series} <span className={`text-default-500 ${T.label}`}>· {panel.grade}</span>
+          </figcaption>
+          {/* Below ~460px the grade pills collide, so on phones the plot keeps
+              its proportions and scrolls sideways inside the card instead. */}
+          <div className="overflow-x-auto overscroll-x-contain pb-1">
+          <div
+            className="border-default-200 relative h-[340px] min-w-[460px] overflow-hidden rounded-control border bg-[linear-gradient(180deg,white,var(--color-canvas))]"
+            role="img"
+            aria-label={`${panel.series} grades plotted by morphology (more irregular to well-formed) and performance (${panel.top.replace('\n', ' ').toLowerCase()} to ${panel.bottom.toLowerCase()})`}
+          >
+            {/* axes */}
+            <span aria-hidden className="bg-default-400 absolute top-[52%] right-[7%] left-[13%] h-px">
+              <span className="border-l-primary-3 absolute -top-1 -right-px border-y-4 border-l-[7px] border-y-transparent" />
+            </span>
+            <span aria-hidden className="bg-default-400 absolute top-[8%] bottom-[12%] left-1/2 w-px">
+              <span className="border-b-primary-3 absolute -top-px -left-1 border-x-4 border-b-[7px] border-x-transparent" />
+              <span className="border-t-primary-3 absolute -bottom-px -left-1 border-x-4 border-t-[7px] border-x-transparent" />
+            </span>
+            {/* axis labels */}
+            <span className="text-default-500 absolute top-[3%] left-[52%] z-[2] text-[9px] leading-tight font-semibold tracking-[0.08em] whitespace-pre-line">{panel.top}</span>
+            <span className="text-default-500 absolute bottom-[3%] left-[52%] z-[2] text-[9px] leading-tight font-semibold tracking-[0.08em]">{panel.bottom}</span>
+            <span className="text-default-500 absolute top-[54%] left-[2%] z-[2] text-[9px] leading-tight font-semibold tracking-[0.08em]">MORE IRREGULAR</span>
+            <span className="text-default-500 absolute top-[54%] right-[2%] z-[2] text-right text-[9px] leading-tight font-semibold tracking-[0.08em]">WELL-FORMED /<br />CUBO-OCTAHEDRAL</span>
+            {/* grades */}
+            {panel.points.map((p) => (
+              <span
+                key={p.label}
+                className={`text-primary-3 absolute z-[3] -translate-x-1/2 -translate-y-1/2 rounded-[3px] border px-1.5 py-0.5 text-[10px] leading-none font-bold whitespace-nowrap shadow-[0_1px_2px_rgba(9,42,77,0.07)] ${
+                  accent ? 'bg-champagne-light border-champagne' : 'bg-default-50 border-default-200'
+                }`}
+                style={{ left: `${p.x}%`, top: `${p.y}%` }}
+              >
+                {p.label}
+              </span>
+            ))}
+          </div>
+          </div>
+        </figure>
       ))}
     </div>
   </div>
@@ -640,42 +720,44 @@ const MetalLayout = ({ locale }: { locale: Locale }) => {
           { n: '04', title: 'FRESH EXPOSURE', note: 'Cutting action maintained' },
         ]}
         spectra={
-          <>
-            <Spectrum
-              accent
-              title="ESN series · Saw grade"
-              note="Particle characteristics, morphology × performance. Moving right, crystals become more irregular and more free-cutting; moving left, they become well-formed, cubo-octahedral and stronger."
-              from="Higher strength / thermal stability"
-              to="More free-cutting"
-              points={[
-                { title: 'ESN 770', lines: ['Supreme strength'] },
-                { title: 'ESN 750', lines: ['Extremely high strength'] },
-                { title: 'ESN 700', lines: ['Very high strength'] },
-                { title: 'ESN 600', lines: ['High strength'] },
-                { title: 'ESN 500', lines: ['High strength'] },
-                { title: 'ESN 400', lines: ['Intermediate strength'] },
-                { title: 'ESN 300', lines: ['Medium strength'] },
-                { title: 'ESN 200', lines: ['Medium strength'] },
-                { title: 'ESN 75', lines: ['Medium–low strength'] },
-                { title: 'ESN 50', lines: ['Free cutting'] },
-              ]}
-            />
-            <Spectrum
-              accent
-              title="EDA series · Wheel grade"
-              from="Higher toughness / impact resistance"
-              to="Faster / free cutting"
-              points={[
-                { title: 'EDA 2395', lines: ['Extra tough'] },
-                { title: 'EDA 2360', lines: ['High strength & toughness'] },
-                { title: 'EDA 2300', lines: ['High performance'] },
-                { title: 'EDA 2215', lines: ['Strong & well shaped'] },
-                { title: 'EDA 2125', lines: ['Blocky & versatile'] },
-                { title: 'EDA 2050', lines: ['Fast cutting'] },
-                { title: 'EDA 2025', lines: ['Economical free cutting'] },
-              ]}
-            />
-          </>
+          <GradeMap
+            accent
+            panels={[
+              {
+                series: 'ESN SERIES',
+                grade: 'SAW GRADE',
+                top: 'HIGHER STRENGTH /\nTHERMAL STABILITY',
+                bottom: 'MORE FREE-CUTTING',
+                points: [
+                  { label: 'ESN 50', x: 42, y: 80 },
+                  { label: 'ESN 75', x: 48, y: 71 },
+                  { label: 'ESN 200', x: 55, y: 61 },
+                  { label: 'ESN 300', x: 58, y: 56 },
+                  { label: 'ESN 400', x: 62, y: 48 },
+                  { label: 'ESN 500', x: 68, y: 35 },
+                  { label: 'ESN 600', x: 76, y: 29 },
+                  { label: 'ESN 700', x: 82, y: 22 },
+                  { label: 'ESN 750', x: 88, y: 15 },
+                  { label: 'ESN 770', x: 91, y: 9 },
+                ],
+              },
+              {
+                series: 'EDA SERIES',
+                grade: 'WHEEL GRADE',
+                top: 'HIGHER TOUGHNESS /\nIMPACT RESISTANCE',
+                bottom: 'FASTER / FREE CUTTING',
+                points: [
+                  { label: 'EDA 2025', x: 18, y: 82 },
+                  { label: 'EDA 2050', x: 30, y: 72 },
+                  { label: 'EDA 2125', x: 45, y: 52 },
+                  { label: 'EDA 2215', x: 68, y: 42 },
+                  { label: 'EDA 2300', x: 77, y: 31 },
+                  { label: 'EDA 2360', x: 86, y: 20 },
+                  { label: 'EDA 2395', x: 91, y: 9 },
+                ],
+              },
+            ]}
+          />
         }
       >
         Metal bond systems hold diamond within a hard, wear-resistant matrix. As the bond gradually wears, fresh diamond is exposed to maintain cutting action. Performance depends on <strong>balancing diamond strength and morphology with bond retention and controlled wear</strong>.
