@@ -49,24 +49,23 @@ const AtAGlance = ({
           <a
             key={item.href}
             href={item.href}
-            className={`group border-primary-1/35 relative isolate flex h-full min-h-[180px] w-full self-stretch overflow-hidden rounded-card border p-5 text-white shadow-[0_20px_55px_-42px_rgba(28,39,73,0.68)] transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_26px_65px_-40px_rgba(28,39,73,0.78)] focus-visible:outline-primary focus-visible:outline-2 focus-visible:outline-offset-2 md:p-6 ${align === 'center' ? 'text-center' : 'text-left'}`}
+            className={`group ${accent ? 'border-champagne' : 'border-default-200'} hover:border-primary/30 relative isolate flex h-full min-h-[180px] w-full self-stretch overflow-hidden rounded-card border bg-white p-5 shadow-[0_20px_55px_-46px_rgba(28,39,73,0.45)] transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:shadow-[0_26px_65px_-42px_rgba(28,39,73,0.55)] focus-visible:outline-primary focus-visible:outline-2 focus-visible:outline-offset-2 md:p-6 ${align === 'center' ? 'text-center' : 'text-left'}`}
           >
-            <span aria-hidden className="bg-primary-3 absolute inset-0 z-0 transition-colors duration-300 group-hover:bg-primary-2" />
             <span aria-hidden className={`absolute inset-x-0 top-0 z-10 h-1 ${accent ? 'bg-champagne' : 'bg-primary-1'}`} />
-            <span aria-hidden className="bg-primary-1/10 absolute -right-10 -top-12 z-10 size-32 rounded-full transition-transform duration-500 group-hover:scale-125" />
+            <span aria-hidden className="bg-primary/[0.04] absolute -right-10 -top-12 z-10 size-32 rounded-full transition-transform duration-500 group-hover:scale-125" />
 
             <div className="relative z-20 flex h-full w-full flex-1 flex-col">
               <div className={`flex items-start gap-3 ${align === 'center' ? 'justify-center' : 'justify-between'}`}>
-                <strong className="block text-[15px] font-bold tracking-[-0.01em] text-white uppercase lg:text-base">{item.title}</strong>
+                <strong className="text-primary-3 block text-[15px] font-bold tracking-[-0.01em] uppercase lg:text-base">{item.title}</strong>
                 {align === 'left' ? (
-                  <span className="text-champagne/75 shrink-0 font-mono text-[10px] tracking-[0.18em]">{String(index + 1).padStart(2, '0')}</span>
+                  <span className={`${accent ? 'text-champagne-deep' : 'text-default-400'} shrink-0 font-mono text-[10px] tracking-[0.18em]`}>{String(index + 1).padStart(2, '0')}</span>
                 ) : null}
               </div>
 
-              <span className="mt-3 block text-[15px] leading-snug font-semibold text-white/92">{item.big}</span>
-              {item.small ? <span className="mt-1.5 block text-[13px] leading-relaxed text-white/65">{item.small}</span> : null}
+              <span className="text-primary-3 mt-3 block text-[15px] leading-snug font-semibold">{item.big}</span>
+              {item.small ? <span className="text-default-500 mt-1.5 block text-[13px] leading-relaxed">{item.small}</span> : null}
 
-              <span className={`border-white/12 text-champagne mt-auto flex items-center gap-2 border-t pt-4 uppercase ${T.label} ${align === 'center' ? 'justify-center' : 'justify-start'}`}>
+              <span className={`border-default-200 text-primary mt-auto flex items-center gap-2 border-t pt-4 uppercase ${T.label} ${align === 'center' ? 'justify-center' : 'justify-start'}`}>
                 View range
                 <span aria-hidden className="transition-transform duration-300 group-hover:translate-y-0.5">↓</span>
               </span>
