@@ -138,7 +138,7 @@ const Coatings = ({ resin = false, accent = false }: { resin?: boolean; accent?:
           {accent ? <span aria-hidden className="bg-champagne absolute inset-y-0 left-0 z-10 w-1.5" /> : null}
           <div className="relative z-20">
             <div className={`${accent ? 'text-champagne' : 'text-white/70'} ${T.eyebrow}`}>Coating options</div>
-            <h2 className={`mt-2.5 text-white ${T.h2}`}>Electroless Nickel &amp; PVD Coatings</h2>
+            <h2 className={`mt-2.5 text-white ${T.h2}`}>Electroless Nickel Coatings &amp; PVD Options</h2>
           </div>
         </div>
       </div>
@@ -148,10 +148,29 @@ const Coatings = ({ resin = false, accent = false }: { resin?: boolean; accent?:
       <div className="container">
         <div className="grid items-start gap-9 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
           <div>
-            <h3 className={`text-primary-3 ${T.h3}`}>Electroless Nickel &amp; PVD Coatings</h3>
+            <h3 className={`text-primary-3 ${T.h3}`}>Electroless Nickel Coatings &amp; PVD Options</h3>
             <p className={`text-default-600 mt-3 max-w-2xl ${T.body}`}>
-              {'Metal bond diamond is available with our nickel coatings in 30%, 56%, 60% and custom percentages, with either spiky or smooth nickel morphology. We also offer PVD metallic coatings for specialised requirements.'}
+              {resin
+                ? 'Electroless nickel is our primary coating option for resin bond diamond, helping improve abrasive retention and performance in suitable bond systems. Available in 30%, 56%, 60% and custom percentages, with smooth or spiky morphology. Selected PVD coatings are also available for specific requirements.'
+                : 'EID offers electroless nickel coatings in 30%, 56%, 60% and custom percentages, with smooth or spiky morphology. Selected PVD metallic coatings are also available to suit specific bond systems and application requirements.'}
             </p>
+            <dl className="mt-5 grid gap-4 sm:grid-cols-2">
+              {(resin
+                ? [
+                    ['Standard electroless nickel', 'Uniform coating for controlled coverage and improved retention in resin-bonded tools.'],
+                    ['Spiky electroless nickel', 'Highly textured morphology for increased mechanical anchoring in the resin matrix.'],
+                  ]
+                : [
+                    ['Standard electroless nickel', 'Uniform electroless coating for controlled coverage and general bonded-tool requirements.'],
+                    ['Spiky electroless nickel', 'Textured morphology designed to increase mechanical anchoring and grain retention in the bond.'],
+                  ]
+              ).map(([term, def]) => (
+                <div key={term} className={`${accent ? 'border-champagne' : 'border-default-200'} border-l-2 pl-3`}>
+                  <dt className={`text-primary-3 uppercase ${T.label}`}>{term}</dt>
+                  <dd className={`text-default-600 mt-1 ${T.small}`}>{def}</dd>
+                </div>
+              ))}
+            </dl>
             <div className={`mt-5 ${T.small}`}>
               <Link href="/contact" className="text-primary inline-flex min-h-11 items-center font-bold lg:inline lg:min-h-0">Discuss coating requirements →</Link>
               <Link href="/contact" className="text-primary flex min-h-11 items-center font-bold tracking-[0.06em] uppercase lg:mt-1.5 lg:block lg:min-h-0">Request a quote →</Link>
@@ -161,17 +180,17 @@ const Coatings = ({ resin = false, accent = false }: { resin?: boolean; accent?:
           <div>
             <div className={`text-default-500 uppercase ${T.label}`}>Nickel coatings</div>
             <div className="mt-2 flex flex-wrap gap-2">
-              {(resin
-                ? ['Electroless Nickel 30%', 'Electroless Nickel 56%', 'Electroless Nickel 60%', 'Copper', 'Custom %']
-                : ['Electroless Nickel 30%', 'Electroless Nickel 56%', 'Electroless Nickel 60%', 'Custom %']
-              ).map((item) => (
+              {['Electroless Nickel 30%', 'Electroless Nickel 56%', 'Electroless Nickel 60%', 'Custom %'].map((item) => (
                 <span key={item} className={`${accent ? 'border-champagne' : 'border-default-200'} rounded-control border bg-white px-3 py-2.5 font-semibold ${T.chip}`}>{item}</span>
               ))}
             </div>
 
-            <div className={`text-default-500 mt-5 uppercase ${T.label}`}>PVD metallic coatings</div>
+            <div className={`text-default-500 mt-5 uppercase ${T.label}`}>{resin ? 'Additional PVD coating options' : 'PVD metallic coatings'}</div>
             <div className="mt-2 flex flex-wrap gap-2">
-              {['Titanium', 'Copper', 'TN', 'TiC', 'TiN', 'TiCN', 'Si', 'Cr', 'Zr', 'Al', 'AlN', 'Others'].map((item) => (
+              {(resin
+                ? ['Copper', 'Titanium', 'TiC', 'TiN', 'TiCN', 'Si', 'Cr', 'Zr', 'Al', 'AlN', 'Others']
+                : ['Titanium', 'Copper', 'TiC', 'TiN', 'TiCN', 'Si', 'Cr', 'Zr', 'Al', 'AlN', 'Others']
+              ).map((item) => (
                 <span key={item} className={`${accent ? 'border-champagne' : 'border-default-200'} rounded-control border bg-white px-3 py-2.5 font-semibold ${T.chip}`}>{item}</span>
               ))}
             </div>
@@ -242,7 +261,7 @@ const Insight = ({
   title: string
   children: React.ReactNode
   steps: { n: string; title: string; note: string }[]
-  spectra: React.ReactNode
+  spectra?: React.ReactNode
   accent?: boolean
 }) => (
   <section className={`relative overflow-hidden border-y py-12 lg:py-16 ${accent ? 'border-champagne bg-[linear-gradient(120deg,var(--color-champagne-light)_0%,white_44%,#f1f4f8_100%)]' : 'border-default-200 bg-white'}`} data-note="uri-product-insight">
@@ -320,10 +339,21 @@ const NATURAL_MICRON_SEM = 'https://ik.imagekit.io/qcvroy8xpd/MB-1-UM%2012-22%20
 
 // Hero copy for the Uri layouts that carry their own wording; the product page
 // falls back to the catalogue h1 and meta description for anything not listed.
-export const URI_HERO: Partial<Record<Slug, { eyebrow: string; desc: string }>> = {
+export const URI_HERO: Partial<Record<Slug, { eyebrow: string; desc: string; title?: string }>> = {
   'natural-grit-powder': {
     eyebrow: 'Natural Diamond',
     desc: 'Natural industrial diamond in graded mesh, micron powder and rotary grades — processed in-house for controlled morphology, precision sizing and consistent abrasive performance.',
+  },
+  // Metal and Resin copy below is Uri's, from "mb diamond.html" and
+  // "rb diamond.html" (Drive, revised 18 Oct 2026).
+  'metal-bond': {
+    eyebrow: 'Synthetic Diamond',
+    title: 'Metal Bond Diamond Grit & Powder',
+    desc: 'Metal bond synthetic diamond in graded mesh sizes and micron powder for demanding sawing, grinding and precision abrasive applications.',
+  },
+  'resin-bond': {
+    eyebrow: 'Synthetic Diamond',
+    desc: 'Friable synthetic diamond mesh and micron powders engineered for controlled fracture, continuous self-sharpening and efficient cutting in resin bond abrasive systems.',
   },
 }
 
@@ -460,6 +490,33 @@ const NaturalLayout = () => {
   )
 }
 
+// EGM is supplied in the coarser micron sizes only (Uri's mockup hides the rest).
+const EGM_SIZES = ['20-30', '20-40', '30-40', '30-50', '40-50', '40-60']
+
+// Resin Bond grade photos from Uri's rb diamond.html (Oct 2026). Grade copy
+// lives in the product catalogue; micron buttons need the morphology in the
+// label because both grades share the ERD-um code.
+const RB_IMAGES: Record<string, string> = {
+  'EDA 2022 · EFRD-S': '/images/products/uri/resin-bond-efrd-s.webp',
+  'EDA 2021': '/images/products/uri/resin-bond-eda-2021.webp',
+  'EDA 2020': '/images/products/uri/resin-bond-eda-2020.webp',
+  Blocky: '/images/products/uri/resin-bond-erd-um-blocky.webp',
+  'Semi-Blocky': '/images/products/uri/resin-bond-erd-um-semi-blocky.webp',
+}
+
+const applyResinImages = (groups: UriGradeGroup[], micron = false): UriGradeGroup[] =>
+  groups.map((group) => ({
+    ...group,
+    options: group.options.map((option) => {
+      const key = micron ? option.subtitle ?? '' : option.label
+      return {
+        ...option,
+        ...(micron ? { label: `${option.label} · ${option.subtitle}` } : {}),
+        image: RB_IMAGES[key] ?? option.image,
+      }
+    }),
+  }))
+
 const MB_IMAGES: Record<string, string> = {
   // Metal Bond grade images served from EID's ImageKit account.
   'ESN 770': 'https://ik.imagekit.io/qcvroy8xpd/esn770.png?updatedAt=1791721766504',
@@ -540,6 +597,10 @@ const MetalLayout = ({ locale }: { locale: Locale }) => {
     fallbacks: ['EID Metal Bond Synthetic Diamond Powders combine strong bond retention, high particle strength and thermal stability for demanding lapping, finishing and grinding applications.'],
   }), true)
   const meshGroupsWithImages = applyMetalImages(meshGroups)
+  const micronGroupsWithCopy = micronGroups.map((group) => ({
+    ...group,
+    options: group.options.map((option) => (option.label === 'EGM' ? { ...option, sizes: EGM_SIZES } : option)),
+  }))
 
   return (
     <>
@@ -560,21 +621,21 @@ const MetalLayout = ({ locale }: { locale: Locale }) => {
 
       <span id="micron" className="block scroll-mt-28" aria-hidden />
       <Chapter accent id="metal-bond-micron" eyebrow="02 / METAL BOND MICRON" title="Metal Bond Micron" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '5' }]}>
-        EID Metal Bond Synthetic Diamond Powders combine strong bond retention, high particle strength and thermal stability for demanding lapping, finishing and grinding applications. Their blocky cubo-octahedral morphology and multiple cutting edges provide controlled abrasive performance across applications including glass, tungsten carbide and stone surfacing.
+        EID Metal Bond Synthetic Diamond Powders combine high particle strength, thermal stability and controlled morphology for demanding lapping, finishing and grinding applications. Their blocky to cubo-octahedral particle shape provides consistent abrasive performance in metal, vitrified and electroplated systems across applications including glass, tungsten carbide and stone surfacing.
       </Chapter>
       <ModuleWrap accent>
-        <UriGradeModule accent="champagne" groups={micronGroups} variant="buttons" />
+        <UriGradeModule accent="champagne" groups={micronGroupsWithCopy} variant="buttons" />
       </ModuleWrap>
 
       <Coatings accent />
 
       <Insight
         accent
-        kicker="Technical insight · Bond behaviour"
+        kicker="Technical insight · Diamond & bond interaction"
         title="How Metal Bond Works"
         steps={[
           { n: '01', title: 'DIAMOND PARTICLE', note: 'Strength & morphology' },
-          { n: '02', title: 'BOND RETENTION', note: 'Held in hard matrix' },
+          { n: '02', title: 'BOND RETENTION', note: 'Held within the matrix' },
           { n: '03', title: 'CONTROLLED WEAR', note: 'Bond gradually recedes' },
           { n: '04', title: 'FRESH EXPOSURE', note: 'Cutting action maintained' },
         ]}
@@ -583,16 +644,16 @@ const MetalLayout = ({ locale }: { locale: Locale }) => {
             <Spectrum
               accent
               title="ESN series · Saw grade"
-              note="The two Metal Bond Mesh series are shown separately because ESN Saw Grades and EDA Wheel Grades are engineered for different tooling environments."
+              note="Particle characteristics, morphology × performance. Moving right, crystals become more irregular and more free-cutting; moving left, they become well-formed, cubo-octahedral and stronger."
               from="Higher strength / thermal stability"
-              to="More free-cutting / cost-effective"
+              to="More free-cutting"
               points={[
                 { title: 'ESN 770', lines: ['Supreme strength'] },
                 { title: 'ESN 750', lines: ['Extremely high strength'] },
-                { title: 'ESN 700', lines: ['Extremely high strength'] },
+                { title: 'ESN 700', lines: ['Very high strength'] },
                 { title: 'ESN 600', lines: ['High strength'] },
                 { title: 'ESN 500', lines: ['High strength'] },
-                { title: 'ESN 400', lines: ['General purpose'] },
+                { title: 'ESN 400', lines: ['Intermediate strength'] },
                 { title: 'ESN 300', lines: ['Medium strength'] },
                 { title: 'ESN 200', lines: ['Medium strength'] },
                 { title: 'ESN 75', lines: ['Medium–low strength'] },
@@ -603,21 +664,21 @@ const MetalLayout = ({ locale }: { locale: Locale }) => {
               accent
               title="EDA series · Wheel grade"
               from="Higher toughness / impact resistance"
-              to="More free-cutting / lower abrasive strength"
+              to="Faster / free cutting"
               points={[
                 { title: 'EDA 2395', lines: ['Extra tough'] },
-                { title: 'EDA 2360', lines: ['High toughness'] },
-                { title: 'EDA 2300', lines: ['Impact resistant'] },
-                { title: 'EDA 2215', lines: ['High strength'] },
-                { title: 'EDA 2125', lines: ['Life / finish balance'] },
+                { title: 'EDA 2360', lines: ['High strength & toughness'] },
+                { title: 'EDA 2300', lines: ['High performance'] },
+                { title: 'EDA 2215', lines: ['Strong & well shaped'] },
+                { title: 'EDA 2125', lines: ['Blocky & versatile'] },
                 { title: 'EDA 2050', lines: ['Fast cutting'] },
-                { title: 'EDA 2025', lines: ['Free cutting'] },
+                { title: 'EDA 2025', lines: ['Economical free cutting'] },
               ]}
             />
           </>
         }
       >
-        Metal bond holds diamond mechanically within a hard, wear-resistant matrix. As the bond gradually wears, diamond particles are exposed to maintain cutting action. Performance depends on matching the <strong>strength, shape and thermal stability of the diamond to the bond and application</strong>, while selected coatings can further influence diamond retention and bond interaction.
+        Metal bond systems hold diamond within a hard, wear-resistant matrix. As the bond gradually wears, fresh diamond is exposed to maintain cutting action. Performance depends on <strong>balancing diamond strength and morphology with bond retention and controlled wear</strong>.
       </Insight>
     </>
   )
@@ -640,28 +701,30 @@ const ResinLayout = ({ locale }: { locale: Locale }) => {
     fallbacks: ['High surface toughness and tightly graded particles for resin bond wheels and tools. Effective for soft polishing and grinding of ceramics, carbides, glass and other hard materials where excellent surface finish is required.'],
   })
 
+  const resin = { mesh: applyResinImages(meshGroups), micron: applyResinImages(micronGroups, true) }
+
   return (
     <>
       <AtAGlance align="left" accent items={[
-        { href: '#resin-bond-mesh', title: 'Resin Bond Mesh', big: '50/60 → 400/500 mesh', small: '1 series · 4 grades' },
+        { href: '#resin-bond-mesh', title: 'Resin Bond Mesh', big: '50/60 → 400/500 mesh', small: '1 series · 3 grades' },
         { href: '#resin-bond-micron', title: 'Resin Bond Micron', big: '0–0.20 → 40–60 µm', small: '1 series · 2 grades' },
         { href: '#coating-options', title: 'Coating Options', big: 'Electroless Nickel & PVD', small: 'Coating technologies' },
       ]} />
 
       <span id="mesh" className="block scroll-mt-28" aria-hidden />
-      <Chapter accent id="resin-bond-mesh" eyebrow="01 / RESIN BOND MESH" title="Resin Bond Mesh" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '4' }]}>
-        EID Resin Bond Mesh is engineered for resin-bonded diamond wheels and non-ferrous grinding applications. Its multi-crystalline mosaic structure, rough surface and controlled friability continuously expose fresh cutting edges for fast, consistent cutting and long tool life.
+      <Chapter accent id="resin-bond-mesh" eyebrow="01 / RESIN BOND MESH" title="Resin Bond Mesh" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '3' }]}>
+        Friable resin bond diamond mesh with a multi-crystalline structure and rough surface, engineered for consistent performance in resin bond wheels. Designed for grinding non-ferrous metals and hard materials, with grades offering different levels of friability, micro-fracturing and self-sharpening behaviour to suit applications from efficient stock removal to precision finishing.
       </Chapter>
       <ModuleWrap accent>
-        <UriGradeModule accent="champagne" groups={meshGroups} variant="rows" />
+        <UriGradeModule accent="champagne" groups={resin.mesh} variant="rows" />
       </ModuleWrap>
 
       <span id="micron" className="block scroll-mt-28" aria-hidden />
       <Chapter accent id="resin-bond-micron" eyebrow="02 / RESIN BOND MICRON" title="Resin Bond Micron" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '2' }]}>
-        EID Resin Bond Synthetic Diamond Powders combine friability, mosaic structure and irregular blocky particle morphology for soft polishing, lapping and fine grinding. Under stress, the diamond fractures to expose fresh cutting points, supporting fast cutting and excellent surface finish.
+        Resin bond diamond micron powders developed for soft polishing, lapping and precision finishing. Available in Blocky and Semi-Blocky morphologies, allowing surface toughness, self-sharpening behaviour and finish quality to be matched to the application.
       </Chapter>
       <ModuleWrap accent>
-        <UriGradeModule accent="champagne" groups={micronGroups} variant="buttons" />
+        <UriGradeModule accent="champagne" groups={resin.micron} variant="buttons" />
       </ModuleWrap>
 
       <Coatings resin accent />
@@ -674,24 +737,10 @@ const ResinLayout = ({ locale }: { locale: Locale }) => {
           { n: '01', title: 'DIAMOND CRYSTAL', note: 'Friable structure' },
           { n: '02', title: 'MICRO-FRACTURE', note: 'Controlled breakdown' },
           { n: '03', title: 'FRESH EDGES', note: 'New cutting points' },
-          { n: '04', title: 'CONTINUED CUTTING', note: 'Sharp, cool action' },
+          { n: '04', title: 'CONTINUED CUTTING', note: 'Sustained cutting action' },
         ]}
-        spectra={
-          <Spectrum
-            accent
-            title="Grade characteristics"
-            from="Higher strength / bond retention"
-            to="Higher friability / micro-fracturing"
-            points={[
-              { title: 'EDA 2023', lines: ['Intermediate strength', 'Controlled micro-fracturing'] },
-              { title: 'EFRD-S', lines: ['Self-sharpening', 'High bond retention'] },
-              { title: 'EDA 2021', lines: ['Friable', 'Cost-effective grinding'] },
-              { title: 'EDA 2020', lines: ['Highest friability', 'Precision surface finish'] },
-            ]}
-          />
-        }
       >
-        A resin bond is softer than a metal bond and releases diamond more readily. Paired with a friable, multi-crystalline diamond, the crystal breaks down in a controlled way, continually exposing fresh cutting points rather than glazing over. This helps the tool stay sharp and cut cool, protecting surface finish on carbide, ceramic and glass. <strong>The grade determines how quickly this breakdown occurs, making the right level of friability an important part of matching the diamond to the application.</strong>
+        In resin bond grinding, diamond friability influences how cutting edges are renewed as the abrasive wears. Controlled microfracturing can expose fresh cutting points, helping maintain efficient material removal and limiting glazing. <strong>The interaction between crystal structure, bond retention and grinding conditions determines how effectively this process occurs</strong>, making friability an important consideration when selecting diamond for the application.
       </Insight>
     </>
   )

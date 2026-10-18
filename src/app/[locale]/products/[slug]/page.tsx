@@ -122,7 +122,7 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
 
       <PageHero
         eyebrow={isUriProductLayout(slug) ? URI_HERO[slug]?.eyebrow : undefined}
-        title={p.h1}
+        title={(isUriProductLayout(slug) && URI_HERO[slug]?.title) || p.h1}
         desc={(isUriProductLayout(slug) && URI_HERO[slug]?.desc) || p.metaDesc}
         bgImage={productImage(p.slug)}
         variant="band"
