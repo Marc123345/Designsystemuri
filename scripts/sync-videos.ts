@@ -19,7 +19,7 @@ import { VIDEO_LADDER, videoVariantUrl } from '../src/components/videoSources'
 const ROOT = join(__dirname, '..')
 const OUT = join(ROOT, 'public', 'video')
 const MANIFEST = join(ROOT, 'src', 'lib', 'video-manifest.json')
-const URL_RE = /https:\/\/ik\.imagekit\.io\/qcvroy8xpd\/[^'"`\s)?]+\.mp4/g
+const URL_RE = /https:\/\/ik\.imagekit\.io\/qcvroy8xpd\/(?:[^'"`\s()?]|\(\d+\))+\.mp4/g
 
 const walk = (dir: string): string[] =>
   readdirSync(dir).flatMap((name) => {

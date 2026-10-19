@@ -86,7 +86,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       <VideoHero
         title={t(locale, 'Industrial Diamond — Manufactured In-House Since 1970')}
         desc={t(locale, 'One accountable manufacturer, spec to delivery.')}
-        video="https://ik.imagekit.io/qcvroy8xpd/EID%20VIDEO%20HERO.mp4"
+        video="https://ik.imagekit.io/qcvroy8xpd/video_trimmed%20(1).mp4"
         minHeight="min-h-[60svh]"
         scrollCue
       />
