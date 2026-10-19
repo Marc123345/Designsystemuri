@@ -98,8 +98,8 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
         <div className="container">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
             <PhotoCard
-              image="https://ik.imagekit.io/qcvroy8xpd/eid-hero-quality-control.png"
-              alt={t(locale, 'EID quality-control laboratory')}
+              image="/eid/quality/03-sample-preparation-pipette.png"
+              alt={t(locale, 'A gloved hand pipetting into a test tube of micron diamond powder, a centrifuge on the bench behind')}
               eyebrow="01"
               title={t(locale, 'The Laboratory')}
               body={t(locale, 'QC is built into every stage, from raw material selection through grading, cleaning, coating and final inspection. Laboratory testing follows FEPA, ISO 6106 and ANSI standards.')}
