@@ -29,19 +29,19 @@ const AboutMosaic = () => {
           </p>
         </div>
 
-        <article className="border-primary/10 rounded-card mx-auto mt-7 grid max-w-5xl gap-5 border bg-white p-5 shadow-[0_18px_50px_-42px_rgba(2,6,23,0.28)] sm:grid-cols-[128px_minmax(0,1fr)] sm:items-start sm:gap-7 sm:p-7">
-          <div className="bg-default-100 relative mx-auto aspect-[4/5] w-28 overflow-hidden rounded-control sm:mx-0 sm:w-32">
+        <article className="border-primary/10 rounded-card mt-7 grid gap-6 border bg-white p-6 shadow-[0_18px_50px_-42px_rgba(2,6,23,0.28)] sm:grid-cols-[200px_minmax(0,1fr)] sm:items-start sm:gap-9 sm:p-8 lg:grid-cols-[250px_minmax(0,1fr)] lg:gap-11 lg:p-10">
+          <div className="bg-default-100 relative mx-auto aspect-[4/5] w-44 overflow-hidden rounded-control sm:mx-0 sm:w-full">
             <Image
               src="/eid/grandfather-lewis-edel.webp"
               alt={t(locale, 'Mr. Lewis Edel, founder of E.I.D.')}
               fill
-              sizes="128px"
+              sizes="(min-width: 1024px) 250px, 200px"
               className="object-cover object-top"
             />
           </div>
           <div>
-            <p className="text-primary font-mono text-[11px] tracking-[0.22em] uppercase">{t(locale, 'Our Heritage — Since 1948')}</p>
-            <div className="text-default-600 mt-3 grid gap-3 text-[13.5px] leading-relaxed sm:text-[14px]">
+            <p className="text-primary font-mono text-[12px] tracking-[0.22em] uppercase">{t(locale, 'Our Heritage — Since 1948')}</p>
+            <div className="text-default-600 mt-4 grid gap-4 text-[15px] leading-relaxed lg:text-[16.5px]">
               <p>{t(locale, 'E.I.D was founded in London in 1948 by Mr. Lewis Edel, initially specialising in the trading of natural industrial diamonds. Through his expertise and dedication, the company established a strong reputation within the industrial diamond industry.')}</p>
               <p>{t(locale, 'In 1970, his son, Mr. David Edel, joined the business and played a pivotal role in its development. Under his leadership, E.I.D expanded to offer the full range of industrial diamond products, introduced new technologies and developed advanced processing capabilities, transforming the company into a one-stop manufacturer and supplier of industrial diamond products.')}</p>
               <p>{t(locale, "Today, with David Edel's three sons representing the third generation of the family in the business, E.I.D continues to build on more than 75 years of experience, combining longstanding industry knowledge with modern technology to serve the evolving needs of the global industrial diamond market.")}</p>
