@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 const controls = [
   {
     n: '01',
-    title: 'Size & Morphology: Mesh',
+    title: 'Mesh Grading & Morphology Control',
     points: [
       ['Precision size separation', 'Mechanical test sieves separate and sort diamond grit into uniform sizes.'],
       ['Morphological sorting', 'Automated shape-sorting tables separate different crystal shapes.'],
@@ -30,14 +30,14 @@ const controls = [
   },
   {
     n: '02',
-    title: 'Size & Morphology: Micron',
+    title: 'Micron Grading & Morphology Control',
     points: [
       ['Advanced particle separation', 'Sedimentation and centrifugation classify micron and sub-micron sizes.'],
       ['Malvern PSD reporting', 'Every lot is measured on particle size distribution equipment.'],
       ['SEM verification', 'Scanning electron microscopy verifies final grain morphology and size consistency.'],
     ],
-    image: '/eid/qc-micron-sem.jpg',
-    alt: 'Scanning electron micrograph of micron diamond powder',
+    image: '/eid/quality/malvern-mastersizer-3000.webp',
+    alt: 'Malvern Mastersizer 3000 particle-size analyser used for micron grading',
   },
   {
     n: '03',
@@ -88,7 +88,7 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
               {t(locale, 'Our Quality Control & Laboratory Standards')}
             </h1>
             <p className="mx-auto mt-4 max-w-[70ch] text-[15px] leading-relaxed text-white/82 lg:text-base">
-              {t(locale, 'At E.I.D, every single batch of diamond and CBN powder undergoes strict laboratory validation to guarantee total product consistency, lot after lot.')}
+              {t(locale, 'At E.I.D, quality control is integrated throughout our manufacturing processes. Through precision grading, advanced laboratory testing and rigorous batch inspection, we maintain consistent product specifications and reliable abrasive performance, lot after lot.')}
             </p>
           </div>
         </div>
@@ -106,8 +106,8 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
               minHeight="min-h-[260px] lg:min-h-[285px]"
             />
             <PhotoCard
-              image="/eid/quality/06-precision-scale-diamond-grit.png"
-              alt={t(locale, 'Diamond grit measured on precision laboratory equipment')}
+              image="/eid/qc-micron-sem.jpg"
+              alt={t(locale, 'Scanning electron micrograph of micron diamond powder')}
               eyebrow="02"
               title={t(locale, 'Measured, not sampled')}
               body={t(locale, 'Every batch is measured for the controls that define its grade, so repeat orders can be checked against a documented specification rather than a spot-check.')}
@@ -121,13 +121,35 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
               body={t(locale, 'Lot traceability, certificates of analysis on request and retained batch samples give buyers a record to return to when a grade needs answering for.')}
               minHeight="min-h-[260px] lg:min-h-[285px]"
             />
-            <PhotoCard
-              image="/eid/qc-samples.jpg"
-              alt={t(locale, 'EID laboratory sample jars representing controlled production batches')}
-              eyebrow="04"
-              title="ISO 9001:2015 Certified"
-              minHeight="min-h-[260px] lg:min-h-[285px]"
-            />
+            <article className="border-primary/15 rounded-card flex min-h-[260px] flex-col overflow-hidden border bg-white lg:min-h-[285px]">
+              <a
+                href="/eid/iso-9001-eid.webp"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={t(locale, 'View ISO 9001:2015 certificate')}
+                className="relative block min-h-[160px] flex-1 bg-white"
+              >
+                <Image
+                  src="/eid/iso-9001-eid.webp"
+                  alt={t(locale, 'EID Limited ISO 9001:2015 certificate')}
+                  fill
+                  sizes="(min-width: 1024px) 25vw, 50vw"
+                  className="object-contain p-3"
+                />
+              </a>
+              <div className="bg-primary-3 px-4 py-4 text-white lg:px-5">
+                <p className="font-mono text-[10px] tracking-[0.2em] text-white/75 uppercase">04 · Certification</p>
+                <h3 className="mt-2 text-[17px] leading-tight font-bold text-white">ISO 9001:2015 Certified</h3>
+                <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-[12px] font-semibold">
+                  <a href="/eid/iso-9001-eid.webp" target="_blank" rel="noopener noreferrer" className="underline decoration-white/45 underline-offset-4 hover:decoration-white">
+                    {t(locale, 'View certificate')}
+                  </a>
+                  <a href="/eid/iso-9001-eid.webp" download="EID-ISO-9001-2015-Certificate.webp" className="underline decoration-white/45 underline-offset-4 hover:decoration-white">
+                    {t(locale, 'Download certificate')}
+                  </a>
+                </div>
+              </div>
+            </article>
           </div>
         </div>
       </section>
@@ -138,10 +160,10 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
             <span aria-hidden className="bg-primary-1 absolute inset-y-0 left-0 w-1.5" />
             <div>
               <p className="font-mono text-[11px] tracking-[0.22em] text-champagne uppercase">{t(locale, 'The four controls')}</p>
-              <h2 className="mt-2 text-[28px] leading-tight font-bold tracking-[-0.03em] text-white md:text-[34px]">{t(locale, 'What buyers need to see.')}</h2>
+              <h2 className="mt-2 text-[28px] leading-tight font-bold tracking-[-0.03em] text-white md:text-[34px]">{t(locale, 'Our Quality Control Processes')}</h2>
             </div>
-            <p className="mt-4 max-w-[42ch] text-[13px] leading-relaxed text-white/72 lg:mt-0 lg:text-right">
-              {t(locale, 'Mesh, micron, chemical cleaning and optional toughness testing are separate controls — not steps in a sequence.')}
+            <p className="mt-4 max-w-[54ch] text-[13px] leading-relaxed text-white/80 lg:mt-0 lg:text-right">
+              {t(locale, 'Precision grading, advanced morphology analysis, chemical cleaning and toughness testing ensure consistent abrasive quality across our product range')}
             </p>
           </div>
 
@@ -176,7 +198,6 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
           </div>
         </div>
       </section>
-
     </>
   )
 }
