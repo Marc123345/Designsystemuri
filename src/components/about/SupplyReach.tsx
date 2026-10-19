@@ -53,6 +53,9 @@ const SupplyReach = () => {
                   {t(locale, 'Global Logistics Reach')}
                 </h2>
                 <p className="mt-2 text-[13px] font-mono tracking-[0.16em] text-white/72 uppercase">{t(locale, 'Supply Chain & Market Access')}</p>
+                <p className="mt-5 max-w-[58ch] text-[14px] leading-relaxed text-white/88">
+                  {t(locale, 'With sales and technical support based in London, backed by our international manufacturing and logistics operations, E.I.D serves customers across the globe, ensuring reliable worldwide supply and responsive, personal service.')}
+                </p>
 
                 <div className="mt-6">
                   <div>
