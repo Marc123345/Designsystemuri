@@ -57,7 +57,7 @@ const QualityMosaic = () => {
                   <p className="mt-6 text-[17px] leading-relaxed text-white/92 lg:text-[18px]">
                     {t(
                       locale,
-                      'At EID, every single batch of diamond and CBN powder undergoes strict laboratory validation to guarantee total product consistency, lot after lot.'
+                      'At E.I.D, quality control is integrated throughout our manufacturing processes. Through precision grading, advanced laboratory testing and rigorous batch inspection, we maintain consistent product specifications and reliable abrasive performance, lot after lot.'
                     )}
                   </p>
                   <p className="mt-5 text-[15px] leading-relaxed text-white/72 lg:text-base">
