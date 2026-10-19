@@ -25,8 +25,8 @@ const controls = [
       ['Visual microscope check', 'Microscope checks monitor batch appearance, colour consistency, crystal structure and uniformity.'],
       ['Image Pro validation', 'Final batches are documented for size distribution and shape factor.'],
     ],
-    image: '/eid/quality/ns-1-p-40-50-image-analysis.webp',
-    alt: 'Image-Pro analysis of NS-1-P 40/50 natural diamond, lot N6397: micrograph and measurement results against ANSI B74-16',
+    image: 'https://ik.imagekit.io/qcvroy8xpd/eid-qc-mesh-size-morphology.png',
+    alt: 'Mesh diamond size and morphology quality-control imagery',
   },
   {
     n: '02',
@@ -114,8 +114,8 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
               minHeight="min-h-[260px] lg:min-h-[285px]"
             />
             <PhotoCard
-              image="/eid/quality/05-labeled-sample-storage-cabinet.png"
-              alt={t(locale, 'Barcode-labelled retained batch samples in EID storage')}
+              image="/eid/quality/ns-1-p-40-50-image-analysis.webp"
+              alt={t(locale, 'Image-Pro analysis of NS-1-P 40/50 natural diamond, lot N6397: micrograph and measurement results against ANSI B74-16')}
               eyebrow="03"
               title={t(locale, 'Documented, not asserted')}
               body={t(locale, 'Lot traceability, certificates of analysis on request and retained batch samples give buyers a record to return to when a grade needs answering for.')}
