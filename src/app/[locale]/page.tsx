@@ -87,6 +87,9 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
         title={t(locale, 'Industrial Diamond — Manufactured In-House Since 1970')}
         desc={t(locale, 'One accountable manufacturer, spec to delivery.')}
         video="https://ik.imagekit.io/qcvroy8xpd/video_trimmed%20(1).mp4"
+        // The trimmed clip changes shot before 3s, so the default poster frame
+        // jumped back when playback (which starts at 0) took over.
+        posterAt={0}
         minHeight="min-h-[60svh]"
         scrollCue
       />

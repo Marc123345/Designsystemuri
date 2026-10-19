@@ -251,8 +251,25 @@ export function videoSources(mp4Url: string): VideoSource[] {
  * because every browser used to test it supports WebP. Pinning the format is
  * what makes the payload predictable.
  */
-export function videoPoster(mp4Url: string, atSeconds = 3, width = 960, quality = 55) {
+export function imagekitPoster(mp4Url: string, atSeconds: number, width: number, quality: number) {
   return `${mp4Url}/ik-thumbnail.jpg?tr=so-${atSeconds},f-webp,w-${width},q-${quality}`
+}
+
+/**
+ * Frames and sizes `npm run videos` copies into public/video/. ImageKit renders
+ * a new frame/size cold — 5-6s, once never — so the poster, which is the LCP,
+ * is served from the site like the clips are. Anything outside these sets
+ * falls back to ImageKit.
+ */
+export const POSTER_SECONDS = [0, 3] as const
+export const POSTER_LADDER = [
+  { width: 960, quality: 55 },
+  { width: 1440, quality: 40 },
+  { width: 1920, quality: 35 },
+] as const
+
+export function videoPoster(mp4Url: string, atSeconds = 3, width = 960, quality = 55) {
+  return local[mp4Url]?.[`poster-${atSeconds}-${width}`] ?? imagekitPoster(mp4Url, atSeconds, width, quality)
 }
 
 /**
