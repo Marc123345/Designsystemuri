@@ -123,14 +123,14 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
             />
             <article className="border-primary/15 rounded-card flex min-h-[260px] flex-col overflow-hidden border bg-white lg:min-h-[285px]">
               <a
-                href="/eid/iso-9001-eid.webp"
+                href="/eid/iso-9001-eid.jpg"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={t(locale, 'View ISO 9001:2015 certificate')}
                 className="relative block min-h-[160px] flex-1 bg-white"
               >
                 <Image
-                  src="/eid/iso-9001-eid.webp"
+                  src="/eid/iso-9001-eid.jpg"
                   alt={t(locale, 'EID Limited ISO 9001:2015 certificate')}
                   fill
                   sizes="(min-width: 1024px) 25vw, 50vw"
@@ -141,10 +141,10 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
                 <p className="font-mono text-[10px] tracking-[0.2em] text-white/75 uppercase">04 · Certification</p>
                 <h3 className="mt-2 text-[17px] leading-tight font-bold text-white">ISO 9001:2015 Certified</h3>
                 <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-[12px] font-semibold">
-                  <a href="/eid/iso-9001-eid.webp" target="_blank" rel="noopener noreferrer" className="underline decoration-white/45 underline-offset-4 hover:decoration-white">
+                  <a href="/eid/iso-9001-eid.jpg" target="_blank" rel="noopener noreferrer" className="underline decoration-white/45 underline-offset-4 hover:decoration-white">
                     {t(locale, 'View certificate')}
                   </a>
-                  <a href="/eid/iso-9001-eid.webp" download="EID-ISO-9001-2015-Certificate.webp" className="underline decoration-white/45 underline-offset-4 hover:decoration-white">
+                  <a href="/eid/iso-9001-eid.jpg" download="EID-ISO-9001-2015-Certificate.jpg" className="underline decoration-white/45 underline-offset-4 hover:decoration-white">
                     {t(locale, 'Download certificate')}
                   </a>
                 </div>
