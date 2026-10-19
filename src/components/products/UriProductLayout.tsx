@@ -841,6 +841,7 @@ const POLY_IMAGES: Record<string, string> = {
   'EDD-X-UM': '/images/products/uri/poly-edd-x-um.webp',
 }
 const POLY_STANDARD_MAX = '10–20'
+const POLY_JARS = '/images/products/uri/poly-stacked-jars.webp'
 
 const PolyPowderLayout = ({ locale }: { locale: Locale }) => {
   // Uri lists every micron range rather than the compact chip row.
@@ -858,6 +859,10 @@ const PolyPowderLayout = ({ locale }: { locale: Locale }) => {
       ...option,
       label: `${option.label} · ${option.subtitle}`,
       image: POLY_IMAGES[option.title] ?? option.image,
+      gallery: [
+        { src: POLY_IMAGES[option.title] ?? option.image, alt: `SEM micrograph of ${option.title} polycrystalline diamond powder`, caption: `${option.title} · SEM MORPHOLOGY`, className: 'h-[235px] md:h-[260px]' },
+        { src: POLY_JARS, alt: 'EID EDD-UM and EDDx-UM polycrystalline diamond powder in labelled sample containers', caption: 'EDD-UM / EDD-X-UM · POLYCRYSTALLINE POWDER', className: 'h-[250px] md:h-[270px] [&_img]:object-contain [&_img]:p-2' },
+      ],
       sizes: option.title === 'EDD-X-UM' ? standardSizes : allSizes,
     })),
   }))
