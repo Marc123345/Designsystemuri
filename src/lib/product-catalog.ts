@@ -546,11 +546,12 @@ export const catalog: Record<string, Record<string, SectionCatalog>> = {
       series: [
         {
           title: 'Grades',
-          note: 'A black powder produced through a shock-synthesis process using controlled explosions. Its polycrystalline structure enables controlled micro-fracturing, resists major cleavage fractures, and tolerates three times higher operating pressures than monocrystalline diamond.',
+          // Grade copy is Uri's, from EID_Polycrystalline_Diamond_Powder_Semiconductor_Copy_Updated.html (19 Oct 2026).
+          note: 'EID shock-synthesized polycrystalline diamond powder features a fine polycrystalline structure that promotes controlled microfracturing while resisting major cleavage fractures. Its high toughness allows it to withstand operating pressures up to three times higher than monocrystalline diamond.',
           image: 'poly-micron',
           grades: [
-            { code: 'EDD-UM', tag: 'Premium', image: 'poly-micron', desc: 'Premium grade for high-end engineering and precision finishing — sapphire boules, high-end optical components.' },
-            { code: 'EDD-X-UM', tag: 'Standard', image: 'poly-micron' },
+            { code: 'EDD-UM', tag: 'Premium', image: 'poly-micron', desc: 'Our premium polycrystalline diamond powder, developed for demanding precision lapping and polishing applications. Particularly suited to surface-sensitive finishing of sapphire boules, high-end optical components and demanding substrate processing applications, including silicon carbide (SiC), where exceptional surface quality and consistent abrasive performance are required.' },
+            { code: 'EDD-X-UM', tag: 'Standard', image: 'poly-micron', desc: 'A high-quality polycrystalline diamond powder developed for versatile precision lapping and polishing applications. Suitable for high-volume metallurgical finishing in slurry or suspension form, as well as manual polishing using diamond pastes and compounds. Offers consistent abrasive performance and a balanced combination of quality and value.' },
           ],
         },
       ],

@@ -723,15 +723,15 @@ export const productCatalogue: Product[] = [
     slug: 'polycrystalline-powder',
     name: 'Polycrystalline Diamond powder',
     family: 'Polycrystalline Diamond powder',
-    h1: 'Polycrystalline Diamond powder',
+    h1: 'Polycrystalline Diamond Powder',
     metaTitle: 'Polycrystalline Diamond powder | Micron Polishing Grades | EID',
-    metaDesc: 'Detonation-synthesis polycrystalline diamond micron powder for the most demanding polishing. Rounded, no-cleavage particles for a finer, uniform finish.',
+    metaDesc: 'Shock-synthesized polycrystalline diamond micron powder for the most demanding polishing. Rounded, no-cleavage particles for a finer, uniform finish.',
     eyebrow: 'Products · Group 8',
     cardDesc: 'Engineered polycrystalline powders for precision polishing, lapping, and advanced material finishing.',
     overviewDesc: 'Polycrystalline diamond powder for precision polishing, lapping, and advanced surface finishing.',
     intro: [
       'Polycrystalline diamond micron powder, for the finest polish.',
-      'Polycrystalline diamond powder is made by detonation synthesis, which produces rounded, multi-crystalline particles with no cleavage planes. During polishing, controlled fracture exposes fresh micro-cutting edges rather than letting the particle wear flat, so it polishes finer and more uniformly than monocrystalline powder of the same size. It is the grade for the most demanding polishing and lapping work.',
+      'Polycrystalline diamond powder is made by shock synthesis, which produces rounded, multi-crystalline particles with no cleavage planes. During polishing, controlled fracture exposes fresh micro-cutting edges rather than letting the particle wear flat, so it polishes finer and more uniformly than monocrystalline powder of the same size. It is the grade for the most demanding polishing and lapping work.',
       'EID supplies it from sub-micron up, in dry powder, suspension, and paste. Tell us the material and the finish and we will match the grade and format.',
     ],
     sections: [
@@ -740,7 +740,7 @@ export const productCatalogue: Product[] = [
         label: 'Polycrystalline Powder',
         title: 'Why the polycrystalline particle polishes finer.',
         intro: [
-          'A monocrystalline particle has cleavage planes and sharp corners; under pressure it can plough the surface and leave fine scratches. A detonation-synthesis polycrystalline particle is rounded and built from countless tiny crystals with no cleavage direction. Rather than gouging, it breaks down gradually into fresh cutting points, which produces a lower, more uniform surface roughness. Where the specification is measured in nanometers of Ra, that is the reason to choose this powder.',
+          'A monocrystalline particle has cleavage planes and sharp corners; under pressure it can plough the surface and leave fine scratches. A shock-synthesized polycrystalline particle is rounded and built from countless tiny crystals with no cleavage direction. Rather than gouging, it breaks down gradually into fresh cutting points, which produces a lower, more uniform surface roughness. Where the specification is measured in nanometers of Ra, that is the reason to choose this powder.',
         ],
         applicationsTitle: 'Typical Applications',
         applications: [

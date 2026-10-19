@@ -339,7 +339,7 @@ const Insight = ({
   kicker: string
   title: string
   children: React.ReactNode
-  steps: { n: string; title: string; note: string }[]
+  steps?: { n: string; title: string; note: string }[]
   spectra?: React.ReactNode
   accent?: boolean
 }) => (
@@ -350,7 +350,7 @@ const Insight = ({
         <div className={`${accent ? 'text-champagne-deep' : 'text-primary'} ${T.eyebrow}`}>{kicker}</div>
         <h2 className={`text-primary-3 mt-2 ${T.h2}`}>{title}</h2>
         <div className={`text-default-600 mt-3 max-w-3xl ${T.body}`}>{children}</div>
-        <ProcessStrip steps={steps} accent={accent} />
+        {steps?.length ? <ProcessStrip steps={steps} accent={accent} /> : null}
         {spectra}
       </div>
     </div>
@@ -429,6 +429,13 @@ export const URI_HERO: Partial<Record<Slug, { eyebrow: string; desc: string; tit
     eyebrow: 'Synthetic Diamond',
     title: 'Metal Bond Diamond Grit & Powder',
     desc: 'Metal bond synthetic diamond in graded mesh sizes and micron powder for demanding sawing, grinding and precision abrasive applications.',
+  },
+  // Polycrystalline powder copy is Uri's, from
+  // "EID_Polycrystalline_Diamond_Powder_Semiconductor_Copy_Updated.html" (19 Oct 2026).
+  'polycrystalline-powder': {
+    eyebrow: 'Synthetic Diamond',
+    title: 'Polycrystalline Diamond Powder',
+    desc: 'EID shock-synthesized polycrystalline diamond powder features a fine polycrystalline structure that promotes controlled microfracturing while resisting major cleavage fractures. Its high toughness allows it to withstand operating pressures up to three times higher than monocrystalline diamond. Engineered for precision lapping and polishing in semiconductor, optical and advanced-material applications.',
   },
   'resin-bond': {
     eyebrow: 'Synthetic Diamond',
@@ -827,6 +834,52 @@ const ResinLayout = ({ locale }: { locale: Locale }) => {
   )
 }
 
+// SEM micrographs from Uri's polycrystalline powder file. EDD-X-UM stops at
+// 10–20 µm; the coarser ranges are EDD-UM only.
+const POLY_IMAGES: Record<string, string> = {
+  'EDD-UM': '/images/products/uri/poly-edd-um.webp',
+  'EDD-X-UM': '/images/products/uri/poly-edd-x-um.webp',
+}
+const POLY_STANDARD_MAX = '10–20'
+
+const PolyPowderLayout = ({ locale }: { locale: Locale }) => {
+  // Uri lists every micron range rather than the compact chip row.
+  const allSizes = (getSectionCatalog(locale, 'polycrystalline-powder', 'polycrystalline-powder')?.micronSizes ?? []).map((size) => size.replace('-', '–'))
+  const standardSizes = allSizes.slice(0, allSizes.indexOf(POLY_STANDARD_MAX) + 1)
+  const groups = catalogGroups({
+    locale,
+    slug: 'polycrystalline-powder',
+    section: 'polycrystalline-powder',
+    image: productImage('polycrystalline-powder') ?? '',
+    fallbacks: [],
+  }).map((group) => ({
+    ...group,
+    options: group.options.map((option) => ({
+      ...option,
+      label: `${option.label} · ${option.subtitle}`,
+      image: POLY_IMAGES[option.title] ?? option.image,
+      sizes: option.title === 'EDD-X-UM' ? standardSizes : allSizes,
+    })),
+  }))
+
+  return (
+    <>
+      <ModuleWrap accent>
+        <UriGradeModule accent="champagne" groups={groups} variant="buttons" />
+      </ModuleWrap>
+
+      <Insight
+        accent
+        kicker="Technical insight · Particle behaviour"
+        title="Why Polycrystalline Diamond Can Deliver a Finer Finish"
+      >
+        <p>In precision lapping and polishing, surface quality depends not only on particle size but also on how the abrasive interacts with the workpiece. Monocrystalline diamond particles can produce deeper scratches when sharp edges or larger fragments concentrate pressure on the surface.</p>
+        <p className="mt-3">Shock-synthesized polycrystalline diamond offers a different cutting behaviour. Its fine, multi-crystalline structure and typically rounded particle morphology help distribute contact forces, while gradual microfracturing can limit aggressive scratching and maintain fine cutting action. Under suitable polishing conditions, this can produce a more uniform surface finish, particularly on sensitive materials such as sapphire, ceramics and optical components.</p>
+      </Insight>
+    </>
+  )
+}
+
 const GenericSectionImage = ({ image, alt }: { image?: string; alt: string }) => {
   const src = getProductImageSrc(image)
   if (!src) return null
@@ -1057,6 +1110,7 @@ const UriProductLayout = ({ slug, locale }: { slug: Slug; locale: Locale }) => {
   if (slug === 'natural-grit-powder') return <NaturalLayout />
   if (slug === 'metal-bond') return <MetalLayout locale={locale} />
   if (slug === 'resin-bond') return <ResinLayout locale={locale} />
+  if (slug === 'polycrystalline-powder') return <PolyPowderLayout locale={locale} />
   return <GenericLayout slug={slug} locale={locale} />
 }
 
