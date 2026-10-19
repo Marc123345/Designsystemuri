@@ -6,15 +6,15 @@ import { t } from '@/lib/i18n-content'
 const CONTROLS = [
   {
     n: '01',
-    label: 'Size & Morphology: Mesh',
+    label: 'Mesh Grading & Morphology Control',
     image: 'https://ik.imagekit.io/qcvroy8xpd/eid-qc-mesh-size-morphology.png',
     alt: 'Mesh diamond size and morphology quality-control imagery',
   },
   {
     n: '02',
-    label: 'Size & Morphology: Micron',
-    image: '/eid/quality/03-sample-preparation-pipette.png',
-    alt: 'A gloved hand pipetting into a test tube of micron diamond powder, a centrifuge on the bench behind',
+    label: 'Micron Grading & Morphology Control',
+    image: '/eid/quality/malvern-mastersizer-3000.webp',
+    alt: 'Malvern Mastersizer 3000 particle-size analyser used for micron grading',
   },
   {
     n: '03',
@@ -39,7 +39,7 @@ export default function QualityControlsStrip({ locale }: { locale: Locale }) {
             {t(locale, 'Quality Control')}
           </h2>
           <p className="text-default-600 mx-auto mt-3 max-w-3xl text-[15px] leading-relaxed md:text-base">
-            {t(locale, 'At E.I.D, every single batch of diamond and CBN powder undergoes strict laboratory validation to guarantee total product consistency, lot after lot.')}
+            {t(locale, 'At E.I.D, quality control is integrated throughout our manufacturing processes. Through precision grading, advanced laboratory testing and rigorous batch inspection, we maintain consistent product specifications and reliable abrasive performance, lot after lot.')}
           </p>
         </div>
 
