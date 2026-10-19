@@ -25,8 +25,8 @@ const controls = [
       ['Visual microscope check', 'Microscope checks monitor batch appearance, colour consistency, crystal structure and uniformity.'],
       ['Image Pro validation', 'Final batches are documented for size distribution and shape factor.'],
     ],
-    image: 'https://ik.imagekit.io/qcvroy8xpd/eid-qc-mesh-size-morphology.png',
-    alt: 'Mesh diamond size and morphology quality-control imagery',
+    image: '/eid/quality/ns-1-p-40-50-image-analysis.webp',
+    alt: 'Image-Pro analysis of NS-1-P 40/50 natural diamond, lot N6397: micrograph and measurement results against ANSI B74-16',
   },
   {
     n: '02',
