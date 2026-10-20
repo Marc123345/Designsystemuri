@@ -11,12 +11,29 @@ export type CurtainItem = {
 const CURTAIN = 'cubic-bezier(0.24,0.74,0.58,1)'
 
 /**
- * Exact outer silhouette from Marc's uploaded 113 × 151 vector.
- * These points are the uploaded SVG's outer vertices, normalised to percentages
- * so the photograph crop scales without changing the geometry.
+ * Outer silhouette of Marc's uploaded 113 × 151 crystal vector, with the
+ * corners rounded (r = 7 units). Same path as the outline in
+ * public/eid/product-crystal-frame.svg — change both together.
+ *
+ * Applied as a mask rather than clip-path: polygon() can't curve, and
+ * clip-path: path() is in pixels so it wouldn't scale with the tile. A mask
+ * image stretched to 100% 100% scales with it.
  */
-const PRODUCT_CRYSTAL_CLIP =
-  'polygon(0.221239% 16.727483%, 0.221239% 86.926490%, 17.477876% 99.840397%, 82.079646% 99.840397%, 99.336283% 86.926490%, 99.336283% 16.727483%, 82.964602% 6.131483%, 49.778761% 0.171222%, 19.247788% 6.793709%)'
+const PRODUCT_CRYSTAL_PATH =
+  'M0.25 32.258 L0.25 124.258 Q0.25 131.258 5.2 136.208 L14.8 145.809 Q19.75 150.758 26.75 150.758 L85.75 150.758 Q92.75 150.758 97.7 145.809 L107.3 136.208 Q112.25 131.258 112.25 124.258 L112.25 32.258 Q112.25 25.259 106.955 20.679 L99.045 13.838 Q93.75 9.258 86.943 7.625 L63.057 1.892 Q56.25 0.259 49.527 2.207 L28.473 8.31 Q21.75 10.258 16.009 14.264 L5.991 21.253 Q0.25 25.259 0.25 32.258 Z'
+
+const PRODUCT_CRYSTAL_MASK = `url("data:image/svg+xml,${encodeURIComponent(
+  `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 113 151' preserveAspectRatio='none'><path d='${PRODUCT_CRYSTAL_PATH}'/></svg>`
+)}")`
+
+const CRYSTAL_MASK_STYLE = {
+  maskImage: PRODUCT_CRYSTAL_MASK,
+  WebkitMaskImage: PRODUCT_CRYSTAL_MASK,
+  maskSize: '100% 100%',
+  WebkitMaskSize: '100% 100%',
+  maskRepeat: 'no-repeat',
+  WebkitMaskRepeat: 'no-repeat',
+} as const
 
 const ProductTile = ({ item, sizes }: { item: CurtainItem; sizes: string }) => {
   return (
@@ -27,7 +44,7 @@ const ProductTile = ({ item, sizes }: { item: CurtainItem; sizes: string }) => {
       <div className="relative mx-auto aspect-[113/151] w-full">
         <div
           className="absolute inset-0 overflow-hidden"
-          style={{ clipPath: PRODUCT_CRYSTAL_CLIP, WebkitClipPath: PRODUCT_CRYSTAL_CLIP }}
+          style={CRYSTAL_MASK_STYLE}
         >
           <Image
             src={item.image.src}
