@@ -42,18 +42,6 @@ const EvidencePanel = ({ children, className = '' }: { children: ReactNode; clas
       />
     </div>
 
-    <div
-      aria-hidden
-      className="pointer-events-none absolute inset-0 opacity-30"
-      style={{
-        backgroundImage:
-          'linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)',
-        backgroundSize: '28px 28px',
-        maskImage: 'linear-gradient(to bottom, transparent, black 18%, black 82%, transparent)',
-        WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 18%, black 82%, transparent)',
-      }}
-    />
-
     <div className="relative">{children}</div>
   </div>
 )

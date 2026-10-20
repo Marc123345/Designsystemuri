@@ -1,4 +1,3 @@
-import CanvasField from '@/components/CanvasField'
 import type { Locale } from '@/i18n/routing'
 import { t } from '@/lib/i18n-content'
 import { useLocale } from 'next-intl'
@@ -16,7 +15,6 @@ const AboutMosaic = () => {
 
   return (
     <section data-note="about-mosaic" className="bg-default-50 relative isolate overflow-hidden py-10 lg:py-12">
-      <CanvasField grain={false} mark="end" />
 
       <div className="container">
         <div className="mx-auto max-w-5xl text-center">

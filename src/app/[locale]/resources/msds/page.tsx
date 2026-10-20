@@ -38,18 +38,6 @@ const MsdsPage = async ({ params }: { params: Promise<{ locale: Locale }> }) => 
           <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-10 xl:gap-14">
             <div className="lg:col-span-5">
               <div className="eid-sticky-copy rounded-card bg-primary-3 relative overflow-hidden p-7 text-white shadow-[0_28px_90px_-48px_rgba(2,6,23,0.55)] lg:p-9 xl:p-10">
-                <div
-                  aria-hidden
-                  className="absolute inset-0 opacity-[0.22]"
-                  style={{
-                    backgroundImage:
-                      'linear-gradient(to right, rgba(255,255,255,.12) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,.12) 1px, transparent 1px)',
-                    backgroundSize: '54px 54px',
-                    maskImage: 'radial-gradient(ellipse 80% 62% at 50% 0%, black 55%, transparent 100%)',
-                    WebkitMaskImage: 'radial-gradient(ellipse 80% 62% at 50% 0%, black 55%, transparent 100%)',
-                  }}
-                />
-
                 <div className="relative z-10">
                   <div className="rounded-control inline-flex w-fit items-center gap-1.5 border border-white/25 px-3.5 py-1.25">
                     <span className="bg-primary-1 size-2" />

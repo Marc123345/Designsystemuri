@@ -1,4 +1,3 @@
-import CanvasField from '@/components/CanvasField'
 import CurtainGrid from '@/components/CurtainGrid'
 import ApplicationIndex from '@/components/home/ApplicationIndex'
 import HomeFaq from '@/components/home/HomeFaq'
@@ -95,7 +94,6 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       />
 
       <section id="products" data-note="range" className="relative isolate py-12 lg:py-16">
-        <CanvasField density="coarse" mark="end" />
         <div className="container">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-primary font-mono text-[11px] tracking-[0.22em] uppercase">{t(locale, 'The range')}</p>
@@ -147,7 +145,6 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       />
 
       <section id="applications" data-note="applications" className="bg-canvas relative isolate py-10 lg:py-14">
-        <CanvasField density="medium" />
         <div className="container">
           <div className="mx-auto max-w-4xl text-center">
             <h2 className="text-primary-3 text-[34px] leading-none font-bold tracking-[-0.035em] md:text-[44px] lg:text-[52px]">

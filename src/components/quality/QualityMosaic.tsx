@@ -1,4 +1,3 @@
-import CanvasField from '@/components/CanvasField'
 import CountUp from '@/components/CountUp'
 import ScrambleHeading from '@/components/ScrambleHeading'
 import ScrollReveal from '@/components/ScrollReveal'
@@ -30,7 +29,6 @@ const QualityMosaic = () => {
 
   return (
     <section data-note="quality-mosaic" className="bg-default-50 relative isolate overflow-hidden py-16 lg:py-22">
-      <CanvasField density="fine" mark="start" />
 
       <div className="container">
         <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-10 xl:gap-14">

@@ -75,11 +75,9 @@
        a real margin, and it is enough: the tint is doing its job alongside a
        section boundary and a mesh, not on its own.
 
-       ⚠ AND IT STILL CANNOT CARRY `text-default-500`. 4.603 is a margin for the
-       tint on its own; put CanvasField's grain and mesh on top and the stack
-       falls to 4.39-4.45, under the floor, with no grain setting that recovers
-       it. Tint a section OR texture it where that grey appears, not both. See
-       the budget table in CanvasField. */
+       ⚠ IF A TEXTURE COMES BACK, RE-MEASURE `text-default-500`. 4.603 is a
+       margin for the tint on its own; the old grid-and-grain CanvasField
+       (removed Oct 2026) on top of it measured 4.39-4.45, under the floor. */
     --color-canvas: #fbfbfd;
 
     --color-body-bg: var(--color-white);
