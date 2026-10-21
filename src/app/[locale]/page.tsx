@@ -157,6 +157,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
         title={t(locale, 'Straight answers about the material.')}
         desc={t(locale, 'The questions technical buyers ask before they qualify a superabrasive supplier. If yours is not here, ask us and someone who works with the material will answer.')}
         items={faqs.map((faq) => ({ q: t(locale, faq.q), a: t(locale, faq.a) }))}
+        cta={{ href: '/contact', label: t(locale, 'Ask our technical team') }}
       />
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
