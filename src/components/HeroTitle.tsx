@@ -54,7 +54,7 @@ const HeroTitle = ({ title, className = '', labelled = false }: { title: string;
           <span
             className={
               labelled
-                ? 'mb-4 block text-[13px] font-semibold tracking-[0.2em] text-white/90 uppercase md:text-[15px]'
+                ? 'mb-3 block text-[18px] font-bold tracking-[0.06em] text-white uppercase md:text-[24px]'
                 : 'block font-extralight'
             }
           >

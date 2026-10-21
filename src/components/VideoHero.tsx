@@ -237,7 +237,7 @@ const VideoHero = ({
           <HeroTitle title={title} labelled={labelled} className={`${labelled ? 'mt-5' : 'mt-1.5'} text-[clamp(1.9rem,4.4vw,3.5rem)]`} />
 
           {desc && (
-            <p className="mt-6 max-w-[64ch] text-[0.95rem] leading-relaxed text-pretty text-white/85 md:text-base">
+            <p className={`mt-6 leading-relaxed text-pretty text-white/90 ${labelled ? 'max-w-[62ch] text-[1.05rem] md:text-[1.25rem]' : 'max-w-[64ch] text-[0.95rem] md:text-base'}`}>
               {desc}
             </p>
           )}
@@ -245,7 +245,7 @@ const VideoHero = ({
           {explore ? (
             <a
               href={explore.href}
-              className="group mt-9 flex flex-col items-center gap-2 text-[12px] font-semibold tracking-[0.2em] text-white/90 uppercase hover:text-white md:text-[13px]"
+              className="group mt-9 flex flex-col items-center gap-2 text-[13px] font-semibold tracking-[0.08em] text-white/90 uppercase hover:text-white md:text-[16px]"
             >
               {explore.label}
               <svg aria-hidden viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-5 motion-safe:animate-bounce">
