@@ -1,3 +1,4 @@
+import LogoWatermark from '@/components/LogoWatermark'
 import { ArrowButton } from '@/components/ui'
 
 type FAQItem = { q: string; a: string }
@@ -28,7 +29,8 @@ const HomeFaq = ({
   const span = (index: number) => (index === 2 ? 'lg:col-span-2' : '')
 
   return (
-    <section data-note="faq" className="py-10 lg:py-12">
+    <section data-note="faq" className="relative isolate py-10 lg:py-12">
+      <LogoWatermark marks={['-right-40 top-1/2 -translate-y-1/2 size-[420px] lg:size-[540px]']} />
       <div className="container">
         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
           {/* Depth (Marc, Oct 2026): the heading tile is lifted off the page
