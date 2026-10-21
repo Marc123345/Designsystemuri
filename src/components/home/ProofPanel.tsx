@@ -16,7 +16,6 @@ export type Pillar = {
  * instead of its own navy band with small cards.
  */
 const ProofPanel = ({
-  eyebrow,
   title,
   desc,
   pillars,
@@ -28,24 +27,25 @@ const ProofPanel = ({
   ghost?: string
   aspect?: 'portrait' | 'landscape'
 }) => (
-  <section data-note="core-values" className="relative isolate bg-white py-10 lg:py-14">
+  <section data-note="core-values" className="bg-default-50 relative isolate overflow-hidden py-12 lg:py-16">
     <div className="container">
+      {/* Same heading as Applications and Quality Control: one centred H2 and
+          a one-line description, no eyebrow. */}
       <div className="mx-auto max-w-4xl text-center">
-        {eyebrow && <p className="text-primary font-mono text-[11px] tracking-[0.22em] uppercase">{eyebrow}</p>}
-        <h2 className="text-primary-3 mt-3 text-[34px] leading-none font-bold tracking-[-0.035em] text-balance md:text-[44px] lg:text-[52px]">{title}</h2>
+        <h2 className="text-primary-3 text-[34px] leading-none font-bold tracking-[-0.035em] md:text-[44px] lg:text-[52px]">{title}</h2>
         {desc && <p className="text-default-600 mx-auto mt-3 max-w-3xl text-[15px] leading-relaxed md:text-base">{desc}</p>}
       </div>
 
-      <div className="mt-7 grid gap-4 sm:grid-cols-3 lg:mt-8 lg:gap-5">
+      <div className="mt-7 grid gap-4 sm:grid-cols-3 lg:gap-5">
         {pillars.map((item, index) => (
           <PhotoCard
             key={`${item.meta}-${item.href}`}
             image={item.image.src}
             alt={item.image.alt}
-            eyebrow={`${String(index + 1).padStart(2, '0')} · ${item.meta}`}
+            eyebrow={String(index + 1).padStart(2, '0')}
             title={item.title}
             href={item.href}
-            minHeight="min-h-[260px] lg:min-h-[320px]"
+            minHeight="min-h-[220px] lg:min-h-[245px]"
           />
         ))}
       </div>

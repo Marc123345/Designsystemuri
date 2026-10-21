@@ -98,10 +98,8 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       </section>
 
       <ProofPanel
-        eyebrow={t(locale, 'Why tool makers qualify EID')}
-        title={t(locale, 'One accountable manufacturer, spec to delivery.')}
-        ghost={t(locale, 'Industrial diamond')}
-        aspect="landscape"
+        title={t(locale, 'Why tool makers qualify EID')}
+        desc={t(locale, 'One accountable manufacturer, spec to delivery.')}
         pillars={[
           {
             meta: t(locale, 'Accountability'),
