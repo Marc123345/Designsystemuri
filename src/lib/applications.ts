@@ -56,8 +56,7 @@ export const applications: Application[] = [
       body: 'A sintered bur is only as repeatable as the powder that goes into it. When sizing, crystal shape, or coating weight vary between lots, sintering drifts, retention changes, and burs that should be identical are not. That shows up as rejected product and warranty risk downstream. EID grades and inspects every lot for those variables, so your sintering process sees the same input each run. The payoff is fewer rejects, predictable instrument life, and a diamond supply you qualify once instead of re-checking every delivery.',
     },
     productsTitle: 'The grades dental makers use',
-    // Per Uri (19/7): natural (mesh) grit is the single most-used dental material,
-    // so it leads the list, ahead of metal bond, coated metal bond, and micron powder.
+    // Per Uri's email (21/10/2026): the products each application links to.
     products: [
       {
         label: 'Natural Diamond Grit, mesh',
@@ -65,19 +64,19 @@ export const applications: Application[] = [
         note: 'The single most-used dental material, graded mesh grit for sintered burs and rotary instruments, crushed and graded in-house for tight, repeatable sizing.',
       },
       {
-        label: 'Metal Bond Diamond',
-        href: '/products/metal-bond',
-        note: 'Saw and wheel grades for sintered dental burs and rotary instruments, with controlled crystal shape and size distribution.',
-      },
-      {
-        label: 'Coated metal bond diamond',
-        href: '/products/metal-bond#coated',
-        note: 'Nickel-coated grades that improve retention in the sintered matrix, reducing pull-out and extending instrument life. Coated in-house, so grit and coating come from one order.',
-      },
-      {
         label: 'Natural Diamond Micron Powder',
         href: '/products/natural-grit-powder#micron',
         note: 'For fine finishing and polishing operations in dental instrument production.',
+      },
+      {
+        label: 'Metal Bond Diamond, mesh',
+        href: '/products/metal-bond#mesh',
+        note: 'Mesh grades for sintered dental burs and rotary instruments, with controlled crystal shape and size distribution.',
+      },
+      {
+        label: 'Metal Bond Diamond, micron',
+        href: '/products/metal-bond#micron',
+        note: 'Micron grades for fine dental instruments and small sintered tools, where sizing is measured rather than sieved.',
       },
     ],
     why: {
@@ -105,34 +104,27 @@ export const applications: Application[] = [
       body: 'At wafer scale, the cost of a defect is measured in die, not parts. An oversized particle in a lapping or polishing slurry can scratch a substrate and take out hundreds of devices in one pass. The defence is a powder with a tightly controlled D50, a narrow span, and no stray outliers, order after order. EID measures particle size distribution on every batch and grades to a controlled D50 and span, so the powder you qualify is the powder you receive. For a process where a single particle sets the failure mode, that is the specification that matters most.',
     },
     productsTitle: 'The grades electronics makers use',
-    // Deck bullet four combines CVD Single Crystal and MCD in one line ("for
-    // scribing, cleaving, and precision semiconductor tooling"). Kept as two
-    // entries here so each anchor gets its own link; the note is the shared one.
+    // Per Uri's email (21/10/2026): the products each application links to.
     products: [
       {
-        label: 'Polycrystalline Diamond powder',
+        label: 'Single Crystal Diamond (CVD & MCD)',
+        href: '/products/single-crystal',
+        note: 'CVD single crystal and MCD for scribing, cleaving, and precision semiconductor tooling.',
+      },
+      {
+        label: 'Polycrystalline Diamond (CVD & PCD)',
+        href: '/products/polycrystalline-diamond',
+        note: 'PCD discs and blanks and CVD polycrystalline material, made to spec for precision tooling.',
+      },
+      {
+        label: 'Polycrystalline Diamond Powder',
         href: '/products/polycrystalline-powder',
         note: 'Sub-micron and fine grades for final polishing of silicon, sapphire, SiC, and GaN wafers, where the rounded, no-cleavage particle gives the lowest, most uniform surface roughness.',
       },
       {
-        label: 'Natural & Synthetic Micron Powder',
-        href: '/products/natural-grit-powder#micron',
-        note: 'For lapping and intermediate polishing of electronic substrates.',
-      },
-      {
-        label: 'Resin Bond Diamond',
-        href: '/products/resin-bond',
-        note: 'For the fixed-abrasive tools used in fine grinding and thinning.',
-      },
-      {
-        label: 'CVD Single Crystal',
-        href: '/products/single-crystal#cvd',
-        note: 'For scribing, cleaving, and precision semiconductor tooling.',
-      },
-      {
-        label: 'MCD',
-        href: '/products/single-crystal#mcd',
-        note: 'For scribing, cleaving, and precision semiconductor tooling.',
+        label: 'Natural Diamond Grit & Powder',
+        href: '/products/natural-grit-powder',
+        note: 'Natural grit and micron powder for lapping and fine finishing of electronic substrates, graded in-house to a tight size distribution.',
       },
     ],
     why: {
@@ -163,26 +155,27 @@ export const applications: Application[] = [
       body: 'In high-volume grinding, abrasive consistency is a process parameter. Variations in crystal strength, particle size distribution, or grade behaviour change wheel wear, cutting action, and dressing frequency. EID controls these variables through in-house grading and QC testing, providing repeatable superabrasive performance from lot to lot. The same logic holds for PCBN and PCD inserts feeding a hard-turning or milling cell: the grade that arrives matches the grade you qualified.',
     },
     productsTitle: 'The grades auto and aero makers use',
+    // Per Uri's email (21/10/2026): the products each application links to.
     products: [
       {
-        label: 'CBN Powder',
+        label: 'CBN',
         href: '/products/cbn',
-        note: 'Grinding hardened steel crankshafts, camshafts, gears, and bearings, and superalloy and turbine-component grinding in aerospace.',
+        note: 'CBN powder for grinding hardened steel crankshafts, camshafts, gears, and bearings, and PCBN blanks for hard-turning hardened powertrain parts.',
       },
       {
-        label: 'PCBN Discs & Blanks',
-        href: '/products/cbn#pcbn',
-        note: 'Hard-turning and finish-machining inserts on hardened powertrain components and cast iron.',
+        label: 'Natural Rotary Diamonds',
+        href: '/products/natural-grit-powder#rotary',
+        note: 'For dressing and truing the grinding wheels on automotive and aerospace lines, selected in-house and matched to the wheel.',
       },
       {
-        label: 'PCD Discs & Blanks',
-        href: '/products/polycrystalline-diamond#pcd-blanks',
-        note: 'Machining aluminium engine and structural parts and carbon-fibre aerospace components.',
+        label: 'CVD Single Crystal Diamond',
+        href: '/products/single-crystal#cvd',
+        note: 'Grown to your orientation for precision single-point and dressing tools.',
       },
       {
-        label: 'CVD Polycrystalline Dressing Logs',
-        href: '/products/polycrystalline-diamond#dressing-logs',
-        note: 'Truing and dressing the grinding wheels on automotive lines.',
+        label: 'Polycrystalline Diamond (CVD & PCD)',
+        href: '/products/polycrystalline-diamond',
+        note: 'PCD blanks for machining aluminium and carbon-fibre parts; CVD dressing logs for truing the grinding wheels.',
       },
     ],
     why: {
@@ -212,31 +205,27 @@ export const applications: Application[] = [
       body: 'Tool and die work pulls in two directions. Sometimes the requirement is reproducibility: the same defect-controlled edge across hundreds of identical single-point or cutting tools, so every part comes off the same. Sometimes it is precision to a single specification: a CVD crystal grown to a set orientation for an optical or watch-component tool where one geometry has to be exact. EID serves both. MCD gives the reproducible HPHT edge at production scale. CVD single crystal is made to your exact orientation and face, then finished and inspected in-house. The right answer depends on your tool, which is where the conversation with our technical team starts.',
     },
     productsTitle: 'The materials tool and die makers use',
+    // Per Uri's email (21/10/2026): the products each application links to.
     products: [
-      {
-        label: 'CVD Single Crystal Diamond',
-        href: '/products/single-crystal#cvd',
-        note: 'Grown to your orientation for single-point turning, fly-cutting, and precision dressing tools.',
-      },
-      {
-        label: 'MCD (Monocrystalline Diamond)',
-        href: '/products/single-crystal#mcd',
-        note: 'HPHT single crystal with reproducible edge geometry for single-point turning and dressing.',
-      },
-      {
-        label: 'PCD Discs & Blanks',
-        href: '/products/polycrystalline-diamond#pcd-blanks',
-        note: 'Non-ferrous and composite cutting-tool inserts.',
-      },
-      {
-        label: 'PCBN Discs & Blanks',
-        href: '/products/cbn#pcbn',
-        note: 'Hardened-ferrous hard-turning inserts.',
-      },
       {
         label: 'Natural Tool Stones',
         href: '/products/tool-stones',
         note: 'Natural single-point and dressing stones, selected in-house.',
+      },
+      {
+        label: 'Natural Rotary Diamonds',
+        href: '/products/natural-grit-powder#rotary',
+        note: 'For dressing and truing wheels, selected in-house and matched to the dressing operation.',
+      },
+      {
+        label: 'Single Crystal Diamond (CVD & MCD)',
+        href: '/products/single-crystal',
+        note: 'CVD grown to your orientation, or HPHT MCD with reproducible edge geometry, for single-point turning, fly-cutting, and dressing tools.',
+      },
+      {
+        label: 'Polycrystalline Diamond (CVD & PCD)',
+        href: '/products/polycrystalline-diamond',
+        note: 'PCD discs and blanks for non-ferrous and composite cutting inserts; CVD logs for truing and dressing wheels.',
       },
     ],
     why: {
@@ -270,31 +259,22 @@ export const applications: Application[] = [
       body: 'A saw segment or a grinding wheel is only as consistent as the diamond in it. When crystal strength or size distribution drifts between lots, tool life and cutting speed drift with it, and a maker producing a range of tools ends up managing that variation across every product line at once. EID grades and inspects every lot, so each grade performs the same order to order, and covers saw grade, wheel grade, coated grit, and finishing powder from one relationship. For a maker running a broad catalogue, that combination of consistency and breadth takes cost and risk out of sourcing.',
     },
     productsTitle: 'The grades these makers use',
+    // Per Uri's email (21/10/2026): the products each application links to.
     products: [
+      {
+        label: 'Natural Diamond Grit, mesh',
+        href: '/products/natural-grit-powder#grit',
+        note: 'Diamond segments, saw blades, grinding wheels, and dressing tools for stone, glass, and construction materials.',
+      },
       {
         label: 'Metal Bond Diamond',
         href: '/products/metal-bond',
         note: 'Saw grade for segments, blades, and wire beads; wheel grade for grinding cups and profile wheels. Coated in-house for retention in sintered segments.',
       },
       {
-        label: 'Natural Diamond Grit',
-        href: '/products/natural-grit-powder#grit',
-        note: 'Diamond segments and dressing tools.',
-      },
-      {
-        label: 'CBN Powder',
-        href: '/products/cbn',
-        note: 'Grinding wheels working hardened and ferrous steels.',
-      },
-      {
         label: 'Resin Bond Diamond',
         href: '/products/resin-bond',
-        note: 'Flexible abrasive pads and polishing sheets for glass and stone.',
-      },
-      {
-        label: 'CVD Polycrystalline Dressing Logs',
-        href: '/products/polycrystalline-diamond#dressing-logs',
-        note: 'Truing and dressing the wheels these processes rely on.',
+        note: 'Resin-bonded wheels, flexible abrasive pads, and polishing sheets for glass and stone.',
       },
     ],
     // PENDING URI'S GO-AHEAD (deck page 17): five optional keyword sub-sections
@@ -333,21 +313,27 @@ export const applications: Application[] = [
       body: 'In fine finishing, the surface is the specification, and the powder determines whether you hit it. A distribution that drifts between batches, or carries the occasional oversized particle, shows up as scratches, uneven Ra, and re-work. At the sub-nanometer end, one stray particle can cost the whole part. EID measures particle size distribution on every batch and grades to a controlled D50 and span, so the powder polishes the same way each order. For a process where the finish is the product, that repeatability is what keeps you off the re-work bench.',
     },
     productsTitle: 'The grades finishers use, by stage',
+    // Per Uri's email (21/10/2026): the products each application links to.
     products: [
       {
-        label: 'Natural & Synthetic Micron Powder',
+        label: 'Natural Diamond Micron Powder',
         href: '/products/natural-grit-powder#micron',
         note: 'Lapping and intermediate polishing of hard, brittle materials.',
       },
       {
-        label: 'Polycrystalline Diamond powder',
-        href: '/products/polycrystalline-powder',
-        note: 'The final, most demanding polish, where the rounded, no-cleavage particle gives the lowest and most uniform Ra.',
+        label: 'Resin Bond Diamond, micron',
+        href: '/products/resin-bond#micron',
+        note: 'Fixed-abrasive polishing, lapping, and honing, where a controlled, self-renewing edge protects the surface.',
       },
       {
-        label: 'Resin Bond Diamond',
-        href: '/products/resin-bond',
-        note: 'Fixed-abrasive tools for fine grinding and honing ahead of polishing.',
+        label: 'Metal Bond Diamond, micron',
+        href: '/products/metal-bond#micron',
+        note: 'Precision metal-bond wheels and fine sintered tools for finishing ahead of the final polish.',
+      },
+      {
+        label: 'Polycrystalline Diamond Powder',
+        href: '/products/polycrystalline-powder',
+        note: 'The final, most demanding polish, where the rounded, no-cleavage particle gives the lowest and most uniform Ra.',
       },
     ],
     why: {
