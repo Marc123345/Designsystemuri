@@ -101,8 +101,9 @@ export type PhotoCardProps = {
   /** How much cover the copy needs. `heavy` for bullet lists. */
   weight?: 'light' | 'heavy'
   /**
-   * `contain` shows the whole image across the top of the card, with the copy
-   * on navy underneath rather than over it. For screenshots and documents (the
+   * `contain` fills the top half like `band` but anchors the crop to the right,
+   * where the Image-Pro measurement table sits, so the data stays whole. The
+   * copy sits on navy underneath rather than over it. For screenshots and documents (the
    * Image-Pro analysis on /quality) where cropping hides the thing the card is
    * about, and where text laid over a data table would be unreadable. The one
    * sanctioned exception to the rule above; Uri asked for it, Oct 2026.
@@ -133,7 +134,7 @@ const PhotoCard = ({ image, alt = '', eyebrow, title, body, points, note, href, 
               alt={alt}
               fill
               sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-              className={`${fit === 'contain' ? 'object-contain' : 'object-cover'} transition-transform duration-700 ease-out group-hover:scale-105`}
+              className={`object-cover ${fit === 'contain' ? 'object-right' : ''} transition-transform duration-700 ease-out group-hover:scale-105`}
             />
           </span>
         </>
