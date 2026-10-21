@@ -130,7 +130,7 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={t(locale, 'View ISO 9001:2015 certificate')}
-                className="relative block aspect-[4/3] w-full shrink-0 bg-white"
+                className="relative block min-h-[160px] flex-1 bg-white"
               >
                 <Image
                   src="/eid/iso-9001-eid.jpg"
@@ -142,9 +142,9 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
                   className="object-cover object-[50%_12%]"
                 />
               </a>
-              <div className="bg-primary-3 flex-1 p-6 text-white lg:p-7">
-                <p className="font-mono text-[11px] tracking-[0.22em] text-white/85 uppercase">04 · Certification</p>
-                <h3 className="mt-3 text-[20px] leading-tight font-bold text-white lg:text-[22px]">ISO 9001:2015 Certified</h3>
+              <div className="bg-primary-3 px-4 py-4 text-white lg:px-5">
+                <p className="font-mono text-[10px] tracking-[0.2em] text-white/75 uppercase">04 · Certification</p>
+                <h3 className="mt-2 text-[17px] leading-tight font-bold text-white">ISO 9001:2015 Certified</h3>
                 <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-[12px] font-semibold">
                   <a href="/eid/iso-9001-eid.jpg" target="_blank" rel="noopener noreferrer" className="underline decoration-white/45 underline-offset-4 hover:decoration-white">
                     {t(locale, 'View certificate')}

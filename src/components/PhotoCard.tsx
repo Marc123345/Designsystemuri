@@ -101,16 +101,14 @@ export type PhotoCardProps = {
   /** How much cover the copy needs. `heavy` for bullet lists. */
   weight?: 'light' | 'heavy'
   /**
-   * `contain` fills the top half like `band` but anchors the crop to the right,
-   * where the Image-Pro measurement table sits, so the data stays whole. The
-   * copy sits on navy underneath rather than over it. For screenshots and documents (the
+   * `contain` shows the whole image across the top of the card, with the copy
+   * on navy underneath rather than over it. For screenshots and documents (the
    * Image-Pro analysis on /quality) where cropping hides the thing the card is
    * about, and where text laid over a data table would be unreadable. The one
    * sanctioned exception to the rule above; Uri asked for it, Oct 2026.
    *
-   * `band` is the same layout for an ordinary photograph: cropped to a short
-   * strip across the top, matching the height `contain` gives the Image-Pro
-   * analysis, so the four QC cards on /quality read as one set.
+   * `band` is the same layout for an ordinary photograph: the photo takes the
+   * top half of the card (4:3), with the copy on navy underneath.
    */
   fit?: 'cover' | 'contain' | 'band'
 }
@@ -123,7 +121,19 @@ const PhotoCard = ({ image, alt = '', eyebrow, title, body, points, note, href, 
 
   const inner = (
     <>
-      {image && fit !== 'cover' ? (
+      {image && fit === 'contain' ? (
+        <>
+          <span aria-hidden className="bg-primary-3 absolute inset-0 -z-10" />
+          <Image
+            src={image}
+            alt={alt}
+            width={0}
+            height={0}
+            sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+            className="h-auto w-full shrink-0"
+          />
+        </>
+      ) : image && fit === 'band' ? (
         <>
           <span aria-hidden className="bg-primary-3 absolute inset-0 -z-10" />
           {/* Top half of the card: 4:3 at these card widths is about half the
@@ -134,7 +144,7 @@ const PhotoCard = ({ image, alt = '', eyebrow, title, body, points, note, href, 
               alt={alt}
               fill
               sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-              className={`object-cover ${fit === 'contain' ? 'object-right' : ''} transition-transform duration-700 ease-out group-hover:scale-105`}
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
           </span>
         </>
@@ -158,7 +168,7 @@ const PhotoCard = ({ image, alt = '', eyebrow, title, body, points, note, href, 
       {/* `mt-auto` in a full-height flex column pins the copy to the foot
           whatever the card's height turns out to be — and in a bento the height
           is never the card's own, it is the tallest cell in the row. */}
-      <div className={`relative z-10 flex flex-col ${fit !== 'cover' ? 'flex-1 justify-start p-6 lg:p-7' : 'h-full justify-end p-7 lg:p-9'}`}>
+      <div className={`relative z-10 flex flex-col ${fit === 'band' ? 'flex-1 justify-start p-6 lg:p-7' : fit === 'contain' ? 'flex-1 justify-start p-7 lg:p-9' : 'h-full justify-end p-7 lg:p-9'}`}>
         {/* white/85, not white/60.
             ⚠ This is a contrast fix and it is site-wide, so do not tune it back
             down for looks. At 11px this label needs 4.5:1. Measured against the
@@ -175,7 +185,7 @@ const PhotoCard = ({ image, alt = '', eyebrow, title, body, points, note, href, 
             clears the Quality controls outright; it does not close About. */}
         {eyebrow && <p className="font-mono text-[11px] tracking-[0.22em] text-white/85 uppercase">{eyebrow}</p>}
 
-        <h3 className={`mt-3 leading-tight font-bold text-white ${fit !== 'cover' ? 'text-[20px] lg:text-[22px]' : 'text-[22px] lg:text-[26px]'}`}>{title}</h3>
+        <h3 className={`mt-3 leading-tight font-bold text-white ${fit === 'band' ? 'text-[20px] lg:text-[22px]' : 'text-[22px] lg:text-[26px]'}`}>{title}</h3>
 
         {body && <p className="mt-3 max-w-[52ch] text-[0.95rem] leading-relaxed text-white/80">{body}</p>}
 
