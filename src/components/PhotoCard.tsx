@@ -106,8 +106,12 @@ export type PhotoCardProps = {
    * Image-Pro analysis on /quality) where cropping hides the thing the card is
    * about, and where text laid over a data table would be unreadable. The one
    * sanctioned exception to the rule above; Uri asked for it, Oct 2026.
+   *
+   * `band` is the same layout for an ordinary photograph: cropped to a short
+   * strip across the top, matching the height `contain` gives the Image-Pro
+   * analysis, so the four QC cards on /quality read as one set.
    */
-  fit?: 'cover' | 'contain'
+  fit?: 'cover' | 'contain' | 'band'
 }
 
 const PhotoCard = ({ image, alt = '', eyebrow, title, body, points, note, href, className = '', minHeight = 'min-h-[360px]', weight = 'light', collapsible = false, disclosureLabel, fit = 'cover' }: PhotoCardProps) => {
@@ -130,6 +134,19 @@ const PhotoCard = ({ image, alt = '', eyebrow, title, body, points, note, href, 
             className="h-auto w-full shrink-0"
           />
         </>
+      ) : image && fit === 'band' ? (
+        <>
+          <span aria-hidden className="bg-primary-3 absolute inset-0 -z-10" />
+          <span className="relative block aspect-[8/3] w-full shrink-0 overflow-hidden">
+            <Image
+              src={image}
+              alt={alt}
+              fill
+              sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            />
+          </span>
+        </>
       ) : image ? (
         <>
           <Image
@@ -150,7 +167,7 @@ const PhotoCard = ({ image, alt = '', eyebrow, title, body, points, note, href, 
       {/* `mt-auto` in a full-height flex column pins the copy to the foot
           whatever the card's height turns out to be — and in a bento the height
           is never the card's own, it is the tallest cell in the row. */}
-      <div className={`relative z-10 flex flex-col p-7 lg:p-9 ${fit === 'contain' ? 'flex-1 justify-start' : 'h-full justify-end'}`}>
+      <div className={`relative z-10 flex flex-col p-7 lg:p-9 ${fit !== 'cover' ? 'flex-1 justify-start' : 'h-full justify-end'}`}>
         {/* white/85, not white/60.
             ⚠ This is a contrast fix and it is site-wide, so do not tune it back
             down for looks. At 11px this label needs 4.5:1. Measured against the
@@ -221,7 +238,7 @@ const PhotoCard = ({ image, alt = '', eyebrow, title, body, points, note, href, 
     </>
   )
 
-  const shell = `group rounded-card relative isolate flex h-full w-full self-stretch overflow-hidden ${fit === 'contain' ? 'flex-col' : ''} ${minHeight} ${className}`
+  const shell = `group rounded-card relative isolate flex h-full w-full self-stretch overflow-hidden ${fit !== 'cover' ? 'flex-col' : ''} ${minHeight} ${className}`
 
   return href ? (
     <Link href={href} className={`${shell} focus-visible:outline-primary focus-visible:outline-2 focus-visible:outline-offset-2`}>

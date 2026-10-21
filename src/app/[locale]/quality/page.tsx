@@ -102,6 +102,7 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
               alt={t(locale, 'A gloved hand pipetting into a test tube of micron diamond powder, a centrifuge on the bench behind')}
               eyebrow="01"
               title={t(locale, 'The Laboratory')}
+              fit="band"
               body={t(locale, 'QC is built into every stage, from raw material selection through grading, cleaning, coating and final inspection. Laboratory testing follows FEPA, ISO 6106 and ANSI standards.')}
               minHeight="min-h-[260px] lg:min-h-[285px]"
             />
@@ -110,6 +111,7 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
               alt={t(locale, 'Scanning electron micrograph of micron diamond powder')}
               eyebrow="02"
               title={t(locale, 'Measured, not sampled')}
+              fit="band"
               body={t(locale, 'Every batch is measured for the controls that define its grade, so repeat orders can be checked against a documented specification rather than a spot-check.')}
               minHeight="min-h-[260px] lg:min-h-[285px]"
             />
