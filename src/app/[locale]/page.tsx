@@ -41,10 +41,6 @@ const faqs = [
     q: 'Do you offer consignment stock options?',
     a: 'Yes, we provide tailored consignment inventory programs to support our partners’ supply chain security. However, these programs are restricted to high-volume enterprise accounts with stable, recurring production runs and are subject to minimum annual volume commitments.',
   },
-  {
-    q: "Why aren't prices listed on your website, and what do you need to provide a quote?",
-    a: 'Pricing varies depending on your chosen material type, custom dimensions, or specialized requirements. To get a fast quotation, please contact us with your required product specifications, dimensions, and your target industry application.',
-  },
 ]
 
 const faqSchema = {
