@@ -54,6 +54,8 @@ const VideoHero = ({
   /** Crop bias. Defaults to slightly above centre. */
   objectPosition = 'object-[50%_45%]',
   scrollCue = false,
+  labelled = false,
+  explore,
 }: {
   title: string
   /** Optional. About runs without one — the headline carries the page. */
@@ -65,6 +67,10 @@ const VideoHero = ({
   minHeight?: string
   objectPosition?: string
   scrollCue?: boolean
+  /** First beat of the title as a small uppercase label. See HeroTitle. */
+  labelled?: boolean
+  /** A labelled link down the page in place of the Scroll cue. */
+  explore?: { href: string; label: string }
 }) => {
   const sources = videoSources(video)
   const poster = videoPoster(video, posterAt)
@@ -228,7 +234,7 @@ const VideoHero = ({
         <div className="container flex flex-col items-center text-center">
           <HeroMark blend={false} />
 
-          <HeroTitle title={title} className="mt-1.5 text-[clamp(1.9rem,4.4vw,3.5rem)]" />
+          <HeroTitle title={title} labelled={labelled} className={`${labelled ? 'mt-5' : 'mt-1.5'} text-[clamp(1.9rem,4.4vw,3.5rem)]`} />
 
           {desc && (
             <p className="mt-6 max-w-[64ch] text-[0.95rem] leading-relaxed text-pretty text-white/85 md:text-base">
@@ -236,7 +242,19 @@ const VideoHero = ({
             </p>
           )}
 
-          {scrollCue && <ScrollCue className="mt-9" />}
+          {explore ? (
+            <a
+              href={explore.href}
+              className="group mt-9 flex flex-col items-center gap-2 text-[12px] font-semibold tracking-[0.2em] text-white/90 uppercase hover:text-white md:text-[13px]"
+            >
+              {explore.label}
+              <svg aria-hidden viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-5 motion-safe:animate-bounce">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </a>
+          ) : (
+            scrollCue && <ScrollCue className="mt-9" />
+          )}
         </div>
       </div>
     </section>

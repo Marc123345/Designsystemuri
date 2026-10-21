@@ -33,7 +33,9 @@
  * the thing balance would be doing — so there it is redundant at best and a
  * hyphen in a proper noun at worst.
  */
-const HeroTitle = ({ title, className = '' }: { title: string; className?: string }) => {
+/* `labelled` (home, Uri's Oct 2026 layout): the first beat becomes a small
+   uppercase label above a bold headline instead of a light display line. */
+const HeroTitle = ({ title, className = '', labelled = false }: { title: string; className?: string; labelled?: boolean }) => {
   const beats = title.split('—')
   const twoBeat = beats.length === 2
 
@@ -49,7 +51,15 @@ const HeroTitle = ({ title, className = '' }: { title: string; className?: strin
               what a copy-paste produces, and what a crawler indexes as the
               page's most important string. `{' '}` costs nothing visually —
               the elements are block, so it collapses — and fixes all three. */}
-          <span className="block font-extralight">{beats[0].trim()}</span>{' '}
+          <span
+            className={
+              labelled
+                ? 'mb-4 block text-[13px] font-semibold tracking-[0.2em] text-white/90 uppercase md:text-[15px]'
+                : 'block font-extralight'
+            }
+          >
+            {beats[0].trim()}
+          </span>{' '}
           <strong className="block font-bold">{beats[1].trim()}</strong>
         </>
       ) : (

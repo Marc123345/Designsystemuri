@@ -76,13 +76,14 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
     <>
       <VideoHero
         title={t(locale, 'Industrial Diamond — Manufacturing Precision Since 1970')}
-        desc={t(locale, 'One accountable manufacturer, spec to delivery.')}
+        desc={t(locale, 'E.I.D manufactures and supplies the full range of industrial diamond and superabrasive products for toolmakers and manufacturers worldwide.')}
         video="https://ik.imagekit.io/qcvroy8xpd/video_trimmed%20(1).mp4"
         // The trimmed clip changes shot before 3s, so the default poster frame
         // jumped back when playback (which starts at 0) took over.
         posterAt={0}
         minHeight="min-h-[60svh]"
-        scrollCue
+        labelled
+        explore={{ href: '#products', label: t(locale, 'Explore our products') }}
       />
 
       <section id="products" data-note="range" className="relative isolate py-12 lg:py-16">
