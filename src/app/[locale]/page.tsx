@@ -34,10 +34,6 @@ const faqs = [
     a: 'Yes. EID’s quality management system is ISO 9001 certified, covering everything from raw material inspection to final delivery. We routinely provide full documentation packs for supplier approval, including: ISO 9001 Certification and full lot-level traceability; Certificates of Analysis (COAs) available per lot on request; retention samples kept from every batch to check against future quality queries; and Kimberley Process compliance for all natural rough diamonds.',
   },
   {
-    q: 'Do your raw diamond and CBN materials have a shelf life or specific storage requirements?',
-    a: 'No, our raw diamond and CBN materials do not degrade and have an indefinite shelf life when stored correctly. To maintain optimal purity and performance, we recommend storing the materials in their original sealed containers in a dry, climate-controlled environment to prevent moisture contamination or ambient oxidation.',
-  },
-  {
     q: 'What are your standard lead times, and do you ship internationally?',
     a: 'Yes, we supply tool makers globally from our HQ in London (or from our Dublin facility, if EU exports are an advantage). Standard catalog grades ship directly from stock usually within 24 to 48 hours, while custom specifications, rounding, or specialized PVD/electroless coatings are made to order with lead times tailored to your project timeline.',
   },
@@ -83,7 +79,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
   return (
     <>
       <VideoHero
-        title={t(locale, 'Industrial Diamond — Manufactured In-House Since 1970')}
+        title={t(locale, 'Industrial Diamond — Manufacturing Precision Since 1970')}
         desc={t(locale, 'One accountable manufacturer, spec to delivery.')}
         video="https://ik.imagekit.io/qcvroy8xpd/video_trimmed%20(1).mp4"
         // The trimmed clip changes shot before 3s, so the default poster frame

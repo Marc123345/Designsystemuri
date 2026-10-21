@@ -29,7 +29,7 @@ export default function ApplicationIndex({ hubs, locale }: { hubs: HubEntry[]; l
           system or coupling colour to translated copy text. */}
       <style>{'[data-note="range"] h2 { color: var(--color-primary); }'}</style>
 
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 xl:grid-cols-6">
         {hubs.map((hub, index) => {
           const image = applicationImage(hub.slug)
 
@@ -37,32 +37,32 @@ export default function ApplicationIndex({ hubs, locale }: { hubs: HubEntry[]; l
             <Link
               key={hub.slug}
               href={`/applications/${hub.slug}`}
-              className="group rounded-card border-default-200 relative isolate aspect-[4/3] overflow-hidden border bg-default-900 shadow-[0_1px_2px_rgba(2,6,23,0.05),0_22px_44px_-30px_rgba(2,6,23,0.35)] focus-visible:outline-primary focus-visible:outline-2 focus-visible:outline-offset-4"
+              className="group rounded-card border-default-200 relative isolate aspect-[4/3] overflow-hidden xl:aspect-[4/5] border bg-default-900 shadow-[0_1px_2px_rgba(2,6,23,0.05),0_22px_44px_-30px_rgba(2,6,23,0.35)] focus-visible:outline-primary focus-visible:outline-2 focus-visible:outline-offset-4"
             >
               {image && (
                 <Image
                   src={image}
                   alt=""
                   fill
-                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  sizes="(min-width: 1280px) 17vw, (min-width: 640px) 33vw, 50vw"
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.035] group-focus-visible:scale-[1.035]"
                 />
               )}
 
               <div aria-hidden className="absolute inset-0 bg-linear-to-t from-black/76 via-black/18 to-black/0" />
 
-              <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-5 p-6 lg:p-7">
+              <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 lg:p-5">
                 <div className="min-w-0">
-                  <span className="mb-2 block font-mono text-[11px] tracking-[0.22em] text-white/65 uppercase">
-                    {String(index + 1).padStart(2, '0')} · {t(locale, 'Application')}
+                  <span className="mb-1.5 block font-mono text-[10px] tracking-[0.2em] text-white/75 uppercase">
+                    {String(index + 1).padStart(2, '0')}
                   </span>
-                  <h3 className="max-w-[18ch] text-[20px] leading-[1.08] font-semibold tracking-[-0.02em] text-white text-balance lg:text-[23px]">
+                  <h3 className="text-[15px] leading-[1.15] font-semibold tracking-[-0.01em] text-white text-balance sm:text-[17px]">
                     {t(locale, hub.name)}
                   </h3>
                 </div>
 
-                <span className="rounded-control flex size-10 shrink-0 items-center justify-center border border-white/25 bg-white/10 text-white backdrop-blur-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:bg-white group-hover:text-default-900 group-focus-visible:-translate-y-1 group-focus-visible:bg-white group-focus-visible:text-default-900">
-                  <svg aria-hidden viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <span className="rounded-control hidden size-8 shrink-0 sm:flex items-center justify-center border border-white/25 bg-white/10 text-white backdrop-blur-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:bg-white group-hover:text-default-900 group-focus-visible:-translate-y-1 group-focus-visible:bg-white group-focus-visible:text-default-900">
+                  <svg aria-hidden viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M7 17 17 7M8 7h9v9" />
                   </svg>
                 </span>

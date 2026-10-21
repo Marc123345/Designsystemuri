@@ -100,9 +100,17 @@ export type PhotoCardProps = {
   minHeight?: string
   /** How much cover the copy needs. `heavy` for bullet lists. */
   weight?: 'light' | 'heavy'
+  /**
+   * `contain` shows the whole image across the top of the card, with the copy
+   * on navy underneath rather than over it. For screenshots and documents (the
+   * Image-Pro analysis on /quality) where cropping hides the thing the card is
+   * about, and where text laid over a data table would be unreadable. The one
+   * sanctioned exception to the rule above; Uri asked for it, Oct 2026.
+   */
+  fit?: 'cover' | 'contain'
 }
 
-const PhotoCard = ({ image, alt = '', eyebrow, title, body, points, note, href, className = '', minHeight = 'min-h-[360px]', weight = 'light', collapsible = false, disclosureLabel }: PhotoCardProps) => {
+const PhotoCard = ({ image, alt = '', eyebrow, title, body, points, note, href, className = '', minHeight = 'min-h-[360px]', weight = 'light', collapsible = false, disclosureLabel, fit = 'cover' }: PhotoCardProps) => {
   const scrim =
     weight === 'heavy'
       ? 'from-primary-3/95 via-primary-3/72 to-primary-3/8'
@@ -110,7 +118,19 @@ const PhotoCard = ({ image, alt = '', eyebrow, title, body, points, note, href, 
 
   const inner = (
     <>
-      {image ? (
+      {image && fit === 'contain' ? (
+        <>
+          <span aria-hidden className="bg-primary-3 absolute inset-0 -z-10" />
+          <Image
+            src={image}
+            alt={alt}
+            width={0}
+            height={0}
+            sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+            className="h-auto w-full shrink-0"
+          />
+        </>
+      ) : image ? (
         <>
           <Image
             src={image}
@@ -130,7 +150,7 @@ const PhotoCard = ({ image, alt = '', eyebrow, title, body, points, note, href, 
       {/* `mt-auto` in a full-height flex column pins the copy to the foot
           whatever the card's height turns out to be — and in a bento the height
           is never the card's own, it is the tallest cell in the row. */}
-      <div className="relative z-10 flex h-full flex-col justify-end p-7 lg:p-9">
+      <div className={`relative z-10 flex flex-col p-7 lg:p-9 ${fit === 'contain' ? 'flex-1 justify-start' : 'h-full justify-end'}`}>
         {/* white/85, not white/60.
             ⚠ This is a contrast fix and it is site-wide, so do not tune it back
             down for looks. At 11px this label needs 4.5:1. Measured against the
@@ -201,7 +221,7 @@ const PhotoCard = ({ image, alt = '', eyebrow, title, body, points, note, href, 
     </>
   )
 
-  const shell = `group rounded-card relative isolate flex h-full w-full self-stretch overflow-hidden ${minHeight} ${className}`
+  const shell = `group rounded-card relative isolate flex h-full w-full self-stretch overflow-hidden ${fit === 'contain' ? 'flex-col' : ''} ${minHeight} ${className}`
 
   return href ? (
     <Link href={href} className={`${shell} focus-visible:outline-primary focus-visible:outline-2 focus-visible:outline-offset-2`}>

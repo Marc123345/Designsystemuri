@@ -118,6 +118,7 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
               alt={t(locale, 'Image-Pro analysis of NS-1-P 40/50 natural diamond, lot N6397: micrograph and measurement results against ANSI B74-16')}
               eyebrow="03"
               title={t(locale, 'Documented, not asserted')}
+              fit="contain"
               body={t(locale, 'Lot traceability, certificates of analysis on request and retained batch samples give buyers a record to return to when a grade needs answering for.')}
               minHeight="min-h-[260px] lg:min-h-[285px]"
             />
@@ -134,7 +135,9 @@ const QualityPage = async ({ params }: { params: Promise<{ locale: Locale }> }) 
                   alt={t(locale, 'EID Limited ISO 9001:2015 certificate')}
                   fill
                   sizes="(min-width: 1024px) 25vw, 50vw"
-                  className="object-contain p-3"
+                  // Cropped to the top of the certificate so the registration
+                  // itself reads at card size; the full page is one click away.
+                  className="object-cover object-[50%_12%]"
                 />
               </a>
               <div className="bg-primary-3 px-4 py-4 text-white lg:px-5">
