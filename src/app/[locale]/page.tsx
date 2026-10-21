@@ -26,10 +26,6 @@ const faqs = [
     a: 'Yes. We engineer and supply Diamond and CBN grits specifically optimized for both electroplated and vitrified bond manufacturing.',
   },
   {
-    q: 'Can I download product specifications as a PDF?',
-    a: 'Yes. All 18 technical datasheets and MSDS documents are completely ungated — no forms, logins, or email addresses required. You can download them directly from our Resources page or individual product pages. If you need a custom specification not listed, contact us and we will send it directly.',
-  },
-  {
     q: 'Are you ISO-registered, and can you supply COAs, retention samples, and references?',
     a: 'Yes. EID’s quality management system is ISO 9001 certified, covering everything from raw material inspection to final delivery. We routinely provide full documentation packs for supplier approval, including: ISO 9001 Certification and full lot-level traceability; Certificates of Analysis (COAs) available per lot on request; retention samples kept from every batch to check against future quality queries; and Kimberley Process compliance for all natural rough diamonds.',
   },
