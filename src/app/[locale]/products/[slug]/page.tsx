@@ -1,4 +1,5 @@
 import { RichParagraphs, RichText } from '@/components/RichText'
+import SectionBar from '@/components/products/SectionBar'
 import UriProductLayout, { URI_HERO, isUriProductLayout } from '@/components/products/UriProductLayout'
 import Wireframe from '@/components/Wireframe'
 import { CatalogSpecs, CrossLinks, JumpNav, PageHero, ProductPhoto, SpecTable } from '@/components/sections'
@@ -130,7 +131,10 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
       />
 
       {isUriProductLayout(slug) ? (
-        <UriProductLayout slug={slug} locale={locale} />
+        <>
+          <SectionBar product={p.name} />
+          <UriProductLayout slug={slug} locale={locale} />
+        </>
       ) : (
         <>
           {isSplit && <JumpNav items={p.sections.map((s) => ({ id: s.id, label: s.label }))} />}

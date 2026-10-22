@@ -84,10 +84,13 @@ const Chapter = ({
   children,
   stats,
   accent = false,
+  navLabel,
 }: {
   id: string
   eyebrow: string
   title: string
+  /** Short name for the sticky section bar (SectionBar); defaults to the title. */
+  navLabel?: string
   children: React.ReactNode
   stats: { label: string; value: string }[]
   accent?: boolean
@@ -96,6 +99,8 @@ const Chapter = ({
     id={id}
     className={`scroll-mt-28 py-3 lg:py-4 ${accent ? 'bg-canvas' : 'bg-white'}`}
     data-note="uri-product-chapter"
+    data-nav-label={navLabel ?? title}
+    data-nav-num={eyebrow.split(' / ')[0]}
   >
     <div className="container">
       <div className="relative isolate overflow-hidden rounded-card px-6 py-7 text-white shadow-[0_22px_60px_-44px_rgba(28,39,73,0.72)] sm:px-7 lg:px-9 lg:py-9">
@@ -130,7 +135,7 @@ const ModuleWrap = ({ children, accent = false }: { children: React.ReactNode; a
 const Coatings = ({ resin = false, accent = false }: { resin?: boolean; accent?: boolean }) => (
   <>
     <span id="coated" className="block scroll-mt-28" aria-hidden />
-    <section id="coating-options" className={`scroll-mt-28 py-3 lg:py-4 ${accent ? 'bg-canvas' : 'bg-white'}`} data-note="uri-product-coatings-title">
+    <section id="coating-options" className={`scroll-mt-28 py-3 lg:py-4 ${accent ? 'bg-canvas' : 'bg-white'}`} data-note="uri-product-coatings-title" data-nav-label="Coatings">
       <div className="container">
         <div className="relative isolate overflow-hidden rounded-card px-6 py-6 text-white shadow-[0_22px_60px_-44px_rgba(28,39,73,0.72)] sm:px-7 lg:px-9 lg:py-7">
           <span aria-hidden className="bg-primary-3 absolute inset-0 z-0" />
@@ -515,7 +520,7 @@ const NaturalLayout = () => {
       ]} />
 
       <span id="grit" className="block scroll-mt-28" aria-hidden />
-      <Chapter accent id="mesh" eyebrow="01 / NATURAL MESH" title="Natural Mesh" stats={[{ label: 'Grades', value: '3' }, { label: 'Size range', value: '16/18 → 400/500 mesh' }]}>
+      <Chapter accent id="mesh" eyebrow="01 / NATURAL MESH" title="Natural Mesh" navLabel="Mesh" stats={[{ label: 'Grades', value: '3' }, { label: 'Size range', value: '16/18 → 400/500 mesh' }]}>
         Natural diamond grit engineered across distinct crystal morphologies to balance strength, durability and cutting action for demanding industrial abrasive applications.
       </Chapter>
       <ModuleWrap accent>
@@ -528,14 +533,14 @@ const NaturalLayout = () => {
         />
       </ModuleWrap>
 
-      <Chapter accent id="micron" eyebrow="02 / NATURAL MICRON" title="Natural Micron" stats={[{ label: 'Grades', value: '1' }, { label: 'Size range', value: '0–0.20 → 40–60 µm' }]}>
+      <Chapter accent id="micron" eyebrow="02 / NATURAL MICRON" title="Natural Micron" navLabel="Micron" stats={[{ label: 'Grades', value: '1' }, { label: 'Size range', value: '0–0.20 → 40–60 µm' }]}>
         Precision-graded natural diamond powder engineered around the exceptional hardness and cutting efficiency of natural diamond. Strong, well-shaped crystalline particles combine controlled blocky morphology with sharp cutting edges to deliver consistent abrasive action, efficient material removal and high-quality surface finishes across precision lapping, polishing and fine grinding applications.
       </Chapter>
       <ModuleWrap accent>
         <UriGradeModule accent="champagne" groups={micron} variant="none" />
       </ModuleWrap>
 
-      <Chapter accent id="rotary" eyebrow="03 / NATURAL ROTARY" title="Natural Rotary Diamonds" stats={[{ label: 'Product lines', value: '2' }, { label: 'Grades', value: '6' }]}>
+      <Chapter accent id="rotary" eyebrow="03 / NATURAL ROTARY" title="Natural Rotary Diamonds" navLabel="Rotary" stats={[{ label: 'Product lines', value: '2' }, { label: 'Grades', value: '6' }]}>
         <div className="grid gap-5 md:grid-cols-2 md:gap-9">
           <p><strong className="text-white">Wholestone Diamonds</strong> — Our Wholestone Rough Industrial diamonds are mined diamonds in their natural state, before any processing or polishing has occurred.</p>
           <p><strong className="text-white">Rotary Diamonds</strong> — Rotary Diamond Dressers provide an efficient, economical means of dressing grinding wheels to the correct form, tolerance and condition for exceptional accuracy.</p>
@@ -697,7 +702,7 @@ const MetalLayout = ({ locale }: { locale: Locale }) => {
       ]} />
 
       <span id="mesh" className="block scroll-mt-28" aria-hidden />
-      <Chapter accent id="metal-bond-mesh" eyebrow="01 / METAL BOND MESH" title="Metal Bond Mesh" stats={[{ label: 'Series', value: '2' }, { label: 'Grades', value: '17' }]}>
+      <Chapter accent id="metal-bond-mesh" eyebrow="01 / METAL BOND MESH" title="Metal Bond Mesh" navLabel="Mesh" stats={[{ label: 'Series', value: '2' }, { label: 'Grades', value: '17' }]}>
         <p><strong className="text-white">ESN “Saw Grade” Series</strong> — Synthetic diamond grit engineered for sawing and drilling applications, with low, well-distributed metallic inclusion content for high thermal stability and particle strength.</p>
         <p className="mt-2"><strong className="text-white">EDA “Wheel Grade” Series</strong> — Synthetic diamond grit developed for precision abrasive tooling, with a broad range of grades for metal, resin, vitrified and electroplated bond systems.</p>
       </Chapter>
@@ -706,7 +711,7 @@ const MetalLayout = ({ locale }: { locale: Locale }) => {
       </ModuleWrap>
 
       <span id="micron" className="block scroll-mt-28" aria-hidden />
-      <Chapter accent id="metal-bond-micron" eyebrow="02 / METAL BOND MICRON" title="Metal Bond Micron" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '5' }]}>
+      <Chapter accent id="metal-bond-micron" eyebrow="02 / METAL BOND MICRON" title="Metal Bond Micron" navLabel="Micron" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '5' }]}>
         EID Metal Bond Synthetic Diamond Powders combine high particle strength, thermal stability and controlled morphology for demanding lapping, finishing and grinding applications. Their blocky to cubo-octahedral particle shape provides consistent abrasive performance in metal, vitrified and electroplated systems across applications including glass, tungsten carbide and stone surfacing.
       </Chapter>
       <ModuleWrap accent>
@@ -800,7 +805,7 @@ const ResinLayout = ({ locale }: { locale: Locale }) => {
       ]} />
 
       <span id="mesh" className="block scroll-mt-28" aria-hidden />
-      <Chapter accent id="resin-bond-mesh" eyebrow="01 / RESIN BOND MESH" title="Resin Bond Mesh" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '3' }]}>
+      <Chapter accent id="resin-bond-mesh" eyebrow="01 / RESIN BOND MESH" title="Resin Bond Mesh" navLabel="Mesh" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '3' }]}>
         Friable resin bond diamond mesh with a multi-crystalline structure and rough surface, engineered for consistent performance in resin bond wheels. Designed for grinding non-ferrous metals and hard materials, with grades offering different levels of friability, micro-fracturing and self-sharpening behaviour to suit applications from efficient stock removal to precision finishing.
       </Chapter>
       <ModuleWrap accent>
@@ -808,7 +813,7 @@ const ResinLayout = ({ locale }: { locale: Locale }) => {
       </ModuleWrap>
 
       <span id="micron" className="block scroll-mt-28" aria-hidden />
-      <Chapter accent id="resin-bond-micron" eyebrow="02 / RESIN BOND MICRON" title="Resin Bond Micron" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '2' }]}>
+      <Chapter accent id="resin-bond-micron" eyebrow="02 / RESIN BOND MICRON" title="Resin Bond Micron" navLabel="Micron" stats={[{ label: 'Series', value: '1' }, { label: 'Grades', value: '2' }]}>
         Resin bond diamond micron powders developed for soft polishing, lapping and precision finishing. Available in Blocky and Semi-Blocky morphologies, allowing surface toughness, self-sharpening behaviour and finish quality to be matched to the application.
       </Chapter>
       <ModuleWrap accent>
@@ -1050,6 +1055,7 @@ const GenericLayout = ({ slug, locale }: { slug: Slug; locale: Locale }) => {
               id={section.id}
               eyebrow={`${String(index + 1).padStart(2, '0')} / ${section.label.toUpperCase()}`}
               title={section.title}
+              navLabel={section.label}
               stats={genericSectionStats(cat, index, product.sections.length)}
             >
               {section.intro.map((paragraph, paragraphIndex) => (
