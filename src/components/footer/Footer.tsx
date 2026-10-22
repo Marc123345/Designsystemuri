@@ -40,9 +40,9 @@ const Footer = () => {
   return (
     <footer data-note="footer" id="footer" className="relative overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-[11fr_13fr]">
-        <div className="relative isolate overflow-hidden px-4 py-7 md:px-7.5 lg:px-12.5 lg:py-8">
+        <div className="relative isolate overflow-hidden px-4 py-6 md:px-7.5 lg:px-12.5 lg:py-6">
           <Backdrop className="-z-10" />
-          <Image src="/eid/logo-white.png" alt={site.name} width={650} height={221} className="mb-4 w-36" />
+          <Image src="/eid/logo-white.png" alt={site.name} width={650} height={221} className="mb-3 w-32" />
 
           <p className="mb-4 max-w-[36rem] text-[0.86rem] leading-[1.55] text-white/85">{t(locale, 'footerAbout')}</p>
 
@@ -62,12 +62,12 @@ const Footer = () => {
             </li>
           </ul>
 
-          <a href={site.whatsappHref} target="_blank" rel="noopener noreferrer" className="rounded-control mt-4 inline-flex min-h-11 items-center gap-2 border border-white/15 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40">
+          <a href={site.whatsappHref} target="_blank" rel="noopener noreferrer" className="rounded-control mt-3 inline-flex min-h-11 items-center gap-2 border border-white/15 px-4 py-2 lg:min-h-0 text-sm font-semibold text-white transition-colors hover:border-white/40">
             <Icon icon="tabler:brand-whatsapp" className="size-5" />
             {t(locale, 'WhatsApp us')}
           </a>
 
-          <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-1.5 border-t border-white/10 pt-4 text-[0.82rem] text-white/70">
+          <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-1.5 border-t border-white/10 pt-3 text-[0.82rem] text-white/70">
             {trustPoints.map((point) => (
               <li key={point} className="flex items-center gap-2">
                 <Icon icon="tabler:circle-check" className="size-4 text-white/60" />
@@ -77,7 +77,7 @@ const Footer = () => {
           </ul>
         </div>
 
-        <div className="bg-default-50 relative flex flex-col px-4 py-7 md:px-7.5 lg:px-12.5 lg:py-8">
+        <div className="bg-default-50 relative flex flex-col px-4 py-6 md:px-7.5 lg:px-12.5 lg:py-6">
           {/* Three columns side by side on desktop (Uri, Oct 2026: the footer
               was too tall); two on tablet, one on phones. */}
           <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2 xl:grid-cols-3">
@@ -99,7 +99,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="bg-primary-3 flex flex-col items-start justify-end gap-3 border-t border-white/15 px-4 py-3 sm:flex-row sm:items-center md:px-7.5 lg:px-12.5">
+      <div className="bg-primary-3 flex flex-col items-start justify-end gap-3 border-t border-white/15 px-4 py-2 sm:flex-row sm:items-center md:px-7.5 lg:px-12.5">
         <div className="flex items-center gap-6">
           {legalLinks.filter((link) => link.ready).map((link) => (
             <a key={link.href} href={link.href} className="inline-flex min-h-11 items-center text-[0.85rem] text-white/80 transition-colors hover:text-white lg:min-h-0 lg:py-0.5 lg:text-[0.8rem]">

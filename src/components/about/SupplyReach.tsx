@@ -4,10 +4,12 @@ import { t } from '@/lib/i18n-content'
 import Image from 'next/image'
 import { useLocale } from 'next-intl'
 
+// Flags for the UK HQ and the US facility (Uri, 22 Oct 2026). The Middle East
+// hub names no country, so it carries none.
 const PRODUCTION = [
-  ['Global Headquarters', 'London, United Kingdom'],
-  ['Primary Processing Plant', 'Middle East Hub'],
-  ['Secondary Processing Facility', 'Boca Raton, Florida, USA'],
+  ['Global Headquarters', 'London, United Kingdom', 'gb'],
+  ['Primary Processing Plant', 'Middle East Hub', null],
+  ['Secondary Processing Facility', 'Boca Raton, Florida, USA', 'us'],
 ] as const
 
 // Flags (Uri, Oct 2026) are local SVGs in public/eid/flags, from the Iconify
@@ -44,10 +46,16 @@ const SupplyReach = () => {
               <p className="mt-2 text-[13px] font-mono tracking-[0.16em] text-white/50 uppercase">{t(locale, 'Manufacturing & Processing')}</p>
 
               <dl className="mt-6 grid gap-4">
-                {PRODUCTION.map(([label, value]) => (
+                {PRODUCTION.map(([label, value, flag]) => (
                   <div key={label} className="border-t border-white/10 pt-4 first:border-t-0 first:pt-0">
                     <dt className="text-[15px] font-semibold text-white">{t(locale, label)}</dt>
-                    <dd className="mt-1 text-[14px] leading-relaxed text-white/68">{t(locale, value)}</dd>
+                    <dd className="mt-1 flex items-center gap-2 text-[14px] leading-relaxed text-white/68">
+                      {flag ? (
+                        // eslint-disable-next-line @next/next/no-img-element -- 16px static SVG
+                        <img src={`/eid/flags/${flag}.svg`} alt="" width={16} height={12} className="h-3 w-4 shrink-0 rounded-[2px] ring-1 ring-white/20" />
+                      ) : null}
+                      {t(locale, value)}
+                    </dd>
                   </div>
                 ))}
               </dl>
