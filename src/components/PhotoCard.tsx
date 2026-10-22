@@ -127,13 +127,16 @@ const PhotoCard = ({ image, alt = '', eyebrow, title, body, points, note, href, 
           {/* Same 4:3 frame as `band`, so the image row lines up across the
               set (Uri flagged the odd height as a bug, Oct 2026). The whole
               image shows, contained on white. */}
-          <span className="relative block aspect-[4/3] w-full shrink-0 overflow-hidden bg-white">
+          {/* Phones stack the cards, so there is no row to match: there the
+              image takes its natural height instead of sitting in white bands. */}
+          <span className="relative block w-full shrink-0 overflow-hidden bg-white sm:aspect-[4/3]">
             <Image
               src={image}
               alt={alt}
-              fill
+              width={0}
+              height={0}
               sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-              className="object-contain"
+              className="h-auto w-full sm:absolute sm:inset-0 sm:h-full sm:object-contain"
             />
           </span>
         </>

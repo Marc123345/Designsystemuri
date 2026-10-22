@@ -176,7 +176,7 @@ export const PageHero = ({
           aria-hidden
           className={`absolute inset-0 -z-10 bg-linear-to-t to-transparent ${
             trueColor
-              ? 'from-default-950/80 via-default-950/30 via-55%'
+              ? 'from-default-950/85 via-default-950/45 via-55%'
               : variant === 'band'
                 ? 'from-default-950/85 via-default-950/38 via-52%'
                 : 'from-default-950/84 via-default-950/24 via-56%'
