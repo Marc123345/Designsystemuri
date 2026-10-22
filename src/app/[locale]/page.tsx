@@ -134,7 +134,6 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       />
 
       <section id="applications" data-note="applications" className="bg-canvas relative isolate py-10 lg:py-14">
-        <LogoWatermark marks={['-left-36 -bottom-24 size-[380px] lg:size-[460px]']} />
         <div className="container">
           <div className="mx-auto max-w-4xl text-center">
             <h2 className="text-primary-3 text-[34px] leading-none font-bold tracking-[-0.035em] md:text-[44px] lg:text-[52px]">
