@@ -1,4 +1,3 @@
-import LogoWatermark from '@/components/LogoWatermark'
 import PhotoCard from '@/components/PhotoCard'
 import { ArrowButton } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
@@ -34,7 +33,6 @@ const CONTROLS = [
 export default function QualityControlsStrip({ locale }: { locale: Locale }) {
   return (
     <section data-note="qc-strip" className="relative isolate overflow-hidden bg-default-50 py-12 lg:py-16">
-      <LogoWatermark marks={['-left-40 -top-16 size-[400px] lg:size-[500px]', '-right-36 -bottom-28 size-[360px] lg:size-[440px]']} />
       <div className="container">
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="text-primary-3 text-[34px] leading-none font-bold tracking-[-0.035em] md:text-[44px] lg:text-[52px]">
