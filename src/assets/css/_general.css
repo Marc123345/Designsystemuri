@@ -502,3 +502,40 @@ textarea {
     transform: rotate(360deg);
   }
 }
+
+/* About > supply reach (Marc, Oct 2026): the signal running down the supply
+   line, a ping on London, and the marching trade route. Looping motion only
+   for visitors who allow it. */
+@media (prefers-reduced-motion: no-preference) {
+  .sr-signal {
+    animation: sr-signal 3.2s cubic-bezier(0.45, 0, 0.25, 1) 1.4s infinite both;
+  }
+  .sr-ping {
+    animation: sr-ping 2.4s ease-out infinite;
+  }
+  .sr-route {
+    animation: sr-route 1.2s linear infinite;
+  }
+}
+.sr-signal {
+  translate: 0 -100%;
+}
+@keyframes sr-signal {
+  to {
+    translate: 0 calc(100% * 6);
+  }
+}
+@keyframes sr-ping {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 9px rgba(255, 255, 255, 0);
+  }
+}
+@keyframes sr-route {
+  to {
+    stroke-dashoffset: -12;
+  }
+}
