@@ -81,6 +81,7 @@ export const PageHero = ({
   bgImage,
   bgPosition,
   variant = 'full',
+  trueColor = false,
 }: {
   eyebrow?: string
   title: string
@@ -97,6 +98,13 @@ export const PageHero = ({
    */
   bgPosition?: string
   variant?: 'full' | 'band'
+  /**
+   * Product pages (Uri, Oct 2026): drop the navy brand wash so each hero shows
+   * the real colour of its particles (yellow metal bond, amber CBN, clear
+   * natural) instead of every product reading as the same navy photograph.
+   * Only the neutral gradient under the copy stays, for the headline.
+   */
+  trueColor?: boolean
 }) => (
   /* With a photograph this is the home hero: same treatment, same two-gradient
      scrim, same inspection panel down the right at xl, same certificate card
@@ -149,7 +157,7 @@ export const PageHero = ({
             Marc's request, 18 Oct 2026: the photo read too bright behind the
             white headline. The full variant keeps 45% — see the note below
             about About's bench going flat navy. */}
-        <div aria-hidden className={`absolute inset-0 -z-10 ${variant === 'band' ? 'bg-primary-3/60' : 'bg-primary-3/45'}`} />
+        {!trueColor && <div aria-hidden className={`absolute inset-0 -z-10 ${variant === 'band' ? 'bg-primary-3/60' : 'bg-primary-3/45'}`} />}
 
         {/* One vertical gradient, seating the block on the bottom edge.
             There used to be a second running left-to-right, because the copy
@@ -167,7 +175,11 @@ export const PageHero = ({
         <div
           aria-hidden
           className={`absolute inset-0 -z-10 bg-linear-to-t to-transparent ${
-            variant === 'band' ? 'from-default-950/85 via-default-950/38 via-52%' : 'from-default-950/84 via-default-950/24 via-56%'
+            trueColor
+              ? 'from-default-950/80 via-default-950/30 via-55%'
+              : variant === 'band'
+                ? 'from-default-950/85 via-default-950/38 via-52%'
+                : 'from-default-950/84 via-default-950/24 via-56%'
           }`}
         />
 

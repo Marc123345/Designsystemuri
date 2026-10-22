@@ -10,7 +10,23 @@ const PRODUCTION = [
   ['Secondary Processing Facility', 'Boca Raton, Florida, USA'],
 ] as const
 
-const AGENT_COUNTRIES = ['Germany', 'Italy', 'Japan', 'South Korea', 'Switzerland', 'Ireland', 'Israel', 'Brazil', 'China', 'Taiwan', 'South Africa', 'India', 'Poland'] as const
+// Flags (Uri, Oct 2026) are local SVGs in public/eid/flags, from the Iconify
+// `flag` set (4x3), so nothing is fetched at runtime.
+const AGENT_COUNTRIES = [
+  ['Germany', 'de'],
+  ['Italy', 'it'],
+  ['Japan', 'jp'],
+  ['South Korea', 'kr'],
+  ['Switzerland', 'ch'],
+  ['Ireland', 'ie'],
+  ['Israel', 'il'],
+  ['Brazil', 'br'],
+  ['China', 'cn'],
+  ['Taiwan', 'tw'],
+  ['South Africa', 'za'],
+  ['India', 'in'],
+  ['Poland', 'pl'],
+] as const
 
 /** Uri's supplied replacement for the globe: two clear columns, all visible. */
 const SupplyReach = () => {
@@ -65,9 +81,10 @@ const SupplyReach = () => {
                     </div>
                     <p className="mt-1 text-[13px] leading-relaxed text-white/80">{t(locale, 'On-the-ground technical representatives in:')}</p>
                     <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-3">
-                      {AGENT_COUNTRIES.map((country) => (
+                      {AGENT_COUNTRIES.map(([country, code]) => (
                         <div key={country} className="flex items-center gap-2 text-[12px] text-white/88">
-                          <span className="bg-champagne size-1.5 shrink-0" aria-hidden />
+                          {/* eslint-disable-next-line @next/next/no-img-element -- 16px static SVG, nothing for next/image to optimise */}
+                          <img src={`/eid/flags/${code}.svg`} alt="" width={16} height={12} className="h-3 w-4 shrink-0 rounded-[2px] ring-1 ring-white/20" />
                           <span>{t(locale, country)}</span>
                         </div>
                       ))}

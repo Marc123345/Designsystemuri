@@ -276,6 +276,11 @@ export const applications: Application[] = [
         href: '/products/resin-bond',
         note: 'Resin-bonded wheels, flexible abrasive pads, and polishing sheets for glass and stone.',
       },
+      {
+        label: 'Coated CBN mesh',
+        href: '/products/cbn#coated',
+        note: 'CBN coated in-house for retention in the bond: nickel for metal and resin wheels, titanium for vitrified. For grinding hardened and ferrous steels.',
+      },
     ],
     // PENDING URI'S GO-AHEAD (deck page 17): five optional keyword sub-sections
     // could be added to this hub to capture those terms without new top-level

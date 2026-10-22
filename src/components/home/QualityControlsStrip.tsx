@@ -51,7 +51,7 @@ export default function QualityControlsStrip({ locale }: { locale: Locale }) {
               alt={t(locale, control.alt)}
               eyebrow={control.n}
               title={t(locale, control.label)}
-              minHeight="min-h-[220px] lg:min-h-[245px]"
+              minHeight="min-h-[190px] lg:min-h-[205px]"
             />
           ))}
         </div>

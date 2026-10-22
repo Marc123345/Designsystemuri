@@ -126,6 +126,7 @@ const ProductPage = async ({ params }: { params: Promise<{ locale: Locale; slug:
         desc={(isUriProductLayout(slug) && URI_HERO[slug]?.desc) || p.metaDesc}
         bgImage={productImage(p.slug)}
         variant="band"
+        trueColor
       />
 
       {isUriProductLayout(slug) ? (

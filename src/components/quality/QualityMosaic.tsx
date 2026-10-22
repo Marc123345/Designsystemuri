@@ -14,11 +14,11 @@ const STACKED = [
 
 const STATEMENTS = [
   {
-    label: 'Measured, not sampled',
+    label: 'Batch-by-Batch Verification',
     body: 'A lot that was spot-checked is a lot you have to re-qualify on arrival. Every batch is measured — sieve and micron sizing, morphology, and a particle size distribution curve on record — so the grade you ordered last year is the grade that arrives this year, and the variable you are managing is your process rather than our material.',
   },
   {
-    label: 'Documented, not asserted',
+    label: 'Traceability & Documentation',
     body: 'Every lot leaves with a certificate of analysis, a retention sample is kept from every batch, and traceability runs from incoming raw material through to the lot that shipped. If a grade ever needs answering for, the record exists and so does the material it was taken from.',
   },
 ]

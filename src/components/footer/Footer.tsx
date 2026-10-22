@@ -39,15 +39,15 @@ const Footer = () => {
 
   return (
     <footer data-note="footer" id="footer" className="relative overflow-hidden">
-      <div className="grid grid-cols-1 lg:grid-cols-2">
-        <div className="relative isolate overflow-hidden px-4 py-14 md:px-7.5 lg:px-12.5 lg:py-20">
+      <div className="grid grid-cols-1 lg:grid-cols-[5fr_7fr]">
+        <div className="relative isolate overflow-hidden px-4 py-9 md:px-7.5 lg:px-12.5 lg:py-11">
           <Backdrop className="-z-10" />
-          <Image src="/eid/logo-white.png" alt={site.name} width={650} height={221} className="mb-8 w-44" />
+          <Image src="/eid/logo-white.png" alt={site.name} width={650} height={221} className="mb-5 w-36" />
 
-          <p className="mb-10 max-w-md text-[0.95rem] leading-[1.75] text-white/85">{t(locale, 'footerAbout')}</p>
+          <p className="mb-6 max-w-md text-[0.9rem] leading-[1.6] text-white/85">{t(locale, 'footerAbout')}</p>
 
-          <h3 className="mb-5 text-lg font-semibold text-white">{t(locale, 'Contact')}</h3>
-          <ul className="space-y-2 text-[0.93rem] text-white/85 lg:space-y-4">
+          <h3 className="mb-3 text-base font-semibold text-white">{t(locale, 'Contact')}</h3>
+          <ul className="space-y-2 text-[0.9rem] text-white/85 lg:space-y-2">
             <li className="flex items-start gap-3">
               <Icon icon="tabler:map-pin" className="mt-1 size-4 shrink-0 text-white/50" />
               <span>{site.address}</span>
@@ -62,12 +62,12 @@ const Footer = () => {
             </li>
           </ul>
 
-          <a href={site.whatsappHref} target="_blank" rel="noopener noreferrer" className="rounded-control mt-8 inline-flex min-h-11 items-center gap-2 border border-white/15 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40">
+          <a href={site.whatsappHref} target="_blank" rel="noopener noreferrer" className="rounded-control mt-5 inline-flex min-h-11 items-center gap-2 border border-white/15 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40">
             <Icon icon="tabler:brand-whatsapp" className="size-5" />
             {t(locale, 'WhatsApp us')}
           </a>
 
-          <ul className="mt-10 flex flex-wrap gap-x-7 gap-y-3 border-t border-white/10 pt-8 text-[0.85rem] text-white/70">
+          <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 border-t border-white/10 pt-5 text-[0.82rem] text-white/70">
             {trustPoints.map((point) => (
               <li key={point} className="flex items-center gap-2">
                 <Icon icon="tabler:circle-check" className="size-4 text-white/60" />
@@ -77,31 +77,29 @@ const Footer = () => {
           </ul>
         </div>
 
-        <div className="relative flex flex-col bg-white px-4 py-14 md:px-7.5 lg:px-12.5 lg:py-20">
-          <div className="grid grid-cols-1 gap-x-10 gap-y-9 sm:grid-cols-2">
-            {[footerColumns.slice(0, 1), footerColumns.slice(1)].map((group, i) => (
-              <div key={i} className="space-y-9">
-                {group.map((column) => (
-                  <div key={column.title}>
-                    <h3 className="text-default-900 mb-5 text-lg font-semibold">{t(locale, column.title)}</h3>
-                    <ul className="lg:space-y-1">
-                      {column.links.map((link) => (
-                        <li key={link.href + link.label}>
-                          <Link href={link.href} className="text-default-500 hover:text-primary inline-flex min-h-11 min-w-11 items-center text-[0.95rem] transition-colors lg:min-h-0 lg:py-[3px] lg:text-[0.88rem]">
-                            {t(locale, link.label)}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+        <div className="bg-default-50 relative flex flex-col px-4 py-9 md:px-7.5 lg:px-12.5 lg:py-11">
+          {/* Three columns side by side on desktop (Uri, Oct 2026: the footer
+              was too tall); two on tablet, one on phones. */}
+          <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2 xl:grid-cols-3">
+            {footerColumns.map((column) => (
+              <div key={column.title}>
+                <h3 className="text-default-900 mb-3 text-base font-semibold">{t(locale, column.title)}</h3>
+                <ul className="lg:space-y-0.5">
+                  {column.links.map((link) => (
+                    <li key={link.href + link.label}>
+                      <Link href={link.href} className="text-default-500 hover:text-primary inline-flex min-h-11 min-w-11 items-center text-[0.95rem] transition-colors lg:min-h-0 lg:py-[2px] lg:text-[0.84rem]">
+                        {t(locale, link.label)}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <div className="bg-primary-3 flex flex-col items-start justify-end gap-3 border-t border-white/15 px-4 py-5 sm:flex-row sm:items-center md:px-7.5 lg:px-12.5">
+      <div className="bg-primary-3 flex flex-col items-start justify-end gap-3 border-t border-white/15 px-4 py-3 sm:flex-row sm:items-center md:px-7.5 lg:px-12.5">
         <div className="flex items-center gap-6">
           {legalLinks.filter((link) => link.ready).map((link) => (
             <a key={link.href} href={link.href} className="inline-flex min-h-11 items-center text-[0.85rem] text-white/80 transition-colors hover:text-white lg:min-h-0 lg:py-0.5 lg:text-[0.8rem]">

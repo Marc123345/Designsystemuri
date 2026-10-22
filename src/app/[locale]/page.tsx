@@ -1,7 +1,6 @@
 import CurtainGrid from '@/components/CurtainGrid'
 import ApplicationIndex from '@/components/home/ApplicationIndex'
 import HomeFaq from '@/components/home/HomeFaq'
-import LogoWatermark from '@/components/LogoWatermark'
 import ProofPanel from '@/components/home/ProofPanel'
 import QualityControlsStrip from '@/components/home/QualityControlsStrip'
 import VideoHero from '@/components/VideoHero'
@@ -37,6 +36,13 @@ const faqs = [
   {
     q: 'Do you offer consignment stock options?',
     a: 'Yes, we provide tailored consignment inventory programs to support our partners’ supply chain security. However, these programs are restricted to high-volume enterprise accounts with stable, recurring production runs and are subject to minimum annual volume commitments.',
+  },
+  // Restored at Uri's request (Oct 2026). His draft read "electrodes nickel and
+  // metallic pcd coatings"; set as electroless nickel and metallic PVD, the
+  // terms the first answer above already uses.
+  {
+    q: 'What surface coatings do you offer for diamond and CBN?',
+    a: 'We supply high-performance electroless nickel and metallic PVD coatings designed for advanced bond manufacturing. These options are fully customizable across our RB and MB diamond ranges, alongside specialized nickel-coated CBN grades.',
   },
 ]
 
@@ -84,10 +90,9 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
       />
 
       <section id="products" data-note="range" className="relative isolate py-12 lg:py-16">
-        <LogoWatermark marks={['-left-40 top-6 size-[420px] lg:size-[520px]', '-right-48 bottom-10 size-[460px] lg:size-[600px]']} />
         <div className="container">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-primary font-mono text-[11px] tracking-[0.22em] uppercase">{t(locale, 'The range')}</p>
+            <p className="text-primary font-mono text-[14px] font-semibold tracking-[0.22em] uppercase md:text-[16px]">{t(locale, 'Our products')}</p>
             <h2 className="mt-3 text-[26px] font-bold text-balance md:text-[32px] lg:text-[36px]">
               {t(locale, 'Every industrial diamond and CBN product, from one source.')}
             </h2>
@@ -105,7 +110,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
         pillars={[
           {
             meta: t(locale, 'Accountability'),
-            title: t(locale, 'We control production, not just supply.'),
+            title: t(locale, 'Manufacturing Control'),
             href: '/about',
             image: {
               src: '/eid/qc-sieve.jpg',
@@ -114,7 +119,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           },
           {
             meta: t(locale, 'Consistency'),
-            title: t(locale, 'The same material, every reorder.'),
+            title: t(locale, 'Quality & Consistency'),
             href: '/quality',
             image: {
               src: '/eid/qc-batch-to-batch.jpg',
@@ -123,7 +128,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
           },
           {
             meta: t(locale, 'Breadth'),
-            title: t(locale, 'The full range, one relationship.'),
+            title: t(locale, 'Full Product Range'),
             href: '/#products',
             image: {
               src: '/eid/qc-samples.jpg',
@@ -133,7 +138,7 @@ const Home = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
         ]}
       />
 
-      <section id="applications" data-note="applications" className="bg-canvas relative isolate py-10 lg:py-14">
+      <section id="applications" data-note="applications" className="relative bg-white isolate py-10 lg:py-14">
         <div className="container">
           <div className="mx-auto max-w-4xl text-center">
             <h2 className="text-primary-3 text-[34px] leading-none font-bold tracking-[-0.035em] md:text-[44px] lg:text-[52px]">
