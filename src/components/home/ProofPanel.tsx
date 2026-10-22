@@ -1,4 +1,3 @@
-import LogoWatermark from '@/components/LogoWatermark'
 import PhotoCard from '@/components/PhotoCard'
 
 export type Pillar = {
@@ -29,7 +28,6 @@ const ProofPanel = ({
   aspect?: 'portrait' | 'landscape'
 }) => (
   <section data-note="core-values" className="bg-default-50 relative isolate overflow-hidden py-12 lg:py-16">
-    <LogoWatermark marks={['-right-32 -top-24 size-[380px] lg:size-[480px]']} />
     <div className="container">
       {/* Same heading as Applications and Quality Control: one centred H2 and
           a one-line description, no eyebrow. */}
