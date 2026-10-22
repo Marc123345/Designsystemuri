@@ -1,6 +1,6 @@
 import CurtainGrid from '@/components/CurtainGrid'
 import { RichParagraphs } from '@/components/RichText'
-import { CrossLinks, PageHero } from '@/components/sections'
+import { PageHero } from '@/components/sections'
 import { ArrowButton } from '@/components/ui'
 import type { Locale } from '@/i18n/routing'
 import { applications } from '@/lib/applications'
@@ -8,7 +8,7 @@ import { applicationImage, productImage } from '@/lib/card-media'
 import { catalog, getSectionCatalog } from '@/lib/product-catalog'
 import { getProductImageSrc } from '@/lib/product-images'
 import { localeAlternates } from '@/lib/hreflang'
-import { getApplication, getApplications, t } from '@/lib/i18n-content'
+import { getApplication, t } from '@/lib/i18n-content'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 import Image from 'next/image'
@@ -235,13 +235,6 @@ const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; s
       return { title: ap.label, href: ap.href, image: { src: src ?? productImage(parentSlugOf(ap.href)) ?? '', alt: '' } }
     })
   })()
-
-  const productLinks = app.products.map((ap) => ({ label: ap.label, href: ap.href }))
-  const guideLinks = (app.guides ?? []).map((g) => ({ label: g, href: '/resources/blog' }))
-  const relatedHubLinks = (app.relatedHubs ?? [])
-    .map((h) => getApplication(locale, h))
-    .filter(Boolean)
-    .map((h) => ({ label: h!.name, href: `/applications/${h!.slug}` }))
 
   return (
     <>
@@ -495,23 +488,9 @@ const ApplicationPage = async ({ params }: { params: Promise<{ locale: Locale; s
           Each page's own eyebrow/title/desc strings went with it. They were
           Uri's per-page wording, so if the block ever returns it returns with
           them — check this file's history rather than writing new ones. */}
-      {/* CROSS-LINKS */}
-      <CrossLinks
-        groups={[
-          { title: t(locale, 'Products for this application'), links: productLinks },
-          {
-            title: t(locale, 'Quality & resources'),
-            links: [{ label: t(locale, 'Quality, QC & ISO 9001'), href: '/quality' }, { label: t(locale, 'Datasheets'), href: '/resources/datasheets' }, ...guideLinks],
-          },
-          ...(relatedHubLinks.length ? [{ title: t(locale, 'Related hub'), links: relatedHubLinks }] : []),
-          {
-            title: t(locale, 'Other applications'),
-            links: getApplications(locale)
-              .filter((o) => o.slug !== app.slug)
-              .map((o) => ({ label: o.name, href: `/applications/${o.slug}` })),
-          },
-        ]}
-      />
+      {/* The CrossLinks block (products for this application, quality &
+          resources, other applications) was removed from the hubs at Marc's
+          request, Oct 2026. Product and blog pages keep theirs. */}
     </>
   )
 }
